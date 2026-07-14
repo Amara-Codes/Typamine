@@ -1,0 +1,62 @@
+[
+  {
+    "id": "p-01",
+    "name": "Editorial Contrast",
+    "fonts": [
+      "kugile",
+      "josefin"
+    ],
+    "tags": [
+      "Editorial",
+      "Display"
+    ],
+    "href": "/prescriptions/kugile-josefin",
+    "description": "A high-contrast pairing ideal for large headlines and editorial layouts.",
+    "imgUrl": "/images/pairing-samples/1.png"
+  },
+  {
+    "id": "p-02",
+    "name": "Cyberpunk Echo",
+    "fonts": [
+      "solidwaste",
+      "future-earth"
+    ],
+    "tags": [
+      "Sci-Fi",
+      "Gaming"
+    ],
+    "href": "/prescriptions/solidwaste-futureearth",
+    "description": "Aggressive, futuristic aesthetic with monospaced influences.",
+    "imgUrl": "/images/pairing-samples/2.png"
+  },
+  {
+    "id": "p-03",
+    "name": "Classic Elegance",
+    "fonts": [
+      "porter-sans",
+      "libre-baskerville"
+    ],
+    "tags": [
+      "Classic",
+      "Web"
+    ],
+    "href": "/prescriptions/porter-libre",
+    "description": "Timeless pairing providing strong presence and excellent readability.",
+    "imgUrl": "/images/pairing-samples/3.png"
+  },
+  {
+    "id": "p-04",
+    "name": "Retro Futurism",
+    "fonts": [
+      "view-slant",
+      "league-sparta"
+    ],
+    "tags": [
+      "Retro",
+      "Futurism"
+    ],
+    "href": "/prescriptions/viewslant-leaguesparta",
+    "description": "A dynamic blend of retro styling with a sharp, futuristic edge.",
+    "imgUrl": "/images/pairing-samples/4.png"
+  }
+]

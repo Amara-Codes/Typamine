@@ -1,0 +1,73 @@
+// src/app/[locale]/admin/layout.tsx
+import { getServerAuthSession } from "@/lib/session";
+import { redirect } from "next/navigation";
+import { Metadata } from "next";
+import { getDatabaseSource } from "@/lib/prisma";
+import AdminSidebar from "@/components/admin/AdminSidebar";
+import AdminHeader from "@/components/admin/AdminHeader";
+import { Inter } from "next/font/google";
+import "../globals.css";
+import { cn } from "@/lib/utils";
+import { ThemeSync } from "@/components/common/ThemeSync";
+
+const inter = Inter({ subsets: ['latin'], variable: '--font-sans' });
+
+export const metadata: Metadata = {
+  title: "Typamine - Admin Panel",
+  description: "Typamine - Admin Panel",
+  icons: {
+    icon: [{ url: "/images/icons/admin-icon.png" }]
+  }
+};
+
+
+import prisma from "@/lib/prisma";
+
+export default async function AdminLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  console.log('[AdminLayout] Getting session with getServerSession...');
+
+  try {
+    const session = await getServerAuthSession();
+    console.log('[AdminLayout] Session:', session ? 'exists' : 'null');
+
+    if (!session) {
+      console.log('[AdminLayout] No session, redirecting to login');
+      redirect("/login");
+    }
+
+    const dbSource = getDatabaseSource();
+
+    return (
+      <html lang="en" className={cn("h-full antialiased", "font-sans", inter.variable)}>
+        <body className="min-h-full bg-background text-foreground">
+          <ThemeSync />
+          <div className="flex h-[100dvh] transition-colors duration-300 overflow-hidden relative"
+            style={{ backgroundImage: "url('/images/admin/admin-bg.png')" }}
+          >
+            {/* Background elements moved to top and z-index fixed */}
+            <div className="absolute inset-0 z-0 bg-linear-to-br from-blue/40 via-blue/20 to-red/20 dark:from-red/40 dark:via-blue/40 dark:to-black/40 pointer-events-none" />
+            <div className="absolute inset-0 z-0 bg-[radial-gradient(circle_at_50%_0%,color-mix(in_srgb,var(--color-blue),transparent_60%),transparent)] dark:bg-[radial-gradient(circle_at_50%_0%,color-mix(in_srgb,var(--color-red),var(--color-black)_90%),transparent)] pointer-events-none" />
+
+            <AdminSidebar session={session} />
+            <div className="flex-1 flex flex-col relative z-10">
+              <div className="ps-6">
+
+                <AdminHeader session={session} dbSource={dbSource} />
+              </div>
+              <main className="flex-1 p-6 overflow-y-auto relative z-10">
+                {children}
+              </main>
+            </div>
+          </div>
+        </body>
+      </html>
+    );
+  } catch (error) {
+    console.error('[AdminLayout] Error:', error);
+    redirect("/login");
+  }
+}

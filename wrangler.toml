@@ -1,0 +1,31 @@
+#:schema node_modules/wrangler/config-schema.json
+name = "typamine"
+main = ".open-next/worker.js"
+compatibility_date = "2026-07-12"
+compatibility_flags = [ "nodejs_compat", "global_fetch_strictly_public" ]
+
+[assets]
+directory = ".open-next/assets"
+binding = "ASSETS"
+
+[[services]]
+binding = "WORKER_SELF_REFERENCE"
+service = "typamine"
+
+[images]
+binding = "IMAGES"
+
+# ==========================================
+# Future Infrastructure Integration Bindings
+# ==========================================
+
+# Cloudflare D1 Serverless SQL Database for font metadata
+[[d1_databases]]
+binding = "TYPAMINE_DB"
+database_name = "typamine-db"
+database_id = "Y43e49a77-7cb2-495f-a741-f324fe6cc14f"
+
+# Cloudflare R2 Object Storage for physical font files (.ttf, .woff2) and image assets
+[[r2_buckets]]
+binding = "TYPAMINE_ASSETS"
+bucket_name = "typamine-assets"

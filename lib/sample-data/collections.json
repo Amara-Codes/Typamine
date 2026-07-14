@@ -1,0 +1,63 @@
+[
+  {
+    "id": "f-01",
+    "name": "Art Deco Fonts",
+    "code": "A-DE-01",
+    "href": "/formulas/art-deco-fonts",
+    "createdAt": "2026-07-10",
+    "fonts": [
+      "poiret-one",
+      "limelight",
+      "riesling"
+    ],
+    "description": "Rigorous corporate interface alignment composition."
+  },
+  {
+    "id": "f-02",
+    "name": "Sans Serif Trends",
+    "code": "S-SE-02",
+    "href": "/formulas/sans-serif-trends",
+    "createdAt": "2026-07-02",
+    "fonts": [
+      "star-avenue",
+      "plus-jakarta-sans"
+    ],
+    "description": "Edgy, decorative elements contrast compound."
+  },
+  {
+    "id": "f-03",
+    "name": "High-contrast Terminal",
+    "code": "H-CO-01",
+    "href": "/formulas/high-contrast-terminal",
+    "createdAt": "2026-07-13",
+    "fonts": [
+      "geist-mono",
+      "inter"
+    ],
+    "description": "Optimized for administrative logs and coding consoles."
+  },
+  {
+    "id": "f-04",
+    "name": "Editorial Synthesis",
+    "code": "S-ED-04",
+    "href": "/formulas/editorial-synthesis",
+    "createdAt": "2026-07-12",
+    "fonts": [
+      "spectral",
+      "inter"
+    ],
+    "description": "Balanced layout tailored for editorial texts and publications."
+  },
+  {
+    "id": "f-05",
+    "name": "Symmetric Mono Mixture",
+    "code": "M-SM-09",
+    "href": "/formulas/symmetric-mono-mixture",
+    "createdAt": "2026-07-11",
+    "fonts": [
+      "jetbrains-mono",
+      "geist-mono"
+    ],
+    "description": "Double monospaced compounds for raw, ultra-structured lookups."
+  }
+]

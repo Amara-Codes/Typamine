@@ -1,0 +1,369 @@
+[
+  {
+    "id": "1",
+    "symbol": "Ah",
+    "name": "Alte Haas Grotesk",
+    "category": "Neo-Grotesque",
+    "formula": "C12H20O2",
+    "rating": "9.9",
+    "creator": "Haas Type Foundry",
+    "slug": "alte-haas-grotesk",
+    "variants": [
+      {
+        "id": "1-var-1",
+        "fontFamilyName": "Typamine_AlteHaasGrotesk",
+        "weight": 400,
+        "style": "normal",
+        "woff2Url": "https://cdn.typamine.com/fonts/alte-haas-grotesk-regular.woff2",
+        "label": "Regular"
+      }
+    ]
+  },
+  {
+    "id": "2",
+    "symbol": "Jk",
+    "name": "Plus Jakarta Sans",
+    "category": "Geometric Sans",
+    "formula": "C15H26N2",
+    "rating": "9.8",
+    "creator": "Tokotype",
+    "slug": "plus-jakarta-sans",
+    "variants": [
+      {
+        "id": "2-var-1",
+        "fontFamilyName": "Typamine_PlusJakartaSans",
+        "weight": 400,
+        "style": "normal",
+        "woff2Url": "https://cdn.typamine.com/fonts/plus-jakarta-sans-regular.woff2",
+        "label": "Regular"
+      }
+    ]
+  },
+  {
+    "id": "3",
+    "symbol": "Sa",
+    "name": "Star Avenue",
+    "category": "Decorative",
+    "formula": "C18H30O",
+    "rating": "9.5",
+    "creator": "Unknown",
+    "slug": "star-avenue",
+    "variants": [
+      {
+        "id": "3-var-1",
+        "fontFamilyName": "Typamine_StarAvenue",
+        "weight": 400,
+        "style": "normal",
+        "woff2Url": "https://cdn.typamine.com/fonts/star-avenue-regular.woff2",
+        "label": "Regular"
+      }
+    ]
+  },
+  {
+    "id": "4",
+    "symbol": "Gm",
+    "name": "Geist Mono",
+    "category": "Monospace",
+    "formula": "C10H15N",
+    "rating": "9.7",
+    "creator": "Vercel",
+    "slug": "geist-mono",
+    "variants": [
+      {
+        "id": "4-var-1",
+        "fontFamilyName": "Typamine_GeistMono",
+        "weight": 400,
+        "style": "normal",
+        "woff2Url": "https://cdn.typamine.com/fonts/geist-mono-regular.woff2",
+        "label": "Regular"
+      }
+    ]
+  },
+  {
+    "id": "5",
+    "symbol": "In",
+    "name": "Inter",
+    "category": "Sans-Serif",
+    "formula": "C8H10N4O2",
+    "rating": "9.9",
+    "creator": "Rasmus Andersson",
+    "slug": "inter",
+    "variants": [
+      {
+        "id": "5-var-1",
+        "fontFamilyName": "Typamine_Inter",
+        "weight": 400,
+        "style": "normal",
+        "woff2Url": "https://cdn.typamine.com/fonts/inter-regular.woff2",
+        "label": "Regular"
+      }
+    ]
+  },
+  {
+    "id": "6",
+    "symbol": "Jb",
+    "name": "JetBrains Mono",
+    "category": "Monospace",
+    "formula": "C20H25N3O",
+    "rating": "9.6",
+    "creator": "JetBrains",
+    "slug": "jetbrains-mono",
+    "variants": [
+      {
+        "id": "6-var-1",
+        "fontFamilyName": "Typamine_JetBrainsMono",
+        "weight": 400,
+        "style": "normal",
+        "woff2Url": "https://cdn.typamine.com/fonts/jetbrains-mono-regular.woff2",
+        "label": "Regular"
+      }
+    ]
+  },
+  {
+    "id": "7",
+    "symbol": "Sl",
+    "name": "Spectral",
+    "category": "Serif",
+    "formula": "C6H12O6",
+    "rating": "9.4",
+    "creator": "Production Type",
+    "slug": "spectral",
+    "variants": [
+      {
+        "id": "7-var-1",
+        "fontFamilyName": "Typamine_Spectral",
+        "weight": 400,
+        "style": "normal",
+        "woff2Url": "https://cdn.typamine.com/fonts/spectral-regular.woff2",
+        "label": "Regular"
+      }
+    ]
+  },
+  {
+    "id": "8",
+    "symbol": "Pt",
+    "name": "Playfair Display",
+    "category": "Serif",
+    "formula": "C17H19NO3",
+    "rating": "9.5",
+    "creator": "Claus Eggers Sorensen",
+    "slug": "playfair-display",
+    "variants": [
+      {
+        "id": "8-var-1",
+        "fontFamilyName": "Typamine_PlayfairDisplay",
+        "weight": 400,
+        "style": "normal",
+        "woff2Url": "https://cdn.typamine.com/fonts/playfair-display-regular.woff2",
+        "label": "Regular"
+      }
+    ]
+  },
+  {
+    "id": "9",
+    "symbol": "Rb",
+    "name": "Roboto",
+    "category": "Sans-Serif",
+    "formula": "C8H11NO2",
+    "rating": "9.8",
+    "creator": "Google",
+    "slug": "roboto",
+    "variants": [
+      {
+        "id": "9-var-1",
+        "fontFamilyName": "Typamine_Roboto",
+        "weight": 400,
+        "style": "normal",
+        "woff2Url": "https://cdn.typamine.com/fonts/roboto-regular.woff2",
+        "label": "Regular"
+      }
+    ]
+  },
+  {
+    "id": "10",
+    "name": "Poiret One",
+    "category": "Unknown",
+    "rating": "4.5",
+    "slug": "poiret-one",
+    "variants": [
+      {
+        "id": "10-var-1",
+        "fontFamilyName": "Typamine_PoiretOne",
+        "weight": 400,
+        "style": "normal",
+        "woff2Url": "https://cdn.typamine.com/fonts/poiret-one-regular.woff2",
+        "label": "Regular"
+      }
+    ]
+  },
+  {
+    "id": "11",
+    "name": "Limelight",
+    "category": "Unknown",
+    "rating": "4.5",
+    "slug": "limelight",
+    "variants": [
+      {
+        "id": "11-var-1",
+        "fontFamilyName": "Typamine_Limelight",
+        "weight": 400,
+        "style": "normal",
+        "woff2Url": "https://cdn.typamine.com/fonts/limelight-regular.woff2",
+        "label": "Regular"
+      }
+    ]
+  },
+  {
+    "id": "12",
+    "name": "Riesling",
+    "category": "Unknown",
+    "rating": "4.5",
+    "slug": "riesling",
+    "variants": [
+      {
+        "id": "12-var-1",
+        "fontFamilyName": "Typamine_Riesling",
+        "weight": 400,
+        "style": "normal",
+        "woff2Url": "https://cdn.typamine.com/fonts/riesling-regular.woff2",
+        "label": "Regular"
+      }
+    ]
+  },
+  {
+    "id": "13",
+    "name": "Kugile",
+    "category": "Unknown",
+    "rating": "4.5",
+    "slug": "kugile",
+    "variants": [
+      {
+        "id": "13-var-1",
+        "fontFamilyName": "Typamine_Kugile",
+        "weight": 400,
+        "style": "normal",
+        "woff2Url": "https://cdn.typamine.com/fonts/kugile-regular.woff2",
+        "label": "Regular"
+      }
+    ]
+  },
+  {
+    "id": "14",
+    "name": "Josefin",
+    "category": "Unknown",
+    "rating": "4.5",
+    "slug": "josefin",
+    "variants": [
+      {
+        "id": "14-var-1",
+        "fontFamilyName": "Typamine_Josefin",
+        "weight": 400,
+        "style": "normal",
+        "woff2Url": "https://cdn.typamine.com/fonts/josefin-regular.woff2",
+        "label": "Regular"
+      }
+    ]
+  },
+  {
+    "id": "15",
+    "name": "SolidWaste",
+    "category": "Unknown",
+    "rating": "4.5",
+    "slug": "solidwaste",
+    "variants": [
+      {
+        "id": "15-var-1",
+        "fontFamilyName": "Typamine_SolidWaste",
+        "weight": 400,
+        "style": "normal",
+        "woff2Url": "https://cdn.typamine.com/fonts/solidwaste-regular.woff2",
+        "label": "Regular"
+      }
+    ]
+  },
+  {
+    "id": "16",
+    "name": "Future Earth",
+    "category": "Unknown",
+    "rating": "4.5",
+    "slug": "future-earth",
+    "variants": [
+      {
+        "id": "16-var-1",
+        "fontFamilyName": "Typamine_FutureEarth",
+        "weight": 400,
+        "style": "normal",
+        "woff2Url": "https://cdn.typamine.com/fonts/future-earth-regular.woff2",
+        "label": "Regular"
+      }
+    ]
+  },
+  {
+    "id": "17",
+    "name": "Porter Sans",
+    "category": "Unknown",
+    "rating": "4.5",
+    "slug": "porter-sans",
+    "variants": [
+      {
+        "id": "17-var-1",
+        "fontFamilyName": "Typamine_PorterSans",
+        "weight": 400,
+        "style": "normal",
+        "woff2Url": "https://cdn.typamine.com/fonts/porter-sans-regular.woff2",
+        "label": "Regular"
+      }
+    ]
+  },
+  {
+    "id": "18",
+    "name": "Libre Baskerville",
+    "category": "Unknown",
+    "rating": "4.5",
+    "slug": "libre-baskerville",
+    "variants": [
+      {
+        "id": "18-var-1",
+        "fontFamilyName": "Typamine_LibreBaskerville",
+        "weight": 400,
+        "style": "normal",
+        "woff2Url": "https://cdn.typamine.com/fonts/libre-baskerville-regular.woff2",
+        "label": "Regular"
+      }
+    ]
+  },
+  {
+    "id": "19",
+    "name": "View Slant",
+    "category": "Unknown",
+    "rating": "4.5",
+    "slug": "view-slant",
+    "variants": [
+      {
+        "id": "19-var-1",
+        "fontFamilyName": "Typamine_ViewSlant",
+        "weight": 400,
+        "style": "normal",
+        "woff2Url": "https://cdn.typamine.com/fonts/view-slant-regular.woff2",
+        "label": "Regular"
+      }
+    ]
+  },
+  {
+    "id": "20",
+    "name": "League Sparta",
+    "category": "Unknown",
+    "rating": "4.5",
+    "slug": "league-sparta",
+    "variants": [
+      {
+        "id": "20-var-1",
+        "fontFamilyName": "Typamine_LeagueSparta",
+        "weight": 400,
+        "style": "normal",
+        "woff2Url": "https://cdn.typamine.com/fonts/league-sparta-regular.woff2",
+        "label": "Regular"
+      }
+    ]
+  }
+]

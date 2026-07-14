@@ -1,0 +1,120 @@
+/* /LedBar/LedBar.css */
+
+.led-bar-wrapper {
+  position: relative;
+  background-color: #0a0a0a;
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 1), 0 0 5px rgba(0, 0, 0, 0.5);
+  display: flex;
+  /* La griglia sopra la luce */
+  z-index: 1;
+}
+
+/* La griglia di celle fisiche */
+.led-cells-container {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 10;
+}
+
+/* Dettaglio del singolo LED */
+.led-cell {
+  flex: 1;
+  border: 1px solid #000;
+  border-radius: 2px;
+  /* Effetto "vetro" spento */
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.05) 0%,
+    rgba(0, 0, 0, 0.4) 100%
+  );
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.1);
+  margin: 1px;
+  backdrop-filter: brightness(0.8);
+  transition: all 0.3s ease;
+}
+
+/* L'elemento che genera la luce (Scanner) */
+.led-scanner-light {
+  position: absolute;
+  z-index: 5;
+  top: 0;
+  bottom: 0;
+  /* Le dimensioni della luce definiscono la lunghezza della coda (trail) */
+  width: var(--trail-size, 30%); 
+  height: 100%;
+  background: var(--led-color, #ff0000);
+  box-shadow: 0 0 15px var(--led-color, #ff0000), 
+              0 0 30px var(--led-color, #ff0000);
+  opacity: var(--light-opacity, 1);
+  filter: blur(4px);
+}
+
+/* Animazioni Base */
+@keyframes scan-horizontal {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(calc(100vw / (100vw / 100) + 300%)); } /* Adatta in base al container */
+}
+
+@keyframes scan-yoyo-horizontal {
+  0% { left: -10%; }
+  100% { left: 110%; }
+}
+
+@keyframes scan-yoyo-vertical {
+  0% { top: -10%; }
+  100% { top: 110%; }
+}
+
+/* Modificatori Hover iniettati tramite attributi data o tramite parent .group:hover */
+.led-bar-wrapper[data-hover-mode="frenzy"][data-is-hovered="true"] .led-scanner-light,
+.group:hover .led-bar-wrapper[data-hover-mode="frenzy"] .led-scanner-light {
+  animation-play-state: running !important;
+  animation-duration: calc(var(--base-speed) / 4) !important;
+  filter: blur(8px) contrast(1.5);
+}
+
+.led-bar-wrapper[data-hover-mode="pause"][data-is-hovered="true"] .led-scanner-light,
+.group:hover .led-bar-wrapper[data-hover-mode="pause"] .led-scanner-light {
+  animation-play-state: paused !important;
+}
+
+.led-bar-wrapper[data-hover-mode="overdrive"][data-is-hovered="true"] .led-scanner-light,
+.group:hover .led-bar-wrapper[data-hover-mode="overdrive"] .led-scanner-light {
+  animation-play-state: running !important;
+  --led-color: #00ffff !important; /* Diventa azzurro/bianco */
+  box-shadow: 0 0 20px #00ffff, 0 0 50px #ffffff;
+  --trail-size: 50%;
+}
+
+.led-bar-wrapper[data-hover-mode="stealth"][data-is-hovered="true"] .led-scanner-light,
+.group:hover .led-bar-wrapper[data-hover-mode="stealth"] .led-scanner-light {
+  animation-play-state: running !important;
+  --trail-size: 5%;
+  opacity: 0.5;
+  box-shadow: none;
+  filter: blur(1px);
+}
+
+.led-bar-wrapper[data-hover-mode="pulse"][data-is-hovered="true"] .led-scanner-light,
+.group:hover .led-bar-wrapper[data-hover-mode="pulse"] .led-scanner-light {
+  animation: pulse-all 0.5s infinite alternate !important;
+  width: 100%;
+  left: 0;
+  top: 0;
+}
+
+/* Regola generale per avviare lo scanner in caso di group:hover se pausedByDefault */
+.group:hover .led-bar-wrapper .led-scanner-light {
+  animation-play-state: running !important;
+}
+
+@keyframes pulse-all {
+  0% { opacity: 0.2; }
+  100% { opacity: 1; }
+}

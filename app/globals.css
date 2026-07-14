@@ -1,26 +1,398 @@
 @import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@font-face {
+  font-family: 'Alte Haas Grotesk';
+  src: url('/fonts/alte_haas_grotesk/AlteHaasGroteskRegular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Alte Haas Grotesk';
+  src: url('/fonts/alte_haas_grotesk/AlteHaasGroteskBold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Plus Jakarta Sans';
+  src: url('/fonts/Plus_Jakarta_Sans/PlusJakartaSans-VariableFont_wght.ttf') format('truetype');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Plus Jakarta Sans';
+  src: url('/fonts/Plus_Jakarta_Sans/PlusJakartaSans-Italic-VariableFont_wght.ttf') format('truetype');
+  font-weight: 100 900;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Star Avenue';
+  src: url('/fonts/star_avenue/staravenue.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@custom-variant dark (&:where(.dark, .dark *));
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --color-primary: #ff3131;    /* Chemical Red */
+  --color-secondary: #00cece;  /* Chemical Cyan */
+  --color-dark-gray: #f4f4f5;
+  --color-border-gray: #e4e4e7;
+
+  --font-haas: 'Alte Haas Grotesk';
+  --font-jakarta: 'Plus Jakarta Sans';
+  --font-star: 'Star Avenue';
+
+  --color-red: #ff3131;
+  --color-blue: #00cece;
+  --color-green: #00d27a;
+
+  /* Redefining Tailwind's core custom properties at root */
+  --color-white: #f9f9fb;
+  --color-black: #030303;
+
+  /* Glow shadows */
+  --glow-red-shadow: 0 0 15px rgba(255, 49, 49, 0.25);
+  --glow-cyan-shadow: 0 0 15px rgba(0, 206, 206, 0.25);
+  --text-glow-red-shadow: 0 0 6px rgba(255, 49, 49, 0.4);
+  --text-glow-cyan-shadow: 0 0 6px rgba(0, 206, 206, 0.4);
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.145 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.145 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.145 0 0);
+  --primary: oklch(0.205 0 0);
+  --primary-foreground: oklch(0.985 0 0);
+  --secondary: oklch(0.97 0 0);
+  --secondary-foreground: oklch(0.205 0 0);
+  --muted: oklch(0.97 0 0);
+  --muted-foreground: oklch(0.556 0 0);
+  --accent: oklch(0.97 0 0);
+  --accent-foreground: oklch(0.205 0 0);
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: oklch(0.922 0 0);
+  --input: oklch(0.922 0 0);
+  --ring: oklch(0.708 0 0);
+  --chart-1: oklch(0.87 0 0);
+  --chart-2: oklch(0.556 0 0);
+  --chart-3: oklch(0.439 0 0);
+  --chart-4: oklch(0.371 0 0);
+  --chart-5: oklch(0.269 0 0);
+  --radius: 0.625rem;
+  --sidebar: oklch(0.985 0 0);
+  --sidebar-foreground: oklch(0.145 0 0);
+  --sidebar-primary: oklch(0.205 0 0);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.97 0 0);
+  --sidebar-accent-foreground: oklch(0.205 0 0);
+  --sidebar-border: oklch(0.922 0 0);
+  --sidebar-ring: oklch(0.708 0 0);
+}
+
+.dark {
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.985 0 0);
+  --color-dark-gray: #121214;
+  --color-border-gray: #27272a;
+
+  /* Keep overrides in dark mode too */
+  --color-white: #f9f9fb;
+  --color-black: #030303;
+
+  /* Glow shadows */
+  --glow-red-shadow: 0 0 15px rgba(255, 49, 49, 0.35);
+  --glow-cyan-shadow: 0 0 15px rgba(0, 206, 206, 0.35);
+  --text-glow-red-shadow: 0 0 8px rgba(255, 49, 49, 0.6);
+  --text-glow-cyan-shadow: 0 0 8px rgba(0, 206, 206, 0.6);
+  --card: oklch(0.205 0 0);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.205 0 0);
+  --popover-foreground: oklch(0.985 0 0);
+  --primary: oklch(0.922 0 0);
+  --primary-foreground: oklch(0.205 0 0);
+  --secondary: oklch(0.269 0 0);
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.269 0 0);
+  --muted-foreground: oklch(0.708 0 0);
+  --accent: oklch(0.269 0 0);
+  --accent-foreground: oklch(0.985 0 0);
+  --destructive: oklch(0.704 0.191 22.216);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.556 0 0);
+  --chart-1: oklch(0.87 0 0);
+  --chart-2: oklch(0.556 0 0);
+  --chart-3: oklch(0.439 0 0);
+  --chart-4: oklch(0.371 0 0);
+  --chart-5: oklch(0.269 0 0);
+  --sidebar: oklch(0.205 0 0);
+  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar-primary: oklch(0.488 0.243 264.376);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.269 0 0);
+  --sidebar-accent-foreground: oklch(0.985 0 0);
+  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-ring: oklch(0.556 0 0);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-primary: var(--color-primary);
+  --color-secondary: var(--color-secondary);
+  --color-dark-gray: var(--color-dark-gray);
+  --color-border-gray: var(--color-border-gray);
+
+  /* Overrides for black & white to be non-absolute variables */
+  --color-white: var(--color-white);
+  --color-black: var(--color-black);
+
+  /* Custom colors */
+  --color-red: var(--color-red);
+  --color-blue: var(--color-blue);
+  --color-green: var(--color-green);
+
+  --font-haas: var(--font-haas), sans-serif;
+  --font-jakarta: var(--font-jakarta), sans-serif;
+  --font-star: var(--font-star), sans-serif;
+
+  /* Standard system mappings */
+  --font-sans: var(--font-sans);
+  --font-mono: var(--font-haas), sans-serif;
+  --font-title: var(--font-haas), sans-serif;
+  --font-special: var(--font-star), sans-serif;
+
+  --animate-bounce-x: bounce-x 1s infinite;
+
+  --font-heading: var(--font-sans);
+
+  --color-sidebar-ring: var(--sidebar-ring);
+
+  --color-sidebar-border: var(--sidebar-border);
+
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+
+  --color-sidebar-accent: var(--sidebar-accent);
+
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+
+  --color-sidebar-primary: var(--sidebar-primary);
+
+  --color-sidebar-foreground: var(--sidebar-foreground);
+
+  --color-sidebar: var(--sidebar);
+
+  --color-chart-5: var(--chart-5);
+
+  --color-chart-4: var(--chart-4);
+
+  --color-chart-3: var(--chart-3);
+
+  --color-chart-2: var(--chart-2);
+
+  --color-chart-1: var(--chart-1);
+
+  --color-ring: var(--ring);
+
+  --color-input: var(--input);
+
+  --color-border: var(--border);
+
+  --color-destructive: var(--destructive);
+
+  --color-accent-foreground: var(--accent-foreground);
+
+  --color-accent: var(--accent);
+
+  --color-muted-foreground: var(--muted-foreground);
+
+  --color-muted: var(--muted);
+
+  --color-secondary-foreground: var(--secondary-foreground);
+
+  --color-primary-foreground: var(--primary-foreground);
+
+  --color-popover-foreground: var(--popover-foreground);
+
+  --color-popover: var(--popover);
+
+  --color-card-foreground: var(--card-foreground);
+
+  --color-card: var(--card);
+
+  --radius-sm: calc(var(--radius) * 0.6);
+
+  --radius-md: calc(var(--radius) * 0.8);
+
+  --radius-lg: var(--radius);
+
+  --radius-xl: calc(var(--radius) * 1.4);
+
+  --radius-2xl: calc(var(--radius) * 1.8);
+
+  --radius-3xl: calc(var(--radius) * 2.2);
+
+  --radius-4xl: calc(var(--radius) * 2.6);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@keyframes bounce-x {
+  0%, 100% {
+    transform: translateX(0);
+    animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
+  }
+  50% {
+    transform: translateX(5px);
+    animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
   }
 }
 
+.group:hover .icon-altalenante {
+  animation: bounce-x 1s infinite;
+}
+
+/* Global Reset & Body Styling */
 body {
+  background-color: var(--background);
+  font-family: var(--font-jakarta);
+  background-attachment: fixed;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Chemical Lab Grid Pattern - adapts to dark/light */
+body {
+  background-image: 
+    radial-gradient(circle at 50% 50%, rgba(255, 49, 49, 0.015) 0%, transparent 65%),
+    radial-gradient(circle at 10% 20%, rgba(0, 206, 206, 0.015) 0%, transparent 50%),
+    linear-gradient(rgba(120, 120, 120, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(120, 120, 120, 0.03) 1px, transparent 1px);
+  background-size: 100% 100%, 100% 100%, 40px 40px, 40px 40px;
+}
+
+.dark body {
+  background-image: 
+    radial-gradient(circle at 50% 50%, rgba(255, 49, 49, 0.03) 0%, transparent 60%),
+    radial-gradient(circle at 10% 20%, rgba(0, 206, 206, 0.03) 0%, transparent 50%),
+    linear-gradient(rgba(255, 255, 255, 0.007) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.007) 1px, transparent 1px);
+}
+
+/* CSS variables for typography elements */
+h1, h2, h3 {
+  font-family: var(--font-haas);
+}
+
+.font-star {
+  font-family: var(--font-star);
+}
+
+/* Technical / Laboratory Styling Helpers */
+.lab-grid {
+  background-image: 
+    linear-gradient(to right, var(--color-border-gray) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--color-border-gray) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+@utility glow-red {
+  box-shadow: var(--glow-red-shadow);
+}
+
+@utility glow-cyan {
+  box-shadow: var(--glow-cyan-shadow);
+}
+
+@utility text-glow-cyan {
+  text-shadow: var(--text-glow-cyan-shadow);
+}
+
+@utility text-glow-red {
+  text-shadow: var(--text-glow-red-shadow);
+}
+
+/* Technical CRT Scanline Effect (subtle, active only in dark mode) */
+.dark.scanline::after {
+  content: " ";
+  display: block;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+  z-index: 9999;
+  background-size: 100% 4px, 6px 100%;
+  pointer-events: none;
+  opacity: 0.12;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
   background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  border-left: 1px solid var(--color-border-gray);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-dark-gray);
+  border: 1px solid var(--color-border-gray);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-primary);
+}
+
+/* Active Controls UI element presets */
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  background: var(--color-dark-gray);
+  border: 1px solid var(--color-border-gray);
+  height: 6px;
+  border-radius: 3px;
+  outline: none;
+}
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--color-secondary);
+  cursor: pointer;
+  box-shadow: 0 0 8px var(--color-secondary);
+  transition: transform 0.1s ease;
+}
+input[type="range"]::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+}
+
+/* Monospace font styling forced for controls */
+.mono-ctrl {
+  font-family: var(--font-haas);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  html {
+    @apply font-sans;
+  }
 }

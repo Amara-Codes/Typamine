@@ -30,11 +30,34 @@ yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
-# env files (can opt-in for committing if needed)
-.env*
+# ==========================================
+# 🛑 SECRETS & ENVIRONMENTS (NON COMMITTARE MAI)
+# ==========================================
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+# (Puoi committare .env.example o .env.template se li crei per mostrare le variabili necessarie)
 
-# vercel
+# ==========================================
+# ⚡ CLOUDFLARE, WRANGLER & OPENNEXT
+# ==========================================
 .vercel
+.open-next
+.wrangler/
+.dev.vars
+.dev.vars.*
+!.dev.vars.example
+
+# ==========================================
+# 🗄️ DATABASE (PRISMA & CLOUDFLARE D1)
+# ==========================================
+# Ignora i database SQLite locali generati da Prisma o D1 durante lo sviluppo
+*.db
+*.db-journal
+*.sqlite
+*.sqlite3
 
 # typescript
 *.tsbuildinfo
