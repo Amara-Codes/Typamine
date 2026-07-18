@@ -10,6 +10,7 @@ import { useState, useEffect } from "react";
 import BaseModal from "../../common/BaseModal";
 import { AlertCircle } from "lucide-react";
 import { Input } from "@/components/common/Input";
+import SavingOverlay from "@/components/admin/common/SavingOverlay";
 
 export default function RoleForm({ role, allPermissions }: { role?: any, allPermissions: any[] }) {
   const saveAction = (prevState: any, formData: FormData) => saveRole(prevState, formData, role?.id);
@@ -109,7 +110,7 @@ export default function RoleForm({ role, allPermissions }: { role?: any, allPerm
                           {isChecked && <input type="hidden" name="permissions" value={p.id} />}
                           <Button
                             type="button"
-                            variant={isChecked ? "themeResponsive" : "outline"}
+                            variant={isChecked ? "primary" : "outline"}
                             size="sm"
                             roundness="md"
                             onClick={() => togglePermission(p.id)}
@@ -158,6 +159,7 @@ export default function RoleForm({ role, allPermissions }: { role?: any, allPerm
           </button>
         </BaseModal.Footer>
       </BaseModal>
+      <SavingOverlay message="Updating role..." />
     </form>
   );
 }

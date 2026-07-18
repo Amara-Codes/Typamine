@@ -41,6 +41,26 @@ export default async function AdminLayout({
 
     const dbSource = getDatabaseSource();
 
+    if (session?.user?.id) {
+      const dbUser = await prisma.user.findUnique({
+        where: { id: session.user.id },
+        select: { imageUrl: true, image: true, name: true, surname: true }
+      });
+
+      if (dbUser) {
+        let avatarSrc = null;
+        if (dbUser.imageUrl) {
+          avatarSrc = dbUser.imageUrl;
+        } else if (dbUser.image) {
+          avatarSrc = `data:image/jpeg;base64,${Buffer.from(dbUser.image as any).toString('base64')}`;
+        }
+        session.user.image = avatarSrc || session.user.image;
+        if (dbUser.name) {
+          session.user.name = dbUser.surname ? `${dbUser.name} ${dbUser.surname}` : dbUser.name;
+        }
+      }
+    }
+
     return (
       <html lang="en" className={cn("h-full antialiased", "font-sans", inter.variable)}>
         <body className="min-h-full bg-background text-foreground">
@@ -58,7 +78,7 @@ export default async function AdminLayout({
 
                 <AdminHeader session={session} dbSource={dbSource} />
               </div>
-              <main className="flex-1 p-6 overflow-y-auto relative z-10">
+              <main className="flex-1 p-6 pb-4 overflow-y-auto relative z-10">
                 {children}
               </main>
             </div>

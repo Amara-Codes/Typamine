@@ -21,7 +21,7 @@ export const Badge: React.FC<BadgeProps> = ({
 }) => {
   return (
     <div
-      className={`inline-flex items-center space-x-2 border border-zinc-200/10 dark:border-zinc-800/10 px-2.5 py-1 rounded text-[10px] font-haas uppercase tracking-wider select-none w-fit transition-colors duration-300 ${bgClassName} ${textClassName} ${className}`}
+      className={`inline-flex items-center space-x-2 border border-bluegray-200 dark:border-redgray-800 px-2.5 py-1 rounded text-[10px] font-haas uppercase tracking-wider select-none w-fit transition-colors duration-300 ${bgClassName} ${textClassName} ${className}`}
     >
       {ping && (
         <span className="relative flex h-1.5 w-1.5">

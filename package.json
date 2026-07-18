@@ -7,7 +7,7 @@
   "scripts": {
     "dev": "next dev",
     "dev:synced": "npm run db:sync && npm run dev",
-    "dev:remote": "cross-env DEV_REMOTE=true next dev",
+    "dev:remote": "cross-env DEV_REMOTE=true next dev --webpack",
     "build": "next build",
     "pages:build": "npx @cloudflare/next-on-pages",
     "start": "next start",
@@ -31,6 +31,8 @@
     "browser-image-compression": "^2.0.2",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "fontverter": "^2.0.0",
+    "framer-motion": "^12.42.2",
     "lucide-react": "^1.24.0",
     "next": "16.2.10",
     "next-auth": "^4.24.14",

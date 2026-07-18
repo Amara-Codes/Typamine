@@ -16,9 +16,19 @@ export interface Ingredient {
   rating: string;
   symbol?: string;
   formula?: string;
+  isVariable?: boolean;
   
   // Sostituiamo i vecchi campi singoli con un array
   variants: FontVariant[]; 
+}
+
+export interface ProviderFontItem {
+  family: string;
+  category: string;
+  files: Record<string, string>;
+  axes?: Array<{ tag: string; start: number; end: number }>;
+  provider: 'google' | 'fontshare';
+  designer?: string;
 }
 export interface PlaygroundFont {
   name: string;

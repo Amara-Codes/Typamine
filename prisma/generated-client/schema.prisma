@@ -1,0 +1,104 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["driverAdapters"]
+  output          = "./generated-client"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String     @id @default(uuid())
+  name      String?
+  email     String     @unique
+  password  String
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  image     Bytes?
+  imageUrl  String?
+  surname   String?
+  biography String?
+  posts     BlogPost[]
+  roles     Role[]     @relation("UserRoles")
+}
+
+model Role {
+  id          String       @id @default(uuid())
+  name        String       @unique
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  permissions Permission[] @relation("RolePermissions")
+  users       User[]       @relation("UserRoles")
+}
+
+model Permission {
+  id        String   @id @default(uuid())
+  name      String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  roles     Role[]   @relation("RolePermissions")
+}
+
+model BlogPost {
+  id        String   @id @default(uuid())
+  title     String
+  content   String
+  authorId  String
+  author    User     @relation(fields: [authorId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model FontVariant {
+  id             String     @id @default(uuid())
+  fontFamilyName String
+  weight         Int
+  style          String
+  woff2Url       String
+  label          String
+  ingredientId   String
+  ingredient     Ingredient @relation(fields: [ingredientId], references: [id], onDelete: Cascade)
+}
+
+model Ingredient {
+  id            String         @id @default(uuid())
+  name          String
+  slug          String         @unique
+  category      String
+  creator       String?
+  rating        String
+  symbol        String?
+  formula       String?
+  isVariable    Boolean        @default(false)
+  variants      FontVariant[]
+  formulas      Formula[]      @relation("FormulaIngredients")
+  prescriptions Prescription[] @relation("PrescriptionIngredients")
+}
+
+model Formula {
+  id          String       @id @default(uuid())
+  name        String
+  description String
+  href        String       @unique
+  code        String?
+  createdAt   DateTime     @default(now())
+  fonts       Ingredient[] @relation("FormulaIngredients")
+}
+
+model Prescription {
+  id          String       @id @default(uuid())
+  name        String
+  href        String       @unique
+  description String?
+  imgUrl      String?
+  tags        Tag[]        @relation("PrescriptionTags")
+  fonts       Ingredient[] @relation("PrescriptionIngredients")
+}
+
+model Tag {
+  id            String         @id @default(uuid())
+  name          String         @unique
+  prescriptions Prescription[] @relation("PrescriptionTags")
+}

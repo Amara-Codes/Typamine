@@ -1,12 +1,13 @@
-import { getServerAuthSession } from "@/lib/session";
-import prisma from "@/lib/prisma";
-import Link from "next/link";
-import { Edit, Mail, Shield } from "lucide-react";
-import DeleteUserButton from "@/components/admin/users/DeleteUserButton";
+import DeleteButton from "@/components/common/DeleteButton";
+import { deleteUser } from "@/lib/actions/user";
 import { hasPermission, protectPage } from "@/lib/rbac";
 import { Card, CardHeader, CardBody } from "../../../components/common/Card";
 import TabHeading from "@/components/admin/common/TabHeading";
 import ScannedAvatar from "@/components/admin/users/ScannedAvatar"; // Importa il nuovo componente
+import { getServerAuthSession } from "@/lib/session";
+import prisma from "@/lib/prisma";
+import Link from "next/link";
+import { Edit, Mail, Shield } from "lucide-react";
 
 export default async function UserListPage() {
   const session = await getServerAuthSession();
@@ -65,7 +66,15 @@ export default async function UserListPage() {
                       <Edit className="h-4 w-4" />
                     </Link>
                   )}
-                  {canDelete && <DeleteUserButton id={user.id} email={user.email} />}
+                  {canDelete && (
+                    <DeleteButton
+                      id={user.id}
+                      name={user.email}
+                      entityName="user"
+                      onDelete={deleteUser}
+                      confirmDescription="This will permanently revoke access for this user."
+                    />
+                  )}
                 </div>
               </CardHeader>
 

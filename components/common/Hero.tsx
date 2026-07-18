@@ -19,7 +19,7 @@ interface HeroProps {
 }
  
 export const Hero: React.FC<HeroProps> = ({
-  badgeText = "PROJECT: TYPAMINE_ACTIVE",
+  badgeText,
   title,
   description,
   ctaText = "[LAUNCH ARCHIVE]",
@@ -76,7 +76,7 @@ export const Hero: React.FC<HeroProps> = ({
         <div className="pt-4 flex flex-wrap gap-3">
           {ctaHref && ctaText && (
             <Link href={ctaHref}>
-              <Button variant="primary" glow>
+              <Button variant="primary">
                 {ctaText}
               </Button>
             </Link>

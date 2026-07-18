@@ -5,6 +5,8 @@ import { getServerAuthSession } from "@/lib/session";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import bcrypt from "bcrypt";
+import { uploadToR2, deleteFromR2 } from "@/lib/r2";
+import crypto from "crypto";
 
 async function checkPermission(permission: string) {
   const session = await getServerAuthSession();
@@ -83,10 +85,6 @@ export async function saveUser(prevState: any, formData: FormData, id?: string) 
       return "Passwords do not match.";
     }
 
-    let imageUrl: string | null = null;
-    let imageBytes: Buffer | null = null;
-    let uploadSuccess = false;
-
     // Fetch existing user to check for previous image for clean up
     let existingUser: { imageUrl: string | null } | null = null;
     if (id) {
@@ -96,15 +94,7 @@ export async function saveUser(prevState: any, formData: FormData, id?: string) 
       });
     }
 
-    if (removeImage) {
-      imageUrl = null;
-      imageBytes = null;
-    } else if (hasNewImage) {
-      const buffer = Buffer.from(await imageFile.arrayBuffer());
-      imageBytes = buffer;
-      imageUrl = null;
-    }
-
+    const userId = id || crypto.randomUUID();
     const passwordHash = password ? await bcrypt.hash(password, 10) : undefined;
 
     const data = {
@@ -113,15 +103,11 @@ export async function saveUser(prevState: any, formData: FormData, id?: string) 
       surname,
       biography,
       ...(passwordHash ? { password: passwordHash } : {}),
-      ...(removeImage
-        ? { imageUrl: null, image: null }
-        : (imageUrl !== null || imageBytes !== null
-          ? { imageUrl, image: imageBytes as any }
-          : {})),
     };
 
+    let user;
     if (id) {
-      await prisma.user.update({
+      user = await prisma.user.update({
         where: { id },
         data: {
           ...data,
@@ -133,10 +119,13 @@ export async function saveUser(prevState: any, formData: FormData, id?: string) 
     } else {
       // Check if user already exists
       const existing = await prisma.user.findUnique({ where: { email } });
-      if (existing) return "User with this email already exists.";
+      if (existing) {
+        throw new Error("User with this email already exists.");
+      }
 
-      await prisma.user.create({
+      user = await prisma.user.create({
         data: {
+          id: userId,
           ...data,
           password: passwordHash || "", // password is required on create
           roles: {
@@ -144,6 +133,74 @@ export async function saveUser(prevState: any, formData: FormData, id?: string) 
           }
         },
       });
+    }
+
+    // Now handle image changes (R2 Upload/Delete)
+    let finalImageUrl: string | null | undefined = undefined;
+    let uploadedKey: string | null = null;
+
+    try {
+      if (removeImage) {
+        finalImageUrl = null;
+        await prisma.user.update({
+          where: { id: user.id },
+          data: { imageUrl: null }
+        });
+        if (existingUser?.imageUrl) {
+          try {
+            await deleteFromR2(existingUser.imageUrl);
+          } catch (cleanupError) {
+            console.warn("Failed to delete old image from R2:", cleanupError);
+          }
+        }
+      } else if (hasNewImage) {
+        const buffer = Buffer.from(await imageFile.arrayBuffer());
+        const extension = imageFile.name.split('.').pop() || 'jpg';
+        const timestamp = Date.now();
+        const finalFileName = `${user.id}-${timestamp}.${extension}`;
+        
+        const { url, key } = await uploadToR2(
+          buffer,
+          "users/images",
+          finalFileName,
+          imageFile.type
+        );
+        finalImageUrl = url;
+        uploadedKey = key;
+
+        await prisma.user.update({
+          where: { id: user.id },
+          data: { imageUrl: url }
+        });
+
+        // Clean up old image
+        if (existingUser?.imageUrl) {
+          try {
+            await deleteFromR2(existingUser.imageUrl);
+          } catch (cleanupError) {
+            console.warn("Failed to delete old image from R2:", cleanupError);
+          }
+        }
+      }
+    } catch (r2Error) {
+      // Rollback database user creation if it was a new record
+      if (!id) {
+        try {
+          await prisma.user.delete({ where: { id: user.id } });
+        } catch (dbDeleteError) {
+          console.error("Critical: failed to roll back user creation after R2 upload error:", dbDeleteError);
+        }
+      } else {
+        // Rollback: if we uploaded a file to R2 before it failed during db update
+        if (uploadedKey) {
+          try {
+            await deleteFromR2(uploadedKey);
+          } catch (cleanupError) {
+            console.error("Critical: failed to delete uploaded file from R2 after DB error:", cleanupError);
+          }
+        }
+      }
+      throw r2Error;
     }
   } catch (error: unknown) {
     const errorMessage = error instanceof Error ? error.message : String(error);

@@ -24,11 +24,11 @@ export const Input: React.FC<InputProps> = ({
   ...props
 }) => {
   return (
-    <div className="space-y-1.5 font-haas text-xs w-full">
+    <div className="space-y-1.5 w-full">
       {label && (
-        <div className={`flex justify-between items-center select-none ${labelClassName}`}>
-          <label className="text-[10px] text-zinc-900 dark:text-white uppercase tracking-wider">
-            {codePrefix && <span className="text-[#ff3131] mr-1">{codePrefix}</span>}
+        <div className={`flex justify-between items-center select-none mb-0 ${labelClassName}`}>
+          <label className="text-[10px] text-bluegray-800 dark:text-redgray-200 uppercase tracking-wider block mb-2 font-bold">
+            {codePrefix && <span className="text-black dark:text-white mr-1">{codePrefix}</span>}
             {label}
           </label>
         </div>
@@ -36,20 +36,20 @@ export const Input: React.FC<InputProps> = ({
       
       <div className="relative">
         {leftIcon && (
-          <div className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500">
+          <div className="absolute left-3 top-1/2 -translate-y-1/2 text-bluegray-800 dark:text-redgray-200">
             {leftIcon}
           </div>
         )}
         <input
           type={type}
-          className={`w-full bg-zinc-900/40 dark:bg-zinc-900/60 border border-zinc-300 dark:border-zinc-800 focus:border-blue dark:focus:border-red rounded-lg px-3 py-2 text-foreground outline-none transition-colors ${
+          className={`w-full bg-zinc-900/40 dark:bg-zinc-900/60 border border-bluegray-300 dark:border-redgray-700 hover:border-bluegray-400 dark:hover:border-redgray-600 focus:border-blue dark:focus:border-red rounded-lg px-3 py-2 text-foreground outline-none transition-colors ${
             error ? "border-red-500 focus:border-red-500 dark:focus:border-red-500" : ""
           } ${leftIcon ? "pl-10" : ""} ${rightIcon ? "pr-10" : ""} ${className}`}
           onChange={(e) => onChange?.(e.target.value)}
           {...props}
         />
         {rightIcon && (
-          <div className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-500 z-10">
+          <div className="absolute right-3 top-1/2 -translate-y-1/2 text-bluegray-800 dark:text-redgray-200 z-10">
             {rightIcon}
           </div>
         )}

@@ -25,18 +25,18 @@ export default function FormActions({
       <MinimalLink 
         href={backLink} 
         label={backLabel}
-        icon={<MoveLeft className="h-4 w-4 icon-altalenante" />}
+        icon={<MoveLeft className="h-4 w-4" />}
         iconPosition="left"
-        className="font-bold uppercase tracking-widest text-zinc-300 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white"
+        className="ml-4 font-bold uppercase tracking-widest text-bluegray-600 dark:text-redgray-400 hover:text-black dark:hover:text-white"
       />
       
       <Button
         type="submit"
         disabled={pending || disabled}
-        variant="themeResponsive"
-        size="md"
+        variant="primary"
+        size="lg"
         roundness="md"
-        className="min-w-[140px] flex items-center gap-2"
+        className="flex items-center gap-2"
       >
         {pending ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
         {pending ? "Saving..." : buttonLabel}

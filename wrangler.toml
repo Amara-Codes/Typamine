@@ -23,9 +23,11 @@ binding = "IMAGES"
 [[d1_databases]]
 binding = "TYPAMINE_DB"
 database_name = "typamine-db"
-database_id = "Y43e49a77-7cb2-495f-a741-f324fe6cc14f"
+database_id = "43e49a77-7cb2-495f-a741-f324fe6cc14f"
+remote = true
 
 # Cloudflare R2 Object Storage for physical font files (.ttf, .woff2) and image assets
 [[r2_buckets]]
 binding = "TYPAMINE_ASSETS"
 bucket_name = "typamine-assets"
+remote = true

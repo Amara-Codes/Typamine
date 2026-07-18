@@ -53,7 +53,7 @@ export const FormulaCard: React.FC<FormulaCardProps> = ({ formula }) => {
         <div className="flex align-bottom">
           <span className="text-zinc-500 dark:text-zinc-300 font-bold">FORMULATED: </span>
           <span className="ps-2 text-zinc-500">{formula.createdAt}</span></div>
-        <div className="flex flex-row items-center gap-2 font-haas text-[10px] text-red transition-colors">
+        <div className="flex flex-row items-center gap-2 font-haas text-[10px] text-red transition-colors pe-4">
             READ_FULL
             <MoveRight size={12} className="icon-altalenante" />
         </div>

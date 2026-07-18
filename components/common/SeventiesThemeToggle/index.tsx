@@ -43,12 +43,12 @@ export const SeventiesThemeToggle: React.FC<SeventiesThemeToggleProps> = ({ size
   const isMini = variant === 'mini';
 
   // Calculate padding based on size (roughly 12% of the container)
-  const rawPadding = typeof size === 'number' ? size * 0.12 : null;
-  const paddingStyle = rawPadding !== null ? `${rawPadding}px` : '12%';
+  const rawPadding = typeof size === 'number' ? size * 0.08 : null;
+  const paddingStyle = rawPadding !== null ? `${rawPadding}px` : '8%';
 
   if (!mounted) {
     return (
-      <div className="flex items-center p-2 gap-3 border border-zinc-200/50 dark:border-zinc-700/50 rounded-2xl bg-white/50 dark:bg-zinc-800/30">
+      <div className="flex items-center p-2 gap-3 border border-black/5 dark:border-white/5 rounded-md bg-bluegray-200 dark:bg-redgray-800">
         <div 
           style={{ 
             width: typeof size === 'number' ? `${size}px` : size, 
@@ -70,7 +70,7 @@ export const SeventiesThemeToggle: React.FC<SeventiesThemeToggleProps> = ({ size
     <div className="relative w-full h-full flex items-center justify-center">
       {/* 1. VARIANT FULL (Expanded Sidebar) */}
       <div 
-        className="w-full flex items-center gap-3 p-2 border border-zinc-200/50 dark:border-zinc-700/50 rounded-2xl bg-white/50 dark:bg-zinc-800/30 shadow-xs"
+        className="w-full flex items-center p-2 gap-3 border border-black/5 dark:border-white/5 rounded-md bg-bluegray-200 dark:bg-redgray-800"
         style={{
           opacity: isMini ? 0 : 1,
           transform: isMini ? "translateY(15px) scale(0.95)" : "translateY(0) scale(1)",
@@ -87,7 +87,7 @@ export const SeventiesThemeToggle: React.FC<SeventiesThemeToggleProps> = ({ size
             height: typeof size === 'number' ? `${size}px` : size, 
             padding: paddingStyle 
           }}
-          className="shrink-0 bg-[#222] border-2 border-[#151515] rounded-xl flex items-center justify-center select-none cursor-pointer active:scale-95 transition-transform duration-100 shadow-[inset_0_4px_4px_rgba(0,0,0,0.6),0_8px_16px_-4px_rgba(0,0,0,0.7)]"
+          className="shrink-0 bg-[#222] border-2 border-[#151515] rounded-sm flex items-center justify-center select-none cursor-pointer active:scale-95 transition-transform duration-100 shadow-[inset_0_4px_4px_rgba(0,0,0,0.6),0_8px_16px_-4px_rgba(0,0,0,0.7)]"
           title="Toggle Lab State"
         >
           {/* CORPO DELLA GEMMA PRISMATICA ANNI '70 */}
@@ -113,10 +113,10 @@ export const SeventiesThemeToggle: React.FC<SeventiesThemeToggleProps> = ({ size
         
         {/* ETICHETTA DI TESTO IN STILE APPARECCHIATURA TECNICA */}
         <div className="flex-1 flex flex-col justify-center text-left font-haas select-none">
-          <span className="text-[9px] font-black uppercase tracking-widest text-zinc-400 dark:text-zinc-500 leading-tight mb-0.5 whitespace-nowrap">
+          <span className="text-[9px] font-black uppercase tracking-widest text-blue-900 dark:text-red-200 leading-tight mb-0.5 whitespace-nowrap">
             Typamine&reg;
           </span>
-          <span className="text-[11px] font-bold uppercase tracking-wider transition-colors duration-300 text-zinc-600 dark:text-zinc-400 group-hover:text-zinc-800 dark:group-hover:text-zinc-300 whitespace-nowrap">
+          <span className="text-[11px] font-bold uppercase tracking-wider transition-colors duration-300 text-bluegray-600 dark:text-redgray-200 group-hover:text-zinc-800 dark:group-hover:text-zinc-300 whitespace-nowrap">
             {isDark ? "Dark mode" : "Light mode"}
           </span>
         </div>

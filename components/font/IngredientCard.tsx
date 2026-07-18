@@ -3,7 +3,7 @@ import Link from "next/link";
 import { MoveRight } from "lucide-react";
 import { Ingredient } from "@/types";
 import { getDeterministicFormula } from "@/lib/utils";
-
+import MinimalLink from "@/components/common/MinimalLink";
 interface FontCardProps {
     font: Ingredient;
     idx: number;
@@ -110,7 +110,7 @@ export const IngredientCard: React.FC<FontCardProps> = ({ font, idx }) => {
 
             <div className="pt-2 pe-2 flex justify-between items-center border-t border-zinc-100 dark:border-zinc-900">
                 <span className="font-haas text-[10px] text-zinc-500 dark:text-zinc-400">OUR SCORE: <span className="text-[#00cece] font-bold">{font.rating}</span></span>
-                <span className="flex flex-row items-center gap-2 font-haas text-[10px] text-red hover:underline transition-colors">
+                <span className="flex flex-row items-center gap-2 font-haas text-[10px] text-red hover:underline transition-colors pe-4">
                     TEST_NOW
                     <MoveRight size={12} className="icon-altalenante" />
                 </span>

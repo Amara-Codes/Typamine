@@ -1,7 +1,7 @@
 import { Session } from "next-auth";
 
 export type Action = 'create' | 'read' | 'update' | 'delete' | 'publish' | 'bulk_upload' | 'download';
-export type Resource = 'blog' | 'therapist' | 'session' | 'package' | 'user' | 'role' | 'faq' | 'category' | 'job_offer' | 'distributor';
+export type Resource = 'blog' | 'therapist' | 'session' | 'package' | 'user' | 'role' | 'faq' | 'category' | 'job_offer' | 'distributor' | 'font';
 
 export function hasPermission(session: Session | null, resource: Resource, action: Action): boolean {
   if (!session?.user) return false;

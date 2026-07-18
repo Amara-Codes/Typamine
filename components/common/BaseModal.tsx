@@ -59,14 +59,14 @@ export default function BaseModal({
     <div className="fixed inset-0 z-9999 flex items-center justify-center p-4 sm:p-6">
       {/* Backdrop */}
       <div 
-        className="absolute inset-0 bg-zinc-900/40 dark:bg-black/60 backdrop-blur-sm transition-opacity duration-300"
+        className="absolute inset-0 bg-ocragray-900/50 dark:bg-ocragray-100/50 backdrop-blur-sm transition-opacity duration-300"
         onClick={onClose}
       />
       
       {/* Modal Container */}
       <div 
         className={cn(
-          "relative w-full bg-white/80 dark:bg-zinc-950/90 border border-white/20 dark:border-white/10 rounded-2xl shadow-2xl backdrop-blur-2xl flex flex-col overflow-hidden animate-in fade-in zoom-in-95 duration-300",
+          "relative w-full bg-ocragray-100/50 dark:bg-ocragray-900/50 border border-black/20 dark:border-white/20 rounded-2xl shadow-2xl backdrop-blur-2xl flex flex-col overflow-hidden animate-in fade-in zoom-in-95 duration-300",
           sizeClasses[size],
           className
         )}
@@ -81,10 +81,10 @@ export default function BaseModal({
 // Structured Sub-components
 BaseModal.Header = function BaseModalHeader({ children, onClose, className }: { children: ReactNode, onClose?: () => void, className?: string }) {
   return (
-    <div className={cn("flex items-center justify-between p-6 sm:p-8 border-b border-zinc-900/5 dark:border-white/5", className)}>
+    <div className={cn("flex items-center justify-between bg-ocragray-100/50 dark:bg-ocragray-800/50 p-6 sm:p-8 border-b border-black/50 dark:border-white/50", className)}>
       <div className="flex-1">
         {typeof children === "string" ? (
-          <h3 className="text-2xl font-star text-zinc-900 dark:text-white">
+          <h3 className="text-2xl font-star text-black dark:text-white">
             {children}
           </h3>
         ) : (
@@ -94,7 +94,7 @@ BaseModal.Header = function BaseModalHeader({ children, onClose, className }: { 
       {onClose && (
         <button
           onClick={onClose}
-          className="p-2 text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white hover:bg-zinc-900/5 dark:hover:bg-white/10 rounded-lg transition-all"
+          className="p-2 text-black/50 dark:text-white/50 hover:text-black dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/10 rounded-lg transition-all"
         >
           <X className="h-5 w-5" />
         </button>
@@ -113,7 +113,7 @@ BaseModal.Body = function BaseModalBody({ children, className }: { children: Rea
 
 BaseModal.Footer = function BaseModalFooter({ children, className }: { children: ReactNode, className?: string }) {
   return (
-    <div className={cn("p-6 sm:p-8 border-t border-zinc-900/5 dark:border-white/5 bg-zinc-900/5 dark:bg-white/5", className)}>
+    <div className={cn("p-6 sm:p-8 border-t  bg-ocragray-100/50 dark:bg-ocragray-800/50 border-black/50 dark:border-white/50", className)}>
       {children}
     </div>
   );

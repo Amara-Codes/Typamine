@@ -27,13 +27,12 @@ const LATEST_PRESCRIPTIONS: Prescription[] = RAW_PAIRINGS.slice(0, 4).map((raw) 
 
 export default function Home() {
   const { theme } = useThemeStore();
-
+const dynamicHeroBgImageUrl = theme === "dark" ? "/images/home/hero-bg-dark.png" : "/images/home/hero-bg-light.png";
   return (
     <div className="flex flex-col">
       
       {/* 1. HERO SECTION (Leveraging Common Hero Component) */}
       <Hero
-        badgeText="PROJECT: TYPAMINE_INIT_SUCCESSFUL // CORE_FONTS_LOADED"
         title={
           <>
             Your new <br /><span className="text-red">"Looking for a Font"</span><br /> Therapy
@@ -45,9 +44,14 @@ export default function Home() {
         ctaHref="/ingredients"
         secondaryCtaText="[OUR SUGGESTIONS]"
         secondaryCtaHref="/prescriptions"
-        bgImage="/images/home/hero-bg.png"
+        bgImage={dynamicHeroBgImageUrl}
         fullWidth
       />
+
+      <div className="w-full h-12 bg-linear-to-t from-transparent via-bluegray-100/10 to-bluegray-100/40 dark:from-transparent dark:via-redgray-900/10 dark:to-redgray-900/40"></div>
+
+
+      
 
       <div className="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-12">
 
@@ -60,7 +64,7 @@ export default function Home() {
             <span className="text-[#ff3131] font-haas text-sm">[+]</span>
             <h2 className="font-haas text-sm font-bold tracking-wider">LAST IMPORTED INGREDIENTS // Fonts</h2>
           </div>
-            <MinimalLink href="/ingredients" label="EXPLORE_ALL_INGREDIENTS" />
+            <MinimalLink href="/ingredients" label="ALL FONTS" />
         </div>
 
         {/* Font tiles catalog grid */}
@@ -76,7 +80,7 @@ export default function Home() {
         <div className="flex justify-between items-end border-b border-zinc-200 dark:border-zinc-800 pb-2">
           <div className="flex items-center space-x-2">
             <span className="text-zinc-400 dark:text-zinc-500 font-haas text-sm">[x]</span>
-            <h2 className="font-haas text-sm font-bold tracking-wider">OUR PRESCRIPTIONS // Font Pairing Examples</h2>
+            <h2 className="font-haas text-sm font-bold tracking-wider">POPULAR PRESCRIPTIONS // Font Pairing Examples</h2>
           </div>
           <MinimalLink href="/prescriptions" label="OUR PAIRING SELECTION" />
         </div>
@@ -93,9 +97,9 @@ export default function Home() {
         <div className="flex justify-between items-end border-b border-zinc-200 dark:border-zinc-800 pb-2">
           <div className="flex items-center space-x-2">
             <span className="text-[#00cece] font-haas text-sm">[o]</span>
-            <h2 className="font-haas text-sm font-bold tracking-wider">ACTIVE FORMULAS // Collections</h2>
+            <h2 className="font-haas text-sm font-bold tracking-wider">RECENTLY UPDATED FORMULAS // Collections</h2>
           </div>
-          <MinimalLink href="/formulas" label="VIEW_ALL_FORMULAS" />
+          <MinimalLink href="/formulas" label="BROWSE COLLECTIONS" />
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -119,11 +123,12 @@ export default function Home() {
         }}
       >
         <Link href="/pills" className="inline-block">
-          <Button variant="themeResponsive" glow>READ_THE_BLOG</Button>
+          <Button variant="secondary">READ_THE_BLOG</Button>
         </Link>
       </Cta>
       
       </div>
+
     </div>
   );
 }

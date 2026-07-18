@@ -122,6 +122,7 @@ export const authOptions: NextAuthOptions = {
             id: user.id,
             name: user.name,
             email: user.email,
+            image: user.imageUrl || (user.image ? `data:image/jpeg;base64,${Buffer.from(user.image as any).toString('base64')}` : null),
             roles: user.roles.map((r: any) => r.name),
             permissions: Array.from(new Set(permissions)),
           };
@@ -138,6 +139,7 @@ export const authOptions: NextAuthOptions = {
         token.id = user.id;
         token.roles = user.roles;
         token.permissions = user.permissions;
+        token.picture = (user as any).image;
       }
       return token;
     },
@@ -146,6 +148,7 @@ export const authOptions: NextAuthOptions = {
         session.user.id = token.id;
         session.user.roles = token.roles || [];
         session.user.permissions = token.permissions || [];
+        session.user.image = token.picture || null;
       }
       return session;
     },

@@ -2,6 +2,97 @@
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 
+/* Sostituisce l'array "content" di tailwind.config.js: dice a Tailwind v4 dove cercare
+   le classi utilizzate. Aggiusta i percorsi se globals.css non è in app/. */
+@source "../app/**/*.{js,ts,jsx,tsx,mdx}";
+@source "../components/**/*.{js,ts,jsx,tsx,mdx}";
+
+/* ============================================================
+   PALETTE DI TEMA — prima viveva in tailwind.config.js.
+   Con la sintassi CSS-first di Tailwind v4, un @theme statico
+   è il modo nativo di dichiararla: niente più @config, niente
+   più rischio che il file JS venga ignorato in silenzio.
+   Ogni voce qui genera automaticamente le utility Tailwind
+   corrispondenti (--color-red-500 -> bg-red-500, text-red-500,
+   border-red-500, ring-red-500, ecc.).
+   ============================================================ */
+@theme {
+  --color-white: #F5F6F9;
+  --color-black: #0C0B0A;
+
+  /* Chemical Red — brand primario */
+  --color-red-100: #ffbaba;
+  --color-red-200: #ff9595;
+  --color-red-300: #ff6f6f;
+  --color-red-400: #ff4a4a;
+  --color-red-500: #ff3131;
+  --color-red-600: #d92a2a;
+  --color-red-700: #b32323;
+  --color-red-800: #8c1b1b;
+  --color-red-900: #661414;
+  --color-red-950: #400d0d;
+
+  /* Chemical Cyan — brand secondario */
+  --color-blue-100: #b3f3f3;
+  --color-blue-200: #80eeee;
+  --color-blue-300: #4de8e8;
+  --color-blue-400: #1ae3e3;
+  --color-blue-500: #00cece;
+  --color-blue-600: #00afaf;
+  --color-blue-700: #009090;
+  --color-blue-800: #007272;
+  --color-blue-900: #005454;
+  --color-blue-950: #003636;
+
+  /* Neutro caldo (uso generico: outline, ghost, muted, accent) */
+  --color-stone-100: #f5f4ef;
+  --color-stone-200: #e9e7df;
+  --color-stone-300: #dcd9cf;
+  --color-stone-400: #c7c2b6;
+  --color-stone-500: #ada799;
+  --color-stone-600: #918b7d;
+  --color-stone-700: #756f63;
+  --color-stone-800: #5e584d;
+  --color-stone-900: #47423a;
+  --color-stone-950: #2e2b26;
+
+  /* Grigi custom "mood" — superfici scure abbinate ai vari accenti */
+  --color-ocragray-100: #e6e2de;
+  --color-ocragray-200: #ccc6bf;
+  --color-ocragray-300: #b3a99f;
+  --color-ocragray-400: #998b7f;
+  --color-ocragray-500: #806e5e;
+  --color-ocragray-600: #504438;
+  --color-ocragray-700: #40362d;
+  --color-ocragray-800: #302922;
+  --color-ocragray-900: #201c17;
+  --color-ocragray-950: #100e0b;
+
+  --color-bluegray-100: #d1d2d6;
+  --color-bluegray-200: #a3a5ad;
+  --color-bluegray-300: #757884;
+  --color-bluegray-400: #484c5b;
+  --color-bluegray-500: #383a43;
+  --color-bluegray-600: #2d2f37;
+  --color-bluegray-700: #23242a;
+  --color-bluegray-800: #1b1c21;
+  --color-bluegray-900: #131417;
+  --color-bluegray-950: #0a0a0c;
+
+  --color-redgray-100: #f0eceb;
+  --color-redgray-200: #dcd2d0;
+  --color-redgray-300: #c7b8b4;
+  --color-redgray-400: #ae9590;
+  --color-redgray-500: #94726c;
+  --color-redgray-600: #7a5c57;
+  --color-redgray-700: #604743;
+  --color-redgray-800: #463532;
+  --color-redgray-900: #2d2220;
+  --color-redgray-950: #171211;
+
+  --color-green: #00d27a;
+}
+
 @font-face {
   font-family: 'Alte Haas Grotesk';
   src: url('/fonts/alte_haas_grotesk/AlteHaasGroteskRegular.ttf') format('truetype');
@@ -42,6 +133,54 @@
   font-display: swap;
 }
 
+@font-face {
+  font-family: 'Alien Encouters';
+  src: url('/fonts/alien_encounters/Alien-Encounters-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Dimitri';
+  src: url('/fonts/dimitri/DIMITRI_.TTF') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Negative Sys';
+  src: url('/fonts/negative_system/Negative System.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Positive Sys';
+  src: url('/fonts/positive_system/Positive System.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Typo Pixel';
+  src: url('/fonts/typo_pixel/typo_pixel.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+
+
+
+
+
+
+
+
 @custom-variant dark (&:where(.dark, .dark *));
 
 :root {
@@ -53,98 +192,132 @@
   --font-haas: 'Alte Haas Grotesk';
   --font-jakarta: 'Plus Jakarta Sans';
   --font-star: 'Star Avenue';
+  --font-alien: 'Alien Encouters';
+  --font-dimitri: 'Dimitri';
+  --font-negativesys: 'Negative Sys';
+  --font-positivesys: 'Positive Sys';
+  --font-typoxel: 'Typo Pixel';
 
   --color-red: #ff3131;
   --color-blue: #00cece;
   --color-green: #00d27a;
 
   /* Redefining Tailwind's core custom properties at root */
-  --color-white: #f9f9fb;
-  --color-black: #030303;
+  --color-white: #F5F6F9;
+  --color-black: #0C0B0A;
 
   /* Glow shadows */
   --glow-red-shadow: 0 0 15px rgba(255, 49, 49, 0.25);
   --glow-cyan-shadow: 0 0 15px rgba(0, 206, 206, 0.25);
   --text-glow-red-shadow: 0 0 6px rgba(255, 49, 49, 0.4);
   --text-glow-cyan-shadow: 0 0 6px rgba(0, 206, 206, 0.4);
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
+  --background: var(--color-white);
+  --foreground: var(--color-black);
+  --card: var(--color-white);
+  --card-foreground: var(--color-black);
+  --popover: var(--color-white);
+  --popover-foreground: var(--color-black);
+
+  /* Primary = Chemical Red. Foreground nero: su #ff3131 il nero rende ~5.7:1 di contrasto
+     contro il ~3.7:1 del bianco (il bianco fallisce il minimo AA 4.5:1 per testo normale). */
+  --primary: #ff3131;
+  --primary-foreground: var(--color-black);
+
+  /* Secondary = Chemical Cyan. Stesso ragionamento: sul cyan-500 il bianco crolla a ~2:1,
+     il nero sale a ~10.7:1. */
+  --secondary: #00cece;
+  --secondary-foreground: var(--color-black);
+
+  --success: #00d27a;
+  --success-foreground: var(--color-black);
+
+  /* Destructive: nella palette non esiste un rosso "altro" dal brand, quindi differenzio
+     tramite la shade (red-700, più cupo) per non farlo coincidere visivamente col primary. */
+  --destructive: #b32323;
+  --destructive-foreground: var(--color-white);
+
+  --muted: #f5f4ef;         /* stone-100 */
+  --muted-foreground: #756f63; /* stone-700 */
+  --accent: #e9e7df;        /* stone-200 */
+  --accent-foreground: #47423a; /* stone-900 */
+  --border: #dcd9cf;        /* stone-300 */
+  --input: #dcd9cf;
+  --ring: #ff3131;
+
+  --chart-1: #ff3131; /* red-500 */
+  --chart-2: #00cece; /* blue-500 */
+  --chart-3: #00d27a; /* green */
+  --chart-4: #ada799; /* stone-500 */
+  --chart-5: #806e5e; /* ocragray-500 */
   --radius: 0.625rem;
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
+
+  --sidebar: var(--color-white);
+  --sidebar-foreground: var(--color-black);
+  --sidebar-primary: #ff3131;
+  --sidebar-primary-foreground: var(--color-black);
+  --sidebar-accent: #e9e7df; /* stone-200 */
+  --sidebar-accent-foreground: #47423a; /* stone-900 */
+  --sidebar-border: #dcd9cf; /* stone-300 */
+  --sidebar-ring: #ff3131;
 }
 
 .dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
+  --background: var(--color-black);
+  --foreground: var(--color-white);
   --color-dark-gray: #121214;
   --color-border-gray: #27272a;
 
   /* Keep overrides in dark mode too */
-  --color-white: #f9f9fb;
-  --color-black: #030303;
+  --color-white: #F5F6F9;
+  --color-black: #0C0B0A;
 
   /* Glow shadows */
   --glow-red-shadow: 0 0 15px rgba(255, 49, 49, 0.35);
   --glow-cyan-shadow: 0 0 15px rgba(0, 206, 206, 0.35);
   --text-glow-red-shadow: 0 0 8px rgba(255, 49, 49, 0.6);
   --text-glow-cyan-shadow: 0 0 8px rgba(0, 206, 206, 0.6);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
+
+  --card: #201c17;        /* ocragray-900, superficie calda scura */
+  --card-foreground: var(--color-white);
+  --popover: #201c17;
+  --popover-foreground: var(--color-white);
+
+  /* Stesso rosso/cyan del light mode: l'hue non cambia mai tra i due temi,
+     cambia solo cosa gli sta intorno. */
+  --primary: #ff3131;
+  --primary-foreground: var(--color-black);
+  --secondary: #00cece;
+  --secondary-foreground: var(--color-black);
+  --success: #00d27a;
+  --success-foreground: var(--color-black);
+
+  /* red-600: leggermente più acceso del light mode per restare leggibile su fondo nero,
+     testo bianco a ~4.9:1 (AA). */
+  --destructive: #d92a2a;
+  --destructive-foreground: var(--color-white);
+
+  --muted: #47423a;          /* stone-900 */
+  --muted-foreground: #c7c2b6; /* stone-400 */
+  --accent: #2e2b26;         /* stone-950 */
+  --accent-foreground: #dcd9cf; /* stone-300 */
   --border: oklch(1 0 0 / 10%);
   --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
+  --ring: #ff4a4a; /* red-400, più visibile su fondo scuro */
+
+  --chart-1: #ff4a4a; /* red-400 */
+  --chart-2: #4de8e8; /* blue-300 */
+  --chart-3: #00d27a; /* green */
+  --chart-4: #c7c2b6; /* stone-400 */
+  --chart-5: #b3a99f; /* ocragray-300 */
+
+  --sidebar: #131417;        /* bluegray-900 */
+  --sidebar-foreground: var(--color-white);
+  --sidebar-primary: #ff3131;
+  --sidebar-primary-foreground: var(--color-black);
+  --sidebar-accent: #23242a; /* bluegray-700 */
+  --sidebar-accent-foreground: var(--color-white);
   --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
+  --sidebar-ring: #ff4a4a;
 }
 
 @theme inline {
@@ -167,6 +340,11 @@
   --font-haas: var(--font-haas), sans-serif;
   --font-jakarta: var(--font-jakarta), sans-serif;
   --font-star: var(--font-star), sans-serif;
+  --font-alien: var(--font-alien), sans-serif;
+  --font-dimitri: var(--font-dimitri), sans-serif;
+  --font-negativesys: var(--font-negativesys), sans-serif;
+  --font-positivesys: var(--font-positivesys), sans-serif;
+  --font-typoxel: var(--font-typoxel), sans-serif;
 
   /* Standard system mappings */
   --font-sans: var(--font-sans);
@@ -179,87 +357,71 @@
   --font-heading: var(--font-sans);
 
   --color-sidebar-ring: var(--sidebar-ring);
-
   --color-sidebar-border: var(--sidebar-border);
-
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-
   --color-sidebar-accent: var(--sidebar-accent);
-
   --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-
   --color-sidebar-primary: var(--sidebar-primary);
-
   --color-sidebar-foreground: var(--sidebar-foreground);
-
   --color-sidebar: var(--sidebar);
-
   --color-chart-5: var(--chart-5);
-
   --color-chart-4: var(--chart-4);
-
   --color-chart-3: var(--chart-3);
-
   --color-chart-2: var(--chart-2);
-
   --color-chart-1: var(--chart-1);
-
   --color-ring: var(--ring);
-
   --color-input: var(--input);
-
   --color-border: var(--border);
-
   --color-destructive: var(--destructive);
-
   --color-accent-foreground: var(--accent-foreground);
-
   --color-accent: var(--accent);
-
   --color-muted-foreground: var(--muted-foreground);
-
   --color-muted: var(--muted);
-
   --color-secondary-foreground: var(--secondary-foreground);
-
   --color-primary-foreground: var(--primary-foreground);
-
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
   --color-popover-foreground: var(--popover-foreground);
-
   --color-popover: var(--popover);
-
   --color-card-foreground: var(--card-foreground);
-
   --color-card: var(--card);
-
   --radius-sm: calc(var(--radius) * 0.6);
-
   --radius-md: calc(var(--radius) * 0.8);
-
   --radius-lg: var(--radius);
-
   --radius-xl: calc(var(--radius) * 1.4);
-
   --radius-2xl: calc(var(--radius) * 1.8);
-
   --radius-3xl: calc(var(--radius) * 2.2);
-
   --radius-4xl: calc(var(--radius) * 2.6);
 }
 
-@keyframes bounce-x {
+@keyframes bouncy-x {
   0%, 100% {
     transform: translateX(0);
     animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
   }
   50% {
-    transform: translateX(5px);
+    transform: translateX(18px);
+    animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+  }
+}
+
+@keyframes bouncy-x-reverse {
+  0%, 100% {
+    transform: translateX(0);
+    animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
+  }
+  50% {
+    transform: translateX(-18px);
     animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
   }
 }
 
 .group:hover .icon-altalenante {
-  animation: bounce-x 1s infinite;
+  animation: bouncy-x 1.2s infinite;
+}
+
+.group:hover .icon-altalenante-reverse {
+  animation: bouncy-x-reverse 1.2s infinite;
 }
 
 /* Global Reset & Body Styling */
@@ -387,12 +549,13 @@ input[type="range"]::-webkit-slider-thumb:hover {
 
 @layer base {
   * {
-    @apply border-border outline-ring/50;
+    border-color: var(--border);
   }
   body {
-    @apply bg-background text-foreground;
+    background-color: var(--background);
+    color: var(--foreground);
   }
   html {
-    @apply font-sans;
+    font-family: var(--font-sans);
   }
 }

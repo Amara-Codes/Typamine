@@ -53,7 +53,7 @@ export const PrescriptionCard: React.FC<PrescriptionCardProps> = ({ prescription
           )}
           <div className="flex items-center justify-between border-t border-zinc-200/50 dark:border-zinc-800/50 pt-3">
             <span className="font-haas text-[9px] text-zinc-700 dark:text-zinc-300 uppercase">Typamine Studio</span>
-            <div className="flex flex-row items-center gap-2 font-haas text-[10px] text-red transition-colors">
+            <div className="flex flex-row items-center gap-2 font-haas text-[10px] text-red transition-colors pe-4">
               VIEW_PAIRING
               <MoveRight size={12} className="icon-altalenante" />
             </div>

@@ -20,6 +20,8 @@ export default function FormulasPage() {
   const { theme } = useThemeStore();
 
   return (
+
+
     <div className="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-8 space-y-8">
       {/* Route Header */}
       <PageHeading
@@ -41,7 +43,7 @@ export default function FormulasPage() {
       </div>
 
       <Cta
-        title={<>Looking for <span className="text-blue dark:text-red font-star px-2">Inspirations?</span></>}
+        title={<>Looking for <span className="text-blue-600 dark:text-red font-star px-2">Inspirations?</span></>}
         subtitle="Check out our Prescriptions for expert typography pairings, or dive into our Vintage Archive to discover great examples from the past."
         align="right"
         bgImage="/images/formulas/cta-bg.png"
@@ -49,12 +51,13 @@ export default function FormulasPage() {
 
       >
         <Link href="/prescriptions" className="inline-block">
-          <Button variant="themeResponsive" glow>VIEW_PRESCRIPTIONS</Button>
+          <Button variant="secondary" >VIEW_PRESCRIPTIONS</Button>
         </Link>
         <Link href="/prescriptions/archive" className="inline-block">
-          <Button variant="outline" glow>THE_ARCHIVE</Button>
+          <Button variant="primary">THE_ARCHIVE</Button>
         </Link>
       </Cta>
     </div>
+
   );
 }

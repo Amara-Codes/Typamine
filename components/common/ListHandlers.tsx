@@ -1,0 +1,233 @@
+"use client";
+
+import React from "react";
+import { useRouter, usePathname, useSearchParams } from "next/navigation";
+import { CheckCircle2, Circle, ChevronLeft, ChevronRight } from "lucide-react";
+import { Button } from "@/components/common/Button";
+import { Select } from "@/components/common/Select";
+import { Input } from "@/components/common/Input";
+
+export interface ListHeaderHandlersProps {
+  isSelectionMode: boolean;
+  onToggleSelectionMode: () => void;
+  selectedCount: number;
+  canMassAction?: boolean;
+  massActions?: {
+    label: string;
+    variant?: "primary" | "secondary" | "outline" | "ghost";
+    onClick: () => void;
+  }[];
+
+  // Sorting options
+  sortOptions?: { value: string; label: string }[];
+
+  // Search option
+  searchPlaceholder?: string;
+
+  buttonLabel?: string; // e.g. "Select Fonts"
+}
+
+export function ListHeaderHandlers({
+  isSelectionMode,
+  onToggleSelectionMode,
+  selectedCount,
+  canMassAction = true,
+  massActions = [],
+  sortOptions = [],
+  searchPlaceholder = "Search...",
+  buttonLabel = "Select Items",
+}: ListHeaderHandlersProps) {
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
+  // Helper to update search params in the URL
+  const updateQuery = (updates: Record<string, string | null>) => {
+    const params = new URLSearchParams(searchParams.toString());
+    Object.entries(updates).forEach(([key, val]) => {
+      if (val === null) {
+        params.delete(key);
+      } else {
+        params.set(key, val);
+      }
+    });
+    // Reset to page 1 on filter/sort/search changes
+    if (!updates.page && updates.page !== null) {
+      params.set("page", "1");
+    }
+    router.push(`${pathname}?${params.toString()}`);
+  };
+
+  const currentSort = searchParams.get("sort") || sortOptions[0]?.value || "";
+  const currentPerPage = searchParams.get("perPage") || "10";
+  const currentSearch = searchParams.get("search") || "";
+
+  return (
+    <div className="flex flex-col xl:flex-row xl:items-center justify-between gap-4 bg-zinc-100/40 dark:bg-zinc-900/40 border border-zinc-900/10 dark:border-white/10 p-6 rounded-2xl backdrop-blur-xl testo">
+
+      {/* Left: Search input */}
+      <div className="w-full xl:max-w-xs 2xl:max-w-md shrink-0">
+        <Input
+          id="list-search"
+          placeholder={searchPlaceholder}
+          value={currentSearch}
+          onChange={(val) => updateQuery({ search: val || null })}
+        />
+      </div>
+
+      {/* Right: Actions, Sort, Pagination, and Toggle */}
+      <div className="flex flex-wrap items-center gap-4 xl:justify-end w-full">
+
+        {/* Mass Actions (Visibili solo in selection mode) */}
+        {isSelectionMode ? (
+          <div className="flex items-center gap-2">
+            {massActions.map((action, idx) => (
+              <Button
+                key={idx}
+                onClick={action.onClick}
+                disabled={selectedCount === 0}
+                variant={action.variant || "secondary"}
+                size="md"
+                roundness="md"
+              >
+                {action.label}
+              </Button>
+            ))}
+          </div>
+        ) : null}
+
+        {/* Sort by (Nascosto in selection mode) */}
+        {!isSelectionMode && sortOptions.length > 0 && (
+          <div className="flex items-center gap-2">
+            <span className="text-[10px] font-bold uppercase tracking-widest text-zinc-500 dark:text-zinc-400 whitespace-nowrap">
+              Sort by
+            </span>
+            <Select
+              options={sortOptions}
+              value={currentSort}
+              onChange={(val) => updateQuery({ sort: val })}
+              className="min-w-[140px]"
+            />
+          </div>
+        )}
+
+        {/* Show per page (Nascosto in selection mode) */}
+        {!isSelectionMode && (
+          <div className="flex items-center gap-2">
+            <span className="text-[10px] font-bold uppercase tracking-widest text-zinc-500 dark:text-zinc-400 whitespace-nowrap">
+              Show
+            </span>
+            <Select
+              options={[
+                { label: "10", value: "10" },
+                { label: "20", value: "20" },
+                { label: "50", value: "50" },
+              ]}
+              value={currentPerPage}
+              onChange={(val) => updateQuery({ perPage: val })}
+              className="min-w-[80px]"
+            />
+          </div>
+        )}
+
+        {/* Divisore verticale opzionale per separare le select dal bottone di azione */}
+        {canMassAction && (
+          <div className="hidden sm:block w-px h-8 bg-zinc-900/10 dark:bg-white/10 mx-1" />
+        )}
+
+        {/* Selection toggle or Cancel */}
+        {canMassAction && (
+          <div className="flex items-center gap-3 shrink-0">
+            {!isSelectionMode ? (
+              <Button
+                onClick={onToggleSelectionMode}
+                variant="outline"
+                size="md"
+                roundness="md"
+              >
+                {buttonLabel}
+              </Button>
+            ) : (
+              <div className="flex items-center gap-4">
+                <span className="text-blue dark:text-red  text-sm font-bold whitespace-nowrap">
+                  {selectedCount} Selected
+                </span>
+                <Button
+                  onClick={onToggleSelectionMode}
+                  variant="outline"
+                  size="md"
+                  roundness="md"
+                >
+                  Cancel
+                </Button>
+              </div>
+            )}
+          </div>
+        )}
+      </div>
+
+    </div>
+  );
+}
+
+export interface ListPaginationProps {
+  totalCount: number;
+  entityNamePlural?: string;
+}
+
+export function ListPagination({
+  totalCount,
+  entityNamePlural = "Items",
+}: ListPaginationProps) {
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
+  const page = parseInt(searchParams.get("page") || "1", 10);
+  const perPage = parseInt(searchParams.get("perPage") || "10", 10);
+  const totalPages = Math.ceil(totalCount / perPage);
+
+  const handlePageChange = (newPage: number) => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("page", newPage.toString());
+    router.push(`${pathname}?${params.toString()}`);
+  };
+
+  if (totalCount === 0) return null;
+
+  return (
+    <div className="flex flex-col sm:flex-row items-center justify-between px-8 py-5 border-t  bg-bluegray-200/50 dark:bg-redgray-900/50  border-black/5 dark:border-white/5 gap-4">
+      <div className="text-xs text-zinc-500 dark:text-zinc-400">
+        Showing{" "}
+        <span className="font-bold text-zinc-900 dark:text-white">
+          {(page - 1) * perPage + 1}
+        </span>{" "}
+        to{" "}
+        <span className="font-bold text-zinc-900 dark:text-white">
+          {Math.min(page * perPage, totalCount)}
+        </span>{" "}
+        of <span className="font-bold text-zinc-900 dark:text-white">{totalCount}</span>{" "}
+        {entityNamePlural}
+      </div>
+      <div className="flex items-center gap-2">
+        <button
+          onClick={() => handlePageChange(page - 1)}
+          disabled={page <= 1}
+          className="p-2 rounded-lg bg-white/50 dark:bg-zinc-900/50 border border-zinc-900/10 dark:border-white/10 text-zinc-800 dark:text-zinc-200 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-white dark:hover:bg-zinc-900 transition-colors"
+        >
+          <ChevronLeft className="h-4 w-4" />
+        </button>
+        <span className="text-sm font-bold text-zinc-800 dark:text-zinc-200 px-2">
+          Page {page} of {totalPages}
+        </span>
+        <button
+          onClick={() => handlePageChange(page + 1)}
+          disabled={page >= totalPages}
+          className="p-2 rounded-lg bg-white/50 dark:bg-zinc-900/50 border border-zinc-900/10 dark:border-white/10 text-zinc-800 dark:text-zinc-200 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-white dark:hover:bg-zinc-900 transition-colors"
+        >
+          <ChevronRight className="h-4 w-4" />
+        </button>
+      </div>
+    </div>
+  );
+}

@@ -10,6 +10,7 @@ import { Select } from "@/components/common/Select";
 import BaseModal from "../../common/BaseModal";
 import { AlertCircle } from "lucide-react";
 import { Input } from "@/components/common/Input";
+import SavingOverlay from "@/components/admin/common/SavingOverlay";
 
 export default function UserForm({ user, roles }: { user?: any, roles: any[] }) {
   const saveAction = (prevState: any, formData: FormData) => saveUser(prevState, formData, user?.id);
@@ -146,8 +147,8 @@ export default function UserForm({ user, roles }: { user?: any, roles: any[] }) 
               </div>
             </div>
 
-            <div className="space-y-1.5 font-haas text-xs w-full">
-              <label className="text-[10px] text-zinc-900 dark:text-white uppercase tracking-wider block mb-1">Biography</label>
+            <div className="">
+              <label className="text-[10px] font-jakarta text-zinc-900 dark:text-white uppercase tracking-wider block mb-1">Biography</label>
               <textarea
                 id="biography"
                 name="biography"
@@ -273,6 +274,7 @@ export default function UserForm({ user, roles }: { user?: any, roles: any[] }) 
           </button>
         </BaseModal.Footer>
       </BaseModal>
+      <SavingOverlay message="Updating profile..." />
     </form>
   );
 }

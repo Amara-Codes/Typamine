@@ -46,7 +46,7 @@ export default function PrescriptionsPage() {
 
       >
         <Link href="/prescriptions/archive" className="inline-block">
-          <Button variant="themeResponsive" glow>Explore the Archive</Button>
+          <Button variant="primary">Explore the Archive</Button>
         </Link>
       </Cta>
       <p className="font-star text-4xl"> infondo una cta - autotherapy - crea da soloo la tua bl bla dove posto ad una pagina dove uno fga gli import e prova< br /> < br />cta esempi famosi (pagina ancora da creare con poster cinema etc)</p>

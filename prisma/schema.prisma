@@ -1,6 +1,7 @@
 generator client {
   provider        = "prisma-client-js"
   previewFeatures = ["driverAdapters"]
+  output          = "./generated-client"
 }
 
 datasource db {
@@ -9,7 +10,7 @@ datasource db {
 }
 
 model User {
-  id        String       @id @default(cuid())
+  id        String       @id @default(uuid())
   name      String?
   email     String       @unique
   password  String
@@ -24,7 +25,7 @@ model User {
 }
 
 model Role {
-  id          String       @id @default(cuid())
+  id          String       @id @default(uuid())
   name        String       @unique
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
@@ -33,7 +34,7 @@ model Role {
 }
 
 model Permission {
-  id        String   @id @default(cuid())
+  id        String   @id @default(uuid())
   name      String   @unique
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -41,7 +42,7 @@ model Permission {
 }
 
 model BlogPost {
-  id        String   @id @default(cuid())
+  id        String   @id @default(uuid())
   title     String
   content   String
   authorId  String
@@ -51,7 +52,7 @@ model BlogPost {
 }
 
 model FontVariant {
-  id             String     @id @default(cuid())
+  id             String     @id @default(uuid())
   fontFamilyName String
   weight         Int
   style          String
@@ -62,7 +63,7 @@ model FontVariant {
 }
 
 model Ingredient {
-  id            String        @id @default(cuid())
+  id            String        @id @default(uuid())
   name          String
   slug          String        @unique
   category      String
@@ -70,13 +71,14 @@ model Ingredient {
   rating        String
   symbol        String?
   formula       String?
+  isVariable    Boolean       @default(false)
   variants      FontVariant[]
   formulas      Formula[]     @relation("FormulaIngredients")
   prescriptions Prescription[] @relation("PrescriptionIngredients")
 }
 
 model Formula {
-  id          String       @id @default(cuid())
+  id          String       @id @default(uuid())
   name        String
   description String
   href        String       @unique
@@ -86,7 +88,7 @@ model Formula {
 }
 
 model Prescription {
-  id          String       @id @default(cuid())
+  id          String       @id @default(uuid())
   name        String
   href        String       @unique
   description String?
@@ -96,7 +98,7 @@ model Prescription {
 }
 
 model Tag {
-  id            String         @id @default(cuid())
+  id            String         @id @default(uuid())
   name          String         @unique
   prescriptions Prescription[] @relation("PrescriptionTags")
 }

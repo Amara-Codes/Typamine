@@ -27,9 +27,9 @@ export default function IngredientDetailPage() {
         <MinimalLink 
           href="/ingredients" 
           label="BACK_TO_LAB_ARCHIVE"
-          icon={<MoveLeft size={12} className="icon-altalenante" />}
+          icon={<MoveLeft size={12}  />}
           iconPosition="left"
-          className="text-zinc-500 hover:text-blue"
+          className="ml-4 font-bold uppercase tracking-widest text-bluegray-600 dark:text-redgray-400 hover:text-black dark:hover:text-white"
         />
       </div>
 
@@ -62,7 +62,7 @@ export default function IngredientDetailPage() {
         
       >
         <Link href="/labs" className="inline-block">
-          <Button variant="themeResponsive" glow>ENTER_THE_LABS</Button>
+          <Button variant="secondary" >ENTER_THE_LABS</Button>
         </Link>
       </Cta>
     </div>

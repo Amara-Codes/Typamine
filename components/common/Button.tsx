@@ -1,14 +1,23 @@
 import React from "react";
 import { Loader2 } from "lucide-react";
 
+type ButtonVariant =
+  | "primary"
+  | "secondary"
+  | "danger"
+  | "success"
+  | "outline"
+  | "ghost"
+  | "glass";
+
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: "primary" | "secondary" | "outline" | "ghost" | "themeResponsive";
+  variant?: ButtonVariant;
   size?: "sm" | "md" | "lg";
   children: React.ReactNode;
   className?: string;
-  glow?: boolean;
+  shadowed?: boolean;
   fullWidth?: boolean;
-  roundness?: "none" | "sm" | "md" | "lg" | "full" | "xl";
+  roundness?: "none" | "sm" | "md" | "lg" | "full";
   isLoading?: boolean;
 }
 
@@ -17,34 +26,84 @@ export const Button: React.FC<ButtonProps> = ({
   size = "md",
   children,
   className = "",
-  glow = false,
+  shadowed = false,
   fullWidth = false,
-  roundness,
+  roundness = "md",
   isLoading = false,
   disabled,
   ...props
 }) => {
-  const baseStyles = "inline-flex items-center justify-center font-haas text-xs font-bold uppercase border transition-all select-none cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed";
-  
-  const sizeStyles = {
-    sm: "px-2.5 py-1.5 text-[10px]",
-    md: "px-4 py-2 text-xs",
-    lg: "px-6 py-3 text-sm",
+  const base =
+    "inline-flex items-center justify-center gap-2 font-haas font-bold uppercase tracking-wide " +
+    "border transition-all duration-200 outline-none select-none " +
+    // focus-visible invece di focus: il ring appare solo da tastiera, non ad ogni click del mouse
+    "focus-visible:ring-2 focus-visible:ring-offset-2 " +
+    // micro-feedback tattile alla pressione
+    "active:scale-[0.98] " +
+    // stato disabled esplicito: prima non esisteva alcuna classe dedicata
+    "disabled:opacity-50 disabled:pointer-events-none disabled:active:scale-100 disabled:shadow-none";
+
+  // Scala taglie coerente: prima "lg" (text-sm) era più piccola di quanto suggerisse il nome,
+  // e "md" non aveva una text-size esplicita. Aggiunta anche min-h per il target touch (>=36px).
+  const sizes = {
+    sm: "px-3 py-1.5 text-xs min-h-[36px]",
+    md: "px-4 py-2.5 text-sm min-h-[42px]",
+    lg: "px-6 py-3 text-base min-h-[48px]",
   };
 
-  const variantStyles = {
-    primary: `bg-red hover:bg-red/80 text-black border-red ${
-      glow ? "glow-red" : ""
-    }`,
-    secondary: `bg-blue hover:bg-blue/80 text-black border-blue ${
-      glow ? "glow-cyan" : ""
-    }`,
+  const variants: Record<ButtonVariant, string> = {
+    // PRIMARY — Chemical Red (brand). Testo nero: su red-500 dà ~5.7:1 di contrasto
+    // contro il ~3.7:1 del bianco (che fallisce l'AA 4.5:1 per testo normale).
+    // Stesso hue in light e dark mode (prima "primary" era blu in light e rosso in dark:
+    // stesso ruolo, colore diverso = incoerenza). Hover più chiaro + glow richiamano
+    // l'estetica "hazard" già presente nel tema (vedi utility glow-red in globals.css).
+    primary:
+      "bg-red-500 text-black border-redgray-800 hover:bg-red-400 hover:glow-red " +
+      "dark:border-redgray-400 dark:hover:bg-red-400" +
+      "focus-visible:ring-red-500 ring-offset-white dark:ring-offset-black",
 
-    themeResponsive: `text-black bg-blue hover:bg-blue/80 border-blue dark:bg-red dark:hover:bg-red/80 dark:border-red ${
-      glow ? "glow-cyan dark:glow-red" : ""
-    }`,
-    outline: "bg-transparent text-foreground border-foreground hover:text-white hover:border-white hover:bg-zinc-800/40",
-    ghost: "bg-transparent text-zinc-500 hover:text-foreground border-transparent hover:bg-zinc-800/20",
+    // SECONDARY — Chemical Cyan. Anche qui testo nero: sul cyan-500 il bianco crolla
+    // a ~2:1 di contrasto (fallisce clamorosamente), il nero sale a ~10.7:1.
+    // Stesso trattamento "hazard" del primary, in tonalità cyan, per restare coerente
+    // ma visivamente distinto.
+    secondary:
+      "bg-blue-500 text-black border-bluegray-800 hover:bg-blue-300 hover:glow-cyan " +
+      "dark:border-bluegray-200 dark:hover:bg-blue-400 " +
+      "focus-visible:ring-blue-600 ring-offset-white dark:ring-offset-black",
+
+    // DANGER — la palette non offre un rosso "diverso" dal brand: è lo stesso #ff3131.
+    // Per non far coincidere un'azione distruttiva con l'azione primaria del brand,
+    // uso una shade più cupa (red-700/600) senza glow: testo bianco a ~6.6:1 (light)
+    // / ~4.9:1 (dark), entrambi AA. Il risultato è deliberatamente più "serio",
+    // opposto all'energia del primary.
+    danger:
+      "bg-red-700 text-white border-red-800 hover:bg-red-800 " +
+      "dark:bg-red-600 dark:hover:bg-red-700 dark:border-red-900 " +
+      "focus-visible:ring-red-600 ring-offset-white dark:ring-offset-black",
+
+    // SUCCESS — il verde del tema non era ancora usato in nessuna variante.
+    success:
+      "bg-green text-black border-black hover:brightness-110 " +
+      "dark:border-white " +
+      "focus-visible:ring-green ring-offset-white dark:ring-offset-black",
+
+    // OUTLINE — scala neutra "stone" del tema (prima usava "zinc", assente dalla palette).
+    outline:
+      "bg-transparent border-bluegray-300 dark:border-redgray-700 hover:border-bluegray-400 dark:hover:border-redgray-600  " +
+      "text-black dark:text-stone-200 hover:bg-stone-200 dark:hover:bg-stone-800 " +
+      "focus-visible:ring-stone-500 ring-offset-white dark:ring-offset-black",
+
+    // GHOST — stessa scala neutra, ancora più leggero.
+    ghost:
+      "bg-transparent border-transparent text-stone-600 hover:bg-stone-100 hover:text-stone-900 " +
+      "dark:text-stone-400 dark:hover:bg-stone-800 dark:hover:text-white " +
+      "focus-visible:ring-stone-400 ring-offset-white dark:ring-offset-black",
+
+    // GLASS — per overlay su immagini/gradienti.
+    glass:
+      "bg-white/10 backdrop-blur-md backdrop-saturate-150 border-white/20 text-white hover:bg-white/20 " +
+      "dark:bg-black/20 dark:border-white/10 dark:hover:bg-black/30 " +
+      "focus-visible:ring-white/60 ring-offset-transparent",
   };
 
   const roundnessStyles = {
@@ -52,26 +111,22 @@ export const Button: React.FC<ButtonProps> = ({
     sm: "rounded-sm",
     md: "rounded-md",
     lg: "rounded-lg",
-    xl: "rounded-xl",
     full: "rounded-full",
   };
 
-  const currentRoundness = roundness ? roundnessStyles[roundness] : "rounded";
+  const shadowClass = shadowed ? "shadow-md hover:shadow-lg" : "";
 
   return (
     <button
-      className={`${baseStyles} ${sizeStyles[size]} ${variantStyles[variant]} ${currentRoundness} ${fullWidth ? "w-full" : ""} ${className}`}
+      className={`${base} ${sizes[size]} ${variants[variant]} ${roundnessStyles[roundness]} ${shadowClass} ${
+        fullWidth ? "w-full" : ""
+      } ${className}`}
       disabled={disabled || isLoading}
+      aria-busy={isLoading}
       {...props}
     >
-      {isLoading ? (
-        <span className="flex items-center gap-2">
-          <Loader2 className="w-4 h-4 animate-spin" />
-          Processing...
-        </span>
-      ) : (
-        children
-      )}
+      {isLoading && <Loader2 className="w-4 h-4 animate-spin" aria-hidden="true" />}
+      {children}
     </button>
   );
 };

@@ -50,7 +50,7 @@ export default function PublicRootLayout({
         <main className="flex-grow flex flex-col transition-colors duration-300">
           {children}
         </main>
-
+           <div className="w-full h-12 bg-linear-to-b from-transparent via-bluegray-100/10 to-bluegray-100/40 dark:from-transparent dark:via-redgray-900/10 dark:to-redgray-900/40"></div>
         <Footer />
 
       </body>

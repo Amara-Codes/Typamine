@@ -62,7 +62,7 @@ export function CardHeader({
     <div
       className={cn(
         "p-6 flex items-start justify-between relative gap-4",
-        hasBorder && "border-b border-zinc-900/5 dark:border-zinc-100/5",
+        hasBorder && "border-b border-bluegray-800 dark:border-redgray-200",
         className
       )}
       {...props}
@@ -72,12 +72,12 @@ export function CardHeader({
       ) : (
         <div className="text-left space-y-1 min-w-0">
           {title && (
-            <h3 className="text-4xl font-star text-zinc-900 dark:text-white truncate leading-tight">
+            <h3 className="text-4xl font-star text-black dark:text-white truncate leading-tight">
               {title}
             </h3>
           )}
           {subtitle && (
-            <p className="text-[10px] uppercase tracking-widest font-bold text-zinc-500 dark:text-zinc-400 mt-1 truncate">
+            <p className="text-[10px] uppercase tracking-widest font-bold text-bluegray-900 dark:text-redgray-100 mt-1 truncate">
               {subtitle}
             </p>
           )}
@@ -116,7 +116,7 @@ export function CardFooter({
     <div
       className={cn(
         "p-6 sm:p-8 mt-auto flex items-center justify-between text-left",
-        hasBorder && "border-t border-zinc-900/10 dark:border-zinc-100/10",
+        hasBorder && "border-t border-bluegray-800 dark:border-redgray-200",
         className
       )}
       {...props}

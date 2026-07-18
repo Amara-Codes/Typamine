@@ -1,8 +1,9 @@
+import DeleteButton from "@/components/common/DeleteButton";
+import { deleteRole } from "@/lib/actions/role";
 import { getServerAuthSession } from "@/lib/session";
 import prisma from "@/lib/prisma";
 import Link from "next/link";
 import { Edit, Shield, Fingerprint } from "lucide-react";
-import DeleteRoleButton from "@/components/admin/roles/DeleteRoleButton";
 import { hasPermission, protectPage } from "@/lib/rbac";
 import { Card, CardHeader, CardBody } from "../../../components/common/Card";
 import TabHeading from "@/components/admin/common/TabHeading";
@@ -45,7 +46,15 @@ export default async function RoleListPage() {
                       <Edit className="h-4 w-4" />
                     </Link>
                   )}
-                  {canDelete && <DeleteRoleButton id={role.id} name={role.name} />}
+                  {canDelete && (
+                    <DeleteButton
+                      id={role.id}
+                      name={role.name}
+                      entityName="role"
+                      onDelete={deleteRole}
+                      confirmDescription="Ensure no users are currently assigned to this role before deletion."
+                    />
+                  )}
                 </div>
               </div>
             </CardHeader>

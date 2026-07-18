@@ -81,7 +81,7 @@ export default function IngredientsPage() {
         }}
       >
         <Link href="/formulas" className="inline-block">
-          <Button variant="themeResponsive" glow>EXPLORE_COLLECTIONS</Button>
+          <Button variant="primary">EXPLORE_COLLECTIONS</Button>
         </Link>
       </Cta>
     </div>
