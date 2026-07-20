@@ -150,21 +150,11 @@ export default function LivePreview({
       )}
 
       {showToolbar && (
-        <div className="relative z-10 p-5 border-b rounded-t-md border-zinc-200 dark:border-zinc-900 flex flex-wrap items-center justify-between gap-4 bg-zinc-50/80 dark:bg-zinc-950/50 backdrop-blur-md">
-          <div className="flex items-center gap-3">
-            <div className="p-2 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl shadow-sm dark:shadow-inner">
-              <Type className="w-4 h-4 text-blue dark:text-red" />
-            </div>
-            <div>
-              <h4 className="text-black dark:text-white text-[10px] font-bold uppercase tracking-widest leading-none truncate max-w-[200px]">
-                {fontName}
-              </h4>
-              <p className="text-zinc-500 dark:text-zinc-400 text-[10px] uppercase tracking-wider mt-1 font-semibold">Live Preview</p>
-            </div>
-          </div>
+        <div className="relative z-10 p-5 border-b rounded-t-md border-zinc-200 dark:border-zinc-900 flex flex-wrap items-center justify-center gap-4 bg-zinc-50/80 dark:bg-zinc-950/50 backdrop-blur-md">
+     
 
           {showControls && (
-            <div className="flex items-center flex-wrap gap-x-1 gap-y-2 bg-white/80 dark:bg-zinc-900/80 p-2 rounded-xl border border-zinc-200/80 dark:border-zinc-800/80 backdrop-blur-sm">
+            <div className="flex justify-center items-center flex-wrap gap-x-1 gap-y-2 bg-white/80 dark:bg-zinc-900/80 p-2 rounded-xl border border-zinc-200/80 dark:border-zinc-800/80 backdrop-blur-sm">
               <div className={cn("flex items-center gap-2 px-2", (hasWeightGroup || hasTrackingGroup || hasLeadingGroup || hasTextColorGroup || hasBgColorGroup) && "border-r border-zinc-200 dark:border-zinc-800")}>
                 <span className="text-[10px] text-zinc-500 dark:text-zinc-400 uppercase tracking-widest font-black">Size</span>
                 <input

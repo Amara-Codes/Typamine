@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useRef, useEffect } from "react";
+import { Label } from "@/components/common/Input";
 
 export interface SelectOption {
   label: string;
@@ -43,12 +44,9 @@ export const Select: React.FC<SelectProps> = ({
   return (
     <div className={`space-y-1.5 w-full ${className}`}>
       
-      {/* Label integrata con lo stile richiesto */}
       {label && (
         <div className="flex justify-between items-center select-none mb-0">
-        <label className="text-[10px] text-bluegray-800 dark:text-redgray-200 uppercase tracking-wider block mb-2 font-bold select-none">
-          {label}
-        </label>
+          <Label className="mb-0 select-none">{label}</Label>
         </div>
       )}
 

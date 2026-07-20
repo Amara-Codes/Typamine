@@ -4,7 +4,7 @@ import React, { useActionState, useState, useEffect } from "react";
 import { saveFont } from "@/lib/actions/font";
 import { Plus, Trash2, Sliders, Type, AlertCircle, Loader2, Tag as TagIcon, Check } from "lucide-react";
 import { Select } from "@/components/common/Select";
-import { Input } from "@/components/common/Input";
+import { Input, Label } from "@/components/common/Input";
 import FormActions from "@/components/admin/common/FormActions";
 import LivePreview from "@/components/common/LivePreview";
 import BaseModal from "../../common/BaseModal";
@@ -303,9 +303,7 @@ export default function FontForm({ font, tags = [] }: { font?: any; tags?: any[]
                     <input type="hidden" name="variantWoff2Url" value={variants[0]?.woff2Url || ""} />
 
                     <div>
-                      <label className="text-[10px] text-bluegray-800 dark:text-redgray-200 uppercase tracking-wider block mb-2 font-bold">
-                        Font File
-                      </label>
+                      <Label>Font File</Label>
                       <div className="flex flex-col sm:flex-row sm:items-center gap-4">
                         <input
                           type="file"
@@ -368,9 +366,7 @@ export default function FontForm({ font, tags = [] }: { font?: any; tags?: any[]
 
                         <div className="space-y-6">
                           <div className="border-t border-black/5 dark:border-white/5 pt-4">
-                            <label className="text-[10px] text-bluegray-800 dark:text-redgray-200 uppercase tracking-wider block mb-2 font-bold">
-                              Font File
-                            </label>
+                            <Label>Font File</Label>
                             <div className="flex flex-col sm:flex-row sm:items-center gap-4">
                               <input
                                 type="file"
@@ -464,7 +460,7 @@ export default function FontForm({ font, tags = [] }: { font?: any; tags?: any[]
 
               <div className="space-y-6">
                 <div>
-                  <label className="text-[10px] text-bluegray-800 dark:text-redgray-200 uppercase tracking-wider block mb-2 font-bold">Category</label>
+                  <Label>Category</Label>
                   <div className="relative">
                     <Select
                       options={CATEGORY_OPTIONS}
@@ -518,10 +514,7 @@ export default function FontForm({ font, tags = [] }: { font?: any; tags?: any[]
                 />
 
                 <div>
-                  <label className="text-[10px] text-bluegray-800 dark:text-redgray-200 uppercase tracking-wider mb-2 font-bold flex items-center gap-1.5">
-                    <TagIcon className="w-3 h-3" />
-                    Tags
-                  </label>
+                  <Label icon={TagIcon}>Tags</Label>
                   <div className="flex flex-wrap gap-2 p-3 border border-black/10 dark:border-white/10 rounded-lg bg-white/50 dark:bg-zinc-900/50 max-h-36 overflow-y-auto">
                     {tags.map((t) => {
                       const isSelected = selectedTagIds.includes(t.id);

@@ -65,7 +65,11 @@ export async function saveFormula(prevState: any, formData: FormData, id?: strin
 
     const name = (formData.get("name") as string)?.trim();
     const slug = (formData.get("slug") as string)?.trim();
-    const description = (formData.get("description") as string)?.trim() || null;
+    // Sulla tabella Formula di D1 la colonna description è ancora NOT NULL,
+    // ereditata da prima del rename dell'entità (a differenza di href/code
+    // non possiamo droppare la colonna: è un campo tuttora in uso). Stringa
+    // vuota invece di null soddisfa il vincolo legacy senza toccare lo schema.
+    const description = (formData.get("description") as string)?.trim() || "";
     const fontCategory = (formData.get("fontCategory") as string)?.trim();
     const fontIds = formData.getAll("fontIds") as string[];
     const tagIds = formData.getAll("tagIds") as string[];
@@ -100,35 +104,39 @@ export async function saveFormula(prevState: any, formData: FormData, id?: strin
     };
 
     if (id) {
-      await prisma.formula.update({
-        where: { id },
-        data: {
-          ...baseData,
-          fonts: {
-            set: fontIds.map((fId) => ({ id: fId })),
+      await withSafeDbQuery(() =>
+        prisma.formula.update({
+          where: { id },
+          data: {
+            ...baseData,
+            fonts: {
+              set: fontIds.map((fId) => ({ id: fId })),
+            },
+            tags: {
+              set: tagIds.map((tId) => ({ id: tId })),
+            },
           },
-          tags: {
-            set: tagIds.map((tId) => ({ id: tId })),
-          },
-        },
-      });
+        })
+      );
     } else {
-      await prisma.formula.create({
-        data: {
-          id: formulaId,
-          ...baseData,
-          // Impostato esplicitamente invece di affidarsi al DEFAULT a livello di
-          // DB: un client Prisma già avviato prima di una modifica allo schema
-          // può ignorare il default e scrivere NULL su questa colonna.
-          createdAt: new Date(),
-          fonts: {
-            connect: fontIds.map((fId) => ({ id: fId })),
+      await withSafeDbQuery(() =>
+        prisma.formula.create({
+          data: {
+            id: formulaId,
+            ...baseData,
+            // Impostato esplicitamente invece di affidarsi al DEFAULT a livello di
+            // DB: un client Prisma già avviato prima di una modifica allo schema
+            // può ignorare il default e scrivere NULL su questa colonna.
+            createdAt: new Date(),
+            fonts: {
+              connect: fontIds.map((fId) => ({ id: fId })),
+            },
+            tags: {
+              connect: tagIds.map((tId) => ({ id: tId })),
+            },
           },
-          tags: {
-            connect: tagIds.map((tId) => ({ id: tId })),
-          },
-        },
-      });
+        })
+      );
     }
   } catch (error: unknown) {
     const errorMessage = error instanceof Error ? error.message : String(error);

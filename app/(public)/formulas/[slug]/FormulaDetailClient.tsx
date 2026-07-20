@@ -20,57 +20,47 @@ export default function FormulaDetailClient({ formula, isCurated }: FormulaDetai
   const { theme } = useThemeStore();
 
   return (
-    <div className="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-8 space-y-10">
-      {/* Back button */}
-      <MinimalLink
-        href="/formulas"
-        label="Back to Collections"
-        icon={<MoveLeft size={12} />}
-        iconPosition="left"
-        className="font-bold tracking-widest text-bluegray-800 dark:text-redgray-200 hover:text-black dark:hover:text-white"
-      />
+    <div className="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-8 space-y-8">
+      <div className="mb-4">
+        <MinimalLink
+          href="/formulas"
+          label="Back to Collections"
+          icon={<MoveLeft size={12} />}
+          iconPosition="left"
+          className="font-bold tracking-widest text-bluegray-800 dark:text-redgray-200 hover:text-black dark:hover:text-white"
+        />
 
-      <PageHeading
-        title={formula.name}
-        subtitle={`FONT_CATEGORY: ${formula.fontCategory} // TOTAL_FONTS: ${formula.fonts.length}`}
-        useGrainient
-        grainientOptions={{
-          color1: theme === "light" ? "#fdfdfd" : "#09090b",
-          color2: theme === "light" ? "#c0d3ed" : "#570d22",
-          color3: theme === "light" ? "#e5e7eb" : "#27272a",
-        }}
-        rightElement={
-          isCurated ? (
-            <Badge icon={<Sparkles className="h-3 w-3" />}>Typamine Selection</Badge>
-          ) : undefined
-        }
-      />
+      </div>
 
       {/* Description */}
       {formula.description && (
         <section className="space-y-2">
-          <h2 className="font-star text-2xl text-black dark:text-white">About this Collection</h2>
-          <p className="text-zinc-500 dark:text-zinc-400 leading-relaxed max-w-3xl">
+          <h1 className="font-haas uppercase text-4xl font-bold text-center text-black dark:text-white">{formula.name}</h1>
+          <p className="max-w-3xl mx-auto text-center text-xl text-zinc-500 dark:text-zinc-400 leading-relaxed">
             {formula.description}
           </p>
         </section>
       )}
 
-      {/* Tags, if any (mostly relevant for curated collections) */}
-      {formula.tags && formula.tags.length > 0 && (
-        <section className="space-y-3">
-          <h2 className="font-star text-2xl text-black dark:text-white">Tags</h2>
-          <div className="flex flex-wrap gap-2">
-            {formula.tags.map((tag) => (
-              <Badge key={tag.id}>{tag.name}</Badge>
-            ))}
-          </div>
-        </section>
-      )}
-
       {/* The fonts in this collection */}
       <section className="space-y-4">
-        <h2 className="font-star text-2xl text-black dark:text-white">The Fonts</h2>
+        <div className="flex justify-between items-center flex-wrap gap-4">
+          {formula.tags && formula.tags.length > 0 ? (
+            <div className="flex items-center gap-2">
+              <span className="uppercase font-bold text-sm text-black dark:text-white">Tags</span>
+              <div className="flex flex-wrap gap-2">
+                {formula.tags.map((tag) => (
+                  <Badge key={tag.id}>{tag.name}</Badge>
+                ))}
+              </div>
+            </div>
+          ) : (
+            <div />
+          )}
+          <h2 className="flex justify-end items-baseline gap-2 uppercase font-bold text-sm text-right text-black dark:text-white">
+            <span className="font-star text-blue dark:text-red">{formula.fonts.length}</span> Fonts in this collection
+          </h2>
+        </div>
         {formula.fonts.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {formula.fonts.map((font, idx) => (

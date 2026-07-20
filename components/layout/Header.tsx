@@ -38,8 +38,8 @@ export const Header: React.FC = () => {
   }, [lastScrollY]);
 
   return (
-    <header 
-      className={`fixed top-0 left-0 right-0 z-50 w-full  bg-transparent backdrop-blur-sm transition-transform duration-300 ease-in-out ${
+    <header
+      className={`fixed top-0 left-0 right-0 z-50 w-full bg-transparent backdrop-blur-sm transition-transform duration-300 ease-in-out ${
         isVisible ? "translate-y-0" : "-translate-y-full"
       }`}
     >
@@ -54,7 +54,7 @@ export const Header: React.FC = () => {
           </div>
 
           {/* Navigation Menu */}
-          <nav className="hidden md:flex space-x-5 font-positivesys text-lg bg-blue-600/80 dark:bg-red-800/80 rounded-sm shadow-[inset_0_3px_0_0_#f9f9fb,_inset_0_-3px_0_0_#f9f9fb] dark:shadow-[inset_0_3px_0_0_#030303,_inset_0_-3px_0_0_#030303] transition-colors duration-500">
+          <nav className="hidden md:flex space-x-5 font-positivesys text-lg bg-blue-600/80 dark:bg-red-800/80 rounded-sm shadow-[inset_0_3px_0_0_transparent,_inset_0_-3px_0_0_transparent] transition-colors duration-500">
             <Link 
               id="nav-link-ingredients"
               href="/ingredients"

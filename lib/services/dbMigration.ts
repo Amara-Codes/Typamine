@@ -67,6 +67,7 @@ export async function ensureD1SchemaUpdated(force = false) {
     await addCol("Prescription", "secondaryFontId", "TEXT");
     await addCol("Prescription", "createdAt", "DATETIME");
     await addCol("Prescription", "updatedAt", "DATETIME");
+    await addCol("Prescription", "insight", "TEXT");
 
     // 5. Join table for the Ingredient <-> Tag many-to-many relation
     try {
@@ -96,6 +97,24 @@ export async function ensureD1SchemaUpdated(force = false) {
     try {
       await prisma.$executeRawUnsafe(`UPDATE Formula SET updatedAt = CURRENT_TIMESTAMP WHERE updatedAt IS NULL`);
     } catch {}
+    // Le colonne legacy href/code erano NOT NULL: su ambienti (D1) dove la
+    // tabella esisteva da prima del rename, sono ancora lì e bloccano ogni
+    // create() che non le popola più. Le rimuoviamo (no-op se già assenti,
+    // es. su dev.db locale ricreato da `prisma db push`). href aveva anche un
+    // indice UNIQUE residuo (Formula_href_key) che fa fallire silenziosamente
+    // la DROP COLUMN se non viene tolto per primo.
+    try {
+      await prisma.$executeRawUnsafe(`DROP INDEX IF EXISTS Formula_href_key`);
+    } catch {}
+    try {
+      await prisma.$executeRawUnsafe(`ALTER TABLE Formula DROP COLUMN href`);
+    } catch {}
+    try {
+      await prisma.$executeRawUnsafe(`DROP INDEX IF EXISTS Formula_code_key`);
+    } catch {}
+    try {
+      await prisma.$executeRawUnsafe(`ALTER TABLE Formula DROP COLUMN code`);
+    } catch {}
 
     // 7. Join table for the Formula <-> Tag many-to-many relation
     try {
@@ -119,7 +138,7 @@ export async function withSafeDbQuery<T>(run: () => Promise<T>): Promise<T> {
   } catch (err) {
     const isSchemaError =
       err instanceof Prisma.PrismaClientKnownRequestError &&
-      (err.code === "P2021" || err.code === "P2022" || err.code === "P2032");
+      (err.code === "P2021" || err.code === "P2022" || err.code === "P2032" || err.code === "P2011");
 
     if (!isSchemaError) throw err;
 

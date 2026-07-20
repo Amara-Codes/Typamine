@@ -29,7 +29,7 @@ export default async function IngredientsResults({
   return (
     <>
       <p className="text-[10px] font-bold uppercase tracking-widest text-zinc-500 dark:text-zinc-400">
-        {`TOTAL_INGREDIENTS_CATALOGUED: ${total} // ISOLATION_STATUS: SAFE`}
+        {`TOTAL INGREDIENTS: ${total}`}
       </p>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 relative z-0">
@@ -40,7 +40,7 @@ export default async function IngredientsResults({
 
       {items.length === 0 && (
         <div className="text-center py-12 border border-zinc-200 dark:border-zinc-800 border-dashed rounded-lg text-zinc-500 dark:text-zinc-400 font-haas">
-          NO_COMPOUNDS_FOUND_FOR_THIS_CLASSIFICATION
+          NO COMPOUNDS FOUND FOR THIS CLASSIFICATION
         </div>
       )}
 

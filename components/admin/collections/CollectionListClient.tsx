@@ -135,15 +135,15 @@ export default function CollectionListClient({ formulas, totalCount, canUpdate, 
               header: "Tags",
               className: "flex-1 hidden lg:block",
               render: (f: any) => (
-                <div className="flex flex-wrap gap-1">
-                  {(f.tags || []).map((t: any) => (
-                    <Badge key={t.id} className="text-[9px] py-0 px-2">
-                      {t.name}
-                    </Badge>
-                  ))}
-                  {(!f.tags || f.tags.length === 0) && (
-                    <span className="text-xs text-zinc-400 italic">No tags</span>
-                  )}
+<div className={`px-3 py-1.5 rounded-md flex items-center gap-2 border shadow-sm text-xs max-w-fit mt-1 ${
+                    f.tags?.length
+                      ? "bg-white text-blue-800 dark:bg-redgray-800 dark:text-red-200 border-blue-800 dark:border-red-200"
+                      : "bg-zinc-400 dark:bg-zinc-900 border-zinc-900 dark:border-zinc-900 text-zinc-900 dark:text-zinc-400"
+                  }`}
+                >                  <Layers className="h-3.5 w-3.5 shrink-0" />
+                  <span className="text-[10px] font-black uppercase tracking-tighter">
+                    {f.tags?.length || 0} {f.tags?.length == 1 ? 'Tag' : 'Tags'}
+                  </span>
                 </div>
               ),
             },

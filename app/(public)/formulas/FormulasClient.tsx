@@ -1,18 +1,40 @@
 "use client";
 
+import React from "react";
 import Link from "next/link";
-import { FormulaCard } from "@/components/collection/FormulaCard";
 import { PageHeading } from "@/components/common/PageHeading";
 import { useThemeStore } from "@/store/themeStore";
 import { Cta } from "@/components/common/Cta";
 import { Button } from "@/components/common/Button";
-import { Formula } from "@/types";
+import { SearchSortFilter } from "@/components/common/SearchSortFilter";
+
+const SORT_OPTIONS = [
+  { label: "NEWEST FIRST", value: "recent" },
+  { label: "NAME (A-Z)", value: "name_asc" },
+  { label: "NAME (Z-A)", value: "name_desc" },
+];
+
+const CATEGORY_OPTIONS = [
+  { label: "ALL_CATEGORIES", value: "ALL" },
+  { label: "MONOSPACE", value: "Monospace" },
+  { label: "SANS-SERIF", value: "Sans-Serif" },
+  { label: "NEO-GROTESQUE", value: "Neo-Grotesque" },
+  { label: "GEOMETRIC SANS", value: "Geometric Sans" },
+  { label: "SERIF", value: "Serif" },
+  { label: "DECORATIVE", value: "Decorative" },
+  { label: "MIXED", value: "Mixed" },
+];
 
 interface FormulasClientProps {
-  items: { formula: Formula; isCurated: boolean }[];
+  tags: { id: string; name: string }[];
+  children: React.ReactNode;
 }
 
-export default function FormulasClient({ items }: FormulasClientProps) {
+// Shell statico: header, toolbar di ricerca/ordinamento/filtri e CTA vivono
+// qui e non dipendono dal fetch, quindi non smontano/rimontano mai (niente
+// "flash") quando cambi pagina/ordinamento/filtro — solo `children` (i
+// risultati) è dentro un Suspense boundary.
+export default function FormulasClient({ tags, children }: FormulasClientProps) {
   const { theme } = useThemeStore();
 
   return (
@@ -20,7 +42,7 @@ export default function FormulasClient({ items }: FormulasClientProps) {
       {/* Route Header */}
       <PageHeading
         title="CURATED_FORMULAS // Our Collections"
-        subtitle={`TOTAL_FORMULAS_CATALOGUED: ${items.length} // ISOLATION_STATUS: SAFE`}
+        subtitle="Hand-picked bundles and programmatic collections, generated straight from our archive"
         useGrainient
         grainientOptions={{
           color1: theme === "light" ? "#fdfdfd" : "#09090b",
@@ -29,18 +51,18 @@ export default function FormulasClient({ items }: FormulasClientProps) {
         }}
       />
 
-      {/* Formula cards catalog */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 relative z-0 mb-8">
-        {items.map(({ formula, isCurated }) => (
-          <FormulaCard key={formula.id} formula={formula} isCurated={isCurated} />
-        ))}
-      </div>
+      <SearchSortFilter
+        searchPlaceholder="Search collections by name..."
+        sortOptions={SORT_OPTIONS}
+        categoryOptions={CATEGORY_OPTIONS}
+        tags={tags}
+        toggleOptions={[
+          { paramKey: "curated", label: "Typamine Selection Only" },
+        ]}
+        filtersModalTitle="Filters"
+      />
 
-      {items.length === 0 && (
-        <div className="text-center py-12 border border-zinc-200 dark:border-zinc-800 border-dashed rounded-lg text-zinc-500 dark:text-zinc-400 font-haas">
-          NO_FORMULAS_AVAILABLE_YET
-        </div>
-      )}
+      {children}
 
       <Cta
         title={<>Looking for <span className="text-blue dark:text-red font-star px-2">Inspirations?</span></>}
@@ -50,10 +72,10 @@ export default function FormulasClient({ items }: FormulasClientProps) {
         useGlassmorphism
       >
         <Link href="/prescriptions" className="inline-block">
-          <Button variant="secondary">VIEW_PRESCRIPTIONS</Button>
+          <Button variant="secondary">VIEW PRESCRIPTIONS</Button>
         </Link>
         <Link href="/prescriptions/archive" className="inline-block">
-          <Button variant="primary">THE_ARCHIVE</Button>
+          <Button variant="primary">THE ARCHIVE</Button>
         </Link>
       </Cta>
     </div>

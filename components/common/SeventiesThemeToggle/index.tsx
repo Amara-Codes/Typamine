@@ -67,10 +67,21 @@ export const SeventiesThemeToggle: React.FC<SeventiesThemeToggleProps> = ({ size
   }
 
   return (
-    <div className="relative w-full h-full flex items-center justify-center">
-      {/* 1. VARIANT FULL (Expanded Sidebar) */}
-      <div 
-        className="w-full flex items-center p-2 gap-3 border border-black/5 dark:border-white/5 rounded-md bg-bluegray-200 dark:bg-redgray-800"
+    <div
+      className="relative flex items-center justify-center"
+      style={
+        isMini
+          ? { width: typeof size === 'number' ? `${size}px` : size, height: typeof size === 'number' ? `${size}px` : size }
+          : { width: '100%', height: '100%' }
+      }
+    >
+      {/* 1. VARIANT FULL (Expanded Sidebar) — in flusso solo quando è la variante
+          attiva: se resta in flusso anche da "mini" (solo invisibile via opacity),
+          continua comunque a occupare spazio (icona + label), sbilanciando il
+          layout del genitore (es. l'header, dove non è mai affiancata da altro
+          contenuto che la "clippa"). */}
+      <div
+        className={isMini ? "absolute inset-0 w-full flex items-center p-2 gap-3 border border-black/5 dark:border-white/5 rounded-md bg-bluegray-200 dark:bg-redgray-800" : "w-full flex items-center p-2 gap-3 border border-black/5 dark:border-white/5 rounded-md bg-bluegray-200 dark:bg-redgray-800"}
         style={{
           opacity: isMini ? 0 : 1,
           transform: isMini ? "translateY(15px) scale(0.95)" : "translateY(0) scale(1)",

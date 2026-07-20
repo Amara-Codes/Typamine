@@ -66,6 +66,7 @@ export interface Prescription {
   slug?: string;
   description?: string;
   imageUrl?: string;
+  insight?: string;
   published?: boolean;
   createdAt?: string;
   updatedAt?: string;

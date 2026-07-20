@@ -1,6 +1,6 @@
 "use client";
 
-import { Hero } from "@/components/common/Hero";
+import { DoubleHero } from "@/components/common/DoubleHero";
 import MinimalLink from "@/components/common/MinimalLink";
 import { IngredientCard } from "@/components/font/IngredientCard";
 import { IngredientCardSkeleton } from "@/components/font/skeletons/IngredientCardSkeleton";
@@ -21,15 +21,15 @@ interface HomeClientProps {
 
 export default function HomeClient({ recentIngredients = [], recentPairings = [], featuredFormulas = [] }: HomeClientProps) {
   const { theme } = useThemeStore();
-  const dynamicHeroBgImageUrl = theme === "dark" ? "/images/home/hero-bg-dark.png" : "/images/home/hero-bg-light.png";
+  const dynamicHeroBgImageUrl = theme === "dark" ? "/images/home/double-hero/hero-bg-dark.png" : "/images/home/double-hero/hero-bg-light.png";
 
   const safeIngredients = recentIngredients || [];
   const safePairings = recentPairings || [];
 
   return (
     <div className="flex flex-col">
-      {/* 1. HERO SECTION */}
-      <Hero
+      {/* 1. DOUBLE HERO SECTION */}
+      <DoubleHero
         title={
           <>
             Your new <br />
@@ -45,54 +45,54 @@ export default function HomeClient({ recentIngredients = [], recentPairings = []
         secondaryCtaHref="/prescriptions"
         bgImage={dynamicHeroBgImageUrl}
         fullWidth
-      />
+      >
+        <div className="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-12">
+          {/* 3. FEATURED INGREDIENTS (FONT TILES) */}
+          <section className="space-y-4">
+            <div className="flex justify-between items-end border-b border-zinc-200 dark:border-zinc-800 pb-2">
+              <div className="flex items-center space-x-2">
+                <span className="text-red font-haas text-sm">[+]</span>
+                <h2 className="font-haas text-sm font-bold tracking-wider">LAST IMPORTED INGREDIENTS // Fonts</h2>
+              </div>
+              <MinimalLink href="/ingredients" label="ALL FONTS" />
+            </div>
 
-      <div className="w-full h-12 bg-linear-to-t from-transparent via-bluegray-100/10 to-bluegray-100/40 dark:from-transparent dark:via-redgray-900/10 dark:to-redgray-900/40"></div>
+            {/* Font tiles catalog grid */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              {safeIngredients.length === 0
+                ? Array.from({ length: 4 }).map((_, idx) => (
+                    <IngredientCardSkeleton key={idx} />
+                  ))
+                : safeIngredients.map((font, idx) => (
+                    <IngredientCard key={font.id} font={font} idx={idx} />
+                  ))}
+            </div>
+          </section>
+
+          {/* 4. OUR PRESCRIPTIONS (PAIRINGS) */}
+          <section className="space-y-4">
+            <div className="flex justify-between items-end border-b border-zinc-200 dark:border-zinc-800 pb-2">
+              <div className="flex items-center space-x-2">
+                <span className="text-zinc-500 dark:text-zinc-400 font-haas text-sm">[x]</span>
+                <h2 className="font-haas text-sm font-bold tracking-wider">POPULAR PRESCRIPTIONS // Font Pairing Examples</h2>
+              </div>
+              <MinimalLink href="/prescriptions" label="OUR PAIRING SELECTION" />
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {safePairings.length === 0
+                ? Array.from({ length: 4 }).map((_, idx) => (
+                    <PrescriptionCardSkeleton key={idx} />
+                  ))
+                : safePairings.map((prescription) => (
+                    <PrescriptionCard key={prescription.id} prescription={prescription} />
+                  ))}
+            </div>
+          </section>
+        </div>
+      </DoubleHero>
 
       <div className="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-12">
-        {/* 3. FEATURED INGREDIENTS (FONT TILES) */}
-        <section className="space-y-4">
-          <div className="flex justify-between items-end border-b border-zinc-200 dark:border-zinc-800 pb-2">
-            <div className="flex items-center space-x-2">
-              <span className="text-red font-haas text-sm">[+]</span>
-              <h2 className="font-haas text-sm font-bold tracking-wider">LAST IMPORTED INGREDIENTS // Fonts</h2>
-            </div>
-            <MinimalLink href="/ingredients" label="ALL FONTS" />
-          </div>
-
-          {/* Font tiles catalog grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {safeIngredients.length === 0
-              ? Array.from({ length: 4 }).map((_, idx) => (
-                  <IngredientCardSkeleton key={idx} />
-                ))
-              : safeIngredients.map((font, idx) => (
-                  <IngredientCard key={font.id} font={font} idx={idx} />
-                ))}
-          </div>
-        </section>
-
-        {/* 4. OUR PRESCRIPTIONS (PAIRINGS) */}
-        <section className="space-y-4">
-          <div className="flex justify-between items-end border-b border-zinc-200 dark:border-zinc-800 pb-2">
-            <div className="flex items-center space-x-2">
-              <span className="text-zinc-500 dark:text-zinc-400 font-haas text-sm">[x]</span>
-              <h2 className="font-haas text-sm font-bold tracking-wider">POPULAR PRESCRIPTIONS // Font Pairing Examples</h2>
-            </div>
-            <MinimalLink href="/prescriptions" label="OUR PAIRING SELECTION" />
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {safePairings.length === 0
-              ? Array.from({ length: 4 }).map((_, idx) => (
-                  <PrescriptionCardSkeleton key={idx} />
-                ))
-              : safePairings.map((prescription) => (
-                  <PrescriptionCard key={prescription.id} prescription={prescription} />
-                ))}
-          </div>
-        </section>
-
         {/* 5. ACTIVE FORMULAS (COLLECTIONS) */}
         <section className="space-y-4">
           <div className="flex justify-between items-end border-b border-zinc-200 dark:border-zinc-800 pb-2">

@@ -78,16 +78,19 @@ model Ingredient {
   formulas               Formula[]      @relation("FormulaIngredients")
   primaryPrescriptions   Prescription[] @relation("PrimaryFont")
   secondaryPrescriptions Prescription[] @relation("SecondaryFont")
+  tags                   Tag[]          @relation("IngredientTags")
 }
 
 model Formula {
-  id          String       @id @default(uuid())
-  name        String
-  description String
-  href        String       @unique
-  code        String?
-  createdAt   DateTime     @default(now())
-  fonts       Ingredient[] @relation("FormulaIngredients")
+  id           String       @id @default(uuid())
+  name         String
+  description  String?
+  slug         String       @unique
+  fontCategory String
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @default(now()) @updatedAt
+  fonts        Ingredient[] @relation("FormulaIngredients")
+  tags         Tag[]        @relation("FormulaTags")
 }
 
 model Prescription {
@@ -113,4 +116,6 @@ model Tag {
   createdAt     DateTime       @default(now())
   updatedAt     DateTime       @default(now()) @updatedAt
   prescriptions Prescription[] @relation("PrescriptionTags")
+  ingredients   Ingredient[]   @relation("IngredientTags")
+  formulas      Formula[]      @relation("FormulaTags")
 }

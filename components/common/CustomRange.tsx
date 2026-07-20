@@ -1,4 +1,5 @@
 import React, { useRef, useCallback } from "react";
+import { Label } from "@/components/common/Input";
 
 interface CustomRangeProps {
     label?: string;
@@ -52,7 +53,7 @@ export const CustomRange: React.FC<CustomRangeProps> = ({
             {/* Header Label & Value */}
             {(label || showCurrentValue) && (
                 <div className="flex justify-between items-center select-none mb-0">
-                    {label && <label className="text-[10px] text-bluegray-800 dark:text-redgray-200 uppercase tracking-wider block mb-2 font-bold select-none">{label}</label>}
+                    {label && <Label className="mb-0 select-none">{label}</Label>}
                     {showCurrentValue && <span className={`text-[10px] font-bold ${textColor}`}>{value}</span>}
                 </div>
             )}

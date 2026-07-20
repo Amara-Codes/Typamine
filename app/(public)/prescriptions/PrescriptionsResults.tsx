@@ -43,7 +43,7 @@ export default async function PrescriptionsResults({ page, perPage, tagIds, sear
   return (
     <>
       <p className="text-[10px] font-bold uppercase tracking-widest text-zinc-500 dark:text-zinc-400">
-        {`TOTAL_PRESCRIPTIONS_CATALOGUED: ${totalCount} // ISOLATION_STATUS: SAFE`}
+        {`TOTAL PRESCRIPTIONS: ${totalCount}`}
       </p>
 
       {fontName && (
@@ -69,7 +69,7 @@ export default async function PrescriptionsResults({ page, perPage, tagIds, sear
 
       {pairings.length === 0 && (
         <div className="text-center py-12 border border-zinc-200 dark:border-zinc-800 border-dashed rounded-lg text-zinc-500 dark:text-zinc-400 font-haas">
-          NO_PRESCRIPTIONS_FOUND_IN_THIS_CATALOG
+          NO PRESCRIPTIONS FOUND IN THIS CATALOG
         </div>
       )}
 

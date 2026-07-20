@@ -144,8 +144,12 @@ export default function FontListClient({ fonts, totalCount, canUpdate, canDelete
               header: "Variants",
               className: "flex-1 hidden md:block",
               render: (font: any) => (
-                <div className="px-3 py-1.5 rounded-md bg-bluegray-200 text-black dark:bg-redgray-800 dark:text-white flex items-center gap-2 border border-blue-800 dark:border-red-200 shadow-sm text-xs max-w-fit mt-1">
-                  <Layers className="h-3.5 w-3.5 shrink-0" />
+                <div className={`px-3 py-1.5 rounded-md flex items-center gap-2 border shadow-sm text-xs max-w-fit mt-1 ${
+                    font?.variants?.length
+                      ? "bg-white text-blue-800 dark:bg-redgray-800 dark:text-red-200 border-blue-800 dark:border-red-200"
+                      : "bg-zinc-400 dark:bg-zinc-900 border-zinc-900 dark:border-zinc-900 text-zinc-900 dark:text-zinc-400"
+                  }`}
+                >                  <Layers className="h-3.5 w-3.5 shrink-0" />
                   <span className="text-[10px] font-black uppercase tracking-tighter">
                     {font.variants?.length || 0} Variants
                   </span>

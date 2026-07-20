@@ -16,20 +16,22 @@ interface HeroProps {
   bgOpacity?:number;
   layout?: "contentCenter" | "contentLeft" | "contentRight";
   fullWidth?: boolean;
+  clearView?: boolean;
 }
  
 export const Hero: React.FC<HeroProps> = ({
   badgeText,
   title,
   description,
-  ctaText = "[LAUNCH ARCHIVE]",
-  ctaHref = "/ingredients",
-  secondaryCtaText = "[DEV TOOLS]",
-  secondaryCtaHref = "/labs",
+  ctaText,
+  ctaHref,
+  secondaryCtaText,
+  secondaryCtaHref,
   bgImage,
   bgOpacity = 0.8,
   layout = "contentCenter",
   fullWidth = false,
+  clearView = false,
 }) => {
   // Mapping for layout alignments
   const alignmentStyles = {
@@ -38,9 +40,11 @@ export const Hero: React.FC<HeroProps> = ({
     contentRight: "text-right items-end ml-auto",
   };
  
+  const bgStyles = clearView ? "bg-transparent" : "bg-white/70 dark:bg-black/70";
+
   const containerStyles = fullWidth
-    ? "w-full h-[100dvh] border-0 bg-white/70 dark:bg-black/70 rounded-none pt-16 pb-6 px-6 md:px-12 relative overflow-hidden transition-colors duration-300 flex flex-col justify-center"
-    : "w-full aspect-video border border-zinc-300 dark:border-zinc-800 bg-white/70 dark:bg-black/70 rounded-lg p-6 md:p-8 relative overflow-hidden transition-colors duration-300 flex flex-col justify-center";
+    ? `w-full h-[100dvh] border-0 ${bgStyles} rounded-none pt-16 pb-6 px-6 md:px-12 relative overflow-hidden transition-colors duration-300 flex flex-col justify-center`
+    : `w-full aspect-video border border-zinc-300 dark:border-zinc-800 ${bgStyles} rounded-lg p-6 md:p-8 relative overflow-hidden transition-colors duration-300 flex flex-col justify-center`;
  
   return (
     <section className={containerStyles}>
@@ -51,12 +55,15 @@ export const Hero: React.FC<HeroProps> = ({
           alt="Hero Background"
           fill
           priority
-          className={`absolute inset-0 object-cover w-full h-full -z-20 pointer-events-none select-none`} style={{ opacity: bgOpacity }}
+          className="absolute inset-0 object-cover w-full h-full -z-20 pointer-events-none select-none"
+          style={{ opacity: clearView ? 1 : bgOpacity }}
         />
       )}
       
       {/* Glow accent */}
-      <div className="absolute right-0 top-0 w-96 h-96 bg-radial from-[#ff3131]/10 to-transparent pointer-events-none -z-10" />
+      {!clearView && (
+        <div className="absolute right-0 top-0 w-96 h-96 bg-radial from-[#ff3131]/10 to-transparent pointer-events-none -z-10" />
+      )}
  
       <div className={`max-w-3xl flex flex-col space-y-4 relative z-10 ${alignmentStyles[layout]}`}>
         {badgeText && (

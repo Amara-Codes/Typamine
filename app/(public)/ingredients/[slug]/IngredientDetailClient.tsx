@@ -80,7 +80,7 @@ export default function IngredientDetailClient({ ingredient, hasPairings = false
 
       <PageHeading
         title={`COMPOUND: ${ingredient.name}`}
-        subtitle={`FORMULA_HASH: ${ingredient.formula || getDeterministicFormula(ingredient.name)} // CATEGORY: ${ingredient.category}`}
+        subtitle={`CATEGORY: ${ingredient.category}`}
         useGrainient
         grainientOptions={{
           color1: theme === "light" ? "#fdfdfd" : "#09090b",

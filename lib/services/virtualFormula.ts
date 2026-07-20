@@ -59,6 +59,7 @@ interface VirtualFormulaSeed {
   description: string;
   fontCategory: string;
   fonts: Ingredient[];
+  tags?: Tag[];
 }
 
 function byRatingDesc(a: { rating: string }, b: { rating: string }) {
@@ -80,7 +81,7 @@ function seedToFormula(seed: VirtualFormulaSeed): Formula {
     createdAt: now,
     updatedAt: now,
     fonts: seed.fonts,
-    tags: [],
+    tags: seed.tags || [],
   };
 }
 
@@ -115,17 +116,29 @@ export async function getVirtualFormulas(): Promise<Formula[]> {
   };
 
   // 1. "Best {Tag} Fonts" — una per ogni tag esistente con almeno un font.
+  // La collection eredita il tag stesso (es. "horror") e la categoria
+  // prevalente tra i font che matchano, invece di un generico "Mixed",
+  // così i filtri per tag/categoria su /formulas restano coerenti.
   for (const tag of tags) {
     const matches = ingredients
       .filter((i) => i.tags?.some((t) => t.id === tag.id))
       .sort(byRatingDesc);
     if (matches.length === 0) continue;
+
+    const categoryCounts = new Map<string, number>();
+    for (const i of matches) {
+      categoryCounts.set(i.category, (categoryCounts.get(i.category) || 0) + 1);
+    }
+    const [dominantCategory, dominantCount] = [...categoryCounts.entries()].sort((a, b) => b[1] - a[1])[0];
+    const fontCategory = dominantCount === matches.length ? dominantCategory : "Mixed";
+
     seeds.push({
       slug: `best-tag-${slugify(tag.name)}`,
       name: `Best ${tag.name} Fonts`,
       description: `Our highest-rated fonts tagged "${tag.name}" — hand-picked for anyone chasing that exact vibe.`,
-      fontCategory: "Mixed",
+      fontCategory,
       fonts: matches.slice(0, PER_FORMULA_LIMIT),
+      tags: [{ id: tag.id, name: tag.name, description: tag.description ?? undefined }],
     });
   }
 

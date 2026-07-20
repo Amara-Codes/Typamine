@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { Filter as FilterIcon, Check } from "lucide-react";
-import { Input } from "@/components/common/Input";
+import { Input, Label } from "@/components/common/Input";
 import { Select } from "@/components/common/Select";
 import { Button } from "@/components/common/Button";
 import BaseModal from "@/components/common/BaseModal";
@@ -18,6 +18,13 @@ export interface SearchSortFilterTag {
   name: string;
 }
 
+export interface SearchSortFilterToggle {
+  /** Query param scritto/letto nell'URL, es. "curated". */
+  paramKey: string;
+  /** Etichetta mostrata accanto allo switch nel modale. */
+  label: string;
+}
+
 export interface SearchSortFilterProps {
   searchPlaceholder?: string;
   searchParamKey?: string;
@@ -30,6 +37,8 @@ export interface SearchSortFilterProps {
   /** Tag disponibili per il filtro multiplo — selezione a "OR": più tag scelti, più risultati (unione, non intersezione). */
   tags?: SearchSortFilterTag[];
   tagsParamKey?: string;
+  /** Filtri booleani generici (switch on/off), es. "mostra solo le curate a mano". */
+  toggleOptions?: SearchSortFilterToggle[];
   filtersModalTitle?: string;
   className?: string;
 }
@@ -49,6 +58,7 @@ export function SearchSortFilter({
   ratingParamKey = "rating",
   tags = [],
   tagsParamKey = "tags",
+  toggleOptions = [],
   filtersModalTitle = "Filters",
   className = "",
 }: SearchSortFilterProps) {
@@ -61,8 +71,12 @@ export function SearchSortFilter({
   const currentCategory = searchParams.get(categoryParamKey) || categoryOptions[0]?.value || "ALL";
   const currentRating = searchParams.get(ratingParamKey) || ratingOptions[0]?.value || "ALL";
   const currentTagIds = (searchParams.get(tagsParamKey) || "").split(",").filter(Boolean);
+  const currentToggles: Record<string, boolean> = {};
+  toggleOptions.forEach((opt) => {
+    currentToggles[opt.paramKey] = searchParams.get(opt.paramKey) === "true";
+  });
 
-  const hasFilterModal = categoryOptions.length > 0 || ratingOptions.length > 0 || tags.length > 0;
+  const hasFilterModal = categoryOptions.length > 0 || ratingOptions.length > 0 || tags.length > 0 || toggleOptions.length > 0;
 
   const updateParams = (updates: Record<string, string | null>) => {
     const params = new URLSearchParams(searchParams.toString());
@@ -103,11 +117,13 @@ export function SearchSortFilter({
   const [draftCategory, setDraftCategory] = useState(currentCategory);
   const [draftRating, setDraftRating] = useState(currentRating);
   const [draftTagIds, setDraftTagIds] = useState<string[]>(currentTagIds);
+  const [draftToggles, setDraftToggles] = useState<Record<string, boolean>>(currentToggles);
 
   const openFilterModal = () => {
     setDraftCategory(currentCategory);
     setDraftRating(currentRating);
     setDraftTagIds(currentTagIds);
+    setDraftToggles(currentToggles);
     setIsFilterModalOpen(true);
   };
 
@@ -117,11 +133,20 @@ export function SearchSortFilter({
     );
   };
 
+  const toggleDraftSwitch = (paramKey: string) => {
+    setDraftToggles((prev) => ({ ...prev, [paramKey]: !prev[paramKey] }));
+  };
+
   const applyFilters = () => {
+    const toggleUpdates: Record<string, string | null> = {};
+    toggleOptions.forEach((opt) => {
+      toggleUpdates[opt.paramKey] = draftToggles[opt.paramKey] ? "true" : null;
+    });
     updateParams({
       [categoryParamKey]: categoryOptions.length > 0 ? draftCategory : null,
       [ratingParamKey]: ratingOptions.length > 0 ? draftRating : null,
       [tagsParamKey]: draftTagIds.length > 0 ? draftTagIds.join(",") : null,
+      ...toggleUpdates,
     });
     setIsFilterModalOpen(false);
   };
@@ -130,10 +155,16 @@ export function SearchSortFilter({
     setDraftCategory(categoryOptions[0]?.value || "ALL");
     setDraftRating(ratingOptions[0]?.value || "ALL");
     setDraftTagIds([]);
+    setDraftToggles({});
+    const toggleUpdates: Record<string, string | null> = {};
+    toggleOptions.forEach((opt) => {
+      toggleUpdates[opt.paramKey] = null;
+    });
     updateParams({
       [categoryParamKey]: null,
       [ratingParamKey]: null,
       [tagsParamKey]: null,
+      ...toggleUpdates,
     });
     setIsFilterModalOpen(false);
   };
@@ -141,7 +172,8 @@ export function SearchSortFilter({
   const activeFilterCount =
     (categoryOptions.length > 0 && currentCategory !== (categoryOptions[0]?.value || "ALL") ? 1 : 0) +
     (ratingOptions.length > 0 && currentRating !== (ratingOptions[0]?.value || "ALL") ? 1 : 0) +
-    currentTagIds.length;
+    currentTagIds.length +
+    toggleOptions.filter((opt) => currentToggles[opt.paramKey]).length;
 
   return (
     <div className={`flex flex-col sm:flex-row items-stretch sm:items-center gap-3 ${className}`}>
@@ -191,27 +223,21 @@ export function SearchSortFilter({
             <div className="space-y-6">
               {categoryOptions.length > 0 && (
                 <div>
-                  <label className="text-[10px] text-bluegray-800 dark:text-redgray-200 uppercase tracking-wider block mb-2 font-bold">
-                    Category
-                  </label>
+                  <Label>Category</Label>
                   <Select options={categoryOptions} value={draftCategory} onChange={setDraftCategory} />
                 </div>
               )}
 
               {ratingOptions.length > 0 && (
                 <div>
-                  <label className="text-[10px] text-bluegray-800 dark:text-redgray-200 uppercase tracking-wider block mb-2 font-bold">
-                    Minimum Rating
-                  </label>
+                  <Label>Minimum Rating</Label>
                   <Select options={ratingOptions} value={draftRating} onChange={setDraftRating} />
                 </div>
               )}
 
               {tags.length > 0 && (
                 <div>
-                  <label className="text-[10px] text-bluegray-800 dark:text-redgray-200 uppercase tracking-wider block mb-2 font-bold">
-                    Tags — select multiple, results include any match
-                  </label>
+                  <Label>Tags — select multiple, results include any match</Label>
                   <div className="flex flex-wrap gap-2 p-3 border border-black/10 dark:border-white/10 rounded-lg bg-white/50 dark:bg-zinc-900/50 max-h-48 overflow-y-auto">
                     {tags.map((t) => {
                       const isSelected = draftTagIds.includes(t.id);
@@ -234,6 +260,31 @@ export function SearchSortFilter({
                   </div>
                 </div>
               )}
+
+              {toggleOptions.map((opt) => {
+                const isOn = !!draftToggles[opt.paramKey];
+                return (
+                  <button
+                    key={opt.paramKey}
+                    type="button"
+                    role="switch"
+                    aria-checked={isOn}
+                    onClick={() => toggleDraftSwitch(opt.paramKey)}
+                    className={`flex items-center gap-3 w-full h-[42px] rounded-xl border px-4 transition-all text-left ${
+                      isOn
+                        ? "border-blue/60 dark:border-red/60 bg-blue/10 dark:bg-red/10"
+                        : "border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900/60"
+                    }`}
+                  >
+                    <span className={`relative inline-flex h-5 w-9 shrink-0 rounded-full border-2 transition-colors ${isOn ? "border-blue dark:border-red bg-blue dark:bg-red" : "border-zinc-200 dark:border-zinc-800 bg-zinc-200 dark:bg-zinc-800"}`}>
+                      <span className={`inline-block h-3.5 w-3.5 rounded-full bg-white shadow-sm transition-transform mt-px ${isOn ? "translate-x-3.5" : "translate-x-px"}`} />
+                    </span>
+                    <span className="text-[10px] font-black uppercase tracking-wider text-black dark:text-white">
+                      {opt.label}
+                    </span>
+                  </button>
+                );
+              })}
             </div>
           </BaseModal.Body>
           <BaseModal.Footer>

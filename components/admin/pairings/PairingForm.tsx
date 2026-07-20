@@ -3,12 +3,127 @@
 import React, { useState, useRef, useEffect, useTransition } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { ArrowLeft, Save, Sparkles, Image as ImageIcon, Trash2, RefreshCw, Check, Tag as TagIcon } from "lucide-react";
+import {
+  ArrowLeft,
+  Save,
+  Sparkles,
+  Image as ImageIcon,
+  Trash2,
+  RefreshCw,
+  Check,
+  Tag as TagIcon,
+  Type,
+  Columns,
+  Quote as QuoteIcon,
+  GripVertical,
+  ChevronDown,
+  Maximize2,
+  Minimize2,
+  FileText,
+} from "lucide-react";
+import { Reorder } from "framer-motion";
 import { savePairing } from "@/lib/actions/pairing";
 import { Button } from "@/components/common/Button";
 import { Select } from "@/components/common/Select";
 import FormActions from "@/components/admin/common/FormActions";
 import SavingOverlay from "@/components/admin/common/SavingOverlay";
+
+import ParagraphModule from "@/components/admin/common/content-modules/ParagraphModule";
+import ParagraphWithImageModule from "@/components/admin/common/content-modules/ParagraphWithImageModule";
+import QuoteModule from "@/components/admin/common/content-modules/QuoteModule";
+
+export type InsightModuleType = "paragraph" | "paragraphWithImage" | "quote";
+
+export interface InsightModule {
+  id: string;
+  type: InsightModuleType;
+  props: Record<string, any>;
+}
+
+function getInsightDefaultProps(type: InsightModuleType) {
+  switch (type) {
+    case "paragraph":
+      return {
+        children: "",
+        as: "p",
+        size: "md",
+        weight: "normal",
+        variant: "default",
+        align: "left",
+        scrollReveal: false,
+        colorClassName: "text-black/100 dark:text-white/100",
+        fontFamily: "standard",
+      };
+    case "quote":
+      return {
+        children: "",
+        author: "",
+        authorDates: "",
+        authorInfo: "",
+        colorClassName: "text-black/100 dark:text-white/100",
+        bgColorClassName: "bg-white/20 dark:bg-black/20",
+        fontFamily: "standard",
+      };
+    case "paragraphWithImage":
+      return {
+        children: "",
+        as: "p",
+        size: "md",
+        weight: "normal",
+        variant: "default",
+        align: "left",
+        imageSrc: "",
+        imageAlt: "",
+        imagePosition: "left",
+        imageAspectRatio: "video",
+        parallax: true,
+        parallaxSpeed: 0.3,
+        overlayOpacity: 0.4,
+        colorClassName: "text-black/100 dark:text-white/100",
+        fontFamily: "standard",
+      };
+    default:
+      return {};
+  }
+}
+
+function getInsightModuleIcon(type: InsightModuleType) {
+  switch (type) {
+    case "paragraph":
+      return <Type className="h-5 w-5" />;
+    case "quote":
+      return <QuoteIcon className="h-5 w-5" />;
+    case "paragraphWithImage":
+      return <Columns className="h-5 w-5" />;
+    default:
+      return <Type className="h-5 w-5" />;
+  }
+}
+
+const insightModuleOptions = [
+  { type: "paragraph", label: "Paragraph", icon: <Type className="h-5 w-5" /> },
+  { type: "paragraphWithImage", label: "Text + Image", icon: <Columns className="h-5 w-5" /> },
+  { type: "quote", label: "Quote", icon: <QuoteIcon className="h-5 w-5" /> },
+] as const;
+
+function InsightModuleForm({
+  module,
+  onChange,
+}: {
+  module: InsightModule;
+  onChange: (newProps: Record<string, any>) => void;
+}) {
+  switch (module.type) {
+    case "paragraph":
+      return <ParagraphModule module={module} onChange={onChange} />;
+    case "paragraphWithImage":
+      return <ParagraphWithImageModule module={module} onChange={onChange} />;
+    case "quote":
+      return <QuoteModule module={module} onChange={onChange} />;
+    default:
+      return null;
+  }
+}
 
 interface PairingFormProps {
   initialData?: any;
@@ -33,11 +148,70 @@ export default function PairingForm({ initialData, fonts, tags }: PairingFormPro
     (initialData?.tags || []).map((t: any) => t.id)
   );
 
+  // Insight Modules State
+  const [insightModules, setInsightModules] = useState<InsightModule[]>(() => {
+    if (initialData?.insight) {
+      try {
+        const parsed = typeof initialData.insight === "string" ? JSON.parse(initialData.insight) : initialData.insight;
+        if (Array.isArray(parsed)) return parsed;
+      } catch (e) {
+        console.error("Failed to parse initial insight modules JSON", e);
+      }
+    }
+    return [];
+  });
+  const [collapsedInsightModules, setCollapsedInsightModules] = useState<Set<string>>(new Set());
+
+  const addInsightModule = (type: InsightModuleType) => {
+    const newId = Math.random().toString(36).substring(2, 11);
+    const newModule: InsightModule = {
+      id: newId,
+      type,
+      props: getInsightDefaultProps(type),
+    };
+    setInsightModules((prev) => [...prev, newModule]);
+  };
+
+  const removeInsightModule = (id: string) => {
+    setInsightModules((prev) => prev.filter((m) => m.id !== id));
+    setCollapsedInsightModules((prev) => {
+      const next = new Set(prev);
+      next.delete(id);
+      return next;
+    });
+  };
+
+  const updateInsightModuleProps = (id: string, newProps: Record<string, any>) => {
+    setInsightModules((prev) =>
+      prev.map((m) => (m.id === id ? { ...m, props: newProps } : m))
+    );
+  };
+
+  const toggleInsightCollapse = (id: string) => {
+    setCollapsedInsightModules((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) {
+        next.delete(id);
+      } else {
+        next.add(id);
+      }
+      return next;
+    });
+  };
+
+  const expandAllInsight = () => setCollapsedInsightModules(new Set());
+  const collapseAllInsight = () =>
+    setCollapsedInsightModules(new Set(insightModules.map((m) => m.id)));
+
   // Image Upload & Canvas States
   const [currentImageUrl, setCurrentImageUrl] = useState<string | null>(initialData?.imageUrl || null);
   const [removeImage, setRemoveImage] = useState(false);
   const [canvasDataUrl, setCanvasDataUrl] = useState<string | null>(null);
-  const [activeTab, setActiveTab] = useState<"canvas" | "upload">("canvas");
+  // In modifica partiamo dalla tab "upload" (mostra l'immagine attuale così
+  // com'è); in creazione partiamo da "canvas" per invogliare a usare il
+  // generatore. Evita di mostrare di default un'anteprima canvas con testo
+  // placeholder quando l'immagine reale è stata caricata a mano.
+  const [activeTab, setActiveTab] = useState<"canvas" | "upload">(initialData ? "upload" : "canvas");
 
   // Canvas Config States
   const [primaryText, setPrimaryText] = useState("Typamine Studio");
@@ -53,6 +227,24 @@ export default function PairingForm({ initialData, fonts, tags }: PairingFormPro
   const [paddingX, setPaddingX] = useState(70);
   const [textAlign, setTextAlign] = useState<"left" | "center" | "right">("left");
   const [swapFonts, setSwapFonts] = useState(false);
+
+  // Non salviamo i parametri del canvas (colori, font size, posizioni...) usati
+  // per generare l'immagine, solo il PNG finale: non c'è modo di ripristinarli
+  // in modifica. Senza questo flag, ogni save rigenererebbe e sovrascriverebbe
+  // l'immagine esistente con un render fatto sui valori di default sopra.
+  const [canvasTouched, setCanvasTouched] = useState(false);
+  const isFirstCanvasEffectRun = useRef(true);
+  useEffect(() => {
+    if (isFirstCanvasEffectRun.current) {
+      isFirstCanvasEffectRun.current = false;
+      return;
+    }
+    setCanvasTouched(true);
+  }, [
+    primaryText, secondaryText, bgColor, primaryColor, secondaryColor,
+    layoutPreset, primaryFontSize, secondaryFontSize, primaryY, secondaryY,
+    paddingX, textAlign, swapFonts,
+  ]);
 
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
@@ -277,8 +469,12 @@ export default function PairingForm({ initialData, fonts, tags }: PairingFormPro
     selectedTagIds.forEach((tId) => formData.append("tagIds", tId));
     formData.set("published", String(published));
 
-    // If using canvas tab and canvas was generated, set canvasImageData
-    if (activeTab === "canvas" && canvasDataUrl) {
+    // Se stiamo modificando una pairing esistente, rigeneriamo (sovrascrivendo)
+    // l'immagine via canvas solo se l'utente ha davvero toccato un controllo
+    // del generatore in questa sessione — altrimenti un save per un motivo
+    // qualunque (es. solo la description) sovrascriverebbe silenziosamente
+    // l'immagine attuale con un render dai valori di default.
+    if (activeTab === "canvas" && canvasDataUrl && (!initialData || canvasTouched)) {
       formData.set("canvasImageData", canvasDataUrl);
     }
 
@@ -321,6 +517,9 @@ export default function PairingForm({ initialData, fonts, tags }: PairingFormPro
         </div>
       )}
       <form onSubmit={handleSubmit} className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        {/* Hidden field for serialised Insight JSON modules */}
+        <input type="hidden" name="insight" value={JSON.stringify(insightModules)} />
+
         {/* Form Actions (Top of form, full width) */}
         <div className="lg:col-span-12">
           <FormActions
@@ -776,8 +975,161 @@ export default function PairingForm({ initialData, fonts, tags }: PairingFormPro
                 </div>
               </div>
             )}
+          </div>
+        </div>
 
-            {/* Repositioned Save Button to Top */}
+        {/* Card 4: Pairing Insight Modules (Full Width) */}
+        <div className="lg:col-span-12 space-y-6">
+          <div className="border border-black/5 dark:border-white/5 rounded-2xl p-6 sm:p-8 shadow-xl backdrop-blur-xl bg-white/50 dark:bg-zinc-950/50 space-y-6">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-black/5 dark:border-white/5 pb-4">
+              <div className="flex items-center gap-3">
+                <div className="p-3 bg-black/5 dark:bg-white/10 rounded-2xl shadow-inner text-black dark:text-white">
+                  <FileText className="h-6 w-6" />
+                </div>
+                <div>
+                  <h3 className="text-xl font-star font-bold text-black dark:text-white">Pairing Insight Modules</h3>
+                  <p className="text-[10px] text-zinc-500 font-bold uppercase tracking-wider mt-0.5">
+                    Build rich editorial insights using Paragraph, Text + Image, and Quote modules
+                  </p>
+                </div>
+              </div>
+
+              {insightModules.length > 0 && (
+                <div className="flex gap-2">
+                  <button
+                    type="button"
+                    onClick={expandAllInsight}
+                    className="p-2.5 bg-white/40 dark:bg-white/5 border border-white/20 dark:border-white/10 rounded-xl text-black/60 dark:text-white/60 hover:bg-white dark:hover:bg-white/10 transition-all shadow-xs"
+                    title="Expand All"
+                  >
+                    <Maximize2 className="h-4 w-4" />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={collapseAllInsight}
+                    className="p-2.5 bg-white/40 dark:bg-white/5 border border-white/20 dark:border-white/10 rounded-xl text-black/60 dark:text-white/60 hover:bg-white dark:hover:bg-white/10 transition-all shadow-xs"
+                    title="Collapse All"
+                  >
+                    <Minimize2 className="h-4 w-4" />
+                  </button>
+                </div>
+              )}
+            </div>
+
+            {/* Module Addition Toolbar */}
+            <div className="space-y-3">
+              <label className="text-[10px] font-bold text-black/60 dark:text-white/60 uppercase tracking-[0.2em] block">
+                Add Insight Module
+              </label>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                {insightModuleOptions.map((opt) => (
+                  <button
+                    key={opt.type}
+                    type="button"
+                    onClick={() => addInsightModule(opt.type)}
+                    className="flex items-center gap-3 p-4 rounded-xl bg-white/60 dark:bg-zinc-900/60 border border-black/5 dark:border-white/10 hover:border-black/20 dark:hover:border-white/30 hover:bg-white dark:hover:bg-zinc-900 transition-all group shadow-xs hover:translate-x-0.5"
+                  >
+                    <div className="p-2.5 rounded-lg bg-black/5 dark:bg-white/10 text-black dark:text-white group-hover:scale-105 transition-transform">
+                      {opt.icon}
+                    </div>
+                    <div className="text-left">
+                      <p className="text-xs font-bold text-black dark:text-white uppercase tracking-wider">{opt.label}</p>
+                      <p className="text-[9px] text-zinc-400">Insert on insight canvas</p>
+                    </div>
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Reorderable Insight Modules Canvas */}
+            <div className="space-y-4 pt-2">
+              <Reorder.Group
+                axis="y"
+                values={insightModules}
+                onReorder={setInsightModules}
+                className="space-y-4"
+              >
+                {insightModules.map((module) => (
+                  <Reorder.Item
+                    key={module.id}
+                    value={module}
+                    id={`insight-module-card-${module.id}`}
+                    initial={{ opacity: 0, y: 15 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, scale: 0.95 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <div className="group relative bg-white/80 dark:bg-zinc-900/80 border border-black/10 dark:border-white/10 rounded-2xl shadow-md transition-all hover:border-black/20 dark:hover:border-white/20">
+                      {/* Accordion Header */}
+                      <div
+                        className="flex items-center justify-between p-5 cursor-pointer select-none transition-colors rounded-2xl hover:bg-black/2 dark:hover:bg-white/2"
+                        onClick={() => toggleInsightCollapse(module.id)}
+                      >
+                        <div className="flex items-center gap-4">
+                          <div className="p-2 bg-black/5 dark:bg-white/10 rounded-lg text-black/60 dark:text-white/60">
+                            {getInsightModuleIcon(module.type)}
+                          </div>
+                          <div>
+                            <h4 className="text-xs font-bold text-black dark:text-white uppercase tracking-[0.15em]">
+                              {module.type.replace(/([A-Z])/g, " $1")}
+                            </h4>
+                            <p className="text-[9px] text-zinc-400 font-mono">ID: {module.id}</p>
+                          </div>
+                        </div>
+
+                        <div className="flex items-center gap-4">
+                          <div className="flex items-center gap-1">
+                            <button
+                              type="button"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                removeInsightModule(module.id);
+                              }}
+                              className="p-2 text-red-500/50 hover:text-red-500 transition-colors"
+                              title="Delete Module"
+                            >
+                              <Trash2 className="h-4 w-4" />
+                            </button>
+                            <div className="p-2 text-black/30 dark:text-white/30 cursor-grab active:cursor-grabbing">
+                              <GripVertical className="h-4 w-4" />
+                            </div>
+                          </div>
+                          <div
+                            className={`transition-transform duration-300 ${
+                              collapsedInsightModules.has(module.id) ? "" : "rotate-180"
+                            }`}
+                          >
+                            <ChevronDown className="h-5 w-5 text-black/30 dark:text-white/30" />
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Accordion Body */}
+                      {!collapsedInsightModules.has(module.id) && (
+                        <div className="p-6 sm:p-8 border-t border-black/5 dark:border-white/5">
+                          <InsightModuleForm
+                            module={module}
+                            onChange={(newProps) => updateInsightModuleProps(module.id, newProps)}
+                          />
+                        </div>
+                      )}
+                    </div>
+                  </Reorder.Item>
+                ))}
+              </Reorder.Group>
+
+              {insightModules.length === 0 && (
+                <div className="border-2 border-dashed border-black/10 dark:border-white/10 rounded-2xl py-12 flex flex-col items-center justify-center text-center px-6">
+                  <div className="h-14 w-14 rounded-full bg-black/5 dark:bg-white/5 flex items-center justify-center mb-3 text-black/30 dark:text-white/30">
+                    <FileText className="h-7 w-7" />
+                  </div>
+                  <h4 className="text-sm font-bold text-black/70 dark:text-white/70">No insight modules added yet</h4>
+                  <p className="text-xs text-zinc-400 mt-1 max-w-xs">
+                    Click one of the buttons above to add Paragraphs, Images, or Quotes to this pairing.
+                  </p>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </form>

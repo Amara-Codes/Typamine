@@ -39,28 +39,30 @@ export const FormulaCard: React.FC<FormulaCardProps> = ({ formula, isCurated = f
       href={`/formulas/${formula.slug}`}
       className="border border-zinc-200 dark:border-zinc-800 bg-white/50 dark:bg-zinc-950 p-4 rounded-lg flex flex-col sm:flex-row sm:items-stretch justify-between gap-4 transition-all group hover:border-zinc-400 dark:hover:border-zinc-700 cursor-pointer"
     >
-      <div className="space-y-1">
+      <div className="space-y-1 min-w-0 flex-1">
         <div className="flex items-center flex-wrap gap-2">
           <span className="font-haas text-[10px] bg-zinc-100 dark:bg-zinc-900 text-zinc-500 dark:text-zinc-400 border border-zinc-200 dark:border-zinc-800 px-1.5 py-0.5 rounded">
             {displayCode}
           </span>
           <h3 className="font-haas text-lg font-bold text-foreground">{formula.name}</h3>
-          {isCurated && (
-            <Badge icon={<Sparkles className="h-2.5 w-2.5" />} className="!text-[9px] !py-0.5">
-              Typamine Selection
-            </Badge>
-          )}
         </div>
         <p className="text-zinc-500 dark:text-zinc-400">{formula.description}</p>
         <p className="font-haas text-sm text-zinc-500 dark:text-zinc-400 mt-2">INGREDIENTS: {formula.fonts.slice(0, 2).map(f => f.name).join(" + ") + "..."} </p>
       </div>
 
-      <div className="text-right font-haas text-[10px] flex sm:flex-col items-center sm:items-end justify-between border-t sm:border-t-0 border-zinc-200 dark:border-zinc-800 pt-2 sm:pt-0.5 sm:pb-1">
-        <div className="flex align-bottom">
-          <span className="text-zinc-500 dark:text-zinc-400 font-bold">FORMULATED: </span>
-          <span className="ps-2 text-zinc-500 dark:text-zinc-400">{formula.createdAt?.slice(0, 10)}</span></div>
-        <div className="flex flex-row items-center gap-2 font-haas text-[10px] text-red transition-colors pe-4">
-            READ_FULL
+      <div className="shrink-0 font-haas text-[10px] flex flex-col items-end justify-between border-t sm:border-t-0 border-zinc-200 dark:border-zinc-800 pt-2 sm:pt-0.5 sm:pb-1 gap-2 sm:gap-0">
+        {isCurated ? (
+          <div className="pe-4">
+            <Badge className="!text-[9px] !py-0.5" ping>
+              Typamine Selection
+            </Badge>
+          </div>
+        ) : (
+          <div />
+        )}
+
+        <div className="flex flex-row items-center gap-2 font-haas text-[10px] text-red transition-colors pe-4 whitespace-nowrap">
+           View all
             <MoveRight size={12} className="icon-altalenante" />
         </div>
       </div>

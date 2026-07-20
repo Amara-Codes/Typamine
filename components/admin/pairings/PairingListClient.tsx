@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { Edit, Check, X, AlertTriangle, Image as ImageIcon } from "lucide-react";
+import { Edit, Check, X, AlertTriangle, Image as ImageIcon, Tag } from "lucide-react";
 import ContentTable from "@/components/common/ContentTable";
 import DeleteButton from "@/components/common/DeleteButton";
 import { deletePairing } from "@/lib/actions/pairing";
@@ -146,15 +146,17 @@ export default function PairingListClient({ pairings, totalCount, canUpdate, can
               header: "Tags",
               className: "flex-1 hidden lg:block",
               render: (p: any) => (
-                <div className="flex flex-wrap gap-1">
-                  {(p.tags || []).map((t: any) => (
-                    <Badge key={t.id} className="text-[9px] py-0 px-2">
-                      {t.name}
-                    </Badge>
-                  ))}
-                  {(!p.tags || p.tags.length === 0) && (
-                    <span className="text-xs text-zinc-400 italic">No tags</span>
-                  )}
+                <div
+                  className={`px-3 py-1.5 rounded-md flex items-center gap-2 border shadow-sm text-xs max-w-fit mt-1 ${
+                    p.tags?.length
+                      ? "bg-white text-blue-800 dark:bg-redgray-800 dark:text-red-200 border-blue-800 dark:border-red-200"
+                      : "bg-zinc-400 dark:bg-zinc-900 border-zinc-900 dark:border-zinc-900 text-zinc-900 dark:text-zinc-400"
+                  }`}
+                >
+                  <Tag className="h-3.5 w-3.5 shrink-0" />
+                  <span className="text-[10px] font-black uppercase tracking-tighter">
+                    {p.tags?.length || 0} Tags
+                  </span>
                 </div>
               ),
             },

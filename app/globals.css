@@ -17,8 +17,8 @@
    border-red-500, ring-red-500, ecc.).
    ============================================================ */
 @theme {
-  --color-white: #F5F6F9;
-  --color-black: #0C0B0A;
+  --color-white: #EEF0F2;
+  --color-black: #13100F;
 
   /* Chemical Red — brand primario */
   --color-red-100: #ffbaba;
@@ -203,8 +203,8 @@
   --color-green: #00d27a;
 
   /* Redefining Tailwind's core custom properties at root */
-  --color-white: #F5F6F9;
-  --color-black: #0C0B0A;
+  --color-white: #EEF0F2;
+  --color-black: #13100F;
 
   /* Glow shadows */
   --glow-red-shadow: 0 0 15px rgba(255, 49, 49, 0.25);
@@ -268,8 +268,8 @@
   --color-border-gray: #27272a;
 
   /* Keep overrides in dark mode too */
-  --color-white: #F5F6F9;
-  --color-black: #0C0B0A;
+  --color-white: #EEF0F2;
+  --color-black: #13100F;
 
   /* Glow shadows */
   --glow-red-shadow: 0 0 15px rgba(255, 49, 49, 0.35);
@@ -457,6 +457,24 @@ h1, h2, h3 {
 
 .font-star {
   font-family: var(--font-star);
+}
+
+/* Colore/sfondo dinamico per i content module (blog, pairing insight, ecc.):
+   il valore reale (rgba o gradiente) arriva via inline style da
+   lib/dynamicStyle.ts, calcolato a runtime da dati nel DB — Tailwind non
+   può generare CSS per queste combinazioni perché non esistono come testo
+   letterale nei file sorgente. */
+.dyn-text {
+  color: var(--dyn-text-light, inherit);
+}
+.dark .dyn-text {
+  color: var(--dyn-text-dark, inherit);
+}
+.dyn-bg {
+  background: var(--dyn-bg-light, transparent);
+}
+.dark .dyn-bg {
+  background: var(--dyn-bg-dark, transparent);
 }
 
 /* Technical / Laboratory Styling Helpers */

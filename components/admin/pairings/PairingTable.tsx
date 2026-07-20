@@ -119,14 +119,12 @@ export default function PairingTable({ pairings }: PairingTableProps) {
               className: "flex-1 hidden lg:block",
               render: (p: any) => (
                 <div className="flex flex-wrap gap-1">
-                  {(p.tags || []).map((t: any) => (
-                    <Badge key={t.id} className="text-[9px] py-0 px-2">
-                      {t.name}
-                    </Badge>
-                  ))}
-                  {(!p.tags || p.tags.length === 0) && (
-                    <span className="text-xs text-zinc-400 italic">No tags</span>
-                  )}
+            {p.tags && p.tags.length ? (
+  <span className="text-xs text-black dark:text-white italic">{p.tags.length} Tags</span>
+            ): (
+  <span className="text-xs text-zinc-400 italic">No tags</span>
+            )}
+    
                 </div>
               ),
             },

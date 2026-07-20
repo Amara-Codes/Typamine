@@ -194,6 +194,7 @@ exports.Prisma.PrescriptionScalarFieldEnum = {
   slug: 'slug',
   description: 'description',
   imageUrl: 'imageUrl',
+  insight: 'insight',
   published: 'published',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',

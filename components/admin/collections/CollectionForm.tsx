@@ -4,7 +4,7 @@ import React, { useActionState, useState, useEffect } from "react";
 import { saveFormula } from "@/lib/actions/formula";
 import { AlertCircle, Tag as TagIcon, Type as FontIcon, Check } from "lucide-react";
 import { Select } from "@/components/common/Select";
-import { Input } from "@/components/common/Input";
+import { Input, Label } from "@/components/common/Input";
 import FormActions from "@/components/admin/common/FormActions";
 import BaseModal from "@/components/common/BaseModal";
 import SavingOverlay from "@/components/admin/common/SavingOverlay";
@@ -111,9 +111,7 @@ export default function CollectionForm({ formula, fonts = [], tags = [] }: Colle
             </div>
 
             <div>
-              <label className="text-[10px] text-bluegray-800 dark:text-redgray-200 uppercase tracking-wider block mb-2 font-bold">
-                Description
-              </label>
+              <Label>Description</Label>
               <textarea
                 name="description"
                 rows={4}
@@ -173,7 +171,7 @@ export default function CollectionForm({ formula, fonts = [], tags = [] }: Colle
 
               <div className="space-y-6">
                 <div>
-                  <label className="text-[10px] text-bluegray-800 dark:text-redgray-200 uppercase tracking-wider block mb-2 font-bold">Font Category</label>
+                  <Label>Font Category</Label>
                   <Select
                     options={CATEGORY_OPTIONS}
                     value={fontCategory}
@@ -184,10 +182,7 @@ export default function CollectionForm({ formula, fonts = [], tags = [] }: Colle
                 </div>
 
                 <div>
-                  <label className="text-[10px] text-bluegray-800 dark:text-redgray-200 uppercase tracking-wider mb-2 font-bold flex items-center gap-1.5">
-                    <TagIcon className="w-3 h-3" />
-                    Tags
-                  </label>
+                  <Label icon={TagIcon}>Tags</Label>
                   <div className="flex flex-wrap gap-2 p-3 border border-black/10 dark:border-white/10 rounded-lg bg-white/50 dark:bg-zinc-900/50 max-h-36 overflow-y-auto">
                     {tags.map((t) => {
                       const isSelected = selectedTagIds.includes(t.id);

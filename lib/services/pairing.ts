@@ -37,6 +37,7 @@ function toPrescription(record: any): Prescription {
     slug: record.slug,
     description: record.description ?? undefined,
     imageUrl: record.imageUrl ?? undefined,
+    insight: record.insight ?? undefined,
     published: record.published,
     createdAt: record.createdAt?.toISOString(),
     updatedAt: record.updatedAt?.toISOString(),
