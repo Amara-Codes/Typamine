@@ -46,11 +46,11 @@ export default function UserForm({ user, roles }: { user?: any, roles: any[] }) 
         buttonLabel={user ? "Update Account" : "Create User"} 
       />
 
-      <div className="bg-zinc-100/40 dark:bg-zinc-900 border border-zinc-900/5 dark:border-zinc-100/5 rounded-2xl p-8 sm:p-10 shadow-2xl backdrop-blur-xl transition-all hover:shadow-zinc-900/5">
-        <div className="flex flex-col justify-end mb-10 border-b border-zinc-900/5 dark:border-zinc-100/5 pb-6">
-      
-            <h3 className="text-4xl font-star text-zinc-900 dark:text-white">User Identity</h3>
-            <p className="text-[10px] ps-2 uppercase tracking-widest font-bold text-zinc-500 dark:text-zinc-400 mt-1">Configure administrator access and profile details</p>
+      <div className="bg-zinc-100/40 dark:bg-zinc-900 border border-black/5 dark:border-white/5 rounded-2xl p-8 sm:p-10 shadow-2xl backdrop-blur-xl transition-all hover:shadow-zinc-900/5">
+        <div className="flex flex-col justify-end mb-10 border-b border-black/5 dark:border-white/5 pb-6">
+
+            <h3 className="text-4xl font-star text-black dark:text-white">User Identity</h3>
+            <p className="text-[10px] ps-2 uppercase tracking-widest font-bold text-bluegray-800 dark:text-redgray-200 mt-1">Configure administrator access and profile details</p>
        
         </div>
 
@@ -103,7 +103,7 @@ export default function UserForm({ user, roles }: { user?: any, roles: any[] }) 
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="text-zinc-400 dark:text-zinc-500 hover:text-zinc-900 dark:hover:text-white transition-colors"
+                    className="text-zinc-500 dark:text-zinc-400 hover:text-black dark:hover:text-white transition-colors"
                   >
                     {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                   </button>
@@ -119,12 +119,12 @@ export default function UserForm({ user, roles }: { user?: any, roles: any[] }) 
                 onChange={setPasswordConfirm}
                 required={!user || password.length > 0}
                 placeholder="••••••••"
-                leftIcon={<Lock className={cn("h-5 w-5", password && password === passwordConfirm ? "text-emerald-500" : "text-zinc-400")} />}
+                leftIcon={<Lock className={cn("h-5 w-5", password && password === passwordConfirm ? "text-emerald-500" : "text-zinc-500 dark:text-zinc-400")} />}
                 rightIcon={
                   <button
                     type="button"
                     onClick={() => setShowPasswordConfirm(!showPasswordConfirm)}
-                    className="text-zinc-400 dark:text-zinc-500 hover:text-zinc-900 dark:hover:text-white transition-colors"
+                    className="text-zinc-500 dark:text-zinc-400 hover:text-black dark:hover:text-white transition-colors"
                   >
                     {showPasswordConfirm ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                   </button>
@@ -135,7 +135,7 @@ export default function UserForm({ user, roles }: { user?: any, roles: any[] }) 
             </div>
 
             <div>
-              <label className="text-[10px] text-zinc-900 dark:text-white uppercase tracking-wider block mb-1">Access Role</label>
+              <label className="text-[10px] text-bluegray-800 dark:text-redgray-200 uppercase tracking-wider block mb-1">Access Role</label>
               <div className="relative">
                 <Select
                   options={roles.map(role => ({ value: role.id, label: role.name.replace(/_/g, " ") }))}
@@ -148,23 +148,23 @@ export default function UserForm({ user, roles }: { user?: any, roles: any[] }) 
             </div>
 
             <div className="">
-              <label className="text-[10px] font-jakarta text-zinc-900 dark:text-white uppercase tracking-wider block mb-1">Biography</label>
+              <label className="text-[10px] font-jakarta text-bluegray-800 dark:text-redgray-200 uppercase tracking-wider block mb-1">Biography</label>
               <textarea
                 id="biography"
                 name="biography"
                 defaultValue={user?.biography}
                 placeholder="Write a short biography about the author..."
                 rows={5}
-                className="w-full bg-zinc-900/40 dark:bg-zinc-900/60 border border-zinc-300 dark:border-zinc-800 focus:border-blue dark:focus:border-red rounded-lg px-3 py-2 text-foreground outline-none transition-colors resize-none min-h-[120px]"
+                className="w-full bg-zinc-900/40 dark:bg-zinc-900/60 border border-bluegray-300 dark:border-redgray-700 focus:border-blue dark:focus:border-red rounded-lg px-3 py-2 text-foreground outline-none transition-colors resize-none min-h-[120px]"
               />
             </div>
           </div>
 
           <div className="flex flex-col gap-12">
             <div>
-              <h3 className="text-[10px] font-bold text-center uppercase tracking-widest text-zinc-500 dark:text-zinc-400 mb-4">Avatar Photo</h3>
+              <h3 className="text-[10px] font-bold text-center uppercase tracking-widest text-bluegray-800 dark:text-redgray-200 mb-4">Avatar Photo</h3>
               <div className="flex flex-col items-center gap-4">
-                <div className="h-52 w-52 rounded-xl bg-white/50 dark:bg-white/5 border-2 border-dashed border-zinc-900/10 dark:border-cyan-500/30 flex flex-col items-center justify-center gap-2 relative group cursor-pointer overflow-hidden text-zinc-400 dark:text-zinc-500 hover:bg-white dark:hover:bg-white/10 hover:border-zinc-900/30 dark:hover:border-cyan-500/60 transition-all shadow-inner">
+                <div className="h-52 w-52 rounded-xl bg-white/50 dark:bg-white/5 border-2 border-dashed border-zinc-900/10 dark:border-cyan-500/30 flex flex-col items-center justify-center gap-2 relative group cursor-pointer overflow-hidden text-zinc-500 dark:text-zinc-400 hover:bg-white dark:hover:bg-white/10 hover:border-zinc-900/30 dark:hover:border-cyan-500/60 transition-all shadow-inner">
                   {isCompressing ? (
                     <div className="flex flex-col items-center gap-4 animate-in fade-in zoom-in duration-300">
                       <Loader2 className="h-10 w-10 text-red-500 animate-spin" />
@@ -238,7 +238,7 @@ export default function UserForm({ user, roles }: { user?: any, roles: any[] }) 
                   />
                 </div>
                 <input type="hidden" name="removeImage" value={String(removeImage)} />
-                <p className="text-[10px] text-zinc-400 dark:text-zinc-500 uppercase tracking-tighter font-bold">Square profile image.</p>
+                <p className="text-[10px] text-zinc-500 dark:text-zinc-400 uppercase tracking-tighter font-bold">Square profile image.</p>
               </div>
             </div>
           </div>
@@ -251,12 +251,12 @@ export default function UserForm({ user, roles }: { user?: any, roles: any[] }) 
             <div className="p-2 bg-red-500/10 rounded-lg">
               <AlertCircle className="w-6 h-6 text-red-500" />
             </div>
-            <h2 className="text-2xl font-star text-zinc-900 dark:text-white">User Profile Update Failed</h2>
+            <h2 className="text-2xl font-star text-black dark:text-white">User Profile Update Failed</h2>
           </div>
         </BaseModal.Header>
         <BaseModal.Body>
           <div className="space-y-4">
-            <p className="text-zinc-600 dark:text-zinc-300 font-haas">
+            <p className="text-zinc-500 dark:text-zinc-400 font-haas">
               We encountered an error while trying to save the user profile:
             </p>
             <div className="p-4 bg-red-500/10 border border-red-500/20 rounded-xl text-red-500 font-bold text-sm">

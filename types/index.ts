@@ -7,6 +7,14 @@ export interface FontVariant {
   label: string;          // es: "Regular" o "Bold" (Utile per la UI)
 }
 
+export interface Tag {
+  id: string;
+  name: string;
+  description?: string;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
 export interface Ingredient {
   id: string;
   name: string;           // "Inter"
@@ -17,9 +25,12 @@ export interface Ingredient {
   symbol?: string;
   formula?: string;
   isVariable?: boolean;
-  
+  createdAt?: string;
+  updatedAt?: string;
+  tags?: Tag[];
+
   // Sostituiamo i vecchi campi singoli con un array
-  variants: FontVariant[]; 
+  variants: FontVariant[];
 }
 
 export interface ProviderFontItem {
@@ -33,24 +44,39 @@ export interface ProviderFontItem {
 export interface PlaygroundFont {
   name: string;
   fontFamily: string;
+  /** Real font file URL — when set, LivePreview injects an actual @font-face instead of relying on `fontFamily` already being loaded. */
+  fontUrl?: string;
 }
 
 export interface Formula {
   id: string;
   name: string;
-  description: string;
-  href: string;
+  description?: string;
+  slug: string;
   fonts: Ingredient[];
-  code?: string;
+  tags: Tag[];
+  fontCategory: string;
   createdAt: string;
+  updatedAt: string;
 }
 
 export interface Prescription {
   id: string;
   name: string;
-  href: string;
-  fonts: Ingredient[];
+  slug?: string;
   description?: string;
+  imageUrl?: string;
+  published?: boolean;
+  createdAt?: string;
+  updatedAt?: string;
+  primaryFontId?: string;
+  primaryFont?: Ingredient;
+  secondaryFontId?: string;
+  secondaryFont?: Ingredient;
+  tags?: (Tag | string)[];
+
+  // Backward compatibility fields for legacy UI components
+  href?: string;
+  fonts?: Ingredient[];
   imgUrl?: string;
-  tags: string[];
 }

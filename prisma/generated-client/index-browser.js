@@ -173,29 +173,40 @@ exports.Prisma.IngredientScalarFieldEnum = {
   rating: 'rating',
   symbol: 'symbol',
   formula: 'formula',
-  isVariable: 'isVariable'
+  isVariable: 'isVariable',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 };
 
 exports.Prisma.FormulaScalarFieldEnum = {
   id: 'id',
   name: 'name',
   description: 'description',
-  href: 'href',
-  code: 'code',
-  createdAt: 'createdAt'
+  slug: 'slug',
+  fontCategory: 'fontCategory',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 };
 
 exports.Prisma.PrescriptionScalarFieldEnum = {
   id: 'id',
   name: 'name',
-  href: 'href',
+  slug: 'slug',
   description: 'description',
-  imgUrl: 'imgUrl'
+  imageUrl: 'imageUrl',
+  published: 'published',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  primaryFontId: 'primaryFontId',
+  secondaryFontId: 'secondaryFontId'
 };
 
 exports.Prisma.TagScalarFieldEnum = {
   id: 'id',
-  name: 'name'
+  name: 'name',
+  description: 'description',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 };
 
 exports.Prisma.SortOrder = {

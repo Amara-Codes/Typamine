@@ -182,7 +182,7 @@ export default function BlogPostsTable({ posts, canDelete, canUpdate, canPublish
                 <select 
                   value={sort} 
                   onChange={(e) => handleSortChange(e.target.value)} 
-                  className="bg-zinc-900/40 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 text-zinc-800 dark:text-zinc-200 rounded-lg px-3 py-1.5 text-xs outline-none cursor-pointer"
+                  className="bg-zinc-900/40 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 text-zinc-500 dark:text-zinc-400 rounded-lg px-3 py-1.5 text-xs outline-none cursor-pointer"
                 >
                   <option value="desc">Most Recent</option>
                   <option value="asc">Less Recent</option>
@@ -195,7 +195,7 @@ export default function BlogPostsTable({ posts, canDelete, canUpdate, canPublish
                 <select 
                   value={perPage.toString()} 
                   onChange={(e) => handlePerPageChange(e.target.value)} 
-                  className="bg-zinc-900/40 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 text-zinc-800 dark:text-zinc-200 rounded-lg px-3 py-1.5 text-xs outline-none cursor-pointer"
+                  className="bg-zinc-900/40 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 text-zinc-500 dark:text-zinc-400 rounded-lg px-3 py-1.5 text-xs outline-none cursor-pointer"
                 >
                   <option value="10">10</option>
                   <option value="20">20</option>

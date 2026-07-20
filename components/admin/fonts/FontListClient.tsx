@@ -101,14 +101,14 @@ export default function FontListClient({ fonts, totalCount, canUpdate, canDelete
               className: "flex-[2] md:flex-[3] min-w-0",
               render: (font: any) => (
                 <div className="flex items-center gap-4 min-w-0 py-1">
-                  <div className="w-12 h-12 border border-black/5 dark:border-white/5 rounded bg-bluegray-100 dark:bg-redgray-900 flex items-center justify-center font-haas font-bold text-lg text-red-800 dark:text-blue-400 transition-all shrink-0">
+                  <div className="w-12 h-12 border border-black/5 dark:border-white/5 rounded bg-bluegray-100 dark:bg-redgray-900 flex items-center justify-center font-haas font-bold text-lg text-blue-800 dark:text-red-400 transition-all shrink-0">
                     {font.symbol || GetSymbol({ fontName: font.name })}
                   </div>
                   <div className="min-w-0">
                     <p className="font-star text-2xl text-black dark:text-white leading-tight truncate">
                       {font.name}
                     </p>
-                    <p className="text-[10px] text-red-800 dark:text-blue-400 font-bold uppercase tracking-widest mt-1 truncate">
+                    <p className="text-[10px] text-blue-800 dark:text-red-400 font-bold uppercase tracking-widest mt-1 truncate">
                       {font.category}
                     </p>
                   </div>
@@ -199,15 +199,15 @@ export default function FontListClient({ fonts, totalCount, canUpdate, canDelete
             <div className="p-2 rounded-xl bg-red/10">
               <AlertTriangle className="w-6 h-6 text-red" />
             </div>
-            <h2 className="text-2xl font-star text-zinc-900 dark:text-white">Confirm Bulk Deletion</h2>
+            <h2 className="text-2xl font-star text-black dark:text-white">Confirm Bulk Deletion</h2>
           </div>
         </BaseModal.Header>
         <BaseModal.Body>
           <div className="space-y-4">
-            <p className="text-xl font-star text-center mb-8 font-bold text-zinc-900 dark:text-white leading-tight">
+            <p className="text-xl font-star text-center mb-8 font-bold text-black dark:text-white leading-tight">
               Delete {selectedIds.length} selected font{selectedIds.length !== 1 && "s"}?
             </p>
-            <p className="text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed">
+            <p className="text-sm text-zinc-500 dark:text-zinc-400 leading-relaxed">
               This will permanently delete the selected fonts and all of their associated weight assets from the database and storage. This action cannot be undone.
             </p>
           </div>

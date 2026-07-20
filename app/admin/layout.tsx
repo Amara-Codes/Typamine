@@ -2,6 +2,8 @@
 import { getServerAuthSession } from "@/lib/session";
 import { redirect } from "next/navigation";
 import { Metadata } from "next";
+
+export const dynamic = "force-dynamic";
 import { getDatabaseSource } from "@/lib/prisma";
 import AdminSidebar from "@/components/admin/AdminSidebar";
 import AdminHeader from "@/components/admin/AdminHeader";
@@ -62,7 +64,7 @@ export default async function AdminLayout({
     }
 
     return (
-      <html lang="en" className={cn("h-full antialiased", "font-sans", inter.variable)}>
+      <html lang="en" className={cn("h-full antialiased", "font-sans", inter.variable)} suppressHydrationWarning>
         <body className="min-h-full bg-background text-foreground">
           <ThemeSync />
           <div className="flex h-[100dvh] transition-colors duration-300 overflow-hidden relative"

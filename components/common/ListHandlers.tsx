@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { CheckCircle2, Circle, ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/common/Button";
@@ -62,6 +62,30 @@ export function ListHeaderHandlers({
   const currentPerPage = searchParams.get("perPage") || "10";
   const currentSearch = searchParams.get("search") || "";
 
+  // Stato locale per digitare senza lag: ogni tasto premuto aggiornava subito
+  // l'URL (router.push), quindi ogni carattere aspettava un giro di navigazione
+  // prima che il successivo potesse "registrarsi" — da qui la sensazione di
+  // cercare una lettera alla volta. Ora l'input è reattivo localmente e l'URL
+  // (quindi la query al DB) si aggiorna con un debounce.
+  const [searchValue, setSearchValue] = useState(currentSearch);
+  const [prevUrlSearch, setPrevUrlSearch] = useState(currentSearch);
+
+  // Se la ricerca cambia dall'esterno (back/forward del browser, reset filtri),
+  // riallinea lo stato locale — pattern di aggiornamento durante il render.
+  if (currentSearch !== prevUrlSearch) {
+    setPrevUrlSearch(currentSearch);
+    setSearchValue(currentSearch);
+  }
+
+  useEffect(() => {
+    if (searchValue === currentSearch) return;
+    const timeout = setTimeout(() => {
+      updateQuery({ search: searchValue || null });
+    }, 350);
+    return () => clearTimeout(timeout);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchValue]);
+
   return (
     <div className="flex flex-col xl:flex-row xl:items-center justify-between gap-4 bg-zinc-100/40 dark:bg-zinc-900/40 border border-zinc-900/10 dark:border-white/10 p-6 rounded-2xl backdrop-blur-xl testo">
 
@@ -70,8 +94,8 @@ export function ListHeaderHandlers({
         <Input
           id="list-search"
           placeholder={searchPlaceholder}
-          value={currentSearch}
-          onChange={(val) => updateQuery({ search: val || null })}
+          value={searchValue}
+          onChange={setSearchValue}
         />
       </div>
 
@@ -173,18 +197,21 @@ export function ListHeaderHandlers({
 export interface ListPaginationProps {
   totalCount: number;
   entityNamePlural?: string;
+  /** Fallback page size used when the URL has no `perPage` query param. */
+  defaultPerPage?: number;
 }
 
 export function ListPagination({
   totalCount,
   entityNamePlural = "Items",
+  defaultPerPage = 10,
 }: ListPaginationProps) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
   const page = parseInt(searchParams.get("page") || "1", 10);
-  const perPage = parseInt(searchParams.get("perPage") || "10", 10);
+  const perPage = parseInt(searchParams.get("perPage") || String(defaultPerPage), 10);
   const totalPages = Math.ceil(totalCount / perPage);
 
   const handlePageChange = (newPage: number) => {
@@ -199,31 +226,31 @@ export function ListPagination({
     <div className="flex flex-col sm:flex-row items-center justify-between px-8 py-5 border-t  bg-bluegray-200/50 dark:bg-redgray-900/50  border-black/5 dark:border-white/5 gap-4">
       <div className="text-xs text-zinc-500 dark:text-zinc-400">
         Showing{" "}
-        <span className="font-bold text-zinc-900 dark:text-white">
+        <span className="font-bold text-black dark:text-white">
           {(page - 1) * perPage + 1}
         </span>{" "}
         to{" "}
-        <span className="font-bold text-zinc-900 dark:text-white">
+        <span className="font-bold text-black dark:text-white">
           {Math.min(page * perPage, totalCount)}
         </span>{" "}
-        of <span className="font-bold text-zinc-900 dark:text-white">{totalCount}</span>{" "}
+        of <span className="font-bold text-black dark:text-white">{totalCount}</span>{" "}
         {entityNamePlural}
       </div>
       <div className="flex items-center gap-2">
         <button
           onClick={() => handlePageChange(page - 1)}
           disabled={page <= 1}
-          className="p-2 rounded-lg bg-white/50 dark:bg-zinc-900/50 border border-zinc-900/10 dark:border-white/10 text-zinc-800 dark:text-zinc-200 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-white dark:hover:bg-zinc-900 transition-colors"
+          className="p-2 rounded-lg bg-white/50 dark:bg-zinc-900/50 border border-zinc-900/10 dark:border-white/10 text-black dark:text-white disabled:opacity-50 disabled:cursor-not-allowed hover:bg-white dark:hover:bg-zinc-900 transition-colors"
         >
           <ChevronLeft className="h-4 w-4" />
         </button>
-        <span className="text-sm font-bold text-zinc-800 dark:text-zinc-200 px-2">
+        <span className="text-sm font-bold text-black dark:text-white px-2">
           Page {page} of {totalPages}
         </span>
         <button
           onClick={() => handlePageChange(page + 1)}
           disabled={page >= totalPages}
-          className="p-2 rounded-lg bg-white/50 dark:bg-zinc-900/50 border border-zinc-900/10 dark:border-white/10 text-zinc-800 dark:text-zinc-200 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-white dark:hover:bg-zinc-900 transition-colors"
+          className="p-2 rounded-lg bg-white/50 dark:bg-zinc-900/50 border border-zinc-900/10 dark:border-white/10 text-black dark:text-white disabled:opacity-50 disabled:cursor-not-allowed hover:bg-white dark:hover:bg-zinc-900 transition-colors"
         >
           <ChevronRight className="h-4 w-4" />
         </button>

@@ -41,7 +41,7 @@ export default async function RoleListPage() {
                   {canUpdate && (
                     <Link 
                       href={`/admin/roles/${role.id}/edit`}
-                      className="p-2.5 text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white hover:bg-white dark:hover:bg-white/10 rounded-md transition-all shadow-sm"
+                      className="p-2.5 text-zinc-500 dark:text-zinc-400 hover:text-black dark:hover:text-white hover:bg-white dark:hover:bg-white/10 rounded-md transition-all shadow-sm"
                     >
                       <Edit className="h-4 w-4" />
                     </Link>
@@ -61,24 +61,24 @@ export default async function RoleListPage() {
 
             <CardBody className="pt-2 pb-6 flex-1 flex flex-col justify-between">
               <div className="pb-6">
-                <h3 className="text-4xl font-star text-zinc-900 dark:text-white leading-tight line-clamp-2 h-24 overflow-hidden flex items-start">
+                <h3 className="text-4xl font-star text-black dark:text-white leading-tight line-clamp-2 h-24 overflow-hidden flex items-start">
                   {role.name.replace(/_/g, " ")}
                 </h3>
               </div>
 
               <div className="space-y-4 mt-auto">
-                <div className="bg-white/50 dark:bg-white/5 rounded-lg p-4 border border-zinc-900/5 dark:border-white/5">
-                  <p className="text-[10px] font-black uppercase tracking-tighter text-zinc-500 dark:text-zinc-400 mb-1">Permissions</p>
+                <div className="bg-white/50 dark:bg-white/5 rounded-lg p-4 border border-black/5 dark:border-white/5">
+                  <p className="text-[10px] font-black uppercase tracking-tighter text-bluegray-800 dark:text-redgray-200 mb-1">Permissions</p>
                   <div className="flex items-center gap-2">
-                    <Fingerprint className="h-4 w-4 text-zinc-900 dark:text-white" />
-                    <span className="text-2xl font-haas font-bold text-zinc-900 dark:text-white">{role._count.permissions}</span>
+                    <Fingerprint className="h-4 w-4 text-black dark:text-white" />
+                    <span className="text-2xl font-haas font-bold text-black dark:text-white">{role._count.permissions}</span>
                   </div>
                 </div>
-                <div className="bg-white/50 dark:bg-white/5 rounded-lg p-4 border border-zinc-900/5 dark:border-white/5">
-                  <p className="text-[10px] font-black uppercase tracking-tighter text-zinc-500 dark:text-zinc-400 mb-1">Active Users</p>
+                <div className="bg-white/50 dark:bg-white/5 rounded-lg p-4 border border-black/5 dark:border-white/5">
+                  <p className="text-[10px] font-black uppercase tracking-tighter text-bluegray-800 dark:text-redgray-200 mb-1">Active Users</p>
                   <div className="flex items-center gap-2">
                     <Shield className="h-4 w-4 text-red-500" />
-                    <span className="text-2xl font-haas font-bold text-zinc-900 dark:text-zinc-100">{role._count.users}</span>
+                    <span className="text-2xl font-haas font-bold text-black dark:text-white">{role._count.users}</span>
                   </div>
                 </div>
               </div>

@@ -1702,13 +1702,17 @@ export namespace Prisma {
   export type IngredientCountOutputType = {
     variants: number
     formulas: number
-    prescriptions: number
+    primaryPrescriptions: number
+    secondaryPrescriptions: number
+    tags: number
   }
 
   export type IngredientCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     variants?: boolean | IngredientCountOutputTypeCountVariantsArgs
     formulas?: boolean | IngredientCountOutputTypeCountFormulasArgs
-    prescriptions?: boolean | IngredientCountOutputTypeCountPrescriptionsArgs
+    primaryPrescriptions?: boolean | IngredientCountOutputTypeCountPrimaryPrescriptionsArgs
+    secondaryPrescriptions?: boolean | IngredientCountOutputTypeCountSecondaryPrescriptionsArgs
+    tags?: boolean | IngredientCountOutputTypeCountTagsArgs
   }
 
   // Custom InputTypes
@@ -1739,8 +1743,22 @@ export namespace Prisma {
   /**
    * IngredientCountOutputType without action
    */
-  export type IngredientCountOutputTypeCountPrescriptionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type IngredientCountOutputTypeCountPrimaryPrescriptionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: PrescriptionWhereInput
+  }
+
+  /**
+   * IngredientCountOutputType without action
+   */
+  export type IngredientCountOutputTypeCountSecondaryPrescriptionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PrescriptionWhereInput
+  }
+
+  /**
+   * IngredientCountOutputType without action
+   */
+  export type IngredientCountOutputTypeCountTagsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TagWhereInput
   }
 
 
@@ -1750,10 +1768,12 @@ export namespace Prisma {
 
   export type FormulaCountOutputType = {
     fonts: number
+    tags: number
   }
 
   export type FormulaCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     fonts?: boolean | FormulaCountOutputTypeCountFontsArgs
+    tags?: boolean | FormulaCountOutputTypeCountTagsArgs
   }
 
   // Custom InputTypes
@@ -1774,6 +1794,13 @@ export namespace Prisma {
     where?: IngredientWhereInput
   }
 
+  /**
+   * FormulaCountOutputType without action
+   */
+  export type FormulaCountOutputTypeCountTagsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TagWhereInput
+  }
+
 
   /**
    * Count Type PrescriptionCountOutputType
@@ -1781,12 +1808,10 @@ export namespace Prisma {
 
   export type PrescriptionCountOutputType = {
     tags: number
-    fonts: number
   }
 
   export type PrescriptionCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     tags?: boolean | PrescriptionCountOutputTypeCountTagsArgs
-    fonts?: boolean | PrescriptionCountOutputTypeCountFontsArgs
   }
 
   // Custom InputTypes
@@ -1807,13 +1832,6 @@ export namespace Prisma {
     where?: TagWhereInput
   }
 
-  /**
-   * PrescriptionCountOutputType without action
-   */
-  export type PrescriptionCountOutputTypeCountFontsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: IngredientWhereInput
-  }
-
 
   /**
    * Count Type TagCountOutputType
@@ -1821,10 +1839,14 @@ export namespace Prisma {
 
   export type TagCountOutputType = {
     prescriptions: number
+    ingredients: number
+    formulas: number
   }
 
   export type TagCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     prescriptions?: boolean | TagCountOutputTypeCountPrescriptionsArgs
+    ingredients?: boolean | TagCountOutputTypeCountIngredientsArgs
+    formulas?: boolean | TagCountOutputTypeCountFormulasArgs
   }
 
   // Custom InputTypes
@@ -1843,6 +1865,20 @@ export namespace Prisma {
    */
   export type TagCountOutputTypeCountPrescriptionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: PrescriptionWhereInput
+  }
+
+  /**
+   * TagCountOutputType without action
+   */
+  export type TagCountOutputTypeCountIngredientsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: IngredientWhereInput
+  }
+
+  /**
+   * TagCountOutputType without action
+   */
+  export type TagCountOutputTypeCountFormulasArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: FormulaWhereInput
   }
 
 
@@ -7354,6 +7390,8 @@ export namespace Prisma {
     symbol: string | null
     formula: string | null
     isVariable: boolean | null
+    createdAt: Date | null
+    updatedAt: Date | null
   }
 
   export type IngredientMaxAggregateOutputType = {
@@ -7366,6 +7404,8 @@ export namespace Prisma {
     symbol: string | null
     formula: string | null
     isVariable: boolean | null
+    createdAt: Date | null
+    updatedAt: Date | null
   }
 
   export type IngredientCountAggregateOutputType = {
@@ -7378,6 +7418,8 @@ export namespace Prisma {
     symbol: number
     formula: number
     isVariable: number
+    createdAt: number
+    updatedAt: number
     _all: number
   }
 
@@ -7392,6 +7434,8 @@ export namespace Prisma {
     symbol?: true
     formula?: true
     isVariable?: true
+    createdAt?: true
+    updatedAt?: true
   }
 
   export type IngredientMaxAggregateInputType = {
@@ -7404,6 +7448,8 @@ export namespace Prisma {
     symbol?: true
     formula?: true
     isVariable?: true
+    createdAt?: true
+    updatedAt?: true
   }
 
   export type IngredientCountAggregateInputType = {
@@ -7416,6 +7462,8 @@ export namespace Prisma {
     symbol?: true
     formula?: true
     isVariable?: true
+    createdAt?: true
+    updatedAt?: true
     _all?: true
   }
 
@@ -7501,6 +7549,8 @@ export namespace Prisma {
     symbol: string | null
     formula: string | null
     isVariable: boolean
+    createdAt: Date
+    updatedAt: Date
     _count: IngredientCountAggregateOutputType | null
     _min: IngredientMinAggregateOutputType | null
     _max: IngredientMaxAggregateOutputType | null
@@ -7530,9 +7580,13 @@ export namespace Prisma {
     symbol?: boolean
     formula?: boolean
     isVariable?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
     variants?: boolean | Ingredient$variantsArgs<ExtArgs>
     formulas?: boolean | Ingredient$formulasArgs<ExtArgs>
-    prescriptions?: boolean | Ingredient$prescriptionsArgs<ExtArgs>
+    primaryPrescriptions?: boolean | Ingredient$primaryPrescriptionsArgs<ExtArgs>
+    secondaryPrescriptions?: boolean | Ingredient$secondaryPrescriptionsArgs<ExtArgs>
+    tags?: boolean | Ingredient$tagsArgs<ExtArgs>
     _count?: boolean | IngredientCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["ingredient"]>
 
@@ -7546,6 +7600,8 @@ export namespace Prisma {
     symbol?: boolean
     formula?: boolean
     isVariable?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
   }, ExtArgs["result"]["ingredient"]>
 
   export type IngredientSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -7558,6 +7614,8 @@ export namespace Prisma {
     symbol?: boolean
     formula?: boolean
     isVariable?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
   }, ExtArgs["result"]["ingredient"]>
 
   export type IngredientSelectScalar = {
@@ -7570,13 +7628,17 @@ export namespace Prisma {
     symbol?: boolean
     formula?: boolean
     isVariable?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
   }
 
-  export type IngredientOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "slug" | "category" | "creator" | "rating" | "symbol" | "formula" | "isVariable", ExtArgs["result"]["ingredient"]>
+  export type IngredientOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "slug" | "category" | "creator" | "rating" | "symbol" | "formula" | "isVariable" | "createdAt" | "updatedAt", ExtArgs["result"]["ingredient"]>
   export type IngredientInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     variants?: boolean | Ingredient$variantsArgs<ExtArgs>
     formulas?: boolean | Ingredient$formulasArgs<ExtArgs>
-    prescriptions?: boolean | Ingredient$prescriptionsArgs<ExtArgs>
+    primaryPrescriptions?: boolean | Ingredient$primaryPrescriptionsArgs<ExtArgs>
+    secondaryPrescriptions?: boolean | Ingredient$secondaryPrescriptionsArgs<ExtArgs>
+    tags?: boolean | Ingredient$tagsArgs<ExtArgs>
     _count?: boolean | IngredientCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type IngredientIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -7587,7 +7649,9 @@ export namespace Prisma {
     objects: {
       variants: Prisma.$FontVariantPayload<ExtArgs>[]
       formulas: Prisma.$FormulaPayload<ExtArgs>[]
-      prescriptions: Prisma.$PrescriptionPayload<ExtArgs>[]
+      primaryPrescriptions: Prisma.$PrescriptionPayload<ExtArgs>[]
+      secondaryPrescriptions: Prisma.$PrescriptionPayload<ExtArgs>[]
+      tags: Prisma.$TagPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -7599,6 +7663,8 @@ export namespace Prisma {
       symbol: string | null
       formula: string | null
       isVariable: boolean
+      createdAt: Date
+      updatedAt: Date
     }, ExtArgs["result"]["ingredient"]>
     composites: {}
   }
@@ -7995,7 +8061,9 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     variants<T extends Ingredient$variantsArgs<ExtArgs> = {}>(args?: Subset<T, Ingredient$variantsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FontVariantPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     formulas<T extends Ingredient$formulasArgs<ExtArgs> = {}>(args?: Subset<T, Ingredient$formulasArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FormulaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    prescriptions<T extends Ingredient$prescriptionsArgs<ExtArgs> = {}>(args?: Subset<T, Ingredient$prescriptionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PrescriptionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    primaryPrescriptions<T extends Ingredient$primaryPrescriptionsArgs<ExtArgs> = {}>(args?: Subset<T, Ingredient$primaryPrescriptionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PrescriptionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    secondaryPrescriptions<T extends Ingredient$secondaryPrescriptionsArgs<ExtArgs> = {}>(args?: Subset<T, Ingredient$secondaryPrescriptionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PrescriptionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    tags<T extends Ingredient$tagsArgs<ExtArgs> = {}>(args?: Subset<T, Ingredient$tagsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TagPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -8034,6 +8102,8 @@ export namespace Prisma {
     readonly symbol: FieldRef<"Ingredient", 'String'>
     readonly formula: FieldRef<"Ingredient", 'String'>
     readonly isVariable: FieldRef<"Ingredient", 'Boolean'>
+    readonly createdAt: FieldRef<"Ingredient", 'DateTime'>
+    readonly updatedAt: FieldRef<"Ingredient", 'DateTime'>
   }
     
 
@@ -8468,9 +8538,9 @@ export namespace Prisma {
   }
 
   /**
-   * Ingredient.prescriptions
+   * Ingredient.primaryPrescriptions
    */
-  export type Ingredient$prescriptionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type Ingredient$primaryPrescriptionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Prescription
      */
@@ -8489,6 +8559,54 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: PrescriptionScalarFieldEnum | PrescriptionScalarFieldEnum[]
+  }
+
+  /**
+   * Ingredient.secondaryPrescriptions
+   */
+  export type Ingredient$secondaryPrescriptionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Prescription
+     */
+    select?: PrescriptionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Prescription
+     */
+    omit?: PrescriptionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PrescriptionInclude<ExtArgs> | null
+    where?: PrescriptionWhereInput
+    orderBy?: PrescriptionOrderByWithRelationInput | PrescriptionOrderByWithRelationInput[]
+    cursor?: PrescriptionWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: PrescriptionScalarFieldEnum | PrescriptionScalarFieldEnum[]
+  }
+
+  /**
+   * Ingredient.tags
+   */
+  export type Ingredient$tagsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Tag
+     */
+    select?: TagSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Tag
+     */
+    omit?: TagOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TagInclude<ExtArgs> | null
+    where?: TagWhereInput
+    orderBy?: TagOrderByWithRelationInput | TagOrderByWithRelationInput[]
+    cursor?: TagWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: TagScalarFieldEnum | TagScalarFieldEnum[]
   }
 
   /**
@@ -8524,27 +8642,30 @@ export namespace Prisma {
     id: string | null
     name: string | null
     description: string | null
-    href: string | null
-    code: string | null
+    slug: string | null
+    fontCategory: string | null
     createdAt: Date | null
+    updatedAt: Date | null
   }
 
   export type FormulaMaxAggregateOutputType = {
     id: string | null
     name: string | null
     description: string | null
-    href: string | null
-    code: string | null
+    slug: string | null
+    fontCategory: string | null
     createdAt: Date | null
+    updatedAt: Date | null
   }
 
   export type FormulaCountAggregateOutputType = {
     id: number
     name: number
     description: number
-    href: number
-    code: number
+    slug: number
+    fontCategory: number
     createdAt: number
+    updatedAt: number
     _all: number
   }
 
@@ -8553,27 +8674,30 @@ export namespace Prisma {
     id?: true
     name?: true
     description?: true
-    href?: true
-    code?: true
+    slug?: true
+    fontCategory?: true
     createdAt?: true
+    updatedAt?: true
   }
 
   export type FormulaMaxAggregateInputType = {
     id?: true
     name?: true
     description?: true
-    href?: true
-    code?: true
+    slug?: true
+    fontCategory?: true
     createdAt?: true
+    updatedAt?: true
   }
 
   export type FormulaCountAggregateInputType = {
     id?: true
     name?: true
     description?: true
-    href?: true
-    code?: true
+    slug?: true
+    fontCategory?: true
     createdAt?: true
+    updatedAt?: true
     _all?: true
   }
 
@@ -8652,10 +8776,11 @@ export namespace Prisma {
   export type FormulaGroupByOutputType = {
     id: string
     name: string
-    description: string
-    href: string
-    code: string | null
+    description: string | null
+    slug: string
+    fontCategory: string
     createdAt: Date
+    updatedAt: Date
     _count: FormulaCountAggregateOutputType | null
     _min: FormulaMinAggregateOutputType | null
     _max: FormulaMaxAggregateOutputType | null
@@ -8679,10 +8804,12 @@ export namespace Prisma {
     id?: boolean
     name?: boolean
     description?: boolean
-    href?: boolean
-    code?: boolean
+    slug?: boolean
+    fontCategory?: boolean
     createdAt?: boolean
+    updatedAt?: boolean
     fonts?: boolean | Formula$fontsArgs<ExtArgs>
+    tags?: boolean | Formula$tagsArgs<ExtArgs>
     _count?: boolean | FormulaCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["formula"]>
 
@@ -8690,32 +8817,36 @@ export namespace Prisma {
     id?: boolean
     name?: boolean
     description?: boolean
-    href?: boolean
-    code?: boolean
+    slug?: boolean
+    fontCategory?: boolean
     createdAt?: boolean
+    updatedAt?: boolean
   }, ExtArgs["result"]["formula"]>
 
   export type FormulaSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     name?: boolean
     description?: boolean
-    href?: boolean
-    code?: boolean
+    slug?: boolean
+    fontCategory?: boolean
     createdAt?: boolean
+    updatedAt?: boolean
   }, ExtArgs["result"]["formula"]>
 
   export type FormulaSelectScalar = {
     id?: boolean
     name?: boolean
     description?: boolean
-    href?: boolean
-    code?: boolean
+    slug?: boolean
+    fontCategory?: boolean
     createdAt?: boolean
+    updatedAt?: boolean
   }
 
-  export type FormulaOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description" | "href" | "code" | "createdAt", ExtArgs["result"]["formula"]>
+  export type FormulaOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description" | "slug" | "fontCategory" | "createdAt" | "updatedAt", ExtArgs["result"]["formula"]>
   export type FormulaInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     fonts?: boolean | Formula$fontsArgs<ExtArgs>
+    tags?: boolean | Formula$tagsArgs<ExtArgs>
     _count?: boolean | FormulaCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type FormulaIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -8725,14 +8856,16 @@ export namespace Prisma {
     name: "Formula"
     objects: {
       fonts: Prisma.$IngredientPayload<ExtArgs>[]
+      tags: Prisma.$TagPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
       name: string
-      description: string
-      href: string
-      code: string | null
+      description: string | null
+      slug: string
+      fontCategory: string
       createdAt: Date
+      updatedAt: Date
     }, ExtArgs["result"]["formula"]>
     composites: {}
   }
@@ -9128,6 +9261,7 @@ export namespace Prisma {
   export interface Prisma__FormulaClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     fonts<T extends Formula$fontsArgs<ExtArgs> = {}>(args?: Subset<T, Formula$fontsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$IngredientPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    tags<T extends Formula$tagsArgs<ExtArgs> = {}>(args?: Subset<T, Formula$tagsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TagPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -9160,9 +9294,10 @@ export namespace Prisma {
     readonly id: FieldRef<"Formula", 'String'>
     readonly name: FieldRef<"Formula", 'String'>
     readonly description: FieldRef<"Formula", 'String'>
-    readonly href: FieldRef<"Formula", 'String'>
-    readonly code: FieldRef<"Formula", 'String'>
+    readonly slug: FieldRef<"Formula", 'String'>
+    readonly fontCategory: FieldRef<"Formula", 'String'>
     readonly createdAt: FieldRef<"Formula", 'DateTime'>
+    readonly updatedAt: FieldRef<"Formula", 'DateTime'>
   }
     
 
@@ -9573,6 +9708,30 @@ export namespace Prisma {
   }
 
   /**
+   * Formula.tags
+   */
+  export type Formula$tagsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Tag
+     */
+    select?: TagSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Tag
+     */
+    omit?: TagOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TagInclude<ExtArgs> | null
+    where?: TagWhereInput
+    orderBy?: TagOrderByWithRelationInput | TagOrderByWithRelationInput[]
+    cursor?: TagWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: TagScalarFieldEnum | TagScalarFieldEnum[]
+  }
+
+  /**
    * Formula without action
    */
   export type FormulaDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -9604,25 +9763,40 @@ export namespace Prisma {
   export type PrescriptionMinAggregateOutputType = {
     id: string | null
     name: string | null
-    href: string | null
+    slug: string | null
     description: string | null
-    imgUrl: string | null
+    imageUrl: string | null
+    published: boolean | null
+    createdAt: Date | null
+    updatedAt: Date | null
+    primaryFontId: string | null
+    secondaryFontId: string | null
   }
 
   export type PrescriptionMaxAggregateOutputType = {
     id: string | null
     name: string | null
-    href: string | null
+    slug: string | null
     description: string | null
-    imgUrl: string | null
+    imageUrl: string | null
+    published: boolean | null
+    createdAt: Date | null
+    updatedAt: Date | null
+    primaryFontId: string | null
+    secondaryFontId: string | null
   }
 
   export type PrescriptionCountAggregateOutputType = {
     id: number
     name: number
-    href: number
+    slug: number
     description: number
-    imgUrl: number
+    imageUrl: number
+    published: number
+    createdAt: number
+    updatedAt: number
+    primaryFontId: number
+    secondaryFontId: number
     _all: number
   }
 
@@ -9630,25 +9804,40 @@ export namespace Prisma {
   export type PrescriptionMinAggregateInputType = {
     id?: true
     name?: true
-    href?: true
+    slug?: true
     description?: true
-    imgUrl?: true
+    imageUrl?: true
+    published?: true
+    createdAt?: true
+    updatedAt?: true
+    primaryFontId?: true
+    secondaryFontId?: true
   }
 
   export type PrescriptionMaxAggregateInputType = {
     id?: true
     name?: true
-    href?: true
+    slug?: true
     description?: true
-    imgUrl?: true
+    imageUrl?: true
+    published?: true
+    createdAt?: true
+    updatedAt?: true
+    primaryFontId?: true
+    secondaryFontId?: true
   }
 
   export type PrescriptionCountAggregateInputType = {
     id?: true
     name?: true
-    href?: true
+    slug?: true
     description?: true
-    imgUrl?: true
+    imageUrl?: true
+    published?: true
+    createdAt?: true
+    updatedAt?: true
+    primaryFontId?: true
+    secondaryFontId?: true
     _all?: true
   }
 
@@ -9727,9 +9916,14 @@ export namespace Prisma {
   export type PrescriptionGroupByOutputType = {
     id: string
     name: string
-    href: string
+    slug: string
     description: string | null
-    imgUrl: string | null
+    imageUrl: string | null
+    published: boolean
+    createdAt: Date
+    updatedAt: Date
+    primaryFontId: string
+    secondaryFontId: string
     _count: PrescriptionCountAggregateOutputType | null
     _min: PrescriptionMinAggregateOutputType | null
     _max: PrescriptionMaxAggregateOutputType | null
@@ -9752,59 +9946,97 @@ export namespace Prisma {
   export type PrescriptionSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     name?: boolean
-    href?: boolean
+    slug?: boolean
     description?: boolean
-    imgUrl?: boolean
+    imageUrl?: boolean
+    published?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    primaryFontId?: boolean
+    secondaryFontId?: boolean
+    primaryFont?: boolean | IngredientDefaultArgs<ExtArgs>
+    secondaryFont?: boolean | IngredientDefaultArgs<ExtArgs>
     tags?: boolean | Prescription$tagsArgs<ExtArgs>
-    fonts?: boolean | Prescription$fontsArgs<ExtArgs>
     _count?: boolean | PrescriptionCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["prescription"]>
 
   export type PrescriptionSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     name?: boolean
-    href?: boolean
+    slug?: boolean
     description?: boolean
-    imgUrl?: boolean
+    imageUrl?: boolean
+    published?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    primaryFontId?: boolean
+    secondaryFontId?: boolean
+    primaryFont?: boolean | IngredientDefaultArgs<ExtArgs>
+    secondaryFont?: boolean | IngredientDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["prescription"]>
 
   export type PrescriptionSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     name?: boolean
-    href?: boolean
+    slug?: boolean
     description?: boolean
-    imgUrl?: boolean
+    imageUrl?: boolean
+    published?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    primaryFontId?: boolean
+    secondaryFontId?: boolean
+    primaryFont?: boolean | IngredientDefaultArgs<ExtArgs>
+    secondaryFont?: boolean | IngredientDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["prescription"]>
 
   export type PrescriptionSelectScalar = {
     id?: boolean
     name?: boolean
-    href?: boolean
+    slug?: boolean
     description?: boolean
-    imgUrl?: boolean
+    imageUrl?: boolean
+    published?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    primaryFontId?: boolean
+    secondaryFontId?: boolean
   }
 
-  export type PrescriptionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "href" | "description" | "imgUrl", ExtArgs["result"]["prescription"]>
+  export type PrescriptionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "slug" | "description" | "imageUrl" | "published" | "createdAt" | "updatedAt" | "primaryFontId" | "secondaryFontId", ExtArgs["result"]["prescription"]>
   export type PrescriptionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    primaryFont?: boolean | IngredientDefaultArgs<ExtArgs>
+    secondaryFont?: boolean | IngredientDefaultArgs<ExtArgs>
     tags?: boolean | Prescription$tagsArgs<ExtArgs>
-    fonts?: boolean | Prescription$fontsArgs<ExtArgs>
     _count?: boolean | PrescriptionCountOutputTypeDefaultArgs<ExtArgs>
   }
-  export type PrescriptionIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
-  export type PrescriptionIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+  export type PrescriptionIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    primaryFont?: boolean | IngredientDefaultArgs<ExtArgs>
+    secondaryFont?: boolean | IngredientDefaultArgs<ExtArgs>
+  }
+  export type PrescriptionIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    primaryFont?: boolean | IngredientDefaultArgs<ExtArgs>
+    secondaryFont?: boolean | IngredientDefaultArgs<ExtArgs>
+  }
 
   export type $PrescriptionPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Prescription"
     objects: {
+      primaryFont: Prisma.$IngredientPayload<ExtArgs>
+      secondaryFont: Prisma.$IngredientPayload<ExtArgs>
       tags: Prisma.$TagPayload<ExtArgs>[]
-      fonts: Prisma.$IngredientPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
       name: string
-      href: string
+      slug: string
       description: string | null
-      imgUrl: string | null
+      imageUrl: string | null
+      published: boolean
+      createdAt: Date
+      updatedAt: Date
+      primaryFontId: string
+      secondaryFontId: string
     }, ExtArgs["result"]["prescription"]>
     composites: {}
   }
@@ -10199,8 +10431,9 @@ export namespace Prisma {
    */
   export interface Prisma__PrescriptionClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    primaryFont<T extends IngredientDefaultArgs<ExtArgs> = {}>(args?: Subset<T, IngredientDefaultArgs<ExtArgs>>): Prisma__IngredientClient<$Result.GetResult<Prisma.$IngredientPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    secondaryFont<T extends IngredientDefaultArgs<ExtArgs> = {}>(args?: Subset<T, IngredientDefaultArgs<ExtArgs>>): Prisma__IngredientClient<$Result.GetResult<Prisma.$IngredientPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     tags<T extends Prescription$tagsArgs<ExtArgs> = {}>(args?: Subset<T, Prescription$tagsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TagPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    fonts<T extends Prescription$fontsArgs<ExtArgs> = {}>(args?: Subset<T, Prescription$fontsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$IngredientPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -10232,9 +10465,14 @@ export namespace Prisma {
   interface PrescriptionFieldRefs {
     readonly id: FieldRef<"Prescription", 'String'>
     readonly name: FieldRef<"Prescription", 'String'>
-    readonly href: FieldRef<"Prescription", 'String'>
+    readonly slug: FieldRef<"Prescription", 'String'>
     readonly description: FieldRef<"Prescription", 'String'>
-    readonly imgUrl: FieldRef<"Prescription", 'String'>
+    readonly imageUrl: FieldRef<"Prescription", 'String'>
+    readonly published: FieldRef<"Prescription", 'Boolean'>
+    readonly createdAt: FieldRef<"Prescription", 'DateTime'>
+    readonly updatedAt: FieldRef<"Prescription", 'DateTime'>
+    readonly primaryFontId: FieldRef<"Prescription", 'String'>
+    readonly secondaryFontId: FieldRef<"Prescription", 'String'>
   }
     
 
@@ -10482,6 +10720,10 @@ export namespace Prisma {
      * The data used to create many Prescriptions.
      */
     data: PrescriptionCreateManyInput | PrescriptionCreateManyInput[]
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PrescriptionIncludeCreateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -10552,6 +10794,10 @@ export namespace Prisma {
      * Limit how many Prescriptions to update.
      */
     limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PrescriptionIncludeUpdateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -10645,30 +10891,6 @@ export namespace Prisma {
   }
 
   /**
-   * Prescription.fonts
-   */
-  export type Prescription$fontsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Ingredient
-     */
-    select?: IngredientSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Ingredient
-     */
-    omit?: IngredientOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: IngredientInclude<ExtArgs> | null
-    where?: IngredientWhereInput
-    orderBy?: IngredientOrderByWithRelationInput | IngredientOrderByWithRelationInput[]
-    cursor?: IngredientWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: IngredientScalarFieldEnum | IngredientScalarFieldEnum[]
-  }
-
-  /**
    * Prescription without action
    */
   export type PrescriptionDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -10700,16 +10922,25 @@ export namespace Prisma {
   export type TagMinAggregateOutputType = {
     id: string | null
     name: string | null
+    description: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
   }
 
   export type TagMaxAggregateOutputType = {
     id: string | null
     name: string | null
+    description: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
   }
 
   export type TagCountAggregateOutputType = {
     id: number
     name: number
+    description: number
+    createdAt: number
+    updatedAt: number
     _all: number
   }
 
@@ -10717,16 +10948,25 @@ export namespace Prisma {
   export type TagMinAggregateInputType = {
     id?: true
     name?: true
+    description?: true
+    createdAt?: true
+    updatedAt?: true
   }
 
   export type TagMaxAggregateInputType = {
     id?: true
     name?: true
+    description?: true
+    createdAt?: true
+    updatedAt?: true
   }
 
   export type TagCountAggregateInputType = {
     id?: true
     name?: true
+    description?: true
+    createdAt?: true
+    updatedAt?: true
     _all?: true
   }
 
@@ -10805,6 +11045,9 @@ export namespace Prisma {
   export type TagGroupByOutputType = {
     id: string
     name: string
+    description: string | null
+    createdAt: Date
+    updatedAt: Date
     _count: TagCountAggregateOutputType | null
     _min: TagMinAggregateOutputType | null
     _max: TagMaxAggregateOutputType | null
@@ -10827,28 +11070,44 @@ export namespace Prisma {
   export type TagSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     name?: boolean
+    description?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
     prescriptions?: boolean | Tag$prescriptionsArgs<ExtArgs>
+    ingredients?: boolean | Tag$ingredientsArgs<ExtArgs>
+    formulas?: boolean | Tag$formulasArgs<ExtArgs>
     _count?: boolean | TagCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["tag"]>
 
   export type TagSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     name?: boolean
+    description?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
   }, ExtArgs["result"]["tag"]>
 
   export type TagSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     name?: boolean
+    description?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
   }, ExtArgs["result"]["tag"]>
 
   export type TagSelectScalar = {
     id?: boolean
     name?: boolean
+    description?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
   }
 
-  export type TagOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name", ExtArgs["result"]["tag"]>
+  export type TagOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description" | "createdAt" | "updatedAt", ExtArgs["result"]["tag"]>
   export type TagInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     prescriptions?: boolean | Tag$prescriptionsArgs<ExtArgs>
+    ingredients?: boolean | Tag$ingredientsArgs<ExtArgs>
+    formulas?: boolean | Tag$formulasArgs<ExtArgs>
     _count?: boolean | TagCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type TagIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -10858,10 +11117,15 @@ export namespace Prisma {
     name: "Tag"
     objects: {
       prescriptions: Prisma.$PrescriptionPayload<ExtArgs>[]
+      ingredients: Prisma.$IngredientPayload<ExtArgs>[]
+      formulas: Prisma.$FormulaPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
       name: string
+      description: string | null
+      createdAt: Date
+      updatedAt: Date
     }, ExtArgs["result"]["tag"]>
     composites: {}
   }
@@ -11257,6 +11521,8 @@ export namespace Prisma {
   export interface Prisma__TagClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     prescriptions<T extends Tag$prescriptionsArgs<ExtArgs> = {}>(args?: Subset<T, Tag$prescriptionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PrescriptionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    ingredients<T extends Tag$ingredientsArgs<ExtArgs> = {}>(args?: Subset<T, Tag$ingredientsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$IngredientPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    formulas<T extends Tag$formulasArgs<ExtArgs> = {}>(args?: Subset<T, Tag$formulasArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FormulaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -11288,6 +11554,9 @@ export namespace Prisma {
   interface TagFieldRefs {
     readonly id: FieldRef<"Tag", 'String'>
     readonly name: FieldRef<"Tag", 'String'>
+    readonly description: FieldRef<"Tag", 'String'>
+    readonly createdAt: FieldRef<"Tag", 'DateTime'>
+    readonly updatedAt: FieldRef<"Tag", 'DateTime'>
   }
     
 
@@ -11698,6 +11967,54 @@ export namespace Prisma {
   }
 
   /**
+   * Tag.ingredients
+   */
+  export type Tag$ingredientsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Ingredient
+     */
+    select?: IngredientSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Ingredient
+     */
+    omit?: IngredientOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: IngredientInclude<ExtArgs> | null
+    where?: IngredientWhereInput
+    orderBy?: IngredientOrderByWithRelationInput | IngredientOrderByWithRelationInput[]
+    cursor?: IngredientWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: IngredientScalarFieldEnum | IngredientScalarFieldEnum[]
+  }
+
+  /**
+   * Tag.formulas
+   */
+  export type Tag$formulasArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Formula
+     */
+    select?: FormulaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Formula
+     */
+    omit?: FormulaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FormulaInclude<ExtArgs> | null
+    where?: FormulaWhereInput
+    orderBy?: FormulaOrderByWithRelationInput | FormulaOrderByWithRelationInput[]
+    cursor?: FormulaWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: FormulaScalarFieldEnum | FormulaScalarFieldEnum[]
+  }
+
+  /**
    * Tag without action
    */
   export type TagDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -11797,7 +12114,9 @@ export namespace Prisma {
     rating: 'rating',
     symbol: 'symbol',
     formula: 'formula',
-    isVariable: 'isVariable'
+    isVariable: 'isVariable',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
   };
 
   export type IngredientScalarFieldEnum = (typeof IngredientScalarFieldEnum)[keyof typeof IngredientScalarFieldEnum]
@@ -11807,9 +12126,10 @@ export namespace Prisma {
     id: 'id',
     name: 'name',
     description: 'description',
-    href: 'href',
-    code: 'code',
-    createdAt: 'createdAt'
+    slug: 'slug',
+    fontCategory: 'fontCategory',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
   };
 
   export type FormulaScalarFieldEnum = (typeof FormulaScalarFieldEnum)[keyof typeof FormulaScalarFieldEnum]
@@ -11818,9 +12138,14 @@ export namespace Prisma {
   export const PrescriptionScalarFieldEnum: {
     id: 'id',
     name: 'name',
-    href: 'href',
+    slug: 'slug',
     description: 'description',
-    imgUrl: 'imgUrl'
+    imageUrl: 'imageUrl',
+    published: 'published',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt',
+    primaryFontId: 'primaryFontId',
+    secondaryFontId: 'secondaryFontId'
   };
 
   export type PrescriptionScalarFieldEnum = (typeof PrescriptionScalarFieldEnum)[keyof typeof PrescriptionScalarFieldEnum]
@@ -11828,7 +12153,10 @@ export namespace Prisma {
 
   export const TagScalarFieldEnum: {
     id: 'id',
-    name: 'name'
+    name: 'name',
+    description: 'description',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
   };
 
   export type TagScalarFieldEnum = (typeof TagScalarFieldEnum)[keyof typeof TagScalarFieldEnum]
@@ -12226,9 +12554,13 @@ export namespace Prisma {
     symbol?: StringNullableFilter<"Ingredient"> | string | null
     formula?: StringNullableFilter<"Ingredient"> | string | null
     isVariable?: BoolFilter<"Ingredient"> | boolean
+    createdAt?: DateTimeFilter<"Ingredient"> | Date | string
+    updatedAt?: DateTimeFilter<"Ingredient"> | Date | string
     variants?: FontVariantListRelationFilter
     formulas?: FormulaListRelationFilter
-    prescriptions?: PrescriptionListRelationFilter
+    primaryPrescriptions?: PrescriptionListRelationFilter
+    secondaryPrescriptions?: PrescriptionListRelationFilter
+    tags?: TagListRelationFilter
   }
 
   export type IngredientOrderByWithRelationInput = {
@@ -12241,9 +12573,13 @@ export namespace Prisma {
     symbol?: SortOrderInput | SortOrder
     formula?: SortOrderInput | SortOrder
     isVariable?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
     variants?: FontVariantOrderByRelationAggregateInput
     formulas?: FormulaOrderByRelationAggregateInput
-    prescriptions?: PrescriptionOrderByRelationAggregateInput
+    primaryPrescriptions?: PrescriptionOrderByRelationAggregateInput
+    secondaryPrescriptions?: PrescriptionOrderByRelationAggregateInput
+    tags?: TagOrderByRelationAggregateInput
   }
 
   export type IngredientWhereUniqueInput = Prisma.AtLeast<{
@@ -12259,9 +12595,13 @@ export namespace Prisma {
     symbol?: StringNullableFilter<"Ingredient"> | string | null
     formula?: StringNullableFilter<"Ingredient"> | string | null
     isVariable?: BoolFilter<"Ingredient"> | boolean
+    createdAt?: DateTimeFilter<"Ingredient"> | Date | string
+    updatedAt?: DateTimeFilter<"Ingredient"> | Date | string
     variants?: FontVariantListRelationFilter
     formulas?: FormulaListRelationFilter
-    prescriptions?: PrescriptionListRelationFilter
+    primaryPrescriptions?: PrescriptionListRelationFilter
+    secondaryPrescriptions?: PrescriptionListRelationFilter
+    tags?: TagListRelationFilter
   }, "id" | "slug">
 
   export type IngredientOrderByWithAggregationInput = {
@@ -12274,6 +12614,8 @@ export namespace Prisma {
     symbol?: SortOrderInput | SortOrder
     formula?: SortOrderInput | SortOrder
     isVariable?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
     _count?: IngredientCountOrderByAggregateInput
     _max?: IngredientMaxOrderByAggregateInput
     _min?: IngredientMinOrderByAggregateInput
@@ -12292,6 +12634,8 @@ export namespace Prisma {
     symbol?: StringNullableWithAggregatesFilter<"Ingredient"> | string | null
     formula?: StringNullableWithAggregatesFilter<"Ingredient"> | string | null
     isVariable?: BoolWithAggregatesFilter<"Ingredient"> | boolean
+    createdAt?: DateTimeWithAggregatesFilter<"Ingredient"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"Ingredient"> | Date | string
   }
 
   export type FormulaWhereInput = {
@@ -12300,43 +12644,50 @@ export namespace Prisma {
     NOT?: FormulaWhereInput | FormulaWhereInput[]
     id?: StringFilter<"Formula"> | string
     name?: StringFilter<"Formula"> | string
-    description?: StringFilter<"Formula"> | string
-    href?: StringFilter<"Formula"> | string
-    code?: StringNullableFilter<"Formula"> | string | null
+    description?: StringNullableFilter<"Formula"> | string | null
+    slug?: StringFilter<"Formula"> | string
+    fontCategory?: StringFilter<"Formula"> | string
     createdAt?: DateTimeFilter<"Formula"> | Date | string
+    updatedAt?: DateTimeFilter<"Formula"> | Date | string
     fonts?: IngredientListRelationFilter
+    tags?: TagListRelationFilter
   }
 
   export type FormulaOrderByWithRelationInput = {
     id?: SortOrder
     name?: SortOrder
-    description?: SortOrder
-    href?: SortOrder
-    code?: SortOrderInput | SortOrder
+    description?: SortOrderInput | SortOrder
+    slug?: SortOrder
+    fontCategory?: SortOrder
     createdAt?: SortOrder
+    updatedAt?: SortOrder
     fonts?: IngredientOrderByRelationAggregateInput
+    tags?: TagOrderByRelationAggregateInput
   }
 
   export type FormulaWhereUniqueInput = Prisma.AtLeast<{
     id?: string
-    href?: string
+    slug?: string
     AND?: FormulaWhereInput | FormulaWhereInput[]
     OR?: FormulaWhereInput[]
     NOT?: FormulaWhereInput | FormulaWhereInput[]
     name?: StringFilter<"Formula"> | string
-    description?: StringFilter<"Formula"> | string
-    code?: StringNullableFilter<"Formula"> | string | null
+    description?: StringNullableFilter<"Formula"> | string | null
+    fontCategory?: StringFilter<"Formula"> | string
     createdAt?: DateTimeFilter<"Formula"> | Date | string
+    updatedAt?: DateTimeFilter<"Formula"> | Date | string
     fonts?: IngredientListRelationFilter
-  }, "id" | "href">
+    tags?: TagListRelationFilter
+  }, "id" | "slug">
 
   export type FormulaOrderByWithAggregationInput = {
     id?: SortOrder
     name?: SortOrder
-    description?: SortOrder
-    href?: SortOrder
-    code?: SortOrderInput | SortOrder
+    description?: SortOrderInput | SortOrder
+    slug?: SortOrder
+    fontCategory?: SortOrder
     createdAt?: SortOrder
+    updatedAt?: SortOrder
     _count?: FormulaCountOrderByAggregateInput
     _max?: FormulaMaxOrderByAggregateInput
     _min?: FormulaMinOrderByAggregateInput
@@ -12348,10 +12699,11 @@ export namespace Prisma {
     NOT?: FormulaScalarWhereWithAggregatesInput | FormulaScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"Formula"> | string
     name?: StringWithAggregatesFilter<"Formula"> | string
-    description?: StringWithAggregatesFilter<"Formula"> | string
-    href?: StringWithAggregatesFilter<"Formula"> | string
-    code?: StringNullableWithAggregatesFilter<"Formula"> | string | null
+    description?: StringNullableWithAggregatesFilter<"Formula"> | string | null
+    slug?: StringWithAggregatesFilter<"Formula"> | string
+    fontCategory?: StringWithAggregatesFilter<"Formula"> | string
     createdAt?: DateTimeWithAggregatesFilter<"Formula"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"Formula"> | Date | string
   }
 
   export type PrescriptionWhereInput = {
@@ -12360,42 +12712,65 @@ export namespace Prisma {
     NOT?: PrescriptionWhereInput | PrescriptionWhereInput[]
     id?: StringFilter<"Prescription"> | string
     name?: StringFilter<"Prescription"> | string
-    href?: StringFilter<"Prescription"> | string
+    slug?: StringFilter<"Prescription"> | string
     description?: StringNullableFilter<"Prescription"> | string | null
-    imgUrl?: StringNullableFilter<"Prescription"> | string | null
+    imageUrl?: StringNullableFilter<"Prescription"> | string | null
+    published?: BoolFilter<"Prescription"> | boolean
+    createdAt?: DateTimeFilter<"Prescription"> | Date | string
+    updatedAt?: DateTimeFilter<"Prescription"> | Date | string
+    primaryFontId?: StringFilter<"Prescription"> | string
+    secondaryFontId?: StringFilter<"Prescription"> | string
+    primaryFont?: XOR<IngredientScalarRelationFilter, IngredientWhereInput>
+    secondaryFont?: XOR<IngredientScalarRelationFilter, IngredientWhereInput>
     tags?: TagListRelationFilter
-    fonts?: IngredientListRelationFilter
   }
 
   export type PrescriptionOrderByWithRelationInput = {
     id?: SortOrder
     name?: SortOrder
-    href?: SortOrder
+    slug?: SortOrder
     description?: SortOrderInput | SortOrder
-    imgUrl?: SortOrderInput | SortOrder
+    imageUrl?: SortOrderInput | SortOrder
+    published?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    primaryFontId?: SortOrder
+    secondaryFontId?: SortOrder
+    primaryFont?: IngredientOrderByWithRelationInput
+    secondaryFont?: IngredientOrderByWithRelationInput
     tags?: TagOrderByRelationAggregateInput
-    fonts?: IngredientOrderByRelationAggregateInput
   }
 
   export type PrescriptionWhereUniqueInput = Prisma.AtLeast<{
     id?: string
-    href?: string
+    slug?: string
     AND?: PrescriptionWhereInput | PrescriptionWhereInput[]
     OR?: PrescriptionWhereInput[]
     NOT?: PrescriptionWhereInput | PrescriptionWhereInput[]
     name?: StringFilter<"Prescription"> | string
     description?: StringNullableFilter<"Prescription"> | string | null
-    imgUrl?: StringNullableFilter<"Prescription"> | string | null
+    imageUrl?: StringNullableFilter<"Prescription"> | string | null
+    published?: BoolFilter<"Prescription"> | boolean
+    createdAt?: DateTimeFilter<"Prescription"> | Date | string
+    updatedAt?: DateTimeFilter<"Prescription"> | Date | string
+    primaryFontId?: StringFilter<"Prescription"> | string
+    secondaryFontId?: StringFilter<"Prescription"> | string
+    primaryFont?: XOR<IngredientScalarRelationFilter, IngredientWhereInput>
+    secondaryFont?: XOR<IngredientScalarRelationFilter, IngredientWhereInput>
     tags?: TagListRelationFilter
-    fonts?: IngredientListRelationFilter
-  }, "id" | "href">
+  }, "id" | "slug">
 
   export type PrescriptionOrderByWithAggregationInput = {
     id?: SortOrder
     name?: SortOrder
-    href?: SortOrder
+    slug?: SortOrder
     description?: SortOrderInput | SortOrder
-    imgUrl?: SortOrderInput | SortOrder
+    imageUrl?: SortOrderInput | SortOrder
+    published?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    primaryFontId?: SortOrder
+    secondaryFontId?: SortOrder
     _count?: PrescriptionCountOrderByAggregateInput
     _max?: PrescriptionMaxOrderByAggregateInput
     _min?: PrescriptionMinOrderByAggregateInput
@@ -12407,9 +12782,14 @@ export namespace Prisma {
     NOT?: PrescriptionScalarWhereWithAggregatesInput | PrescriptionScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"Prescription"> | string
     name?: StringWithAggregatesFilter<"Prescription"> | string
-    href?: StringWithAggregatesFilter<"Prescription"> | string
+    slug?: StringWithAggregatesFilter<"Prescription"> | string
     description?: StringNullableWithAggregatesFilter<"Prescription"> | string | null
-    imgUrl?: StringNullableWithAggregatesFilter<"Prescription"> | string | null
+    imageUrl?: StringNullableWithAggregatesFilter<"Prescription"> | string | null
+    published?: BoolWithAggregatesFilter<"Prescription"> | boolean
+    createdAt?: DateTimeWithAggregatesFilter<"Prescription"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"Prescription"> | Date | string
+    primaryFontId?: StringWithAggregatesFilter<"Prescription"> | string
+    secondaryFontId?: StringWithAggregatesFilter<"Prescription"> | string
   }
 
   export type TagWhereInput = {
@@ -12418,13 +12798,23 @@ export namespace Prisma {
     NOT?: TagWhereInput | TagWhereInput[]
     id?: StringFilter<"Tag"> | string
     name?: StringFilter<"Tag"> | string
+    description?: StringNullableFilter<"Tag"> | string | null
+    createdAt?: DateTimeFilter<"Tag"> | Date | string
+    updatedAt?: DateTimeFilter<"Tag"> | Date | string
     prescriptions?: PrescriptionListRelationFilter
+    ingredients?: IngredientListRelationFilter
+    formulas?: FormulaListRelationFilter
   }
 
   export type TagOrderByWithRelationInput = {
     id?: SortOrder
     name?: SortOrder
+    description?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
     prescriptions?: PrescriptionOrderByRelationAggregateInput
+    ingredients?: IngredientOrderByRelationAggregateInput
+    formulas?: FormulaOrderByRelationAggregateInput
   }
 
   export type TagWhereUniqueInput = Prisma.AtLeast<{
@@ -12433,12 +12823,20 @@ export namespace Prisma {
     AND?: TagWhereInput | TagWhereInput[]
     OR?: TagWhereInput[]
     NOT?: TagWhereInput | TagWhereInput[]
+    description?: StringNullableFilter<"Tag"> | string | null
+    createdAt?: DateTimeFilter<"Tag"> | Date | string
+    updatedAt?: DateTimeFilter<"Tag"> | Date | string
     prescriptions?: PrescriptionListRelationFilter
+    ingredients?: IngredientListRelationFilter
+    formulas?: FormulaListRelationFilter
   }, "id" | "name">
 
   export type TagOrderByWithAggregationInput = {
     id?: SortOrder
     name?: SortOrder
+    description?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
     _count?: TagCountOrderByAggregateInput
     _max?: TagMaxOrderByAggregateInput
     _min?: TagMinOrderByAggregateInput
@@ -12450,6 +12848,9 @@ export namespace Prisma {
     NOT?: TagScalarWhereWithAggregatesInput | TagScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"Tag"> | string
     name?: StringWithAggregatesFilter<"Tag"> | string
+    description?: StringNullableWithAggregatesFilter<"Tag"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"Tag"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"Tag"> | Date | string
   }
 
   export type UserCreateInput = {
@@ -12802,9 +13203,13 @@ export namespace Prisma {
     symbol?: string | null
     formula?: string | null
     isVariable?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
     variants?: FontVariantCreateNestedManyWithoutIngredientInput
     formulas?: FormulaCreateNestedManyWithoutFontsInput
-    prescriptions?: PrescriptionCreateNestedManyWithoutFontsInput
+    primaryPrescriptions?: PrescriptionCreateNestedManyWithoutPrimaryFontInput
+    secondaryPrescriptions?: PrescriptionCreateNestedManyWithoutSecondaryFontInput
+    tags?: TagCreateNestedManyWithoutIngredientsInput
   }
 
   export type IngredientUncheckedCreateInput = {
@@ -12817,9 +13222,13 @@ export namespace Prisma {
     symbol?: string | null
     formula?: string | null
     isVariable?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
     variants?: FontVariantUncheckedCreateNestedManyWithoutIngredientInput
     formulas?: FormulaUncheckedCreateNestedManyWithoutFontsInput
-    prescriptions?: PrescriptionUncheckedCreateNestedManyWithoutFontsInput
+    primaryPrescriptions?: PrescriptionUncheckedCreateNestedManyWithoutPrimaryFontInput
+    secondaryPrescriptions?: PrescriptionUncheckedCreateNestedManyWithoutSecondaryFontInput
+    tags?: TagUncheckedCreateNestedManyWithoutIngredientsInput
   }
 
   export type IngredientUpdateInput = {
@@ -12832,9 +13241,13 @@ export namespace Prisma {
     symbol?: NullableStringFieldUpdateOperationsInput | string | null
     formula?: NullableStringFieldUpdateOperationsInput | string | null
     isVariable?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     variants?: FontVariantUpdateManyWithoutIngredientNestedInput
     formulas?: FormulaUpdateManyWithoutFontsNestedInput
-    prescriptions?: PrescriptionUpdateManyWithoutFontsNestedInput
+    primaryPrescriptions?: PrescriptionUpdateManyWithoutPrimaryFontNestedInput
+    secondaryPrescriptions?: PrescriptionUpdateManyWithoutSecondaryFontNestedInput
+    tags?: TagUpdateManyWithoutIngredientsNestedInput
   }
 
   export type IngredientUncheckedUpdateInput = {
@@ -12847,9 +13260,13 @@ export namespace Prisma {
     symbol?: NullableStringFieldUpdateOperationsInput | string | null
     formula?: NullableStringFieldUpdateOperationsInput | string | null
     isVariable?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     variants?: FontVariantUncheckedUpdateManyWithoutIngredientNestedInput
     formulas?: FormulaUncheckedUpdateManyWithoutFontsNestedInput
-    prescriptions?: PrescriptionUncheckedUpdateManyWithoutFontsNestedInput
+    primaryPrescriptions?: PrescriptionUncheckedUpdateManyWithoutPrimaryFontNestedInput
+    secondaryPrescriptions?: PrescriptionUncheckedUpdateManyWithoutSecondaryFontNestedInput
+    tags?: TagUncheckedUpdateManyWithoutIngredientsNestedInput
   }
 
   export type IngredientCreateManyInput = {
@@ -12862,6 +13279,8 @@ export namespace Prisma {
     symbol?: string | null
     formula?: string | null
     isVariable?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
   export type IngredientUpdateManyMutationInput = {
@@ -12874,6 +13293,8 @@ export namespace Prisma {
     symbol?: NullableStringFieldUpdateOperationsInput | string | null
     formula?: NullableStringFieldUpdateOperationsInput | string | null
     isVariable?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type IngredientUncheckedUpdateManyInput = {
@@ -12886,176 +13307,247 @@ export namespace Prisma {
     symbol?: NullableStringFieldUpdateOperationsInput | string | null
     formula?: NullableStringFieldUpdateOperationsInput | string | null
     isVariable?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type FormulaCreateInput = {
     id?: string
     name: string
-    description: string
-    href: string
-    code?: string | null
+    description?: string | null
+    slug: string
+    fontCategory: string
     createdAt?: Date | string
+    updatedAt?: Date | string
     fonts?: IngredientCreateNestedManyWithoutFormulasInput
+    tags?: TagCreateNestedManyWithoutFormulasInput
   }
 
   export type FormulaUncheckedCreateInput = {
     id?: string
     name: string
-    description: string
-    href: string
-    code?: string | null
+    description?: string | null
+    slug: string
+    fontCategory: string
     createdAt?: Date | string
+    updatedAt?: Date | string
     fonts?: IngredientUncheckedCreateNestedManyWithoutFormulasInput
+    tags?: TagUncheckedCreateNestedManyWithoutFormulasInput
   }
 
   export type FormulaUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    description?: StringFieldUpdateOperationsInput | string
-    href?: StringFieldUpdateOperationsInput | string
-    code?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    slug?: StringFieldUpdateOperationsInput | string
+    fontCategory?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     fonts?: IngredientUpdateManyWithoutFormulasNestedInput
+    tags?: TagUpdateManyWithoutFormulasNestedInput
   }
 
   export type FormulaUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    description?: StringFieldUpdateOperationsInput | string
-    href?: StringFieldUpdateOperationsInput | string
-    code?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    slug?: StringFieldUpdateOperationsInput | string
+    fontCategory?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     fonts?: IngredientUncheckedUpdateManyWithoutFormulasNestedInput
+    tags?: TagUncheckedUpdateManyWithoutFormulasNestedInput
   }
 
   export type FormulaCreateManyInput = {
     id?: string
     name: string
-    description: string
-    href: string
-    code?: string | null
+    description?: string | null
+    slug: string
+    fontCategory: string
     createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
   export type FormulaUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    description?: StringFieldUpdateOperationsInput | string
-    href?: StringFieldUpdateOperationsInput | string
-    code?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    slug?: StringFieldUpdateOperationsInput | string
+    fontCategory?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type FormulaUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    description?: StringFieldUpdateOperationsInput | string
-    href?: StringFieldUpdateOperationsInput | string
-    code?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    slug?: StringFieldUpdateOperationsInput | string
+    fontCategory?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type PrescriptionCreateInput = {
     id?: string
     name: string
-    href: string
+    slug: string
     description?: string | null
-    imgUrl?: string | null
+    imageUrl?: string | null
+    published?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    primaryFont: IngredientCreateNestedOneWithoutPrimaryPrescriptionsInput
+    secondaryFont: IngredientCreateNestedOneWithoutSecondaryPrescriptionsInput
     tags?: TagCreateNestedManyWithoutPrescriptionsInput
-    fonts?: IngredientCreateNestedManyWithoutPrescriptionsInput
   }
 
   export type PrescriptionUncheckedCreateInput = {
     id?: string
     name: string
-    href: string
+    slug: string
     description?: string | null
-    imgUrl?: string | null
+    imageUrl?: string | null
+    published?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    primaryFontId: string
+    secondaryFontId: string
     tags?: TagUncheckedCreateNestedManyWithoutPrescriptionsInput
-    fonts?: IngredientUncheckedCreateNestedManyWithoutPrescriptionsInput
   }
 
   export type PrescriptionUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    href?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    imgUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    published?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    primaryFont?: IngredientUpdateOneRequiredWithoutPrimaryPrescriptionsNestedInput
+    secondaryFont?: IngredientUpdateOneRequiredWithoutSecondaryPrescriptionsNestedInput
     tags?: TagUpdateManyWithoutPrescriptionsNestedInput
-    fonts?: IngredientUpdateManyWithoutPrescriptionsNestedInput
   }
 
   export type PrescriptionUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    href?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    imgUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    published?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    primaryFontId?: StringFieldUpdateOperationsInput | string
+    secondaryFontId?: StringFieldUpdateOperationsInput | string
     tags?: TagUncheckedUpdateManyWithoutPrescriptionsNestedInput
-    fonts?: IngredientUncheckedUpdateManyWithoutPrescriptionsNestedInput
   }
 
   export type PrescriptionCreateManyInput = {
     id?: string
     name: string
-    href: string
+    slug: string
     description?: string | null
-    imgUrl?: string | null
+    imageUrl?: string | null
+    published?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    primaryFontId: string
+    secondaryFontId: string
   }
 
   export type PrescriptionUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    href?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    imgUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    published?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type PrescriptionUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    href?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    imgUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    published?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    primaryFontId?: StringFieldUpdateOperationsInput | string
+    secondaryFontId?: StringFieldUpdateOperationsInput | string
   }
 
   export type TagCreateInput = {
     id?: string
     name: string
+    description?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
     prescriptions?: PrescriptionCreateNestedManyWithoutTagsInput
+    ingredients?: IngredientCreateNestedManyWithoutTagsInput
+    formulas?: FormulaCreateNestedManyWithoutTagsInput
   }
 
   export type TagUncheckedCreateInput = {
     id?: string
     name: string
+    description?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
     prescriptions?: PrescriptionUncheckedCreateNestedManyWithoutTagsInput
+    ingredients?: IngredientUncheckedCreateNestedManyWithoutTagsInput
+    formulas?: FormulaUncheckedCreateNestedManyWithoutTagsInput
   }
 
   export type TagUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     prescriptions?: PrescriptionUpdateManyWithoutTagsNestedInput
+    ingredients?: IngredientUpdateManyWithoutTagsNestedInput
+    formulas?: FormulaUpdateManyWithoutTagsNestedInput
   }
 
   export type TagUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     prescriptions?: PrescriptionUncheckedUpdateManyWithoutTagsNestedInput
+    ingredients?: IngredientUncheckedUpdateManyWithoutTagsNestedInput
+    formulas?: FormulaUncheckedUpdateManyWithoutTagsNestedInput
   }
 
   export type TagCreateManyInput = {
     id?: string
     name: string
+    description?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
   export type TagUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type TagUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type StringFilter<$PrismaModel = never> = {
@@ -13413,6 +13905,12 @@ export namespace Prisma {
     none?: PrescriptionWhereInput
   }
 
+  export type TagListRelationFilter = {
+    every?: TagWhereInput
+    some?: TagWhereInput
+    none?: TagWhereInput
+  }
+
   export type FontVariantOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
@@ -13422,6 +13920,10 @@ export namespace Prisma {
   }
 
   export type PrescriptionOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type TagOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -13435,6 +13937,8 @@ export namespace Prisma {
     symbol?: SortOrder
     formula?: SortOrder
     isVariable?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
   }
 
   export type IngredientMaxOrderByAggregateInput = {
@@ -13447,6 +13951,8 @@ export namespace Prisma {
     symbol?: SortOrder
     formula?: SortOrder
     isVariable?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
   }
 
   export type IngredientMinOrderByAggregateInput = {
@@ -13459,6 +13965,8 @@ export namespace Prisma {
     symbol?: SortOrder
     formula?: SortOrder
     isVariable?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
   }
 
   export type BoolWithAggregatesFilter<$PrismaModel = never> = {
@@ -13483,76 +13991,93 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     description?: SortOrder
-    href?: SortOrder
-    code?: SortOrder
+    slug?: SortOrder
+    fontCategory?: SortOrder
     createdAt?: SortOrder
+    updatedAt?: SortOrder
   }
 
   export type FormulaMaxOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
     description?: SortOrder
-    href?: SortOrder
-    code?: SortOrder
+    slug?: SortOrder
+    fontCategory?: SortOrder
     createdAt?: SortOrder
+    updatedAt?: SortOrder
   }
 
   export type FormulaMinOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
     description?: SortOrder
-    href?: SortOrder
-    code?: SortOrder
+    slug?: SortOrder
+    fontCategory?: SortOrder
     createdAt?: SortOrder
-  }
-
-  export type TagListRelationFilter = {
-    every?: TagWhereInput
-    some?: TagWhereInput
-    none?: TagWhereInput
-  }
-
-  export type TagOrderByRelationAggregateInput = {
-    _count?: SortOrder
+    updatedAt?: SortOrder
   }
 
   export type PrescriptionCountOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
-    href?: SortOrder
+    slug?: SortOrder
     description?: SortOrder
-    imgUrl?: SortOrder
+    imageUrl?: SortOrder
+    published?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    primaryFontId?: SortOrder
+    secondaryFontId?: SortOrder
   }
 
   export type PrescriptionMaxOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
-    href?: SortOrder
+    slug?: SortOrder
     description?: SortOrder
-    imgUrl?: SortOrder
+    imageUrl?: SortOrder
+    published?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    primaryFontId?: SortOrder
+    secondaryFontId?: SortOrder
   }
 
   export type PrescriptionMinOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
-    href?: SortOrder
+    slug?: SortOrder
     description?: SortOrder
-    imgUrl?: SortOrder
+    imageUrl?: SortOrder
+    published?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    primaryFontId?: SortOrder
+    secondaryFontId?: SortOrder
   }
 
   export type TagCountOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
+    description?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
   }
 
   export type TagMaxOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
+    description?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
   }
 
   export type TagMinOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
+    description?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
   }
 
   export type BlogPostCreateNestedManyWithoutAuthorInput = {
@@ -13814,10 +14339,24 @@ export namespace Prisma {
     connect?: FormulaWhereUniqueInput | FormulaWhereUniqueInput[]
   }
 
-  export type PrescriptionCreateNestedManyWithoutFontsInput = {
-    create?: XOR<PrescriptionCreateWithoutFontsInput, PrescriptionUncheckedCreateWithoutFontsInput> | PrescriptionCreateWithoutFontsInput[] | PrescriptionUncheckedCreateWithoutFontsInput[]
-    connectOrCreate?: PrescriptionCreateOrConnectWithoutFontsInput | PrescriptionCreateOrConnectWithoutFontsInput[]
+  export type PrescriptionCreateNestedManyWithoutPrimaryFontInput = {
+    create?: XOR<PrescriptionCreateWithoutPrimaryFontInput, PrescriptionUncheckedCreateWithoutPrimaryFontInput> | PrescriptionCreateWithoutPrimaryFontInput[] | PrescriptionUncheckedCreateWithoutPrimaryFontInput[]
+    connectOrCreate?: PrescriptionCreateOrConnectWithoutPrimaryFontInput | PrescriptionCreateOrConnectWithoutPrimaryFontInput[]
+    createMany?: PrescriptionCreateManyPrimaryFontInputEnvelope
     connect?: PrescriptionWhereUniqueInput | PrescriptionWhereUniqueInput[]
+  }
+
+  export type PrescriptionCreateNestedManyWithoutSecondaryFontInput = {
+    create?: XOR<PrescriptionCreateWithoutSecondaryFontInput, PrescriptionUncheckedCreateWithoutSecondaryFontInput> | PrescriptionCreateWithoutSecondaryFontInput[] | PrescriptionUncheckedCreateWithoutSecondaryFontInput[]
+    connectOrCreate?: PrescriptionCreateOrConnectWithoutSecondaryFontInput | PrescriptionCreateOrConnectWithoutSecondaryFontInput[]
+    createMany?: PrescriptionCreateManySecondaryFontInputEnvelope
+    connect?: PrescriptionWhereUniqueInput | PrescriptionWhereUniqueInput[]
+  }
+
+  export type TagCreateNestedManyWithoutIngredientsInput = {
+    create?: XOR<TagCreateWithoutIngredientsInput, TagUncheckedCreateWithoutIngredientsInput> | TagCreateWithoutIngredientsInput[] | TagUncheckedCreateWithoutIngredientsInput[]
+    connectOrCreate?: TagCreateOrConnectWithoutIngredientsInput | TagCreateOrConnectWithoutIngredientsInput[]
+    connect?: TagWhereUniqueInput | TagWhereUniqueInput[]
   }
 
   export type FontVariantUncheckedCreateNestedManyWithoutIngredientInput = {
@@ -13833,10 +14372,24 @@ export namespace Prisma {
     connect?: FormulaWhereUniqueInput | FormulaWhereUniqueInput[]
   }
 
-  export type PrescriptionUncheckedCreateNestedManyWithoutFontsInput = {
-    create?: XOR<PrescriptionCreateWithoutFontsInput, PrescriptionUncheckedCreateWithoutFontsInput> | PrescriptionCreateWithoutFontsInput[] | PrescriptionUncheckedCreateWithoutFontsInput[]
-    connectOrCreate?: PrescriptionCreateOrConnectWithoutFontsInput | PrescriptionCreateOrConnectWithoutFontsInput[]
+  export type PrescriptionUncheckedCreateNestedManyWithoutPrimaryFontInput = {
+    create?: XOR<PrescriptionCreateWithoutPrimaryFontInput, PrescriptionUncheckedCreateWithoutPrimaryFontInput> | PrescriptionCreateWithoutPrimaryFontInput[] | PrescriptionUncheckedCreateWithoutPrimaryFontInput[]
+    connectOrCreate?: PrescriptionCreateOrConnectWithoutPrimaryFontInput | PrescriptionCreateOrConnectWithoutPrimaryFontInput[]
+    createMany?: PrescriptionCreateManyPrimaryFontInputEnvelope
     connect?: PrescriptionWhereUniqueInput | PrescriptionWhereUniqueInput[]
+  }
+
+  export type PrescriptionUncheckedCreateNestedManyWithoutSecondaryFontInput = {
+    create?: XOR<PrescriptionCreateWithoutSecondaryFontInput, PrescriptionUncheckedCreateWithoutSecondaryFontInput> | PrescriptionCreateWithoutSecondaryFontInput[] | PrescriptionUncheckedCreateWithoutSecondaryFontInput[]
+    connectOrCreate?: PrescriptionCreateOrConnectWithoutSecondaryFontInput | PrescriptionCreateOrConnectWithoutSecondaryFontInput[]
+    createMany?: PrescriptionCreateManySecondaryFontInputEnvelope
+    connect?: PrescriptionWhereUniqueInput | PrescriptionWhereUniqueInput[]
+  }
+
+  export type TagUncheckedCreateNestedManyWithoutIngredientsInput = {
+    create?: XOR<TagCreateWithoutIngredientsInput, TagUncheckedCreateWithoutIngredientsInput> | TagCreateWithoutIngredientsInput[] | TagUncheckedCreateWithoutIngredientsInput[]
+    connectOrCreate?: TagCreateOrConnectWithoutIngredientsInput | TagCreateOrConnectWithoutIngredientsInput[]
+    connect?: TagWhereUniqueInput | TagWhereUniqueInput[]
   }
 
   export type BoolFieldUpdateOperationsInput = {
@@ -13870,17 +14423,45 @@ export namespace Prisma {
     deleteMany?: FormulaScalarWhereInput | FormulaScalarWhereInput[]
   }
 
-  export type PrescriptionUpdateManyWithoutFontsNestedInput = {
-    create?: XOR<PrescriptionCreateWithoutFontsInput, PrescriptionUncheckedCreateWithoutFontsInput> | PrescriptionCreateWithoutFontsInput[] | PrescriptionUncheckedCreateWithoutFontsInput[]
-    connectOrCreate?: PrescriptionCreateOrConnectWithoutFontsInput | PrescriptionCreateOrConnectWithoutFontsInput[]
-    upsert?: PrescriptionUpsertWithWhereUniqueWithoutFontsInput | PrescriptionUpsertWithWhereUniqueWithoutFontsInput[]
+  export type PrescriptionUpdateManyWithoutPrimaryFontNestedInput = {
+    create?: XOR<PrescriptionCreateWithoutPrimaryFontInput, PrescriptionUncheckedCreateWithoutPrimaryFontInput> | PrescriptionCreateWithoutPrimaryFontInput[] | PrescriptionUncheckedCreateWithoutPrimaryFontInput[]
+    connectOrCreate?: PrescriptionCreateOrConnectWithoutPrimaryFontInput | PrescriptionCreateOrConnectWithoutPrimaryFontInput[]
+    upsert?: PrescriptionUpsertWithWhereUniqueWithoutPrimaryFontInput | PrescriptionUpsertWithWhereUniqueWithoutPrimaryFontInput[]
+    createMany?: PrescriptionCreateManyPrimaryFontInputEnvelope
     set?: PrescriptionWhereUniqueInput | PrescriptionWhereUniqueInput[]
     disconnect?: PrescriptionWhereUniqueInput | PrescriptionWhereUniqueInput[]
     delete?: PrescriptionWhereUniqueInput | PrescriptionWhereUniqueInput[]
     connect?: PrescriptionWhereUniqueInput | PrescriptionWhereUniqueInput[]
-    update?: PrescriptionUpdateWithWhereUniqueWithoutFontsInput | PrescriptionUpdateWithWhereUniqueWithoutFontsInput[]
-    updateMany?: PrescriptionUpdateManyWithWhereWithoutFontsInput | PrescriptionUpdateManyWithWhereWithoutFontsInput[]
+    update?: PrescriptionUpdateWithWhereUniqueWithoutPrimaryFontInput | PrescriptionUpdateWithWhereUniqueWithoutPrimaryFontInput[]
+    updateMany?: PrescriptionUpdateManyWithWhereWithoutPrimaryFontInput | PrescriptionUpdateManyWithWhereWithoutPrimaryFontInput[]
     deleteMany?: PrescriptionScalarWhereInput | PrescriptionScalarWhereInput[]
+  }
+
+  export type PrescriptionUpdateManyWithoutSecondaryFontNestedInput = {
+    create?: XOR<PrescriptionCreateWithoutSecondaryFontInput, PrescriptionUncheckedCreateWithoutSecondaryFontInput> | PrescriptionCreateWithoutSecondaryFontInput[] | PrescriptionUncheckedCreateWithoutSecondaryFontInput[]
+    connectOrCreate?: PrescriptionCreateOrConnectWithoutSecondaryFontInput | PrescriptionCreateOrConnectWithoutSecondaryFontInput[]
+    upsert?: PrescriptionUpsertWithWhereUniqueWithoutSecondaryFontInput | PrescriptionUpsertWithWhereUniqueWithoutSecondaryFontInput[]
+    createMany?: PrescriptionCreateManySecondaryFontInputEnvelope
+    set?: PrescriptionWhereUniqueInput | PrescriptionWhereUniqueInput[]
+    disconnect?: PrescriptionWhereUniqueInput | PrescriptionWhereUniqueInput[]
+    delete?: PrescriptionWhereUniqueInput | PrescriptionWhereUniqueInput[]
+    connect?: PrescriptionWhereUniqueInput | PrescriptionWhereUniqueInput[]
+    update?: PrescriptionUpdateWithWhereUniqueWithoutSecondaryFontInput | PrescriptionUpdateWithWhereUniqueWithoutSecondaryFontInput[]
+    updateMany?: PrescriptionUpdateManyWithWhereWithoutSecondaryFontInput | PrescriptionUpdateManyWithWhereWithoutSecondaryFontInput[]
+    deleteMany?: PrescriptionScalarWhereInput | PrescriptionScalarWhereInput[]
+  }
+
+  export type TagUpdateManyWithoutIngredientsNestedInput = {
+    create?: XOR<TagCreateWithoutIngredientsInput, TagUncheckedCreateWithoutIngredientsInput> | TagCreateWithoutIngredientsInput[] | TagUncheckedCreateWithoutIngredientsInput[]
+    connectOrCreate?: TagCreateOrConnectWithoutIngredientsInput | TagCreateOrConnectWithoutIngredientsInput[]
+    upsert?: TagUpsertWithWhereUniqueWithoutIngredientsInput | TagUpsertWithWhereUniqueWithoutIngredientsInput[]
+    set?: TagWhereUniqueInput | TagWhereUniqueInput[]
+    disconnect?: TagWhereUniqueInput | TagWhereUniqueInput[]
+    delete?: TagWhereUniqueInput | TagWhereUniqueInput[]
+    connect?: TagWhereUniqueInput | TagWhereUniqueInput[]
+    update?: TagUpdateWithWhereUniqueWithoutIngredientsInput | TagUpdateWithWhereUniqueWithoutIngredientsInput[]
+    updateMany?: TagUpdateManyWithWhereWithoutIngredientsInput | TagUpdateManyWithWhereWithoutIngredientsInput[]
+    deleteMany?: TagScalarWhereInput | TagScalarWhereInput[]
   }
 
   export type FontVariantUncheckedUpdateManyWithoutIngredientNestedInput = {
@@ -13910,17 +14491,45 @@ export namespace Prisma {
     deleteMany?: FormulaScalarWhereInput | FormulaScalarWhereInput[]
   }
 
-  export type PrescriptionUncheckedUpdateManyWithoutFontsNestedInput = {
-    create?: XOR<PrescriptionCreateWithoutFontsInput, PrescriptionUncheckedCreateWithoutFontsInput> | PrescriptionCreateWithoutFontsInput[] | PrescriptionUncheckedCreateWithoutFontsInput[]
-    connectOrCreate?: PrescriptionCreateOrConnectWithoutFontsInput | PrescriptionCreateOrConnectWithoutFontsInput[]
-    upsert?: PrescriptionUpsertWithWhereUniqueWithoutFontsInput | PrescriptionUpsertWithWhereUniqueWithoutFontsInput[]
+  export type PrescriptionUncheckedUpdateManyWithoutPrimaryFontNestedInput = {
+    create?: XOR<PrescriptionCreateWithoutPrimaryFontInput, PrescriptionUncheckedCreateWithoutPrimaryFontInput> | PrescriptionCreateWithoutPrimaryFontInput[] | PrescriptionUncheckedCreateWithoutPrimaryFontInput[]
+    connectOrCreate?: PrescriptionCreateOrConnectWithoutPrimaryFontInput | PrescriptionCreateOrConnectWithoutPrimaryFontInput[]
+    upsert?: PrescriptionUpsertWithWhereUniqueWithoutPrimaryFontInput | PrescriptionUpsertWithWhereUniqueWithoutPrimaryFontInput[]
+    createMany?: PrescriptionCreateManyPrimaryFontInputEnvelope
     set?: PrescriptionWhereUniqueInput | PrescriptionWhereUniqueInput[]
     disconnect?: PrescriptionWhereUniqueInput | PrescriptionWhereUniqueInput[]
     delete?: PrescriptionWhereUniqueInput | PrescriptionWhereUniqueInput[]
     connect?: PrescriptionWhereUniqueInput | PrescriptionWhereUniqueInput[]
-    update?: PrescriptionUpdateWithWhereUniqueWithoutFontsInput | PrescriptionUpdateWithWhereUniqueWithoutFontsInput[]
-    updateMany?: PrescriptionUpdateManyWithWhereWithoutFontsInput | PrescriptionUpdateManyWithWhereWithoutFontsInput[]
+    update?: PrescriptionUpdateWithWhereUniqueWithoutPrimaryFontInput | PrescriptionUpdateWithWhereUniqueWithoutPrimaryFontInput[]
+    updateMany?: PrescriptionUpdateManyWithWhereWithoutPrimaryFontInput | PrescriptionUpdateManyWithWhereWithoutPrimaryFontInput[]
     deleteMany?: PrescriptionScalarWhereInput | PrescriptionScalarWhereInput[]
+  }
+
+  export type PrescriptionUncheckedUpdateManyWithoutSecondaryFontNestedInput = {
+    create?: XOR<PrescriptionCreateWithoutSecondaryFontInput, PrescriptionUncheckedCreateWithoutSecondaryFontInput> | PrescriptionCreateWithoutSecondaryFontInput[] | PrescriptionUncheckedCreateWithoutSecondaryFontInput[]
+    connectOrCreate?: PrescriptionCreateOrConnectWithoutSecondaryFontInput | PrescriptionCreateOrConnectWithoutSecondaryFontInput[]
+    upsert?: PrescriptionUpsertWithWhereUniqueWithoutSecondaryFontInput | PrescriptionUpsertWithWhereUniqueWithoutSecondaryFontInput[]
+    createMany?: PrescriptionCreateManySecondaryFontInputEnvelope
+    set?: PrescriptionWhereUniqueInput | PrescriptionWhereUniqueInput[]
+    disconnect?: PrescriptionWhereUniqueInput | PrescriptionWhereUniqueInput[]
+    delete?: PrescriptionWhereUniqueInput | PrescriptionWhereUniqueInput[]
+    connect?: PrescriptionWhereUniqueInput | PrescriptionWhereUniqueInput[]
+    update?: PrescriptionUpdateWithWhereUniqueWithoutSecondaryFontInput | PrescriptionUpdateWithWhereUniqueWithoutSecondaryFontInput[]
+    updateMany?: PrescriptionUpdateManyWithWhereWithoutSecondaryFontInput | PrescriptionUpdateManyWithWhereWithoutSecondaryFontInput[]
+    deleteMany?: PrescriptionScalarWhereInput | PrescriptionScalarWhereInput[]
+  }
+
+  export type TagUncheckedUpdateManyWithoutIngredientsNestedInput = {
+    create?: XOR<TagCreateWithoutIngredientsInput, TagUncheckedCreateWithoutIngredientsInput> | TagCreateWithoutIngredientsInput[] | TagUncheckedCreateWithoutIngredientsInput[]
+    connectOrCreate?: TagCreateOrConnectWithoutIngredientsInput | TagCreateOrConnectWithoutIngredientsInput[]
+    upsert?: TagUpsertWithWhereUniqueWithoutIngredientsInput | TagUpsertWithWhereUniqueWithoutIngredientsInput[]
+    set?: TagWhereUniqueInput | TagWhereUniqueInput[]
+    disconnect?: TagWhereUniqueInput | TagWhereUniqueInput[]
+    delete?: TagWhereUniqueInput | TagWhereUniqueInput[]
+    connect?: TagWhereUniqueInput | TagWhereUniqueInput[]
+    update?: TagUpdateWithWhereUniqueWithoutIngredientsInput | TagUpdateWithWhereUniqueWithoutIngredientsInput[]
+    updateMany?: TagUpdateManyWithWhereWithoutIngredientsInput | TagUpdateManyWithWhereWithoutIngredientsInput[]
+    deleteMany?: TagScalarWhereInput | TagScalarWhereInput[]
   }
 
   export type IngredientCreateNestedManyWithoutFormulasInput = {
@@ -13929,10 +14538,22 @@ export namespace Prisma {
     connect?: IngredientWhereUniqueInput | IngredientWhereUniqueInput[]
   }
 
+  export type TagCreateNestedManyWithoutFormulasInput = {
+    create?: XOR<TagCreateWithoutFormulasInput, TagUncheckedCreateWithoutFormulasInput> | TagCreateWithoutFormulasInput[] | TagUncheckedCreateWithoutFormulasInput[]
+    connectOrCreate?: TagCreateOrConnectWithoutFormulasInput | TagCreateOrConnectWithoutFormulasInput[]
+    connect?: TagWhereUniqueInput | TagWhereUniqueInput[]
+  }
+
   export type IngredientUncheckedCreateNestedManyWithoutFormulasInput = {
     create?: XOR<IngredientCreateWithoutFormulasInput, IngredientUncheckedCreateWithoutFormulasInput> | IngredientCreateWithoutFormulasInput[] | IngredientUncheckedCreateWithoutFormulasInput[]
     connectOrCreate?: IngredientCreateOrConnectWithoutFormulasInput | IngredientCreateOrConnectWithoutFormulasInput[]
     connect?: IngredientWhereUniqueInput | IngredientWhereUniqueInput[]
+  }
+
+  export type TagUncheckedCreateNestedManyWithoutFormulasInput = {
+    create?: XOR<TagCreateWithoutFormulasInput, TagUncheckedCreateWithoutFormulasInput> | TagCreateWithoutFormulasInput[] | TagUncheckedCreateWithoutFormulasInput[]
+    connectOrCreate?: TagCreateOrConnectWithoutFormulasInput | TagCreateOrConnectWithoutFormulasInput[]
+    connect?: TagWhereUniqueInput | TagWhereUniqueInput[]
   }
 
   export type IngredientUpdateManyWithoutFormulasNestedInput = {
@@ -13948,6 +14569,19 @@ export namespace Prisma {
     deleteMany?: IngredientScalarWhereInput | IngredientScalarWhereInput[]
   }
 
+  export type TagUpdateManyWithoutFormulasNestedInput = {
+    create?: XOR<TagCreateWithoutFormulasInput, TagUncheckedCreateWithoutFormulasInput> | TagCreateWithoutFormulasInput[] | TagUncheckedCreateWithoutFormulasInput[]
+    connectOrCreate?: TagCreateOrConnectWithoutFormulasInput | TagCreateOrConnectWithoutFormulasInput[]
+    upsert?: TagUpsertWithWhereUniqueWithoutFormulasInput | TagUpsertWithWhereUniqueWithoutFormulasInput[]
+    set?: TagWhereUniqueInput | TagWhereUniqueInput[]
+    disconnect?: TagWhereUniqueInput | TagWhereUniqueInput[]
+    delete?: TagWhereUniqueInput | TagWhereUniqueInput[]
+    connect?: TagWhereUniqueInput | TagWhereUniqueInput[]
+    update?: TagUpdateWithWhereUniqueWithoutFormulasInput | TagUpdateWithWhereUniqueWithoutFormulasInput[]
+    updateMany?: TagUpdateManyWithWhereWithoutFormulasInput | TagUpdateManyWithWhereWithoutFormulasInput[]
+    deleteMany?: TagScalarWhereInput | TagScalarWhereInput[]
+  }
+
   export type IngredientUncheckedUpdateManyWithoutFormulasNestedInput = {
     create?: XOR<IngredientCreateWithoutFormulasInput, IngredientUncheckedCreateWithoutFormulasInput> | IngredientCreateWithoutFormulasInput[] | IngredientUncheckedCreateWithoutFormulasInput[]
     connectOrCreate?: IngredientCreateOrConnectWithoutFormulasInput | IngredientCreateOrConnectWithoutFormulasInput[]
@@ -13961,16 +14595,35 @@ export namespace Prisma {
     deleteMany?: IngredientScalarWhereInput | IngredientScalarWhereInput[]
   }
 
+  export type TagUncheckedUpdateManyWithoutFormulasNestedInput = {
+    create?: XOR<TagCreateWithoutFormulasInput, TagUncheckedCreateWithoutFormulasInput> | TagCreateWithoutFormulasInput[] | TagUncheckedCreateWithoutFormulasInput[]
+    connectOrCreate?: TagCreateOrConnectWithoutFormulasInput | TagCreateOrConnectWithoutFormulasInput[]
+    upsert?: TagUpsertWithWhereUniqueWithoutFormulasInput | TagUpsertWithWhereUniqueWithoutFormulasInput[]
+    set?: TagWhereUniqueInput | TagWhereUniqueInput[]
+    disconnect?: TagWhereUniqueInput | TagWhereUniqueInput[]
+    delete?: TagWhereUniqueInput | TagWhereUniqueInput[]
+    connect?: TagWhereUniqueInput | TagWhereUniqueInput[]
+    update?: TagUpdateWithWhereUniqueWithoutFormulasInput | TagUpdateWithWhereUniqueWithoutFormulasInput[]
+    updateMany?: TagUpdateManyWithWhereWithoutFormulasInput | TagUpdateManyWithWhereWithoutFormulasInput[]
+    deleteMany?: TagScalarWhereInput | TagScalarWhereInput[]
+  }
+
+  export type IngredientCreateNestedOneWithoutPrimaryPrescriptionsInput = {
+    create?: XOR<IngredientCreateWithoutPrimaryPrescriptionsInput, IngredientUncheckedCreateWithoutPrimaryPrescriptionsInput>
+    connectOrCreate?: IngredientCreateOrConnectWithoutPrimaryPrescriptionsInput
+    connect?: IngredientWhereUniqueInput
+  }
+
+  export type IngredientCreateNestedOneWithoutSecondaryPrescriptionsInput = {
+    create?: XOR<IngredientCreateWithoutSecondaryPrescriptionsInput, IngredientUncheckedCreateWithoutSecondaryPrescriptionsInput>
+    connectOrCreate?: IngredientCreateOrConnectWithoutSecondaryPrescriptionsInput
+    connect?: IngredientWhereUniqueInput
+  }
+
   export type TagCreateNestedManyWithoutPrescriptionsInput = {
     create?: XOR<TagCreateWithoutPrescriptionsInput, TagUncheckedCreateWithoutPrescriptionsInput> | TagCreateWithoutPrescriptionsInput[] | TagUncheckedCreateWithoutPrescriptionsInput[]
     connectOrCreate?: TagCreateOrConnectWithoutPrescriptionsInput | TagCreateOrConnectWithoutPrescriptionsInput[]
     connect?: TagWhereUniqueInput | TagWhereUniqueInput[]
-  }
-
-  export type IngredientCreateNestedManyWithoutPrescriptionsInput = {
-    create?: XOR<IngredientCreateWithoutPrescriptionsInput, IngredientUncheckedCreateWithoutPrescriptionsInput> | IngredientCreateWithoutPrescriptionsInput[] | IngredientUncheckedCreateWithoutPrescriptionsInput[]
-    connectOrCreate?: IngredientCreateOrConnectWithoutPrescriptionsInput | IngredientCreateOrConnectWithoutPrescriptionsInput[]
-    connect?: IngredientWhereUniqueInput | IngredientWhereUniqueInput[]
   }
 
   export type TagUncheckedCreateNestedManyWithoutPrescriptionsInput = {
@@ -13979,10 +14632,20 @@ export namespace Prisma {
     connect?: TagWhereUniqueInput | TagWhereUniqueInput[]
   }
 
-  export type IngredientUncheckedCreateNestedManyWithoutPrescriptionsInput = {
-    create?: XOR<IngredientCreateWithoutPrescriptionsInput, IngredientUncheckedCreateWithoutPrescriptionsInput> | IngredientCreateWithoutPrescriptionsInput[] | IngredientUncheckedCreateWithoutPrescriptionsInput[]
-    connectOrCreate?: IngredientCreateOrConnectWithoutPrescriptionsInput | IngredientCreateOrConnectWithoutPrescriptionsInput[]
-    connect?: IngredientWhereUniqueInput | IngredientWhereUniqueInput[]
+  export type IngredientUpdateOneRequiredWithoutPrimaryPrescriptionsNestedInput = {
+    create?: XOR<IngredientCreateWithoutPrimaryPrescriptionsInput, IngredientUncheckedCreateWithoutPrimaryPrescriptionsInput>
+    connectOrCreate?: IngredientCreateOrConnectWithoutPrimaryPrescriptionsInput
+    upsert?: IngredientUpsertWithoutPrimaryPrescriptionsInput
+    connect?: IngredientWhereUniqueInput
+    update?: XOR<XOR<IngredientUpdateToOneWithWhereWithoutPrimaryPrescriptionsInput, IngredientUpdateWithoutPrimaryPrescriptionsInput>, IngredientUncheckedUpdateWithoutPrimaryPrescriptionsInput>
+  }
+
+  export type IngredientUpdateOneRequiredWithoutSecondaryPrescriptionsNestedInput = {
+    create?: XOR<IngredientCreateWithoutSecondaryPrescriptionsInput, IngredientUncheckedCreateWithoutSecondaryPrescriptionsInput>
+    connectOrCreate?: IngredientCreateOrConnectWithoutSecondaryPrescriptionsInput
+    upsert?: IngredientUpsertWithoutSecondaryPrescriptionsInput
+    connect?: IngredientWhereUniqueInput
+    update?: XOR<XOR<IngredientUpdateToOneWithWhereWithoutSecondaryPrescriptionsInput, IngredientUpdateWithoutSecondaryPrescriptionsInput>, IngredientUncheckedUpdateWithoutSecondaryPrescriptionsInput>
   }
 
   export type TagUpdateManyWithoutPrescriptionsNestedInput = {
@@ -13998,19 +14661,6 @@ export namespace Prisma {
     deleteMany?: TagScalarWhereInput | TagScalarWhereInput[]
   }
 
-  export type IngredientUpdateManyWithoutPrescriptionsNestedInput = {
-    create?: XOR<IngredientCreateWithoutPrescriptionsInput, IngredientUncheckedCreateWithoutPrescriptionsInput> | IngredientCreateWithoutPrescriptionsInput[] | IngredientUncheckedCreateWithoutPrescriptionsInput[]
-    connectOrCreate?: IngredientCreateOrConnectWithoutPrescriptionsInput | IngredientCreateOrConnectWithoutPrescriptionsInput[]
-    upsert?: IngredientUpsertWithWhereUniqueWithoutPrescriptionsInput | IngredientUpsertWithWhereUniqueWithoutPrescriptionsInput[]
-    set?: IngredientWhereUniqueInput | IngredientWhereUniqueInput[]
-    disconnect?: IngredientWhereUniqueInput | IngredientWhereUniqueInput[]
-    delete?: IngredientWhereUniqueInput | IngredientWhereUniqueInput[]
-    connect?: IngredientWhereUniqueInput | IngredientWhereUniqueInput[]
-    update?: IngredientUpdateWithWhereUniqueWithoutPrescriptionsInput | IngredientUpdateWithWhereUniqueWithoutPrescriptionsInput[]
-    updateMany?: IngredientUpdateManyWithWhereWithoutPrescriptionsInput | IngredientUpdateManyWithWhereWithoutPrescriptionsInput[]
-    deleteMany?: IngredientScalarWhereInput | IngredientScalarWhereInput[]
-  }
-
   export type TagUncheckedUpdateManyWithoutPrescriptionsNestedInput = {
     create?: XOR<TagCreateWithoutPrescriptionsInput, TagUncheckedCreateWithoutPrescriptionsInput> | TagCreateWithoutPrescriptionsInput[] | TagUncheckedCreateWithoutPrescriptionsInput[]
     connectOrCreate?: TagCreateOrConnectWithoutPrescriptionsInput | TagCreateOrConnectWithoutPrescriptionsInput[]
@@ -14024,29 +14674,40 @@ export namespace Prisma {
     deleteMany?: TagScalarWhereInput | TagScalarWhereInput[]
   }
 
-  export type IngredientUncheckedUpdateManyWithoutPrescriptionsNestedInput = {
-    create?: XOR<IngredientCreateWithoutPrescriptionsInput, IngredientUncheckedCreateWithoutPrescriptionsInput> | IngredientCreateWithoutPrescriptionsInput[] | IngredientUncheckedCreateWithoutPrescriptionsInput[]
-    connectOrCreate?: IngredientCreateOrConnectWithoutPrescriptionsInput | IngredientCreateOrConnectWithoutPrescriptionsInput[]
-    upsert?: IngredientUpsertWithWhereUniqueWithoutPrescriptionsInput | IngredientUpsertWithWhereUniqueWithoutPrescriptionsInput[]
-    set?: IngredientWhereUniqueInput | IngredientWhereUniqueInput[]
-    disconnect?: IngredientWhereUniqueInput | IngredientWhereUniqueInput[]
-    delete?: IngredientWhereUniqueInput | IngredientWhereUniqueInput[]
-    connect?: IngredientWhereUniqueInput | IngredientWhereUniqueInput[]
-    update?: IngredientUpdateWithWhereUniqueWithoutPrescriptionsInput | IngredientUpdateWithWhereUniqueWithoutPrescriptionsInput[]
-    updateMany?: IngredientUpdateManyWithWhereWithoutPrescriptionsInput | IngredientUpdateManyWithWhereWithoutPrescriptionsInput[]
-    deleteMany?: IngredientScalarWhereInput | IngredientScalarWhereInput[]
-  }
-
   export type PrescriptionCreateNestedManyWithoutTagsInput = {
     create?: XOR<PrescriptionCreateWithoutTagsInput, PrescriptionUncheckedCreateWithoutTagsInput> | PrescriptionCreateWithoutTagsInput[] | PrescriptionUncheckedCreateWithoutTagsInput[]
     connectOrCreate?: PrescriptionCreateOrConnectWithoutTagsInput | PrescriptionCreateOrConnectWithoutTagsInput[]
     connect?: PrescriptionWhereUniqueInput | PrescriptionWhereUniqueInput[]
   }
 
+  export type IngredientCreateNestedManyWithoutTagsInput = {
+    create?: XOR<IngredientCreateWithoutTagsInput, IngredientUncheckedCreateWithoutTagsInput> | IngredientCreateWithoutTagsInput[] | IngredientUncheckedCreateWithoutTagsInput[]
+    connectOrCreate?: IngredientCreateOrConnectWithoutTagsInput | IngredientCreateOrConnectWithoutTagsInput[]
+    connect?: IngredientWhereUniqueInput | IngredientWhereUniqueInput[]
+  }
+
+  export type FormulaCreateNestedManyWithoutTagsInput = {
+    create?: XOR<FormulaCreateWithoutTagsInput, FormulaUncheckedCreateWithoutTagsInput> | FormulaCreateWithoutTagsInput[] | FormulaUncheckedCreateWithoutTagsInput[]
+    connectOrCreate?: FormulaCreateOrConnectWithoutTagsInput | FormulaCreateOrConnectWithoutTagsInput[]
+    connect?: FormulaWhereUniqueInput | FormulaWhereUniqueInput[]
+  }
+
   export type PrescriptionUncheckedCreateNestedManyWithoutTagsInput = {
     create?: XOR<PrescriptionCreateWithoutTagsInput, PrescriptionUncheckedCreateWithoutTagsInput> | PrescriptionCreateWithoutTagsInput[] | PrescriptionUncheckedCreateWithoutTagsInput[]
     connectOrCreate?: PrescriptionCreateOrConnectWithoutTagsInput | PrescriptionCreateOrConnectWithoutTagsInput[]
     connect?: PrescriptionWhereUniqueInput | PrescriptionWhereUniqueInput[]
+  }
+
+  export type IngredientUncheckedCreateNestedManyWithoutTagsInput = {
+    create?: XOR<IngredientCreateWithoutTagsInput, IngredientUncheckedCreateWithoutTagsInput> | IngredientCreateWithoutTagsInput[] | IngredientUncheckedCreateWithoutTagsInput[]
+    connectOrCreate?: IngredientCreateOrConnectWithoutTagsInput | IngredientCreateOrConnectWithoutTagsInput[]
+    connect?: IngredientWhereUniqueInput | IngredientWhereUniqueInput[]
+  }
+
+  export type FormulaUncheckedCreateNestedManyWithoutTagsInput = {
+    create?: XOR<FormulaCreateWithoutTagsInput, FormulaUncheckedCreateWithoutTagsInput> | FormulaCreateWithoutTagsInput[] | FormulaUncheckedCreateWithoutTagsInput[]
+    connectOrCreate?: FormulaCreateOrConnectWithoutTagsInput | FormulaCreateOrConnectWithoutTagsInput[]
+    connect?: FormulaWhereUniqueInput | FormulaWhereUniqueInput[]
   }
 
   export type PrescriptionUpdateManyWithoutTagsNestedInput = {
@@ -14062,6 +14723,32 @@ export namespace Prisma {
     deleteMany?: PrescriptionScalarWhereInput | PrescriptionScalarWhereInput[]
   }
 
+  export type IngredientUpdateManyWithoutTagsNestedInput = {
+    create?: XOR<IngredientCreateWithoutTagsInput, IngredientUncheckedCreateWithoutTagsInput> | IngredientCreateWithoutTagsInput[] | IngredientUncheckedCreateWithoutTagsInput[]
+    connectOrCreate?: IngredientCreateOrConnectWithoutTagsInput | IngredientCreateOrConnectWithoutTagsInput[]
+    upsert?: IngredientUpsertWithWhereUniqueWithoutTagsInput | IngredientUpsertWithWhereUniqueWithoutTagsInput[]
+    set?: IngredientWhereUniqueInput | IngredientWhereUniqueInput[]
+    disconnect?: IngredientWhereUniqueInput | IngredientWhereUniqueInput[]
+    delete?: IngredientWhereUniqueInput | IngredientWhereUniqueInput[]
+    connect?: IngredientWhereUniqueInput | IngredientWhereUniqueInput[]
+    update?: IngredientUpdateWithWhereUniqueWithoutTagsInput | IngredientUpdateWithWhereUniqueWithoutTagsInput[]
+    updateMany?: IngredientUpdateManyWithWhereWithoutTagsInput | IngredientUpdateManyWithWhereWithoutTagsInput[]
+    deleteMany?: IngredientScalarWhereInput | IngredientScalarWhereInput[]
+  }
+
+  export type FormulaUpdateManyWithoutTagsNestedInput = {
+    create?: XOR<FormulaCreateWithoutTagsInput, FormulaUncheckedCreateWithoutTagsInput> | FormulaCreateWithoutTagsInput[] | FormulaUncheckedCreateWithoutTagsInput[]
+    connectOrCreate?: FormulaCreateOrConnectWithoutTagsInput | FormulaCreateOrConnectWithoutTagsInput[]
+    upsert?: FormulaUpsertWithWhereUniqueWithoutTagsInput | FormulaUpsertWithWhereUniqueWithoutTagsInput[]
+    set?: FormulaWhereUniqueInput | FormulaWhereUniqueInput[]
+    disconnect?: FormulaWhereUniqueInput | FormulaWhereUniqueInput[]
+    delete?: FormulaWhereUniqueInput | FormulaWhereUniqueInput[]
+    connect?: FormulaWhereUniqueInput | FormulaWhereUniqueInput[]
+    update?: FormulaUpdateWithWhereUniqueWithoutTagsInput | FormulaUpdateWithWhereUniqueWithoutTagsInput[]
+    updateMany?: FormulaUpdateManyWithWhereWithoutTagsInput | FormulaUpdateManyWithWhereWithoutTagsInput[]
+    deleteMany?: FormulaScalarWhereInput | FormulaScalarWhereInput[]
+  }
+
   export type PrescriptionUncheckedUpdateManyWithoutTagsNestedInput = {
     create?: XOR<PrescriptionCreateWithoutTagsInput, PrescriptionUncheckedCreateWithoutTagsInput> | PrescriptionCreateWithoutTagsInput[] | PrescriptionUncheckedCreateWithoutTagsInput[]
     connectOrCreate?: PrescriptionCreateOrConnectWithoutTagsInput | PrescriptionCreateOrConnectWithoutTagsInput[]
@@ -14073,6 +14760,32 @@ export namespace Prisma {
     update?: PrescriptionUpdateWithWhereUniqueWithoutTagsInput | PrescriptionUpdateWithWhereUniqueWithoutTagsInput[]
     updateMany?: PrescriptionUpdateManyWithWhereWithoutTagsInput | PrescriptionUpdateManyWithWhereWithoutTagsInput[]
     deleteMany?: PrescriptionScalarWhereInput | PrescriptionScalarWhereInput[]
+  }
+
+  export type IngredientUncheckedUpdateManyWithoutTagsNestedInput = {
+    create?: XOR<IngredientCreateWithoutTagsInput, IngredientUncheckedCreateWithoutTagsInput> | IngredientCreateWithoutTagsInput[] | IngredientUncheckedCreateWithoutTagsInput[]
+    connectOrCreate?: IngredientCreateOrConnectWithoutTagsInput | IngredientCreateOrConnectWithoutTagsInput[]
+    upsert?: IngredientUpsertWithWhereUniqueWithoutTagsInput | IngredientUpsertWithWhereUniqueWithoutTagsInput[]
+    set?: IngredientWhereUniqueInput | IngredientWhereUniqueInput[]
+    disconnect?: IngredientWhereUniqueInput | IngredientWhereUniqueInput[]
+    delete?: IngredientWhereUniqueInput | IngredientWhereUniqueInput[]
+    connect?: IngredientWhereUniqueInput | IngredientWhereUniqueInput[]
+    update?: IngredientUpdateWithWhereUniqueWithoutTagsInput | IngredientUpdateWithWhereUniqueWithoutTagsInput[]
+    updateMany?: IngredientUpdateManyWithWhereWithoutTagsInput | IngredientUpdateManyWithWhereWithoutTagsInput[]
+    deleteMany?: IngredientScalarWhereInput | IngredientScalarWhereInput[]
+  }
+
+  export type FormulaUncheckedUpdateManyWithoutTagsNestedInput = {
+    create?: XOR<FormulaCreateWithoutTagsInput, FormulaUncheckedCreateWithoutTagsInput> | FormulaCreateWithoutTagsInput[] | FormulaUncheckedCreateWithoutTagsInput[]
+    connectOrCreate?: FormulaCreateOrConnectWithoutTagsInput | FormulaCreateOrConnectWithoutTagsInput[]
+    upsert?: FormulaUpsertWithWhereUniqueWithoutTagsInput | FormulaUpsertWithWhereUniqueWithoutTagsInput[]
+    set?: FormulaWhereUniqueInput | FormulaWhereUniqueInput[]
+    disconnect?: FormulaWhereUniqueInput | FormulaWhereUniqueInput[]
+    delete?: FormulaWhereUniqueInput | FormulaWhereUniqueInput[]
+    connect?: FormulaWhereUniqueInput | FormulaWhereUniqueInput[]
+    update?: FormulaUpdateWithWhereUniqueWithoutTagsInput | FormulaUpdateWithWhereUniqueWithoutTagsInput[]
+    updateMany?: FormulaUpdateManyWithWhereWithoutTagsInput | FormulaUpdateManyWithWhereWithoutTagsInput[]
+    deleteMany?: FormulaScalarWhereInput | FormulaScalarWhereInput[]
   }
 
   export type NestedStringFilter<$PrismaModel = never> = {
@@ -14570,8 +15283,12 @@ export namespace Prisma {
     symbol?: string | null
     formula?: string | null
     isVariable?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
     formulas?: FormulaCreateNestedManyWithoutFontsInput
-    prescriptions?: PrescriptionCreateNestedManyWithoutFontsInput
+    primaryPrescriptions?: PrescriptionCreateNestedManyWithoutPrimaryFontInput
+    secondaryPrescriptions?: PrescriptionCreateNestedManyWithoutSecondaryFontInput
+    tags?: TagCreateNestedManyWithoutIngredientsInput
   }
 
   export type IngredientUncheckedCreateWithoutVariantsInput = {
@@ -14584,8 +15301,12 @@ export namespace Prisma {
     symbol?: string | null
     formula?: string | null
     isVariable?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
     formulas?: FormulaUncheckedCreateNestedManyWithoutFontsInput
-    prescriptions?: PrescriptionUncheckedCreateNestedManyWithoutFontsInput
+    primaryPrescriptions?: PrescriptionUncheckedCreateNestedManyWithoutPrimaryFontInput
+    secondaryPrescriptions?: PrescriptionUncheckedCreateNestedManyWithoutSecondaryFontInput
+    tags?: TagUncheckedCreateNestedManyWithoutIngredientsInput
   }
 
   export type IngredientCreateOrConnectWithoutVariantsInput = {
@@ -14614,8 +15335,12 @@ export namespace Prisma {
     symbol?: NullableStringFieldUpdateOperationsInput | string | null
     formula?: NullableStringFieldUpdateOperationsInput | string | null
     isVariable?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     formulas?: FormulaUpdateManyWithoutFontsNestedInput
-    prescriptions?: PrescriptionUpdateManyWithoutFontsNestedInput
+    primaryPrescriptions?: PrescriptionUpdateManyWithoutPrimaryFontNestedInput
+    secondaryPrescriptions?: PrescriptionUpdateManyWithoutSecondaryFontNestedInput
+    tags?: TagUpdateManyWithoutIngredientsNestedInput
   }
 
   export type IngredientUncheckedUpdateWithoutVariantsInput = {
@@ -14628,8 +15353,12 @@ export namespace Prisma {
     symbol?: NullableStringFieldUpdateOperationsInput | string | null
     formula?: NullableStringFieldUpdateOperationsInput | string | null
     isVariable?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     formulas?: FormulaUncheckedUpdateManyWithoutFontsNestedInput
-    prescriptions?: PrescriptionUncheckedUpdateManyWithoutFontsNestedInput
+    primaryPrescriptions?: PrescriptionUncheckedUpdateManyWithoutPrimaryFontNestedInput
+    secondaryPrescriptions?: PrescriptionUncheckedUpdateManyWithoutSecondaryFontNestedInput
+    tags?: TagUncheckedUpdateManyWithoutIngredientsNestedInput
   }
 
   export type FontVariantCreateWithoutIngredientInput = {
@@ -14662,19 +15391,23 @@ export namespace Prisma {
   export type FormulaCreateWithoutFontsInput = {
     id?: string
     name: string
-    description: string
-    href: string
-    code?: string | null
+    description?: string | null
+    slug: string
+    fontCategory: string
     createdAt?: Date | string
+    updatedAt?: Date | string
+    tags?: TagCreateNestedManyWithoutFormulasInput
   }
 
   export type FormulaUncheckedCreateWithoutFontsInput = {
     id?: string
     name: string
-    description: string
-    href: string
-    code?: string | null
+    description?: string | null
+    slug: string
+    fontCategory: string
     createdAt?: Date | string
+    updatedAt?: Date | string
+    tags?: TagUncheckedCreateNestedManyWithoutFormulasInput
   }
 
   export type FormulaCreateOrConnectWithoutFontsInput = {
@@ -14682,27 +15415,99 @@ export namespace Prisma {
     create: XOR<FormulaCreateWithoutFontsInput, FormulaUncheckedCreateWithoutFontsInput>
   }
 
-  export type PrescriptionCreateWithoutFontsInput = {
+  export type PrescriptionCreateWithoutPrimaryFontInput = {
     id?: string
     name: string
-    href: string
+    slug: string
     description?: string | null
-    imgUrl?: string | null
+    imageUrl?: string | null
+    published?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    secondaryFont: IngredientCreateNestedOneWithoutSecondaryPrescriptionsInput
     tags?: TagCreateNestedManyWithoutPrescriptionsInput
   }
 
-  export type PrescriptionUncheckedCreateWithoutFontsInput = {
+  export type PrescriptionUncheckedCreateWithoutPrimaryFontInput = {
     id?: string
     name: string
-    href: string
+    slug: string
     description?: string | null
-    imgUrl?: string | null
+    imageUrl?: string | null
+    published?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    secondaryFontId: string
     tags?: TagUncheckedCreateNestedManyWithoutPrescriptionsInput
   }
 
-  export type PrescriptionCreateOrConnectWithoutFontsInput = {
+  export type PrescriptionCreateOrConnectWithoutPrimaryFontInput = {
     where: PrescriptionWhereUniqueInput
-    create: XOR<PrescriptionCreateWithoutFontsInput, PrescriptionUncheckedCreateWithoutFontsInput>
+    create: XOR<PrescriptionCreateWithoutPrimaryFontInput, PrescriptionUncheckedCreateWithoutPrimaryFontInput>
+  }
+
+  export type PrescriptionCreateManyPrimaryFontInputEnvelope = {
+    data: PrescriptionCreateManyPrimaryFontInput | PrescriptionCreateManyPrimaryFontInput[]
+  }
+
+  export type PrescriptionCreateWithoutSecondaryFontInput = {
+    id?: string
+    name: string
+    slug: string
+    description?: string | null
+    imageUrl?: string | null
+    published?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    primaryFont: IngredientCreateNestedOneWithoutPrimaryPrescriptionsInput
+    tags?: TagCreateNestedManyWithoutPrescriptionsInput
+  }
+
+  export type PrescriptionUncheckedCreateWithoutSecondaryFontInput = {
+    id?: string
+    name: string
+    slug: string
+    description?: string | null
+    imageUrl?: string | null
+    published?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    primaryFontId: string
+    tags?: TagUncheckedCreateNestedManyWithoutPrescriptionsInput
+  }
+
+  export type PrescriptionCreateOrConnectWithoutSecondaryFontInput = {
+    where: PrescriptionWhereUniqueInput
+    create: XOR<PrescriptionCreateWithoutSecondaryFontInput, PrescriptionUncheckedCreateWithoutSecondaryFontInput>
+  }
+
+  export type PrescriptionCreateManySecondaryFontInputEnvelope = {
+    data: PrescriptionCreateManySecondaryFontInput | PrescriptionCreateManySecondaryFontInput[]
+  }
+
+  export type TagCreateWithoutIngredientsInput = {
+    id?: string
+    name: string
+    description?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    prescriptions?: PrescriptionCreateNestedManyWithoutTagsInput
+    formulas?: FormulaCreateNestedManyWithoutTagsInput
+  }
+
+  export type TagUncheckedCreateWithoutIngredientsInput = {
+    id?: string
+    name: string
+    description?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    prescriptions?: PrescriptionUncheckedCreateNestedManyWithoutTagsInput
+    formulas?: FormulaUncheckedCreateNestedManyWithoutTagsInput
+  }
+
+  export type TagCreateOrConnectWithoutIngredientsInput = {
+    where: TagWhereUniqueInput
+    create: XOR<TagCreateWithoutIngredientsInput, TagUncheckedCreateWithoutIngredientsInput>
   }
 
   export type FontVariantUpsertWithWhereUniqueWithoutIngredientInput = {
@@ -14756,26 +15561,27 @@ export namespace Prisma {
     NOT?: FormulaScalarWhereInput | FormulaScalarWhereInput[]
     id?: StringFilter<"Formula"> | string
     name?: StringFilter<"Formula"> | string
-    description?: StringFilter<"Formula"> | string
-    href?: StringFilter<"Formula"> | string
-    code?: StringNullableFilter<"Formula"> | string | null
+    description?: StringNullableFilter<"Formula"> | string | null
+    slug?: StringFilter<"Formula"> | string
+    fontCategory?: StringFilter<"Formula"> | string
     createdAt?: DateTimeFilter<"Formula"> | Date | string
+    updatedAt?: DateTimeFilter<"Formula"> | Date | string
   }
 
-  export type PrescriptionUpsertWithWhereUniqueWithoutFontsInput = {
+  export type PrescriptionUpsertWithWhereUniqueWithoutPrimaryFontInput = {
     where: PrescriptionWhereUniqueInput
-    update: XOR<PrescriptionUpdateWithoutFontsInput, PrescriptionUncheckedUpdateWithoutFontsInput>
-    create: XOR<PrescriptionCreateWithoutFontsInput, PrescriptionUncheckedCreateWithoutFontsInput>
+    update: XOR<PrescriptionUpdateWithoutPrimaryFontInput, PrescriptionUncheckedUpdateWithoutPrimaryFontInput>
+    create: XOR<PrescriptionCreateWithoutPrimaryFontInput, PrescriptionUncheckedCreateWithoutPrimaryFontInput>
   }
 
-  export type PrescriptionUpdateWithWhereUniqueWithoutFontsInput = {
+  export type PrescriptionUpdateWithWhereUniqueWithoutPrimaryFontInput = {
     where: PrescriptionWhereUniqueInput
-    data: XOR<PrescriptionUpdateWithoutFontsInput, PrescriptionUncheckedUpdateWithoutFontsInput>
+    data: XOR<PrescriptionUpdateWithoutPrimaryFontInput, PrescriptionUncheckedUpdateWithoutPrimaryFontInput>
   }
 
-  export type PrescriptionUpdateManyWithWhereWithoutFontsInput = {
+  export type PrescriptionUpdateManyWithWhereWithoutPrimaryFontInput = {
     where: PrescriptionScalarWhereInput
-    data: XOR<PrescriptionUpdateManyMutationInput, PrescriptionUncheckedUpdateManyWithoutFontsInput>
+    data: XOR<PrescriptionUpdateManyMutationInput, PrescriptionUncheckedUpdateManyWithoutPrimaryFontInput>
   }
 
   export type PrescriptionScalarWhereInput = {
@@ -14784,9 +15590,57 @@ export namespace Prisma {
     NOT?: PrescriptionScalarWhereInput | PrescriptionScalarWhereInput[]
     id?: StringFilter<"Prescription"> | string
     name?: StringFilter<"Prescription"> | string
-    href?: StringFilter<"Prescription"> | string
+    slug?: StringFilter<"Prescription"> | string
     description?: StringNullableFilter<"Prescription"> | string | null
-    imgUrl?: StringNullableFilter<"Prescription"> | string | null
+    imageUrl?: StringNullableFilter<"Prescription"> | string | null
+    published?: BoolFilter<"Prescription"> | boolean
+    createdAt?: DateTimeFilter<"Prescription"> | Date | string
+    updatedAt?: DateTimeFilter<"Prescription"> | Date | string
+    primaryFontId?: StringFilter<"Prescription"> | string
+    secondaryFontId?: StringFilter<"Prescription"> | string
+  }
+
+  export type PrescriptionUpsertWithWhereUniqueWithoutSecondaryFontInput = {
+    where: PrescriptionWhereUniqueInput
+    update: XOR<PrescriptionUpdateWithoutSecondaryFontInput, PrescriptionUncheckedUpdateWithoutSecondaryFontInput>
+    create: XOR<PrescriptionCreateWithoutSecondaryFontInput, PrescriptionUncheckedCreateWithoutSecondaryFontInput>
+  }
+
+  export type PrescriptionUpdateWithWhereUniqueWithoutSecondaryFontInput = {
+    where: PrescriptionWhereUniqueInput
+    data: XOR<PrescriptionUpdateWithoutSecondaryFontInput, PrescriptionUncheckedUpdateWithoutSecondaryFontInput>
+  }
+
+  export type PrescriptionUpdateManyWithWhereWithoutSecondaryFontInput = {
+    where: PrescriptionScalarWhereInput
+    data: XOR<PrescriptionUpdateManyMutationInput, PrescriptionUncheckedUpdateManyWithoutSecondaryFontInput>
+  }
+
+  export type TagUpsertWithWhereUniqueWithoutIngredientsInput = {
+    where: TagWhereUniqueInput
+    update: XOR<TagUpdateWithoutIngredientsInput, TagUncheckedUpdateWithoutIngredientsInput>
+    create: XOR<TagCreateWithoutIngredientsInput, TagUncheckedCreateWithoutIngredientsInput>
+  }
+
+  export type TagUpdateWithWhereUniqueWithoutIngredientsInput = {
+    where: TagWhereUniqueInput
+    data: XOR<TagUpdateWithoutIngredientsInput, TagUncheckedUpdateWithoutIngredientsInput>
+  }
+
+  export type TagUpdateManyWithWhereWithoutIngredientsInput = {
+    where: TagScalarWhereInput
+    data: XOR<TagUpdateManyMutationInput, TagUncheckedUpdateManyWithoutIngredientsInput>
+  }
+
+  export type TagScalarWhereInput = {
+    AND?: TagScalarWhereInput | TagScalarWhereInput[]
+    OR?: TagScalarWhereInput[]
+    NOT?: TagScalarWhereInput | TagScalarWhereInput[]
+    id?: StringFilter<"Tag"> | string
+    name?: StringFilter<"Tag"> | string
+    description?: StringNullableFilter<"Tag"> | string | null
+    createdAt?: DateTimeFilter<"Tag"> | Date | string
+    updatedAt?: DateTimeFilter<"Tag"> | Date | string
   }
 
   export type IngredientCreateWithoutFormulasInput = {
@@ -14799,8 +15653,12 @@ export namespace Prisma {
     symbol?: string | null
     formula?: string | null
     isVariable?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
     variants?: FontVariantCreateNestedManyWithoutIngredientInput
-    prescriptions?: PrescriptionCreateNestedManyWithoutFontsInput
+    primaryPrescriptions?: PrescriptionCreateNestedManyWithoutPrimaryFontInput
+    secondaryPrescriptions?: PrescriptionCreateNestedManyWithoutSecondaryFontInput
+    tags?: TagCreateNestedManyWithoutIngredientsInput
   }
 
   export type IngredientUncheckedCreateWithoutFormulasInput = {
@@ -14813,13 +15671,42 @@ export namespace Prisma {
     symbol?: string | null
     formula?: string | null
     isVariable?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
     variants?: FontVariantUncheckedCreateNestedManyWithoutIngredientInput
-    prescriptions?: PrescriptionUncheckedCreateNestedManyWithoutFontsInput
+    primaryPrescriptions?: PrescriptionUncheckedCreateNestedManyWithoutPrimaryFontInput
+    secondaryPrescriptions?: PrescriptionUncheckedCreateNestedManyWithoutSecondaryFontInput
+    tags?: TagUncheckedCreateNestedManyWithoutIngredientsInput
   }
 
   export type IngredientCreateOrConnectWithoutFormulasInput = {
     where: IngredientWhereUniqueInput
     create: XOR<IngredientCreateWithoutFormulasInput, IngredientUncheckedCreateWithoutFormulasInput>
+  }
+
+  export type TagCreateWithoutFormulasInput = {
+    id?: string
+    name: string
+    description?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    prescriptions?: PrescriptionCreateNestedManyWithoutTagsInput
+    ingredients?: IngredientCreateNestedManyWithoutTagsInput
+  }
+
+  export type TagUncheckedCreateWithoutFormulasInput = {
+    id?: string
+    name: string
+    description?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    prescriptions?: PrescriptionUncheckedCreateNestedManyWithoutTagsInput
+    ingredients?: IngredientUncheckedCreateNestedManyWithoutTagsInput
+  }
+
+  export type TagCreateOrConnectWithoutFormulasInput = {
+    where: TagWhereUniqueInput
+    create: XOR<TagCreateWithoutFormulasInput, TagUncheckedCreateWithoutFormulasInput>
   }
 
   export type IngredientUpsertWithWhereUniqueWithoutFormulasInput = {
@@ -14851,16 +15738,126 @@ export namespace Prisma {
     symbol?: StringNullableFilter<"Ingredient"> | string | null
     formula?: StringNullableFilter<"Ingredient"> | string | null
     isVariable?: BoolFilter<"Ingredient"> | boolean
+    createdAt?: DateTimeFilter<"Ingredient"> | Date | string
+    updatedAt?: DateTimeFilter<"Ingredient"> | Date | string
+  }
+
+  export type TagUpsertWithWhereUniqueWithoutFormulasInput = {
+    where: TagWhereUniqueInput
+    update: XOR<TagUpdateWithoutFormulasInput, TagUncheckedUpdateWithoutFormulasInput>
+    create: XOR<TagCreateWithoutFormulasInput, TagUncheckedCreateWithoutFormulasInput>
+  }
+
+  export type TagUpdateWithWhereUniqueWithoutFormulasInput = {
+    where: TagWhereUniqueInput
+    data: XOR<TagUpdateWithoutFormulasInput, TagUncheckedUpdateWithoutFormulasInput>
+  }
+
+  export type TagUpdateManyWithWhereWithoutFormulasInput = {
+    where: TagScalarWhereInput
+    data: XOR<TagUpdateManyMutationInput, TagUncheckedUpdateManyWithoutFormulasInput>
+  }
+
+  export type IngredientCreateWithoutPrimaryPrescriptionsInput = {
+    id?: string
+    name: string
+    slug: string
+    category: string
+    creator?: string | null
+    rating: string
+    symbol?: string | null
+    formula?: string | null
+    isVariable?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    variants?: FontVariantCreateNestedManyWithoutIngredientInput
+    formulas?: FormulaCreateNestedManyWithoutFontsInput
+    secondaryPrescriptions?: PrescriptionCreateNestedManyWithoutSecondaryFontInput
+    tags?: TagCreateNestedManyWithoutIngredientsInput
+  }
+
+  export type IngredientUncheckedCreateWithoutPrimaryPrescriptionsInput = {
+    id?: string
+    name: string
+    slug: string
+    category: string
+    creator?: string | null
+    rating: string
+    symbol?: string | null
+    formula?: string | null
+    isVariable?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    variants?: FontVariantUncheckedCreateNestedManyWithoutIngredientInput
+    formulas?: FormulaUncheckedCreateNestedManyWithoutFontsInput
+    secondaryPrescriptions?: PrescriptionUncheckedCreateNestedManyWithoutSecondaryFontInput
+    tags?: TagUncheckedCreateNestedManyWithoutIngredientsInput
+  }
+
+  export type IngredientCreateOrConnectWithoutPrimaryPrescriptionsInput = {
+    where: IngredientWhereUniqueInput
+    create: XOR<IngredientCreateWithoutPrimaryPrescriptionsInput, IngredientUncheckedCreateWithoutPrimaryPrescriptionsInput>
+  }
+
+  export type IngredientCreateWithoutSecondaryPrescriptionsInput = {
+    id?: string
+    name: string
+    slug: string
+    category: string
+    creator?: string | null
+    rating: string
+    symbol?: string | null
+    formula?: string | null
+    isVariable?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    variants?: FontVariantCreateNestedManyWithoutIngredientInput
+    formulas?: FormulaCreateNestedManyWithoutFontsInput
+    primaryPrescriptions?: PrescriptionCreateNestedManyWithoutPrimaryFontInput
+    tags?: TagCreateNestedManyWithoutIngredientsInput
+  }
+
+  export type IngredientUncheckedCreateWithoutSecondaryPrescriptionsInput = {
+    id?: string
+    name: string
+    slug: string
+    category: string
+    creator?: string | null
+    rating: string
+    symbol?: string | null
+    formula?: string | null
+    isVariable?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    variants?: FontVariantUncheckedCreateNestedManyWithoutIngredientInput
+    formulas?: FormulaUncheckedCreateNestedManyWithoutFontsInput
+    primaryPrescriptions?: PrescriptionUncheckedCreateNestedManyWithoutPrimaryFontInput
+    tags?: TagUncheckedCreateNestedManyWithoutIngredientsInput
+  }
+
+  export type IngredientCreateOrConnectWithoutSecondaryPrescriptionsInput = {
+    where: IngredientWhereUniqueInput
+    create: XOR<IngredientCreateWithoutSecondaryPrescriptionsInput, IngredientUncheckedCreateWithoutSecondaryPrescriptionsInput>
   }
 
   export type TagCreateWithoutPrescriptionsInput = {
     id?: string
     name: string
+    description?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    ingredients?: IngredientCreateNestedManyWithoutTagsInput
+    formulas?: FormulaCreateNestedManyWithoutTagsInput
   }
 
   export type TagUncheckedCreateWithoutPrescriptionsInput = {
     id?: string
     name: string
+    description?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    ingredients?: IngredientUncheckedCreateNestedManyWithoutTagsInput
+    formulas?: FormulaUncheckedCreateNestedManyWithoutTagsInput
   }
 
   export type TagCreateOrConnectWithoutPrescriptionsInput = {
@@ -14868,37 +15865,98 @@ export namespace Prisma {
     create: XOR<TagCreateWithoutPrescriptionsInput, TagUncheckedCreateWithoutPrescriptionsInput>
   }
 
-  export type IngredientCreateWithoutPrescriptionsInput = {
-    id?: string
-    name: string
-    slug: string
-    category: string
-    creator?: string | null
-    rating: string
-    symbol?: string | null
-    formula?: string | null
-    isVariable?: boolean
-    variants?: FontVariantCreateNestedManyWithoutIngredientInput
-    formulas?: FormulaCreateNestedManyWithoutFontsInput
+  export type IngredientUpsertWithoutPrimaryPrescriptionsInput = {
+    update: XOR<IngredientUpdateWithoutPrimaryPrescriptionsInput, IngredientUncheckedUpdateWithoutPrimaryPrescriptionsInput>
+    create: XOR<IngredientCreateWithoutPrimaryPrescriptionsInput, IngredientUncheckedCreateWithoutPrimaryPrescriptionsInput>
+    where?: IngredientWhereInput
   }
 
-  export type IngredientUncheckedCreateWithoutPrescriptionsInput = {
-    id?: string
-    name: string
-    slug: string
-    category: string
-    creator?: string | null
-    rating: string
-    symbol?: string | null
-    formula?: string | null
-    isVariable?: boolean
-    variants?: FontVariantUncheckedCreateNestedManyWithoutIngredientInput
-    formulas?: FormulaUncheckedCreateNestedManyWithoutFontsInput
+  export type IngredientUpdateToOneWithWhereWithoutPrimaryPrescriptionsInput = {
+    where?: IngredientWhereInput
+    data: XOR<IngredientUpdateWithoutPrimaryPrescriptionsInput, IngredientUncheckedUpdateWithoutPrimaryPrescriptionsInput>
   }
 
-  export type IngredientCreateOrConnectWithoutPrescriptionsInput = {
-    where: IngredientWhereUniqueInput
-    create: XOR<IngredientCreateWithoutPrescriptionsInput, IngredientUncheckedCreateWithoutPrescriptionsInput>
+  export type IngredientUpdateWithoutPrimaryPrescriptionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    category?: StringFieldUpdateOperationsInput | string
+    creator?: NullableStringFieldUpdateOperationsInput | string | null
+    rating?: StringFieldUpdateOperationsInput | string
+    symbol?: NullableStringFieldUpdateOperationsInput | string | null
+    formula?: NullableStringFieldUpdateOperationsInput | string | null
+    isVariable?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    variants?: FontVariantUpdateManyWithoutIngredientNestedInput
+    formulas?: FormulaUpdateManyWithoutFontsNestedInput
+    secondaryPrescriptions?: PrescriptionUpdateManyWithoutSecondaryFontNestedInput
+    tags?: TagUpdateManyWithoutIngredientsNestedInput
+  }
+
+  export type IngredientUncheckedUpdateWithoutPrimaryPrescriptionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    category?: StringFieldUpdateOperationsInput | string
+    creator?: NullableStringFieldUpdateOperationsInput | string | null
+    rating?: StringFieldUpdateOperationsInput | string
+    symbol?: NullableStringFieldUpdateOperationsInput | string | null
+    formula?: NullableStringFieldUpdateOperationsInput | string | null
+    isVariable?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    variants?: FontVariantUncheckedUpdateManyWithoutIngredientNestedInput
+    formulas?: FormulaUncheckedUpdateManyWithoutFontsNestedInput
+    secondaryPrescriptions?: PrescriptionUncheckedUpdateManyWithoutSecondaryFontNestedInput
+    tags?: TagUncheckedUpdateManyWithoutIngredientsNestedInput
+  }
+
+  export type IngredientUpsertWithoutSecondaryPrescriptionsInput = {
+    update: XOR<IngredientUpdateWithoutSecondaryPrescriptionsInput, IngredientUncheckedUpdateWithoutSecondaryPrescriptionsInput>
+    create: XOR<IngredientCreateWithoutSecondaryPrescriptionsInput, IngredientUncheckedCreateWithoutSecondaryPrescriptionsInput>
+    where?: IngredientWhereInput
+  }
+
+  export type IngredientUpdateToOneWithWhereWithoutSecondaryPrescriptionsInput = {
+    where?: IngredientWhereInput
+    data: XOR<IngredientUpdateWithoutSecondaryPrescriptionsInput, IngredientUncheckedUpdateWithoutSecondaryPrescriptionsInput>
+  }
+
+  export type IngredientUpdateWithoutSecondaryPrescriptionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    category?: StringFieldUpdateOperationsInput | string
+    creator?: NullableStringFieldUpdateOperationsInput | string | null
+    rating?: StringFieldUpdateOperationsInput | string
+    symbol?: NullableStringFieldUpdateOperationsInput | string | null
+    formula?: NullableStringFieldUpdateOperationsInput | string | null
+    isVariable?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    variants?: FontVariantUpdateManyWithoutIngredientNestedInput
+    formulas?: FormulaUpdateManyWithoutFontsNestedInput
+    primaryPrescriptions?: PrescriptionUpdateManyWithoutPrimaryFontNestedInput
+    tags?: TagUpdateManyWithoutIngredientsNestedInput
+  }
+
+  export type IngredientUncheckedUpdateWithoutSecondaryPrescriptionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    category?: StringFieldUpdateOperationsInput | string
+    creator?: NullableStringFieldUpdateOperationsInput | string | null
+    rating?: StringFieldUpdateOperationsInput | string
+    symbol?: NullableStringFieldUpdateOperationsInput | string | null
+    formula?: NullableStringFieldUpdateOperationsInput | string | null
+    isVariable?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    variants?: FontVariantUncheckedUpdateManyWithoutIngredientNestedInput
+    formulas?: FormulaUncheckedUpdateManyWithoutFontsNestedInput
+    primaryPrescriptions?: PrescriptionUncheckedUpdateManyWithoutPrimaryFontNestedInput
+    tags?: TagUncheckedUpdateManyWithoutIngredientsNestedInput
   }
 
   export type TagUpsertWithWhereUniqueWithoutPrescriptionsInput = {
@@ -14917,51 +15975,103 @@ export namespace Prisma {
     data: XOR<TagUpdateManyMutationInput, TagUncheckedUpdateManyWithoutPrescriptionsInput>
   }
 
-  export type TagScalarWhereInput = {
-    AND?: TagScalarWhereInput | TagScalarWhereInput[]
-    OR?: TagScalarWhereInput[]
-    NOT?: TagScalarWhereInput | TagScalarWhereInput[]
-    id?: StringFilter<"Tag"> | string
-    name?: StringFilter<"Tag"> | string
-  }
-
-  export type IngredientUpsertWithWhereUniqueWithoutPrescriptionsInput = {
-    where: IngredientWhereUniqueInput
-    update: XOR<IngredientUpdateWithoutPrescriptionsInput, IngredientUncheckedUpdateWithoutPrescriptionsInput>
-    create: XOR<IngredientCreateWithoutPrescriptionsInput, IngredientUncheckedCreateWithoutPrescriptionsInput>
-  }
-
-  export type IngredientUpdateWithWhereUniqueWithoutPrescriptionsInput = {
-    where: IngredientWhereUniqueInput
-    data: XOR<IngredientUpdateWithoutPrescriptionsInput, IngredientUncheckedUpdateWithoutPrescriptionsInput>
-  }
-
-  export type IngredientUpdateManyWithWhereWithoutPrescriptionsInput = {
-    where: IngredientScalarWhereInput
-    data: XOR<IngredientUpdateManyMutationInput, IngredientUncheckedUpdateManyWithoutPrescriptionsInput>
-  }
-
   export type PrescriptionCreateWithoutTagsInput = {
     id?: string
     name: string
-    href: string
+    slug: string
     description?: string | null
-    imgUrl?: string | null
-    fonts?: IngredientCreateNestedManyWithoutPrescriptionsInput
+    imageUrl?: string | null
+    published?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    primaryFont: IngredientCreateNestedOneWithoutPrimaryPrescriptionsInput
+    secondaryFont: IngredientCreateNestedOneWithoutSecondaryPrescriptionsInput
   }
 
   export type PrescriptionUncheckedCreateWithoutTagsInput = {
     id?: string
     name: string
-    href: string
+    slug: string
     description?: string | null
-    imgUrl?: string | null
-    fonts?: IngredientUncheckedCreateNestedManyWithoutPrescriptionsInput
+    imageUrl?: string | null
+    published?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    primaryFontId: string
+    secondaryFontId: string
   }
 
   export type PrescriptionCreateOrConnectWithoutTagsInput = {
     where: PrescriptionWhereUniqueInput
     create: XOR<PrescriptionCreateWithoutTagsInput, PrescriptionUncheckedCreateWithoutTagsInput>
+  }
+
+  export type IngredientCreateWithoutTagsInput = {
+    id?: string
+    name: string
+    slug: string
+    category: string
+    creator?: string | null
+    rating: string
+    symbol?: string | null
+    formula?: string | null
+    isVariable?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    variants?: FontVariantCreateNestedManyWithoutIngredientInput
+    formulas?: FormulaCreateNestedManyWithoutFontsInput
+    primaryPrescriptions?: PrescriptionCreateNestedManyWithoutPrimaryFontInput
+    secondaryPrescriptions?: PrescriptionCreateNestedManyWithoutSecondaryFontInput
+  }
+
+  export type IngredientUncheckedCreateWithoutTagsInput = {
+    id?: string
+    name: string
+    slug: string
+    category: string
+    creator?: string | null
+    rating: string
+    symbol?: string | null
+    formula?: string | null
+    isVariable?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    variants?: FontVariantUncheckedCreateNestedManyWithoutIngredientInput
+    formulas?: FormulaUncheckedCreateNestedManyWithoutFontsInput
+    primaryPrescriptions?: PrescriptionUncheckedCreateNestedManyWithoutPrimaryFontInput
+    secondaryPrescriptions?: PrescriptionUncheckedCreateNestedManyWithoutSecondaryFontInput
+  }
+
+  export type IngredientCreateOrConnectWithoutTagsInput = {
+    where: IngredientWhereUniqueInput
+    create: XOR<IngredientCreateWithoutTagsInput, IngredientUncheckedCreateWithoutTagsInput>
+  }
+
+  export type FormulaCreateWithoutTagsInput = {
+    id?: string
+    name: string
+    description?: string | null
+    slug: string
+    fontCategory: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    fonts?: IngredientCreateNestedManyWithoutFormulasInput
+  }
+
+  export type FormulaUncheckedCreateWithoutTagsInput = {
+    id?: string
+    name: string
+    description?: string | null
+    slug: string
+    fontCategory: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    fonts?: IngredientUncheckedCreateNestedManyWithoutFormulasInput
+  }
+
+  export type FormulaCreateOrConnectWithoutTagsInput = {
+    where: FormulaWhereUniqueInput
+    create: XOR<FormulaCreateWithoutTagsInput, FormulaUncheckedCreateWithoutTagsInput>
   }
 
   export type PrescriptionUpsertWithWhereUniqueWithoutTagsInput = {
@@ -14978,6 +16088,38 @@ export namespace Prisma {
   export type PrescriptionUpdateManyWithWhereWithoutTagsInput = {
     where: PrescriptionScalarWhereInput
     data: XOR<PrescriptionUpdateManyMutationInput, PrescriptionUncheckedUpdateManyWithoutTagsInput>
+  }
+
+  export type IngredientUpsertWithWhereUniqueWithoutTagsInput = {
+    where: IngredientWhereUniqueInput
+    update: XOR<IngredientUpdateWithoutTagsInput, IngredientUncheckedUpdateWithoutTagsInput>
+    create: XOR<IngredientCreateWithoutTagsInput, IngredientUncheckedCreateWithoutTagsInput>
+  }
+
+  export type IngredientUpdateWithWhereUniqueWithoutTagsInput = {
+    where: IngredientWhereUniqueInput
+    data: XOR<IngredientUpdateWithoutTagsInput, IngredientUncheckedUpdateWithoutTagsInput>
+  }
+
+  export type IngredientUpdateManyWithWhereWithoutTagsInput = {
+    where: IngredientScalarWhereInput
+    data: XOR<IngredientUpdateManyMutationInput, IngredientUncheckedUpdateManyWithoutTagsInput>
+  }
+
+  export type FormulaUpsertWithWhereUniqueWithoutTagsInput = {
+    where: FormulaWhereUniqueInput
+    update: XOR<FormulaUpdateWithoutTagsInput, FormulaUncheckedUpdateWithoutTagsInput>
+    create: XOR<FormulaCreateWithoutTagsInput, FormulaUncheckedCreateWithoutTagsInput>
+  }
+
+  export type FormulaUpdateWithWhereUniqueWithoutTagsInput = {
+    where: FormulaWhereUniqueInput
+    data: XOR<FormulaUpdateWithoutTagsInput, FormulaUncheckedUpdateWithoutTagsInput>
+  }
+
+  export type FormulaUpdateManyWithWhereWithoutTagsInput = {
+    where: FormulaScalarWhereInput
+    data: XOR<FormulaUpdateManyMutationInput, FormulaUncheckedUpdateManyWithoutTagsInput>
   }
 
   export type BlogPostCreateManyAuthorInput = {
@@ -15129,6 +16271,30 @@ export namespace Prisma {
     label: string
   }
 
+  export type PrescriptionCreateManyPrimaryFontInput = {
+    id?: string
+    name: string
+    slug: string
+    description?: string | null
+    imageUrl?: string | null
+    published?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    secondaryFontId: string
+  }
+
+  export type PrescriptionCreateManySecondaryFontInput = {
+    id?: string
+    name: string
+    slug: string
+    description?: string | null
+    imageUrl?: string | null
+    published?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    primaryFontId: string
+  }
+
   export type FontVariantUpdateWithoutIngredientInput = {
     id?: StringFieldUpdateOperationsInput | string
     fontFamilyName?: StringFieldUpdateOperationsInput | string
@@ -15159,54 +16325,137 @@ export namespace Prisma {
   export type FormulaUpdateWithoutFontsInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    description?: StringFieldUpdateOperationsInput | string
-    href?: StringFieldUpdateOperationsInput | string
-    code?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    slug?: StringFieldUpdateOperationsInput | string
+    fontCategory?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    tags?: TagUpdateManyWithoutFormulasNestedInput
   }
 
   export type FormulaUncheckedUpdateWithoutFontsInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    description?: StringFieldUpdateOperationsInput | string
-    href?: StringFieldUpdateOperationsInput | string
-    code?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    slug?: StringFieldUpdateOperationsInput | string
+    fontCategory?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    tags?: TagUncheckedUpdateManyWithoutFormulasNestedInput
   }
 
   export type FormulaUncheckedUpdateManyWithoutFontsInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    description?: StringFieldUpdateOperationsInput | string
-    href?: StringFieldUpdateOperationsInput | string
-    code?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    slug?: StringFieldUpdateOperationsInput | string
+    fontCategory?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type PrescriptionUpdateWithoutFontsInput = {
+  export type PrescriptionUpdateWithoutPrimaryFontInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    href?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    imgUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    published?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    secondaryFont?: IngredientUpdateOneRequiredWithoutSecondaryPrescriptionsNestedInput
     tags?: TagUpdateManyWithoutPrescriptionsNestedInput
   }
 
-  export type PrescriptionUncheckedUpdateWithoutFontsInput = {
+  export type PrescriptionUncheckedUpdateWithoutPrimaryFontInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    href?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    imgUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    published?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    secondaryFontId?: StringFieldUpdateOperationsInput | string
     tags?: TagUncheckedUpdateManyWithoutPrescriptionsNestedInput
   }
 
-  export type PrescriptionUncheckedUpdateManyWithoutFontsInput = {
+  export type PrescriptionUncheckedUpdateManyWithoutPrimaryFontInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    href?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    imgUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    published?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    secondaryFontId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type PrescriptionUpdateWithoutSecondaryFontInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    published?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    primaryFont?: IngredientUpdateOneRequiredWithoutPrimaryPrescriptionsNestedInput
+    tags?: TagUpdateManyWithoutPrescriptionsNestedInput
+  }
+
+  export type PrescriptionUncheckedUpdateWithoutSecondaryFontInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    published?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    primaryFontId?: StringFieldUpdateOperationsInput | string
+    tags?: TagUncheckedUpdateManyWithoutPrescriptionsNestedInput
+  }
+
+  export type PrescriptionUncheckedUpdateManyWithoutSecondaryFontInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    published?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    primaryFontId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type TagUpdateWithoutIngredientsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    prescriptions?: PrescriptionUpdateManyWithoutTagsNestedInput
+    formulas?: FormulaUpdateManyWithoutTagsNestedInput
+  }
+
+  export type TagUncheckedUpdateWithoutIngredientsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    prescriptions?: PrescriptionUncheckedUpdateManyWithoutTagsNestedInput
+    formulas?: FormulaUncheckedUpdateManyWithoutTagsNestedInput
+  }
+
+  export type TagUncheckedUpdateManyWithoutIngredientsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type IngredientUpdateWithoutFormulasInput = {
@@ -15219,8 +16468,12 @@ export namespace Prisma {
     symbol?: NullableStringFieldUpdateOperationsInput | string | null
     formula?: NullableStringFieldUpdateOperationsInput | string | null
     isVariable?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     variants?: FontVariantUpdateManyWithoutIngredientNestedInput
-    prescriptions?: PrescriptionUpdateManyWithoutFontsNestedInput
+    primaryPrescriptions?: PrescriptionUpdateManyWithoutPrimaryFontNestedInput
+    secondaryPrescriptions?: PrescriptionUpdateManyWithoutSecondaryFontNestedInput
+    tags?: TagUpdateManyWithoutIngredientsNestedInput
   }
 
   export type IngredientUncheckedUpdateWithoutFormulasInput = {
@@ -15233,8 +16486,12 @@ export namespace Prisma {
     symbol?: NullableStringFieldUpdateOperationsInput | string | null
     formula?: NullableStringFieldUpdateOperationsInput | string | null
     isVariable?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     variants?: FontVariantUncheckedUpdateManyWithoutIngredientNestedInput
-    prescriptions?: PrescriptionUncheckedUpdateManyWithoutFontsNestedInput
+    primaryPrescriptions?: PrescriptionUncheckedUpdateManyWithoutPrimaryFontNestedInput
+    secondaryPrescriptions?: PrescriptionUncheckedUpdateManyWithoutSecondaryFontNestedInput
+    tags?: TagUncheckedUpdateManyWithoutIngredientsNestedInput
   }
 
   export type IngredientUncheckedUpdateManyWithoutFormulasInput = {
@@ -15247,87 +16504,185 @@ export namespace Prisma {
     symbol?: NullableStringFieldUpdateOperationsInput | string | null
     formula?: NullableStringFieldUpdateOperationsInput | string | null
     isVariable?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TagUpdateWithoutFormulasInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    prescriptions?: PrescriptionUpdateManyWithoutTagsNestedInput
+    ingredients?: IngredientUpdateManyWithoutTagsNestedInput
+  }
+
+  export type TagUncheckedUpdateWithoutFormulasInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    prescriptions?: PrescriptionUncheckedUpdateManyWithoutTagsNestedInput
+    ingredients?: IngredientUncheckedUpdateManyWithoutTagsNestedInput
+  }
+
+  export type TagUncheckedUpdateManyWithoutFormulasInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type TagUpdateWithoutPrescriptionsInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    ingredients?: IngredientUpdateManyWithoutTagsNestedInput
+    formulas?: FormulaUpdateManyWithoutTagsNestedInput
   }
 
   export type TagUncheckedUpdateWithoutPrescriptionsInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    ingredients?: IngredientUncheckedUpdateManyWithoutTagsNestedInput
+    formulas?: FormulaUncheckedUpdateManyWithoutTagsNestedInput
   }
 
   export type TagUncheckedUpdateManyWithoutPrescriptionsInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-  }
-
-  export type IngredientUpdateWithoutPrescriptionsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    slug?: StringFieldUpdateOperationsInput | string
-    category?: StringFieldUpdateOperationsInput | string
-    creator?: NullableStringFieldUpdateOperationsInput | string | null
-    rating?: StringFieldUpdateOperationsInput | string
-    symbol?: NullableStringFieldUpdateOperationsInput | string | null
-    formula?: NullableStringFieldUpdateOperationsInput | string | null
-    isVariable?: BoolFieldUpdateOperationsInput | boolean
-    variants?: FontVariantUpdateManyWithoutIngredientNestedInput
-    formulas?: FormulaUpdateManyWithoutFontsNestedInput
-  }
-
-  export type IngredientUncheckedUpdateWithoutPrescriptionsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    slug?: StringFieldUpdateOperationsInput | string
-    category?: StringFieldUpdateOperationsInput | string
-    creator?: NullableStringFieldUpdateOperationsInput | string | null
-    rating?: StringFieldUpdateOperationsInput | string
-    symbol?: NullableStringFieldUpdateOperationsInput | string | null
-    formula?: NullableStringFieldUpdateOperationsInput | string | null
-    isVariable?: BoolFieldUpdateOperationsInput | boolean
-    variants?: FontVariantUncheckedUpdateManyWithoutIngredientNestedInput
-    formulas?: FormulaUncheckedUpdateManyWithoutFontsNestedInput
-  }
-
-  export type IngredientUncheckedUpdateManyWithoutPrescriptionsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    slug?: StringFieldUpdateOperationsInput | string
-    category?: StringFieldUpdateOperationsInput | string
-    creator?: NullableStringFieldUpdateOperationsInput | string | null
-    rating?: StringFieldUpdateOperationsInput | string
-    symbol?: NullableStringFieldUpdateOperationsInput | string | null
-    formula?: NullableStringFieldUpdateOperationsInput | string | null
-    isVariable?: BoolFieldUpdateOperationsInput | boolean
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type PrescriptionUpdateWithoutTagsInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    href?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    imgUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    fonts?: IngredientUpdateManyWithoutPrescriptionsNestedInput
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    published?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    primaryFont?: IngredientUpdateOneRequiredWithoutPrimaryPrescriptionsNestedInput
+    secondaryFont?: IngredientUpdateOneRequiredWithoutSecondaryPrescriptionsNestedInput
   }
 
   export type PrescriptionUncheckedUpdateWithoutTagsInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    href?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    imgUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    fonts?: IngredientUncheckedUpdateManyWithoutPrescriptionsNestedInput
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    published?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    primaryFontId?: StringFieldUpdateOperationsInput | string
+    secondaryFontId?: StringFieldUpdateOperationsInput | string
   }
 
   export type PrescriptionUncheckedUpdateManyWithoutTagsInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    href?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    imgUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    published?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    primaryFontId?: StringFieldUpdateOperationsInput | string
+    secondaryFontId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type IngredientUpdateWithoutTagsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    category?: StringFieldUpdateOperationsInput | string
+    creator?: NullableStringFieldUpdateOperationsInput | string | null
+    rating?: StringFieldUpdateOperationsInput | string
+    symbol?: NullableStringFieldUpdateOperationsInput | string | null
+    formula?: NullableStringFieldUpdateOperationsInput | string | null
+    isVariable?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    variants?: FontVariantUpdateManyWithoutIngredientNestedInput
+    formulas?: FormulaUpdateManyWithoutFontsNestedInput
+    primaryPrescriptions?: PrescriptionUpdateManyWithoutPrimaryFontNestedInput
+    secondaryPrescriptions?: PrescriptionUpdateManyWithoutSecondaryFontNestedInput
+  }
+
+  export type IngredientUncheckedUpdateWithoutTagsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    category?: StringFieldUpdateOperationsInput | string
+    creator?: NullableStringFieldUpdateOperationsInput | string | null
+    rating?: StringFieldUpdateOperationsInput | string
+    symbol?: NullableStringFieldUpdateOperationsInput | string | null
+    formula?: NullableStringFieldUpdateOperationsInput | string | null
+    isVariable?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    variants?: FontVariantUncheckedUpdateManyWithoutIngredientNestedInput
+    formulas?: FormulaUncheckedUpdateManyWithoutFontsNestedInput
+    primaryPrescriptions?: PrescriptionUncheckedUpdateManyWithoutPrimaryFontNestedInput
+    secondaryPrescriptions?: PrescriptionUncheckedUpdateManyWithoutSecondaryFontNestedInput
+  }
+
+  export type IngredientUncheckedUpdateManyWithoutTagsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    category?: StringFieldUpdateOperationsInput | string
+    creator?: NullableStringFieldUpdateOperationsInput | string | null
+    rating?: StringFieldUpdateOperationsInput | string
+    symbol?: NullableStringFieldUpdateOperationsInput | string | null
+    formula?: NullableStringFieldUpdateOperationsInput | string | null
+    isVariable?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FormulaUpdateWithoutTagsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    slug?: StringFieldUpdateOperationsInput | string
+    fontCategory?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    fonts?: IngredientUpdateManyWithoutFormulasNestedInput
+  }
+
+  export type FormulaUncheckedUpdateWithoutTagsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    slug?: StringFieldUpdateOperationsInput | string
+    fontCategory?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    fonts?: IngredientUncheckedUpdateManyWithoutFormulasNestedInput
+  }
+
+  export type FormulaUncheckedUpdateManyWithoutTagsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    slug?: StringFieldUpdateOperationsInput | string
+    fontCategory?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
 

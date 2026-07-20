@@ -5,7 +5,18 @@ import { createPortal } from "react-dom";
 import { Loader2 } from "lucide-react";
 import { useState, useEffect } from "react";
 
-export default function SavingOverlay({ message = "Saving changes..." }: { message?: string }) {
+interface SavingOverlayProps {
+  message?: string;
+  /**
+   * Override esplicito per form che non passano per l'action nativa del
+   * form (es. onSubmit + startTransition): in quel caso useFormStatus()
+   * non intercetta nulla, quindi va passato lo stato pending del chiamante.
+   * Se omesso, si comporta come prima basandosi su useFormStatus().
+   */
+  show?: boolean;
+}
+
+export default function SavingOverlay({ message = "Saving changes...", show }: SavingOverlayProps) {
   const { pending } = useFormStatus();
   const [mounted, setMounted] = useState(false);
 
@@ -13,7 +24,9 @@ export default function SavingOverlay({ message = "Saving changes..." }: { messa
     setMounted(true);
   }, []);
 
-  if (!pending || !mounted) return null;
+  const isVisible = show ?? pending;
+
+  if (!isVisible || !mounted) return null;
 
   return createPortal(
     <div className="fixed inset-0 z-9999 flex items-center justify-center bg-ocragray-900/50 backdrop-blur-md animate-in fade-in duration-300">

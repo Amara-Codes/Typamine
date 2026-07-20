@@ -52,7 +52,7 @@ export function Accordion({
         <motion.div
           animate={{ rotate: isOpen ? 180 : 0 }}
           transition={{ duration: 0.3, ease: "easeInOut" }}
-          className="text-zinc-400 dark:text-zinc-500 shrink-0"
+          className="text-zinc-500 dark:text-zinc-400 shrink-0"
         >
           <ChevronDown className="h-4 w-4" />
         </motion.div>
@@ -66,7 +66,7 @@ export function Accordion({
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.3, ease: "easeInOut" }}
           >
-            <div className={cn("border-t border-zinc-100 dark:border-zinc-800", contentClassName)}>
+            <div className={cn("border-t border-zinc-200 dark:border-zinc-800", contentClassName)}>
               {children}
             </div>
           </motion.div>

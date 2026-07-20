@@ -5,6 +5,7 @@ import { getServerAuthSession } from "@/lib/session";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { uploadToR2, deleteFromR2 } from "@/lib/r2";
+import { withCreatedAtBackfill } from "@/lib/services/font";
 import crypto from "crypto";
 
 async function checkPermission(permission: string) {
@@ -21,24 +22,30 @@ async function checkPermission(permission: string) {
 
 export async function getFonts() {
   await checkPermission("font:read");
-  return prisma.ingredient.findMany({
-    include: {
-      variants: true,
-    },
-    orderBy: {
-      name: "asc",
-    },
-  });
+  return withCreatedAtBackfill(() =>
+    prisma.ingredient.findMany({
+      include: {
+        variants: true,
+        tags: true,
+      },
+      orderBy: {
+        name: "asc",
+      },
+    })
+  );
 }
 
 export async function getFontById(id: string) {
   await checkPermission("font:read");
-  return prisma.ingredient.findUnique({
-    where: { id },
-    include: {
-      variants: true,
-    },
-  });
+  return withCreatedAtBackfill(() =>
+    prisma.ingredient.findUnique({
+      where: { id },
+      include: {
+        variants: true,
+        tags: true,
+      },
+    })
+  );
 }
 
 export async function deleteFont(id: string) {
@@ -85,6 +92,7 @@ export async function saveFont(prevState: any, formData: FormData, id?: string) 
     const symbol = formData.get("symbol") as string | null;
     const formula = formData.get("formula") as string | null;
     const isVariable = formData.get("isVariable") === "true";
+    const tagIds = formData.getAll("tagIds") as string[];
 
     if (!name || !slug || !category) {
       return "Name, Slug, and Category are required.";
@@ -127,13 +135,25 @@ export async function saveFont(prevState: any, formData: FormData, id?: string) 
       if (id) {
         font = await prisma.ingredient.update({
           where: { id },
-          data,
+          data: {
+            ...data,
+            tags: {
+              set: tagIds.map((tId) => ({ id: tId })),
+            },
+          },
         });
       } else {
         font = await prisma.ingredient.create({
           data: {
             id: fontId,
             ...data,
+            // Impostato esplicitamente invece di affidarsi al DEFAULT a livello di DB:
+            // in dev, un client Prisma già avviato prima di una modifica allo schema
+            // può ignorare il default e scrivere NULL su questa colonna.
+            createdAt: new Date(),
+            tags: {
+              connect: tagIds.map((tId) => ({ id: tId })),
+            },
           }
         });
       }

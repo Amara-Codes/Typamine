@@ -25,7 +25,7 @@ export const CustomRange: React.FC<CustomRangeProps> = ({
     onChange,
     trackColor = "bg-zinc-200 dark:bg-zinc-800",
     thumbColor = "bg-blue dark:bg-red",
-    textColor = "text-zinc-900 dark:text-white",
+    textColor = "text-black dark:text-white",
     glow = false,
     showCurrentValue = true,
     showMinMax = false,
@@ -52,7 +52,7 @@ export const CustomRange: React.FC<CustomRangeProps> = ({
             {/* Header Label & Value */}
             {(label || showCurrentValue) && (
                 <div className="flex justify-between items-center select-none mb-0">
-                    {label && <label className="text-[10px] text-black dark:text-white uppercase tracking-wider block mb-2 font-bold select-none">{label}</label>}
+                    {label && <label className="text-[10px] text-bluegray-800 dark:text-redgray-200 uppercase tracking-wider block mb-2 font-bold select-none">{label}</label>}
                     {showCurrentValue && <span className={`text-[10px] font-bold ${textColor}`}>{value}</span>}
                 </div>
             )}
@@ -78,7 +78,7 @@ export const CustomRange: React.FC<CustomRangeProps> = ({
 
             {/* Min/Max Labels */}
             {showMinMax && (
-                <div className="flex justify-between mt-1 text-[9px] text-zinc-400 font-bold uppercase">
+                <div className="flex justify-between mt-1 text-[10px] text-zinc-500 dark:text-zinc-400 font-bold uppercase">
                     <span>{min}</span>
                     <span>{max}</span>
                 </div>

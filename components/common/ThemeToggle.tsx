@@ -21,7 +21,7 @@ export const ThemeToggle: React.FC = () => {
 
   if (!mounted) {
     return (
-      <div className="w-24 h-6 bg-zinc-900 border border-zinc-800 rounded animate-pulse" />
+      <div className="w-24 h-6 bg-zinc-200 dark:bg-zinc-900 border border-zinc-300 dark:border-zinc-800 rounded animate-pulse" />
     );
   }
 
@@ -36,7 +36,7 @@ export const ThemeToggle: React.FC = () => {
           theme === "dark" ? "bg-[#ff3131] glow-red animate-pulse" : "bg-[#00cece] glow-cyan"
         }`}
       />
-      <span className="text-zinc-600 dark:text-zinc-400 font-bold uppercase tracking-wider">
+      <span className="text-zinc-500 dark:text-zinc-400 font-bold uppercase tracking-wider">
         {theme === "dark" ? "REACTION (DARK)" : "STABILITY (LIGHT)"}
       </span>
     </button>

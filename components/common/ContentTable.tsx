@@ -63,7 +63,7 @@ export default function ContentTable<T>({
           <div
             key={column.key}
             className={cn(
-              "text-[10px] font-bold uppercase tracking-widest text-zinc-800 dark:text-zinc-200",
+              "text-[10px] font-bold uppercase tracking-widest text-bluegray-800 dark:text-redgray-200",
               column.className || "flex-1"
             )}
           >
@@ -93,14 +93,14 @@ export default function ContentTable<T>({
 
         {/* Actions */}
         {rowActions && (
-          <div className="flex-1 text-[10px] font-bold uppercase tracking-widest text-zinc-800 dark:text-zinc-200 text-right">
+          <div className="flex-1 text-[10px] font-bold uppercase tracking-widest text-bluegray-800 dark:text-redgray-200 text-right">
             Actions
           </div>
         )}
       </div>
 
       {/* Table Body */}
-      <div className="divide-y divide-zinc-900/5 dark:divide-white/5">
+      <div className="divide-y divide-black/5 dark:divide-white/5">
         {data.map((item) => {
           const itemId = keyExtractor(item);
           const isSelected = selectedIds.includes(itemId);
@@ -122,7 +122,7 @@ export default function ContentTable<T>({
                 <div
                   key={column.key}
                   className={cn(
-                    "min-w-0 flex items-center text-zinc-800 dark:text-zinc-200",
+                    "min-w-0 flex items-center text-black dark:text-white",
                     column.className || "flex-1"
                   )}
                 >

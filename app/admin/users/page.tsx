@@ -61,7 +61,7 @@ export default async function UserListPage() {
                   {canUpdate && (
                     <Link
                       href={`/admin/users/${user.id}/edit`}
-                      className="p-2.5 text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white hover:bg-white dark:hover:bg-white/10 rounded-md transition-all shadow-sm backdrop-blur-md"
+                      className="p-2.5 text-zinc-500 dark:text-zinc-400 hover:text-black dark:hover:text-white hover:bg-white dark:hover:bg-white/10 rounded-md transition-all shadow-sm backdrop-blur-md"
                     >
                       <Edit className="h-4 w-4" />
                     </Link>
@@ -80,10 +80,10 @@ export default async function UserListPage() {
 
               <CardBody className="space-y-5 pt-6">
                 <div>
-                  <h3 className="text-3xl font-star text-zinc-900 dark:text-white leading-tight truncate">
+                  <h3 className="text-3xl font-star text-black dark:text-white leading-tight truncate">
                     {user.name} {(user as any).surname}
                   </h3>
-                  <div className="flex items-center gap-2 text-[10px] text-zinc-500 dark:text-zinc-400 font-bold uppercase tracking-widest mt-1.5 truncate">
+                  <div className="flex items-center gap-2 text-[10px] text-bluegray-800 dark:text-redgray-200 font-bold uppercase tracking-widest mt-1.5 truncate">
                     <Mail className="h-3 w-3 shrink-0" />
                     {user.email}
                   </div>

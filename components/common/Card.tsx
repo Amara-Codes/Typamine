@@ -29,7 +29,7 @@ export function Card({
   return (
     <div
       className={cn(
-        "bg-zinc-100/40 dark:bg-zinc-900/40 border border-zinc-900/5 dark:border-zinc-100/5",
+        "bg-zinc-100/40 dark:bg-zinc-900/40 border border-black/5 dark:border-white/5",
         "backdrop-blur-xl shadow-xl transition-all duration-500 group relative flex flex-col",
         roundnessClasses[roundness],
         visualHover && "hover:shadow-2xl hover:scale-105 hover:shadow-zinc-900/50",
@@ -62,7 +62,7 @@ export function CardHeader({
     <div
       className={cn(
         "p-6 flex items-start justify-between relative gap-4",
-        hasBorder && "border-b border-bluegray-800 dark:border-redgray-200",
+        hasBorder && "border-b border-zinc-200 dark:border-zinc-800",
         className
       )}
       {...props}
@@ -77,7 +77,7 @@ export function CardHeader({
             </h3>
           )}
           {subtitle && (
-            <p className="text-[10px] uppercase tracking-widest font-bold text-bluegray-900 dark:text-redgray-100 mt-1 truncate">
+            <p className="text-[10px] uppercase tracking-widest font-bold text-bluegray-800 dark:text-redgray-200 mt-1 truncate">
               {subtitle}
             </p>
           )}
@@ -116,7 +116,7 @@ export function CardFooter({
     <div
       className={cn(
         "p-6 sm:p-8 mt-auto flex items-center justify-between text-left",
-        hasBorder && "border-t border-bluegray-800 dark:border-redgray-200",
+        hasBorder && "border-t border-zinc-200 dark:border-zinc-800",
         className
       )}
       {...props}

@@ -30,7 +30,7 @@ export default function ScannedAvatar({ avatarSrc, userName }: ScannedAvatarProp
 
   return (
     <div
-      className="w-full mt-12 py-4 bg-zinc-100 dark:bg-zinc-900/40 text-zinc-900 dark:text-zinc-100 rounded-lg flex items-center justify-between px-4 relative transition-colors duration-300 overflow-hidden isolate"
+      className="w-full mt-12 py-4 bg-zinc-100 dark:bg-zinc-900/40 text-black dark:text-white rounded-lg flex items-center justify-between px-4 relative transition-colors duration-300 overflow-hidden isolate"
     >
       
       {/* Background a linee orizzontali in z-[-1] */}

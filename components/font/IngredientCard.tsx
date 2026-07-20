@@ -3,10 +3,12 @@ import Link from "next/link";
 import { MoveRight } from "lucide-react";
 import { Ingredient } from "@/types";
 import { getDeterministicFormula } from "@/lib/utils";
-import MinimalLink from "@/components/common/MinimalLink";
+import LivePreview from "@/components/common/LivePreview";
 interface FontCardProps {
     font: Ingredient;
     idx: number;
+    linklabel?: string;
+    fontSize?: number;
 }
 
 // Funzioni di supporto per identificare vocali e consonanti
@@ -70,25 +72,25 @@ export const GetSymbol = ({ fontName }: { fontName: string }): string => {
     return rawSymbol.charAt(0).toUpperCase() + rawSymbol.charAt(1).toLowerCase();
 };
 
-export const IngredientCard: React.FC<FontCardProps> = ({ font, idx }) => {
+export const IngredientCard: React.FC<FontCardProps> = ({ font, idx, linklabel = "Test Now", fontSize }) => {
     return (
         <Link
             href={"/ingredients/" + font.slug}
             className="border border-zinc-200 dark:border-zinc-800 bg-white/50 dark:bg-zinc-900/20 hover:border-zinc-400 dark:hover:border-zinc-700 hover:bg-zinc-50 dark:hover:bg-zinc-900/40 rounded-lg p-2 transition-all flex flex-col justify-between group relative overflow-hidden"
         >
             {/* Corner tag index */}
-            <div className="absolute top-2 right-2 font-haas text-[9px] text-zinc-400 dark:text-zinc-600">
+            <div className="absolute top-2 right-2 font-haas text-[10px] text-zinc-500 dark:text-zinc-400">
                 REF-0{idx + 1}
             </div>
 
             {/* Chemical Element layout */}
             <div className="space-y-4 mt-4">
                 <div className="flex items-start justify-between">
-                    <div className="w-12 h-12 ml-2 border border-[#00cece]/30 rounded bg-zinc-100 dark:bg-zinc-950 flex items-center justify-center font-haas font-bold text-lg text-[#00cece] group-hover:border-[#00cece] group-hover:glow-cyan transition-all">
+                    <div className="w-12 h-12 ml-2 border border-blue/30 rounded bg-zinc-100 dark:bg-zinc-950 flex items-center justify-center font-haas font-bold text-lg text-blue group-hover:border-blue group-hover:glow-cyan transition-all">
                         {GetSymbol({ fontName: font.name })}
                     </div>
                     <div className="text-right font-haas">
-                        <span className="text-[10px] text-zinc-400 dark:text-zinc-500 uppercase block">{font.category}</span>
+                        <span className="text-[10px] text-zinc-500 dark:text-zinc-400 uppercase block">{font.category}</span>
                         <span className="text-xs text-zinc-500 dark:text-zinc-400 font-bold block">
                             {font.formula || getDeterministicFormula(font.name)}
                         </span>
@@ -97,21 +99,28 @@ export const IngredientCard: React.FC<FontCardProps> = ({ font, idx }) => {
 
                 <div>
                     <h3 className="ps-2 font-haas font-bold text-sm text-foreground">{font.name}</h3>
-                    {font.creator && (
-                        <p className="ps-2 font-haas text-[9px] text-zinc-400 dark:text-zinc-500 mt-0.5">CREATOR: {font.creator}</p>
-                    )}
+                    {/* Sempre renderizzato (anche senza creator) per non far scattare l'altezza della card */}
+                    <p className="ps-2 font-haas text-[10px] text-zinc-500 dark:text-zinc-400 mt-0.5">CREATOR: {font.creator || "UNKNOWN"}</p>
                 </div>
             </div>
 
             {/* Live Preview Sample */}
-            <div className={`my-4 py-2 border-y border-zinc-100 dark:border-zinc-900 text-center truncate`} style={{ fontSize: "18px", fontFamily: font.variants?.[0]?.fontFamilyName }}>
-                AaBbCcDdEeFf 123
-            </div>
+            <LivePreview
+                fontName={font.variants?.[0]?.fontFamilyName || font.name}
+                fontUrl={font.variants?.[0]?.woff2Url}
+                initialSize={fontSize || 18}
+                showToolbar={false}
+                showControls={false}
+                showBackgroundGlow={false}
+                editable={false}
+                compact
+                className="my-4"
+            />
 
-            <div className="pt-2 pe-2 flex justify-between items-center border-t border-zinc-100 dark:border-zinc-900">
-                <span className="font-haas text-[10px] text-zinc-500 dark:text-zinc-400">OUR SCORE: <span className="text-[#00cece] font-bold">{font.rating}</span></span>
+            <div className="pt-2 pe-2 flex justify-between items-center border-t border-zinc-200 dark:border-zinc-800">
+                <span className="font-haas text-[10px] text-zinc-500 dark:text-zinc-400">OUR SCORE: <span className="text-blue font-bold">{font.rating}</span></span>
                 <span className="flex flex-row items-center gap-2 font-haas text-[10px] text-red hover:underline transition-colors pe-4">
-                    TEST_NOW
+                    {linklabel}
                     <MoveRight size={12} className="icon-altalenante" />
                 </span>
             </div>

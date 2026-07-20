@@ -11,7 +11,7 @@ export default function AdminHeader({ session, dbSource }: { session: any; dbSou
 
       <div className="flex w-full justify-between items-center gap-4">
         <div className="flex items-center gap-3">
-          <div className="h-16 w-16 rounded-xl bg-blurgray-200 dark:bg-redgray-800 flex items-center justify-center text-black dark:text-white border border-white dark:border-black shadow-sm overflow-hidden">
+          <div className="h-16 w-16 rounded-xl bg-bluegray-200 dark:bg-redgray-800 flex items-center justify-center text-black dark:text-white border border-white dark:border-black shadow-sm overflow-hidden">
             {session.user.image ? (
               <img src={session.user.image} className="h-full w-full object-cover" alt="Avatar" />
             ) : (
@@ -28,7 +28,7 @@ export default function AdminHeader({ session, dbSource }: { session: any; dbSou
               {session.user.roles?.map((role: string) => (
                 <span key={role} className="px-2 py-1 rounded-md bg-bluegray-200 dark:bg-redgray-800 text-black dark:text-white flex items-center gap-1 border border-bluegray-800 dark:border-redgray-200 shadow-xs">
                   <Shield className="h-2.5 w-2.5" />
-                  <span className="text-[9px] font-black uppercase tracking-widest leading-none">{role.replace(/_/g, " ")}</span>
+                  <span className="text-[10px] font-black uppercase tracking-widest leading-none">{role.replace(/_/g, " ")}</span>
                 </span>
               ))}
             </div>
@@ -38,12 +38,12 @@ export default function AdminHeader({ session, dbSource }: { session: any; dbSou
 
         {/* Glowing Database Status Badge */}
         {process.env.NODE_ENV === 'development' && dbSource && (
-          <div className="hidden md:flex items-center gap-2.5 px-4 py-1.5 rounded-xl bg-white/40 dark:bg-zinc-800/50 border border-zinc-200 dark:border-zinc-700 shadow-sm backdrop-blur-md transition-all duration-300">
+          <div className="hidden md:flex items-center gap-2.5 px-4 py-1.5 rounded-xl bg-white/40 dark:bg-zinc-800/50 border border-zinc-200 dark:border-zinc-800 shadow-sm backdrop-blur-md transition-all duration-300">
             <span className="relative flex h-2.5 w-2.5">
               <span className={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ${dbSource === "Cloudflare D1" ? "bg-emerald-400 dark:bg-emerald-500" : "bg-amber-400 dark:bg-amber-500"}`}></span>
               <span className={`relative inline-flex rounded-full h-2.5 w-2.5 ${dbSource === "Cloudflare D1" ? "bg-emerald-500" : "bg-amber-500"}`}></span>
             </span>
-            <span className="text-xs font-semibold tracking-wide text-zinc-600 dark:text-zinc-300">
+            <span className="text-xs font-semibold tracking-wide text-zinc-500 dark:text-zinc-400">
               Database: <span className={dbSource === "Cloudflare D1" ? "text-emerald-600 dark:text-emerald-400 font-bold" : "text-amber-600 dark:text-amber-400 font-bold"}>{dbSource}</span>
             </span>
           </div>

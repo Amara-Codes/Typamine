@@ -6,6 +6,7 @@ import { hasPermission, protectPage } from "@/lib/rbac";
 import TabHeading from "@/components/admin/common/TabHeading";
 import { Button } from "@/components/common/Button";
 import FontListClient from "@/components/admin/fonts/FontListClient";
+import { withCreatedAtBackfill } from "@/lib/services/font";
 
 interface FontListPageProps {
   searchParams: Promise<{
@@ -35,10 +36,10 @@ export default async function FontListPage(props: FontListPageProps) {
   const where: any = {};
   if (search) {
     where.OR = [
-      { name: { contains: search, mode: "insensitive" } },
-      { formula: { contains: search, mode: "insensitive" } },
-      { category: { contains: search, mode: "insensitive" } },
-      { creator: { contains: search, mode: "insensitive" } },
+      { name: { contains: search } },
+      { formula: { contains: search } },
+      { category: { contains: search } },
+      { creator: { contains: search } },
     ];
   }
 
@@ -58,15 +59,17 @@ export default async function FontListPage(props: FontListPageProps) {
 
   // Execute database pagination & total counts
   const totalCount = await prisma.ingredient.count({ where });
-  const fonts = await prisma.ingredient.findMany({
-    where,
-    include: {
-      variants: true,
-    },
-    orderBy,
-    skip: (page - 1) * perPage,
-    take: perPage,
-  });
+  const fonts = await withCreatedAtBackfill(() =>
+    prisma.ingredient.findMany({
+      where,
+      include: {
+        variants: true,
+      },
+      orderBy,
+      skip: (page - 1) * perPage,
+      take: perPage,
+    })
+  );
 
   return (
     <div className="space-y-10">

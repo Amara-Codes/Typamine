@@ -63,7 +63,7 @@ export default function AdminSidebar({ session }: { session: any }) {
           collapsed ? "h-16" : "h-22 pb-1"
         )}>
           <DynamicLogo
-            className="text-zinc-900 dark:text-white"
+            className="text-black dark:text-white"
             height={collapsed ? 48 : 64}
             squareGlow={theme === "light"}
             squareIsButton={true}

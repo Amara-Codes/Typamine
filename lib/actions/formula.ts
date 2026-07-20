@@ -1,0 +1,143 @@
+"use server";
+
+import prisma from "@/lib/prisma";
+import { getServerAuthSession } from "@/lib/session";
+import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
+import { withSafeDbQuery } from "@/lib/services/dbMigration";
+import crypto from "crypto";
+
+async function checkPermission(permission: string) {
+  const session = await getServerAuthSession();
+  const permissions = session?.user?.permissions || [];
+  const roles = session?.user?.roles || [];
+  const isSuperAdmin = roles.includes("SUPERADMIN") || roles.includes("ADMIN");
+
+  if (!isSuperAdmin && !permissions.includes(permission)) {
+    throw new Error("Unauthorized");
+  }
+  return session;
+}
+
+export async function getFormulas() {
+  await checkPermission("font:read");
+  return withSafeDbQuery(() =>
+    prisma.formula.findMany({
+      include: {
+        fonts: true,
+        tags: true,
+      },
+      orderBy: { name: "asc" },
+    })
+  );
+}
+
+export async function getFormulaById(id: string) {
+  await checkPermission("font:read");
+  return withSafeDbQuery(() =>
+    prisma.formula.findUnique({
+      where: { id },
+      include: {
+        fonts: true,
+        tags: true,
+      },
+    })
+  );
+}
+
+export async function deleteFormula(id: string) {
+  await checkPermission("font:delete");
+  await prisma.formula.delete({ where: { id } });
+  revalidatePath("/admin/collections");
+  revalidatePath("/formulas");
+}
+
+export async function saveFormula(prevState: any, formData: FormData, id?: string) {
+  const session = await getServerAuthSession();
+  if (!session?.user) return "Unauthorized";
+
+  try {
+    if (id) {
+      await checkPermission("font:update");
+    } else {
+      await checkPermission("font:create");
+    }
+
+    const name = (formData.get("name") as string)?.trim();
+    const slug = (formData.get("slug") as string)?.trim();
+    const description = (formData.get("description") as string)?.trim() || null;
+    const fontCategory = (formData.get("fontCategory") as string)?.trim();
+    const fontIds = formData.getAll("fontIds") as string[];
+    const tagIds = formData.getAll("tagIds") as string[];
+
+    if (!name || !slug || !fontCategory) {
+      return "Name, Slug, and Font Category are required.";
+    }
+
+    if (fontIds.length === 0) {
+      return "Select at least one font for this collection.";
+    }
+
+    // Check unique slug
+    const existingSlug = await prisma.formula.findFirst({
+      where: {
+        slug,
+        NOT: id ? { id } : undefined,
+      },
+    });
+
+    if (existingSlug) {
+      return "A collection with this slug already exists.";
+    }
+
+    const formulaId = id || crypto.randomUUID();
+
+    const baseData = {
+      name,
+      slug,
+      description,
+      fontCategory,
+    };
+
+    if (id) {
+      await prisma.formula.update({
+        where: { id },
+        data: {
+          ...baseData,
+          fonts: {
+            set: fontIds.map((fId) => ({ id: fId })),
+          },
+          tags: {
+            set: tagIds.map((tId) => ({ id: tId })),
+          },
+        },
+      });
+    } else {
+      await prisma.formula.create({
+        data: {
+          id: formulaId,
+          ...baseData,
+          // Impostato esplicitamente invece di affidarsi al DEFAULT a livello di
+          // DB: un client Prisma già avviato prima di una modifica allo schema
+          // può ignorare il default e scrivere NULL su questa colonna.
+          createdAt: new Date(),
+          fonts: {
+            connect: fontIds.map((fId) => ({ id: fId })),
+          },
+          tags: {
+            connect: tagIds.map((tId) => ({ id: tId })),
+          },
+        },
+      });
+    }
+  } catch (error: unknown) {
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    if (errorMessage === "NEXT_REDIRECT") throw error;
+    console.error("[Formula Action] Error saving collection:", error);
+    return errorMessage || "Failed to save collection.";
+  }
+
+  revalidatePath("/admin/collections");
+  revalidatePath("/formulas");
+  redirect("/admin/collections");
+}

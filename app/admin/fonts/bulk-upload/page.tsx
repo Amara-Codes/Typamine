@@ -1,9 +1,13 @@
 "use client";
 
+export const dynamic = "force-dynamic";
+
 import { useState, useEffect, useMemo, useRef } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Card } from "@/components/common/Card";
+import LivePreview from "@/components/common/LivePreview";
+import FormActions from "@/components/admin/common/FormActions";
 import {
   MoveLeft,
   Search,
@@ -97,7 +101,7 @@ export default function BulkUploadPage() {
 
   // Pagination state
   const [currentPage, setCurrentPage] = useState(0);
-  const itemsPerPage = 12;
+  const itemsPerPage = 6;
 
   // Import operation state
   const [isImporting, setIsImporting] = useState(false);
@@ -365,34 +369,32 @@ export default function BulkUploadPage() {
       {/* Container superiore (Top Bar + Griglia Contenuti) */}
       <div className="w-full h-full grow flex flex-col">
         
-        {/* ─── Top Controls Bar (No Sticky, No Fixed) ─── */}
-        <div className="flex items-center justify-between py-4 gap-4">
-          
-          {/* Left: Filter Trigger & Status Counter */}
-          <div className="flex">
+        {/* ─── Top Controls Bar ─── */}
+        <div className="py-4">
+          <FormActions
+            backLink="/admin/fonts"
+            backLabel="Back to fonts list"
+            showButton={false}
+            buttonSize="md"
+          >
             <Button
               variant="outline"
               size="md"
               roundness="md"
               onClick={() => setIsFilterModalOpen(true)}
-              className="flex items-center gap-2 font-bold text-[10px] uppercase tracking-widest text-zinc-600 dark:text-zinc-400"
+              className="flex items-center gap-2 font-bold text-[10px] uppercase tracking-widest text-zinc-500 dark:text-zinc-400"
             >
               <Filter className="h-3.5 w-3.5" />
               Filter &amp; Search
             </Button>
-            
 
-          </div>
-
-          {/* Right: Selection Actions */}
-          <div className="flex items-center gap-3 shrink-0">
             <Button
               variant="secondary"
               size="md"
               roundness="md"
               disabled={filteredFonts.length === 0}
               onClick={togglePageSelection}
-              className="font-bold text-[11px]"
+              className="font-bold text-[10px]"
             >
               {filteredFonts.length === 0
                 ? "Select entire page"
@@ -401,19 +403,19 @@ export default function BulkUploadPage() {
                   : "Select entire page"
               }
             </Button>
-            
+
             <Button
               variant="primary"
               size="md"
               roundness="md"
               disabled={selectedFamilies.size === 0}
               onClick={handleImport}
-              className="flex items-center gap-1.5 whitespace-nowrap text-[11px]"
+              className="flex items-center gap-1.5 whitespace-nowrap text-[10px]"
             >
               <FolderDown className="h-3.5 w-3.5" />
               Import{selectedFamilies.size > 0 ? ` (${selectedFamilies.size})` : ""}
             </Button>
-          </div>
+          </FormActions>
         </div>
 
         {/* ─── Error Banner ─── */}
@@ -430,10 +432,10 @@ export default function BulkUploadPage() {
         {/* ─── Central Dynamic Content Area ─── */}
         {isLoading ? (
           <div className="flex flex-col items-center justify-center py-24 gap-4 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900/20">
-            <div className="h-10 w-10 rounded-full border-2 border-zinc-200 dark:border-zinc-800 border-t-cyan-500 animate-spin" />
+            <Loader2 className="h-8 w-8 text-cyan-500 animate-spin" />
             <div className="text-center space-y-1">
-              <p className="text-xs font-black uppercase tracking-widest text-zinc-700 dark:text-zinc-300">Fetching Font Data</p>
-              <p className="text-[9px] font-semibold uppercase tracking-wider text-zinc-400 dark:text-zinc-500">Please wait...</p>
+              <p className="text-xs font-bold uppercase tracking-widest text-black dark:text-white">Fetching Font Data</p>
+              <p className="text-[10px] font-semibold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">Please wait...</p>
             </div>
           </div>
         ) : (
@@ -442,7 +444,7 @@ export default function BulkUploadPage() {
             {filteredFonts.length > 0 && (
               <div className="flex items-center justify-between mb-2">
                 <p className="text-[10px] font-bold uppercase tracking-widest text-zinc-500 dark:text-zinc-400">
-                  Showing <span className="text-zinc-900 dark:text-zinc-100 font-black">
+                  Showing <span className="text-black dark:text-white font-black">
                     {currentPage * itemsPerPage + 1}&ndash;{Math.min((currentPage + 1) * itemsPerPage, filteredFonts.length)}
                   </span>
                   {" "}of {filteredFonts.length.toLocaleString()} families
@@ -456,7 +458,7 @@ export default function BulkUploadPage() {
             )}
 
             {/* Font cards grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {visibleFonts.map((font) => {
                 const isSelected = selectedFamilies.has(font.family);
                 const isVar = font.axes && font.axes.length > 0;
@@ -471,46 +473,44 @@ export default function BulkUploadPage() {
                     onKeyDown={(e: React.KeyboardEvent) => (e.key === " " || e.key === "Enter") && toggleSelection(font.family)}
                     className={`cursor-pointer select-none transition-all duration-200 overflow-hidden outline-none focus-visible:ring-2 focus-visible:ring-blue/50 dark:focus-visible:ring-red/50 ${isSelected
                       ? "border-blue/50 bg-blue/20 dark:border-red/30 dark:!bg-red/5"
-                      : "hover:!border-zinc-300 dark:hover:!border-zinc-700"
+                      : "hover:!border-zinc-200 dark:hover:!border-zinc-800"
                       }`}
                   >
-                    <div className="h-full py-4 px-3 flex flex-col justify-between">
+                    <div className="p-4 flex flex-col gap-3">
                       {/* Card header */}
                       <div className="flex items-center justify-between gap-3">
                         <div className="flex items-center gap-3 min-w-0">
                           <div className={`shrink-0 h-5 w-5 rounded-md border-2 flex items-center justify-center transition-all ${isSelected
                             ? "border-blue bg-blue/50 dark:border-red dark:bg-red/50"
-                            : "border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900"
+                            : "border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900"
                             }`}>
                             {isSelected && <span className="h-1.5 w-1.5 rounded-full bg-white" />}
                           </div>
                           <div className="min-w-0">
-                            <h4 className={`text-sm font-bold leading-tight truncate transition-colors ${isSelected ? "text-black dark:text-white" : "text-zinc-800 dark:text-zinc-200"}`}>
+                            <h4 className={`text-sm font-bold leading-tight truncate transition-colors ${isSelected ? "text-black dark:text-white" : "text-zinc-500 dark:text-zinc-400"}`}>
                               {font.family}
                             </h4>
                           </div>
                         </div>
 
                         <div className="shrink-0 flex flex-col items-end gap-1.5">
-                          <span className={`inline-flex items-center text-[8px] font-black uppercase tracking-wider ${isVar ? 'text-cyan-500' : 'text-zinc-400 dark:text-zinc-500'}`}>
+                          <span className={`inline-flex items-center text-[10px] font-black uppercase tracking-wider ${isVar ? 'text-cyan-500' : 'text-zinc-500 dark:text-zinc-400'}`}>
                             {isVar ? "Variable" : "Static"}
                           </span>
                         </div>
                       </div>
 
-                      {/* Font preview rendering box */}
-                      <div className={`rounded-sm px-4 py-3 border transition-colors ${isSelected
-                        ? "bg-cyan-50/50 dark:bg-cyan-500/5 border-cyan-100 dark:border-cyan-500/10"
-                        : "bg-zinc-50 dark:bg-zinc-950/50 border-zinc-100 dark:border-zinc-800"
-                        }`}>
-                        <p
-                          style={{ fontFamily: `"${font.family}", sans-serif` }}
-                          className="text-lg leading-snug text-zinc-900 dark:text-zinc-100 overflow-hidden text-ellipsis whitespace-nowrap"
-                          title={previewText}
-                        >
-                          {previewText || font.family}
-                        </p>
-                      </div>
+                      {/* Font live preview, no controls/toolbar — just the rendered glyph sample */}
+                      <LivePreview
+                        fontName={font.family}
+                        initialText={previewText || font.family}
+                        initialSize={26}
+                        showToolbar={false}
+                        showControls={false}
+                        showBackgroundGlow={false}
+                        editable={false}
+                        compact
+                      />
                     </div>
                   </Card>
                 );
@@ -521,21 +521,21 @@ export default function BulkUploadPage() {
             {filteredFonts.length === 0 && fonts.length === 0 && (
               <div className="flex flex-col items-center justify-center py-20 gap-4 rounded-2xl border border-dashed border-zinc-200 dark:border-zinc-800 text-center">
                 <div className="h-11 w-11 rounded-2xl bg-zinc-100 dark:bg-zinc-900 flex items-center justify-center">
-                  <Search className="h-5 w-5 text-zinc-400 dark:text-zinc-500" />
+                  <Search className="h-5 w-5 text-zinc-500 dark:text-zinc-400" />
                 </div>
                 <div>
-                  <p className="text-sm font-bold text-zinc-700 dark:text-zinc-300">No results yet</p>
-                  <p className="text-[10px] text-zinc-500 dark:text-zinc-500 mt-1 font-semibold uppercase tracking-wider">Open filters and trigger your search setup</p>
+                  <p className="text-sm font-bold text-black dark:text-white">No results yet</p>
+                  <p className="text-[10px] text-zinc-500 dark:text-zinc-400 mt-1 font-semibold uppercase tracking-wider">Open filters and trigger your search setup</p>
                 </div>
               </div>
             )}
 
             {filteredFonts.length === 0 && fonts.length > 0 && (
               <div className="flex flex-col items-center justify-center py-16 gap-3 rounded-2xl border border-dashed border-zinc-200 dark:border-zinc-800 text-center">
-                <AlertCircle className="h-8 w-8 text-zinc-300 dark:text-zinc-600" />
+                <AlertCircle className="h-8 w-8 text-zinc-500 dark:text-zinc-400" />
                 <div>
-                  <p className="text-sm font-bold text-zinc-700 dark:text-zinc-300">No matches</p>
-                  <p className="text-[10px] text-zinc-500 dark:text-zinc-500 mt-1 font-semibold uppercase tracking-wider">Try adjusting your search or filters</p>
+                  <p className="text-sm font-bold text-black dark:text-white">No matches</p>
+                  <p className="text-[10px] text-zinc-500 dark:text-zinc-400 mt-1 font-semibold uppercase tracking-wider">Try adjusting your search or filters</p>
                 </div>
               </div>
             )}
@@ -548,7 +548,7 @@ export default function BulkUploadPage() {
         <div className="flex items-center justify-between w-full pt-4">
           <p className="text-[10px] font-black uppercase tracking-widest text-zinc-500 dark:text-zinc-400">
             Page {currentPage + 1}{" "}
-            <span className="text-zinc-300 dark:text-zinc-600">/</span>{" "}
+            <span className="text-zinc-500 dark:text-zinc-400">/</span>{" "}
             {totalPages}
           </p>
           <div className="flex items-center gap-2">
@@ -579,7 +579,7 @@ export default function BulkUploadPage() {
                     onClick={() => setCurrentPage(page)}
                     className={`h-7 min-w-7 px-2 rounded-lg text-[10px] font-black transition-all ${page === currentPage
                       ? "bg-cyan-500 text-white shadow-sm shadow-cyan-500/30"
-                      : "text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800"
+                      : "text-zinc-500 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800"
                       }`}
                   >
                     {page + 1}
@@ -611,31 +611,31 @@ export default function BulkUploadPage() {
           onClose={() => setIsFilterModalOpen(false)}
         >
           <div className="p-6 space-y-6">
-            <div className="flex items-center justify-between pb-4 border-b border-zinc-100 dark:border-zinc-800">
+            <div className="flex items-center justify-between pb-4 border-b border-zinc-200 dark:border-zinc-800">
               <div className="flex items-center gap-2">
                 <Filter className="h-4 w-4 text-cyan-500" />
-                <h3 className="text-sm font-black uppercase tracking-wider text-zinc-900 dark:text-white">
+                <h3 className="text-sm font-black uppercase tracking-wider text-black dark:text-white">
                   Search &amp; Filter Options
                 </h3>
               </div>
-              <button 
+              <button
                 onClick={() => setIsFilterModalOpen(false)}
                 className="p-1 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 transition"
               >
-                <X className="h-4 w-4 text-zinc-500" />
+                <X className="h-4 w-4 text-zinc-500 dark:text-zinc-400" />
               </button>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
               <div>
-                <label className="text-[10px] text-zinc-400 dark:text-zinc-500 uppercase tracking-widest block mb-1.5 font-black">
+                <label className="text-[10px] text-bluegray-800 dark:text-redgray-200 uppercase tracking-widest block mb-1.5 font-black">
                   Font Infrastructure / Source
                 </label>
                 <Select options={SOURCE_OPTIONS} value={source} onChange={(v) => setSource(v as any)} />
               </div>
               
               <div>
-                <label className="text-[10px] text-zinc-400 dark:text-zinc-500 uppercase tracking-widest block mb-1.5 font-black">
+                <label className="text-[10px] text-bluegray-800 dark:text-redgray-200 uppercase tracking-widest block mb-1.5 font-black">
                   Family Name Lookup
                 </label>
                 <div className="relative">
@@ -653,14 +653,14 @@ export default function BulkUploadPage() {
               </div>
 
               <div>
-                <label className="text-[10px] text-zinc-400 dark:text-zinc-500 uppercase tracking-widest block mb-1.5 font-black">
+                <label className="text-[10px] text-bluegray-800 dark:text-redgray-200 uppercase tracking-widest block mb-1.5 font-black">
                   Category Architecture
                 </label>
                 <Select options={source === "google" ? CATEGORY_OPTIONS : FONTSHARE_CATEGORY_OPTIONS} value={category} onChange={setCategory} />
               </div>
 
               <div>
-                <label className="text-[10px] text-zinc-400 dark:text-zinc-500 uppercase tracking-widest block mb-1.5 font-black">
+                <label className="text-[10px] text-bluegray-800 dark:text-redgray-200 uppercase tracking-widest block mb-1.5 font-black">
                   Sorting Criterion
                 </label>
                 <Select options={source === "google" ? SORT_OPTIONS : FONTSHARE_SORT_OPTIONS} value={sortBy} onChange={setSortBy} />
@@ -670,7 +670,7 @@ export default function BulkUploadPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5 pt-2">
               {source === "fontshare" ? (
                 <div>
-                  <label className="text-[10px] text-zinc-400 dark:text-zinc-500 uppercase tracking-widest block mb-1.5 font-black">
+                  <label className="text-[10px] text-bluegray-800 dark:text-redgray-200 uppercase tracking-widest block mb-1.5 font-black">
                     Design Personality
                   </label>
                   <Select options={FONTSHARE_PERSONALITY_OPTIONS} value={personality} onChange={setPersonality} />
@@ -680,7 +680,7 @@ export default function BulkUploadPage() {
               )}
 
               <div>
-                <label className="text-[10px] text-zinc-400 dark:text-zinc-500 uppercase tracking-widest block mb-1.5 font-black">
+                <label className="text-[10px] text-bluegray-800 dark:text-redgray-200 uppercase tracking-widest block mb-1.5 font-black">
                   Technology Specification
                 </label>
                 <button
@@ -693,7 +693,7 @@ export default function BulkUploadPage() {
                     : "border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900/60"
                     }`}
                 >
-                  <span className={`relative inline-flex h-5 w-9 shrink-0 rounded-full border-2 transition-colors ${vfOnly ? "border-cyan-500 bg-cyan-500" : "border-zinc-300 dark:border-zinc-700 bg-zinc-200 dark:bg-zinc-800"}`}>
+                  <span className={`relative inline-flex h-5 w-9 shrink-0 rounded-full border-2 transition-colors ${vfOnly ? "border-cyan-500 bg-cyan-500" : "border-zinc-200 dark:border-zinc-800 bg-zinc-200 dark:bg-zinc-800"}`}>
                     <span className={`inline-block h-3.5 w-3.5 rounded-full bg-white shadow-sm transition-transform mt-px ${vfOnly ? "translate-x-3.5" : "translate-x-px"}`} />
                   </span>
                   <span className={`text-[10px] font-black uppercase tracking-wider whitespace-nowrap ${vfOnly ? "text-cyan-700 dark:text-cyan-400" : "text-zinc-500 dark:text-zinc-400"}`}>
@@ -704,7 +704,7 @@ export default function BulkUploadPage() {
             </div>
 
             <div className="space-y-1.5">
-              <label className="text-[10px] text-zinc-400 dark:text-zinc-500 uppercase tracking-widest block font-black">
+              <label className="text-[10px] text-bluegray-800 dark:text-redgray-200 uppercase tracking-widest block font-black">
                 Interactive Preview Content
               </label>
               <Input
@@ -717,24 +717,24 @@ export default function BulkUploadPage() {
               />
             </div>
 
-            <div className="flex items-center justify-between pt-4 border-t border-zinc-100 dark:border-zinc-800">
+            <div className="flex items-center justify-between pt-4 border-t border-zinc-200 dark:border-zinc-800">
               <Button
                 variant="secondary"
                 size="md"
                 roundness="md"
                 onClick={() => setIsFilterModalOpen(false)}
-                className="font-bold text-[11px]"
+                className="font-bold text-[10px]"
               >
                 Cancel
               </Button>
-              
+
               <Button
                 variant="primary"
                 size="md"
                 roundness="md"
                 onClick={fetchFonts}
                 disabled={isLoading}
-                className="flex items-center gap-2 font-bold text-[11px]"
+                className="flex items-center gap-2 font-bold text-[10px]"
               >
                 {isLoading ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Search className="h-3.5 w-3.5" />}
                 {isLoading ? "Querying..." : "Apply & Fetch Fonts"}
@@ -746,33 +746,36 @@ export default function BulkUploadPage() {
 
       {/* ─── Batch Import Terminal Modal ─── */}
       {isImporting && (
-        <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/70 backdrop-blur-lg">
-          <div className="w-full max-w-lg rounded-3xl bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 shadow-2xl overflow-hidden animate-in zoom-in-95 fade-in duration-200">
-            <div className="h-1 w-full bg-gradient-to-r from-cyan-400 via-cyan-500 to-blue-500" />
-
-            <div className="p-8 space-y-6">
-              <div className="flex items-start justify-between gap-4">
-                <div className="flex items-center gap-3">
-                  <div className="h-10 w-10 rounded-2xl bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center shrink-0">
-                    <FolderDown className="h-5 w-5 text-cyan-500" />
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-star text-zinc-900 dark:text-white leading-tight">Batch Import</h3>
-                    <p className="text-[9px] uppercase tracking-wider font-bold text-zinc-500 dark:text-zinc-400 mt-0.5">
-                      Downloading &middot; Converting &middot; Saving
-                    </p>
-                  </div>
+        <BaseModal
+          isOpen={isImporting}
+          onClose={() => importResults && handleCloseImportModal()}
+          size="lg"
+        >
+          <BaseModal.Header>
+            <div className="flex items-center justify-between w-full gap-4">
+              <div className="flex items-center gap-3 min-w-0">
+                <div className="h-10 w-10 rounded-2xl bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center shrink-0">
+                  <FolderDown className="h-5 w-5 text-cyan-500" />
                 </div>
-                {!importResults && (
-                  <div className="h-8 w-8 rounded-full border-2 border-zinc-200 dark:border-zinc-800 border-t-cyan-500 animate-spin shrink-0" />
-                )}
-                {importResults && (
-                  <CheckCircle2 className="h-7 w-7 text-emerald-500 shrink-0" />
-                )}
+                <div className="min-w-0">
+                  <h3 className="text-2xl font-star text-black dark:text-white leading-tight">Batch Import</h3>
+                  <p className="text-[10px] uppercase tracking-widest font-bold text-zinc-500 dark:text-zinc-400 mt-0.5">
+                    Downloading &middot; Converting &middot; Saving
+                  </p>
+                </div>
               </div>
+              {importResults ? (
+                <CheckCircle2 className="h-6 w-6 text-emerald-500 shrink-0" />
+              ) : (
+                <Loader2 className="h-6 w-6 text-cyan-500 animate-spin shrink-0" />
+              )}
+            </div>
+          </BaseModal.Header>
 
+          <BaseModal.Body>
+            <div className="space-y-6">
               <div className="space-y-2">
-                <div className="flex justify-between text-[9px] font-black uppercase tracking-widest text-zinc-500 dark:text-zinc-400">
+                <div className="flex justify-between text-[10px] font-bold uppercase tracking-widest text-zinc-500 dark:text-zinc-400">
                   <span>Progress</span>
                   <span className="tabular-nums">{importProgress} / {importTotal}</span>
                 </div>
@@ -789,7 +792,7 @@ export default function BulkUploadPage() {
                   <span className="h-2.5 w-2.5 rounded-full bg-red-500/70" />
                   <span className="h-2.5 w-2.5 rounded-full bg-amber-500/70" />
                   <span className="h-2.5 w-2.5 rounded-full bg-emerald-500/70" />
-                  <span className="text-[9px] font-bold text-zinc-500 ml-2 uppercase tracking-widest">Import Log</span>
+                  <span className="text-[10px] font-bold text-zinc-500 ml-2 uppercase tracking-widest">Import Log</span>
                 </div>
                 <div ref={terminalRef} className="p-4 h-36 overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] space-y-1.5 font-mono text-[10px]">
                   {importLogs.map((log, index) => (
@@ -805,15 +808,15 @@ export default function BulkUploadPage() {
                 <div className="space-y-3">
                   <div className="grid grid-cols-3 gap-3">
                     <div className="rounded-xl bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-900/50 p-4 text-center">
-                      <span className="text-[9px] font-black uppercase tracking-widest text-emerald-700 dark:text-emerald-400 block mb-1">Imported</span>
+                      <span className="text-[10px] font-bold uppercase tracking-widest text-emerald-700 dark:text-emerald-400 block mb-1">Imported</span>
                       <span className="text-3xl font-black text-emerald-600 dark:text-emerald-400 leading-none">{importResults.imported.length}</span>
                     </div>
                     <div className="rounded-xl bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-900/50 p-4 text-center">
-                      <span className="text-[9px] font-black uppercase tracking-widest text-amber-700 dark:text-amber-400 block mb-1">Skipped</span>
+                      <span className="text-[10px] font-bold uppercase tracking-widest text-amber-700 dark:text-amber-400 block mb-1">Skipped</span>
                       <span className="text-3xl font-black text-amber-600 dark:text-amber-400 leading-none">{importResults.skipped.length}</span>
                     </div>
                     <div className="rounded-xl bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-900/50 p-4 text-center">
-                      <span className="text-[9px] font-black uppercase tracking-widest text-red-700 dark:text-red-400 block mb-1">Failed</span>
+                      <span className="text-[10px] font-bold uppercase tracking-widest text-red-700 dark:text-red-400 block mb-1">Failed</span>
                       <span className="text-3xl font-black text-red-600 dark:text-red-400 leading-none">{importResults.failed.length}</span>
                     </div>
                   </div>
@@ -821,7 +824,7 @@ export default function BulkUploadPage() {
                   {importResults.failed.length > 0 && (
                     <div className="max-h-28 overflow-y-auto rounded-xl border border-red-200 dark:border-red-900/30 bg-red-50 dark:bg-red-950/20 p-3 space-y-1">
                       {importResults.failed.map((fail, index) => (
-                        <div key={index} className="flex items-start gap-2 text-[9px] text-red-700 dark:text-red-400 font-bold">
+                        <div key={index} className="flex items-start gap-2 text-[10px] text-red-700 dark:text-red-400 font-bold">
                           <AlertCircle className="h-3 w-3 shrink-0 mt-px" />
                           <span><span className="opacity-70">{fail.family}:</span> {fail.error}</span>
                         </div>
@@ -830,30 +833,33 @@ export default function BulkUploadPage() {
                   )}
                 </div>
               )}
-
-              <Button
-                variant={importResults ? "primary" : "secondary"}
-                size="md"
-                roundness="md"
-                disabled={!importResults}
-                onClick={handleCloseImportModal}
-                className="w-full flex items-center justify-center gap-2 font-bold"
-              >
-                {importResults ? (
-                  <>
-                    <CheckCircle2 className="h-4 w-4" />
-                    Done &middot; View All Fonts
-                  </>
-                ) : (
-                  <>
-                    <Loader2 className="h-4 w-4 animate-spin" />
-                    Processing...
-                  </>
-                )}
-              </Button>
             </div>
-          </div>
-        </div>
+          </BaseModal.Body>
+
+          <BaseModal.Footer>
+            <Button
+              variant={importResults ? "primary" : "secondary"}
+              size="md"
+              roundness="md"
+              disabled={!importResults}
+              onClick={handleCloseImportModal}
+              fullWidth
+              className="flex items-center justify-center gap-2 font-bold"
+            >
+              {importResults ? (
+                <>
+                  <CheckCircle2 className="h-4 w-4" />
+                  Done &middot; View All Fonts
+                </>
+              ) : (
+                <>
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                  Processing...
+                </>
+              )}
+            </Button>
+          </BaseModal.Footer>
+        </BaseModal>
       )}
     </div>
   );

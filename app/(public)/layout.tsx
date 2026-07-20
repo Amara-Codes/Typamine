@@ -18,7 +18,7 @@ export default function PublicRootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={cn("h-full antialiased", "font-sans", inter.variable)}>
+    <html lang="en" className={cn("h-full antialiased", "font-sans", inter.variable)} suppressHydrationWarning>
       <head>
         {/* Dynamic theme-based favicons */}
         <link rel="icon" href="/icon-dark.png" media="(prefers-color-scheme: dark)" />
@@ -42,7 +42,7 @@ export default function PublicRootLayout({
           }}
         />
       </head>
-      <body className="min-h-full flex flex-col bg-background text-foreground selection:bg-[#ff3131] selection:text-white relative scanline">
+      <body className="min-h-full flex flex-col bg-background text-foreground selection:bg-red selection:text-white relative scanline">
         
         <Header />
 

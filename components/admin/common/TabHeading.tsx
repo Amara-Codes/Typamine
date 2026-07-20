@@ -31,7 +31,7 @@ export default function TabHeading({
           {title}
         </h2>
         {subtitle && (
-          <p className="ps-2 font-haas text-md text-bluegray-100 dark:text-redgray-200 font-bold max-w-2xl leading-relaxed">
+          <p className="ps-2 font-haas text-md text-bluegray-800 dark:text-redgray-200 font-bold max-w-2xl leading-relaxed">
             {"==[ " + subtitle + " ]=="}
           </p>
         )}

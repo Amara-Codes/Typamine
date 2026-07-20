@@ -10,37 +10,49 @@ interface FormActionsProps {
   backLabel?: string;
   buttonLabel?: string;
   disabled?: boolean;
+  buttonSize?: "sm" | "md" | "lg";
+  showButton?: boolean;
+  children?: React.ReactNode;
 }
 
-export default function FormActions({ 
-  backLink, 
-  backLabel = "Back to list", 
+export default function FormActions({
+  backLink,
+  backLabel = "Back to list",
   buttonLabel = "Save Changes",
-  disabled = false
+  disabled = false,
+  buttonSize = "lg",
+  showButton = true,
+  children,
 }: FormActionsProps) {
   const { pending } = useFormStatus();
 
   return (
     <div className="flex items-center justify-between">
-      <MinimalLink 
-        href={backLink} 
+      <MinimalLink
+        href={backLink}
         label={backLabel}
         icon={<MoveLeft className="h-4 w-4" />}
         iconPosition="left"
-        className="ml-4 font-bold uppercase tracking-widest text-bluegray-600 dark:text-redgray-400 hover:text-black dark:hover:text-white"
+        className="ml-4 font-bold uppercase tracking-widest text-bluegray-800 dark:text-redgray-200 hover:text-black dark:hover:text-white"
       />
-      
-      <Button
-        type="submit"
-        disabled={pending || disabled}
-        variant="primary"
-        size="lg"
-        roundness="md"
-        className="flex items-center gap-2"
-      >
-        {pending ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
-        {pending ? "Saving..." : buttonLabel}
-      </Button>
+
+      <div className="flex items-center gap-3">
+        {children}
+
+        {showButton && (
+          <Button
+            type="submit"
+            disabled={pending || disabled}
+            variant="primary"
+            size={buttonSize}
+            roundness="md"
+            className="flex items-center gap-2"
+          >
+            {pending ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
+            {pending ? "Saving..." : buttonLabel}
+          </Button>
+        )}
+      </div>
     </div>
   );
 }

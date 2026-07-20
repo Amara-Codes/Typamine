@@ -57,36 +57,36 @@ export const Header: React.FC = () => {
           <nav className="hidden md:flex space-x-5 font-positivesys text-lg bg-blue-600/80 dark:bg-red-800/80 rounded-sm shadow-[inset_0_3px_0_0_#f9f9fb,_inset_0_-3px_0_0_#f9f9fb] dark:shadow-[inset_0_3px_0_0_#030303,_inset_0_-3px_0_0_#030303] transition-colors duration-500">
             <Link 
               id="nav-link-ingredients"
-              href="/ingredients" 
-              className="px-3 py-2 
+              href="/ingredients"
+              className="px-3 py-2
               bg-blue-300 dark:bg-red-500 rounded border border-transparent transition-all
-              text-black dark:text-black 
-              hover:text-blue-600 dark:hover:text-red-100 
-              hover:bg-white dark:hover:bg-red-800   
+              text-black dark:text-white
+              hover:text-blue-600 dark:hover:text-red-100
+              hover:bg-white dark:hover:bg-red-800
               hover:border-blue-600 dark:hover:border-red-100 "
             >
               Ingredients
             </Link>
             <Link 
               id="nav-link-formulas"
-              href="/formulas" 
-              className="px-3 py-2 
+              href="/formulas"
+              className="px-3 py-2
               bg-blue-300 dark:bg-red-500 rounded border border-transparent transition-all
-              text-black dark:text-black 
-              hover:text-blue-600 dark:hover:text-red-100 
-              hover:bg-white dark:hover:bg-red-800   
+              text-black dark:text-white
+              hover:text-blue-600 dark:hover:text-red-100
+              hover:bg-white dark:hover:bg-red-800
               hover:border-blue-600 dark:hover:border-red-100"
             >
               Formulas
             </Link>
             <Link 
               id="nav-link-labs"
-              href="/labs" 
-              className="px-3 py-2 
+              href="/labs"
+              className="px-3 py-2
               bg-blue-300 dark:bg-red-500 rounded border border-transparent transition-all
-              text-black dark:text-black 
-              hover:text-blue-600 dark:hover:text-red-100 
-              hover:bg-white dark:hover:bg-red-800   
+              text-black dark:text-white
+              hover:text-blue-600 dark:hover:text-red-100
+              hover:bg-white dark:hover:bg-red-800
               hover:border-blue-600 dark:hover:border-red-100"
             >
               Labs
@@ -94,24 +94,24 @@ export const Header: React.FC = () => {
 
             <Link 
               id="nav-link-prescriptions"
-              href="/prescriptions" 
-              className="px-3 py-2 
+              href="/prescriptions"
+              className="px-3 py-2
               bg-blue-300 dark:bg-red-500 rounded border border-transparent transition-all
-              text-black dark:text-black 
-              hover:text-blue-600 dark:hover:text-red-100 
-              hover:bg-white dark:hover:bg-red-800   
+              text-black dark:text-white
+              hover:text-blue-600 dark:hover:text-red-100
+              hover:bg-white dark:hover:bg-red-800
               hover:border-blue-600 dark:hover:border-red-100"
             >
               Prescriptions
             </Link>
                         <Link 
               id="nav-link-pills"
-              href="/pills" 
-              className="px-3 py-2 
+              href="/pills"
+              className="px-3 py-2
               bg-blue-300 dark:bg-red-500 rounded border border-transparent transition-all
-              text-black dark:text-black 
-              hover:text-blue-600 dark:hover:text-red-100 
-              hover:bg-white dark:hover:bg-red-800   
+              text-black dark:text-white
+              hover:text-blue-600 dark:hover:text-red-100
+              hover:bg-white dark:hover:bg-red-800
               hover:border-blue-600 dark:hover:border-red-100"
             >
               Pills

@@ -63,42 +63,59 @@ model FontVariant {
 }
 
 model Ingredient {
-  id            String        @id @default(uuid())
-  name          String
-  slug          String        @unique
-  category      String
-  creator       String?
-  rating        String
-  symbol        String?
-  formula       String?
-  isVariable    Boolean       @default(false)
-  variants      FontVariant[]
-  formulas      Formula[]     @relation("FormulaIngredients")
-  prescriptions Prescription[] @relation("PrescriptionIngredients")
+  id                     String         @id @default(uuid())
+  name                   String
+  slug                   String         @unique
+  category               String
+  creator                String?
+  rating                 String
+  symbol                 String?
+  formula                String?
+  isVariable             Boolean        @default(false)
+  createdAt              DateTime       @default(now())
+  updatedAt              DateTime       @default(now()) @updatedAt
+  variants               FontVariant[]
+  formulas               Formula[]      @relation("FormulaIngredients")
+  primaryPrescriptions   Prescription[] @relation("PrimaryFont")
+  secondaryPrescriptions Prescription[] @relation("SecondaryFont")
+  tags                   Tag[]          @relation("IngredientTags")
 }
 
 model Formula {
-  id          String       @id @default(uuid())
-  name        String
-  description String
-  href        String       @unique
-  code        String?
-  createdAt   DateTime     @default(now())
-  fonts       Ingredient[] @relation("FormulaIngredients")
+  id           String       @id @default(uuid())
+  name         String
+  description  String?
+  slug         String       @unique
+  fontCategory String
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @default(now()) @updatedAt
+  fonts        Ingredient[] @relation("FormulaIngredients")
+  tags         Tag[]        @relation("FormulaTags")
 }
 
 model Prescription {
-  id          String       @id @default(uuid())
-  name        String
-  href        String       @unique
-  description String?
-  imgUrl      String?
-  tags        Tag[]        @relation("PrescriptionTags")
-  fonts       Ingredient[] @relation("PrescriptionIngredients")
+  id              String     @id @default(uuid())
+  name            String
+  slug            String     @unique
+  description     String?
+  imageUrl        String?
+  published       Boolean    @default(false)
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @default(now()) @updatedAt
+  primaryFontId   String
+  primaryFont     Ingredient @relation("PrimaryFont", fields: [primaryFontId], references: [id], onDelete: Cascade)
+  secondaryFontId String
+  secondaryFont   Ingredient @relation("SecondaryFont", fields: [secondaryFontId], references: [id], onDelete: Cascade)
+  tags            Tag[]      @relation("PrescriptionTags")
 }
 
 model Tag {
   id            String         @id @default(uuid())
   name          String         @unique
+  description   String?
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @default(now()) @updatedAt
   prescriptions Prescription[] @relation("PrescriptionTags")
+  ingredients   Ingredient[]   @relation("IngredientTags")
+  formulas      Formula[]      @relation("FormulaTags")
 }

@@ -116,7 +116,7 @@ export const SeventiesThemeToggle: React.FC<SeventiesThemeToggleProps> = ({ size
           <span className="text-[9px] font-black uppercase tracking-widest text-blue-900 dark:text-red-200 leading-tight mb-0.5 whitespace-nowrap">
             Typamine&reg;
           </span>
-          <span className="text-[11px] font-bold uppercase tracking-wider transition-colors duration-300 text-bluegray-600 dark:text-redgray-200 group-hover:text-zinc-800 dark:group-hover:text-zinc-300 whitespace-nowrap">
+          <span className="text-[10px] font-bold uppercase tracking-wider transition-colors duration-300 text-bluegray-800 dark:text-redgray-200 group-hover:text-zinc-800 dark:group-hover:text-zinc-300 whitespace-nowrap">
             {isDark ? "Dark mode" : "Light mode"}
           </span>
         </div>

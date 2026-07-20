@@ -176,6 +176,7 @@ export async function POST(request: NextRequest) {
             creator: font.designer || (font.provider === 'fontshare' ? 'Fontshare' : 'Google Fonts'),
             rating: "9.0",
             isVariable,
+            createdAt: new Date(),
             variants: {
               create: createdVariants
             }

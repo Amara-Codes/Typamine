@@ -2,7 +2,7 @@
 
 import React, { useActionState, useState, useEffect } from "react";
 import { saveFont } from "@/lib/actions/font";
-import { Plus, Trash2, Sliders, Type, AlertCircle, Loader2 } from "lucide-react";
+import { Plus, Trash2, Sliders, Type, AlertCircle, Loader2, Tag as TagIcon, Check } from "lucide-react";
 import { Select } from "@/components/common/Select";
 import { Input } from "@/components/common/Input";
 import FormActions from "@/components/admin/common/FormActions";
@@ -31,7 +31,7 @@ const CATEGORY_OPTIONS = [
   { label: "DECORATIVE", value: "Decorative" },
 ];
 
-export default function FontForm({ font }: { font?: any }) {
+export default function FontForm({ font, tags = [] }: { font?: any; tags?: any[] }) {
   const saveAction = (prevState: any, formData: FormData) => saveFont(prevState, formData, font?.id);
   const [errorMessage, dispatch] = useActionState(saveAction, undefined);
   const [showErrorModal, setShowErrorModal] = useState(false);
@@ -40,6 +40,15 @@ export default function FontForm({ font }: { font?: any }) {
   const [slug, setSlug] = useState(font?.slug || "");
   const [category, setCategory] = useState(font?.category || "Sans-Serif");
   const [isVariable, setIsVariable] = useState<boolean>(font?.isVariable || false);
+  const [selectedTagIds, setSelectedTagIds] = useState<string[]>(
+    (font?.tags || []).map((t: any) => t.id)
+  );
+
+  const handleTagToggle = (tagId: string) => {
+    setSelectedTagIds((prev) =>
+      prev.includes(tagId) ? prev.filter((id) => id !== tagId) : [...prev, tagId]
+    );
+  };
   const [isConverting, setIsConverting] = useState<boolean>(false);
   const [conversionMessage, setConversionMessage] = useState<string>("");
   const [isDetectingCategory, setIsDetectingCategory] = useState<boolean>(false);
@@ -216,10 +225,10 @@ export default function FontForm({ font }: { font?: any }) {
         buttonLabel={font ? "Update Font" : "Create Font"}
       />
 
-      <div className="bg-zinc-100/40 dark:bg-zinc-900 border border-zinc-900/5 dark:border-zinc-100/5 rounded-2xl p-8 sm:p-10 shadow-2xl backdrop-blur-xl transition-all">
-        <div className="flex flex-col justify-end mb-10 border-b border-zinc-900/5 dark:border-zinc-100/5 pb-6">
-          <h3 className="text-4xl font-star text-zinc-900 dark:text-white">Font Infos {font?.id && ' / '}<span className="text-blue dark:text-red">{font?.name}</span></h3>
-          <p className="text-[10px] ps-2 uppercase tracking-widest font-bold text-zinc-500 dark:text-zinc-400 mt-1">Configure all the font informations</p>
+      <div className="bg-zinc-100/40 dark:bg-zinc-900 border border-black/5 dark:border-white/5 rounded-2xl p-8 sm:p-10 shadow-2xl backdrop-blur-xl transition-all">
+        <div className="flex flex-col justify-end mb-10 border-b border-black/5 dark:border-white/5 pb-6">
+          <h3 className="text-4xl font-star text-black dark:text-white">Font Infos {font?.id && ' / '}<span className="text-blue dark:text-red">{font?.name}</span></h3>
+          <p className="text-[10px] ps-2 uppercase tracking-widest font-bold text-bluegray-800 dark:text-redgray-200 mt-1">Configure all the font informations</p>
         </div>
 
         {/* 3-Column Grid Layout */}
@@ -262,16 +271,16 @@ export default function FontForm({ font }: { font?: any }) {
             </div>
 
             {/* LED Status Indicator for Variable Font */}
-            <div className="flex items-center gap-4 px-5 py-4 rounded-2xl bg-white/40 dark:bg-zinc-800/40 border border-zinc-200/50 dark:border-zinc-700/50 shadow-sm backdrop-blur-md transition-all duration-300">
+            <div className="flex items-center gap-4 px-5 py-4 rounded-2xl bg-white/40 dark:bg-zinc-800/40 border border-zinc-200/50 dark:border-zinc-800/50 shadow-sm backdrop-blur-md transition-all duration-300">
               <span className="relative flex h-3 w-3 shrink-0">
                 <span className={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ${isVariable ? "bg-blue dark:bg-red" : "bg-zinc-400 dark:bg-zinc-500"}`}></span>
                 <span className={`relative inline-flex rounded-full h-3 w-3 ${isVariable ? "bg-blue dark:bg-red" : "bg-zinc-500"}`}></span>
               </span>
               <div className="flex flex-col">
-                <span className="text-xs font-bold uppercase tracking-wider text-zinc-900 dark:text-white leading-none">
+                <span className="text-xs font-bold uppercase tracking-wider text-black dark:text-white leading-none">
                   Font Format: {isVariable ? "Variable Font Mode" : "Static Font Mode"}
                 </span>
-                <span className="text-[9px] uppercase tracking-widest text-zinc-500 dark:text-zinc-400 mt-1 font-bold">
+                <span className="text-[10px] uppercase tracking-widest text-zinc-500 dark:text-zinc-400 mt-1 font-bold">
                   {isVariable ? "Single file contains all font variations (auto-detected)" : "Multiple variant files required (auto-detected)"}
                 </span>
               </div>
@@ -279,14 +288,14 @@ export default function FontForm({ font }: { font?: any }) {
             </div>
 
             {/* Variants Configuration Matrix */}
-            <div className="border-t border-zinc-900/5 dark:border-zinc-100/5 pt-8">
+            <div className="border-t border-black/5 dark:border-white/5 pt-8">
               {isVariable ? (
                 <div>
                   <div className="flex items-center justify-between mb-6">
-                    <h3 className="text-[10px] font-bold uppercase tracking-widest text-zinc-500 dark:text-zinc-400">Variable Font File</h3>
+                    <h3 className="text-[10px] font-bold uppercase tracking-widest text-bluegray-800 dark:text-redgray-200">Variable Font File</h3>
                   </div>
 
-                  <div className="bg-white/30 dark:bg-white/5 border border-zinc-900/5 dark:border-white/5 rounded-2xl p-6 transition-all hover:bg-white/60 dark:hover:bg-white/10 relative">
+                  <div className="bg-white/30 dark:bg-white/5 border border-black/5 dark:border-white/5 rounded-2xl p-6 transition-all hover:bg-white/60 dark:hover:bg-white/10 relative">
                     <input type="hidden" name="variantId" value={variants[0]?.id || "v-variable"} />
                     <input type="hidden" name="variantLabel" value="Variable" />
                     <input type="hidden" name="variantWeight" value="400" />
@@ -294,7 +303,7 @@ export default function FontForm({ font }: { font?: any }) {
                     <input type="hidden" name="variantWoff2Url" value={variants[0]?.woff2Url || ""} />
 
                     <div>
-                      <label className="text-[10px] text-zinc-900 dark:text-white uppercase tracking-wider block mb-2 font-bold">
+                      <label className="text-[10px] text-bluegray-800 dark:text-redgray-200 uppercase tracking-wider block mb-2 font-bold">
                         Font File
                       </label>
                       <div className="flex flex-col sm:flex-row sm:items-center gap-4">
@@ -314,7 +323,7 @@ export default function FontForm({ font }: { font?: any }) {
                           <Sliders className="h-3.5 w-3.5" />
                           Upload Font File
                         </button>
-                        <span className="text-xs font-semibold text-zinc-600 dark:text-zinc-400 truncate">
+                        <span className="text-xs font-semibold text-zinc-500 dark:text-zinc-400 truncate">
                           {variants[0]?.woff2Url ? `Selected: ${variants[0]?.woff2Url}` : "No file uploaded (Supports TTF, OTF, WOFF, WOFF2)"}
                         </span>
                       </div>
@@ -324,7 +333,7 @@ export default function FontForm({ font }: { font?: any }) {
               ) : (
                 <div>
                   <div className="flex items-center justify-between mb-6">
-                    <h3 className="text-[10px] font-bold uppercase tracking-widest text-zinc-800 dark:text-zinc-200">Variant Styles & Font Files</h3>
+                    <h3 className="text-[10px] font-bold uppercase tracking-widest text-bluegray-800 dark:text-redgray-200">Variant Styles & Font Files</h3>
                     <Button
                       onClick={addVariant}
                       variant="outline"
@@ -342,7 +351,7 @@ export default function FontForm({ font }: { font?: any }) {
                     {variants.map((v, idx) => (
                       <div
                         key={v.id}
-                        className="bg-white/30 dark:bg-white/5 border border-zinc-900/5 dark:border-white/5 rounded-2xl p-6 transition-all hover:bg-white/60 dark:hover:bg-white/10 relative"
+                        className="bg-white/30 dark:bg-white/5 border border-black/5 dark:border-white/5 rounded-2xl p-6 transition-all hover:bg-white/60 dark:hover:bg-white/10 relative"
                       >
                         <input type="hidden" name="variantId" value={v.id} />
 
@@ -350,7 +359,7 @@ export default function FontForm({ font }: { font?: any }) {
                           <button
                             type="button"
                             onClick={() => removeVariant(v.id)}
-                            className="absolute top-4 right-4 p-2 text-zinc-400 hover:text-red-500 transition-colors"
+                            className="absolute top-4 right-4 p-2 text-zinc-500 dark:text-zinc-400 hover:text-red-500 transition-colors"
                             title="Remove variant"
                           >
                             <Trash2 className="h-4 w-4" />
@@ -358,8 +367,8 @@ export default function FontForm({ font }: { font?: any }) {
                         )}
 
                         <div className="space-y-6">
-                          <div className="border-t border-zinc-900/5 dark:border-white/5 pt-4">
-                            <label className="text-[10px] text-zinc-900 dark:text-white uppercase tracking-wider block mb-2 font-bold">
+                          <div className="border-t border-black/5 dark:border-white/5 pt-4">
+                            <label className="text-[10px] text-bluegray-800 dark:text-redgray-200 uppercase tracking-wider block mb-2 font-bold">
                               Font File
                             </label>
                             <div className="flex flex-col sm:flex-row sm:items-center gap-4">
@@ -379,7 +388,7 @@ export default function FontForm({ font }: { font?: any }) {
                                 <Sliders className="h-3.5 w-3.5" />
                                 Upload Font File
                               </button>
-                              <span className="text-xs font-semibold text-zinc-600 dark:text-zinc-400 truncate">
+                              <span className="text-xs font-semibold text-zinc-500 dark:text-zinc-400 truncate">
                                 {v.woff2Url ? `Selected: ${v.woff2Url}` : "No file uploaded (Supports TTF, OTF, WOFF, WOFF2)"}
                               </span>
                             </div>
@@ -447,16 +456,16 @@ export default function FontForm({ font }: { font?: any }) {
 
           {/* Sidebar Area (right column, metadata card, span 1) */}
           <div className="lg:col-span-1">
-            <div className="bg-white/20 dark:bg-zinc-900/60 border border-zinc-900/5 dark:border-white/5 rounded-2xl p-6 sm:p-8 space-y-6 shadow-xl backdrop-blur-md">
-              <div className="border-b border-zinc-900/5 dark:border-white/5 pb-4">
-                <h3 className="text-xs font-black uppercase tracking-widest text-zinc-800 dark:text-zinc-200">Metadata & Details</h3>
-                <p className="text-[9px] uppercase tracking-wider text-zinc-600 dark:text-zinc-400 mt-1 font-semibold">Classification and additional details</p>
+            <div className="bg-white/20 dark:bg-zinc-900/60 border border-black/5 dark:border-white/5 rounded-2xl p-6 sm:p-8 space-y-6 shadow-xl backdrop-blur-md">
+              <div className="border-b border-black/5 dark:border-white/5 pb-4">
+                <h3 className="text-xs font-black uppercase tracking-widest text-bluegray-800 dark:text-redgray-200">Metadata & Details</h3>
+                <p className="text-[10px] uppercase tracking-wider text-zinc-500 dark:text-zinc-400 mt-1 font-semibold">Classification and additional details</p>
               </div>
 
               <div className="space-y-6">
                 <div>
-                  <label className="text-[10px] text-zinc-900 dark:text-white uppercase tracking-wider block mb-2 font-bold">Category</label>
-                  <div className="relative overflow-hidden rounded-xl">
+                  <label className="text-[10px] text-bluegray-800 dark:text-redgray-200 uppercase tracking-wider block mb-2 font-bold">Category</label>
+                  <div className="relative">
                     <Select
                       options={CATEGORY_OPTIONS}
                       value={category}
@@ -471,18 +480,18 @@ export default function FontForm({ font }: { font?: any }) {
                   </div>
 
                   {categorySearchStatus === "searching" && (
-                    <p className="text-[9px] uppercase tracking-widest font-black text-zinc-500 mt-1.5 animate-pulse">
+                    <p className="text-[10px] uppercase tracking-widest font-black text-zinc-500 dark:text-zinc-400 mt-1.5 animate-pulse">
                       searching info on google fonts...
                     </p>
                   )}
                   {categorySearchStatus === "found" && (
-                    <p className="text-[9px] uppercase tracking-widest font-black text-emerald-500 mt-1.5 flex items-center gap-1">
+                    <p className="text-[10px] uppercase tracking-widest font-black text-emerald-500 mt-1.5 flex items-center gap-1">
                       <span className="h-1 w-1 bg-emerald-500 rounded-full"></span>
                       category found on google fonts
                     </p>
                   )}
                   {categorySearchStatus === "not_found" && (
-                    <p className="text-[9px] uppercase tracking-widest font-black text-red-500 mt-1.5 flex items-center gap-1">
+                    <p className="text-[10px] uppercase tracking-widest font-black text-red-500 mt-1.5 flex items-center gap-1">
                       <span className="h-1 w-1 bg-red-500 rounded-full"></span>
                       category not found on google fonts
                     </p>
@@ -507,6 +516,41 @@ export default function FontForm({ font }: { font?: any }) {
                   required
                   autoComplete="off"
                 />
+
+                <div>
+                  <label className="text-[10px] text-bluegray-800 dark:text-redgray-200 uppercase tracking-wider mb-2 font-bold flex items-center gap-1.5">
+                    <TagIcon className="w-3 h-3" />
+                    Tags
+                  </label>
+                  <div className="flex flex-wrap gap-2 p-3 border border-black/10 dark:border-white/10 rounded-lg bg-white/50 dark:bg-zinc-900/50 max-h-36 overflow-y-auto">
+                    {tags.map((t) => {
+                      const isSelected = selectedTagIds.includes(t.id);
+                      return (
+                        <button
+                          key={t.id}
+                          type="button"
+                          onClick={() => handleTagToggle(t.id)}
+                          className={`px-3 py-1 rounded-full text-xs font-bold transition-all flex items-center gap-1.5 border ${
+                            isSelected
+                              ? "bg-black text-white dark:bg-white dark:text-black border-transparent"
+                              : "bg-transparent text-zinc-600 dark:text-zinc-400 border-black/10 dark:border-white/10 hover:border-black/30 dark:hover:border-white/30"
+                          }`}
+                        >
+                          {isSelected && <Check className="w-3 h-3" />}
+                          {t.name}
+                        </button>
+                      );
+                    })}
+                    {tags.length === 0 && (
+                      <span className="text-xs text-zinc-400 italic">
+                        No tags available. You can create tags in /admin/tags.
+                      </span>
+                    )}
+                  </div>
+                  {selectedTagIds.map((tagId) => (
+                    <input key={tagId} type="hidden" name="tagIds" value={tagId} />
+                  ))}
+                </div>
               </div>
             </div>
           </div>
@@ -520,12 +564,12 @@ export default function FontForm({ font }: { font?: any }) {
             <div className="p-2 bg-red-500/10 rounded-lg">
               <AlertCircle className="w-6 h-6 text-red-500" />
             </div>
-            <h2 className="text-2xl font-star text-zinc-900 dark:text-white">Font Save Failed</h2>
+            <h2 className="text-2xl font-star text-black dark:text-white">Font Save Failed</h2>
           </div>
         </BaseModal.Header>
         <BaseModal.Body>
           <div className="space-y-4">
-            <p className="text-zinc-600 dark:text-zinc-300 font-haas">
+            <p className="text-zinc-500 dark:text-zinc-400 font-haas">
               We encountered an error while trying to save the font configuration:
             </p>
             <div className="p-4 bg-red-500/10 border border-red-500/20 rounded-xl text-red-500 font-bold text-sm">
