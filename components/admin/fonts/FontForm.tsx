@@ -499,7 +499,7 @@ export default function FontForm({ font, tags = [] }: { font?: any; tags?: any[]
                   name="creator"
                   label="Creator / Foundry"
                   defaultValue={font?.creator}
-                  placeholder="e.g. Haas Type Foundry"
+                  placeholder="e.g. Haas Type Foundry (leave empty for 'Typamine Import')"
                   autoComplete="off"
                 />
 

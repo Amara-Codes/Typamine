@@ -133,7 +133,7 @@ export default function LivePreview({
   return (
     <div
       className={cn(
-        "relative overflow-hidden border border-zinc-200 dark:border-zinc-900 transition-all duration-700 group",
+        "relative mx-1 overflow-hidden border border-zinc-200 dark:border-zinc-900 transition-all duration-700 group",
         !hasBgColorGroup && "bg-white dark:bg-black",
         compact ? "rounded-xl shadow-sm" : "rounded-md shadow-2xl",
         className

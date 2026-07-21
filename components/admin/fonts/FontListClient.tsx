@@ -77,6 +77,8 @@ export default function FontListClient({ fonts, totalCount, canUpdate, canDelete
           },
         ]}
         sortOptions={[
+          { label: "Newest Created", value: "createdAt_desc" },
+          { label: "Oldest Created", value: "createdAt_asc" },
           { label: "Name (A-Z)", value: "name_asc" },
           { label: "Name (Z-A)", value: "name_desc" },
           { label: "Most Variants", value: "variants_desc" },

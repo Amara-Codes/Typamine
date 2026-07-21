@@ -15,15 +15,21 @@ ________________________________
 
 [[pensa se implementare i filtri in fonts e come ]] -> DONE
 
+[[comprssione immagini, verifica prima di salvare su r2 che le immagini siano compresse ]] -> DONE
+
+[[aggiungere a pairing una sezione che permette di scrivere un po di piu. idelamente papragraph e paragraph + image module]] -> DONE
+
+[[cerca di creare compneti playground similki tra loro da usare tra admin, font e pairing. ]] -> DONE 
 __________________________________
 
-comprssione immagini, verifica prima di salvare su r2 che le immagini siano compresse 
+uniformare ux/ui colri di admin, margini, padding... colori
+la strategia sara creare classi tipo p-small che saranno uguali a p-2  e poi sostiuire cle classi in massa 
 
-aggiungere a pairing una sezione che permette di scrivere un po di piu. idelamente papragraph e paragraph + image module
+aggiungere il addtagpopup simile a quello dei font nel form di pairing 
 
 
 
-cerca di creare compneti playground similki tra loro da usare tra admin, font e pairing. 
 
+fai archive e blog
 
 in fints e pairings rimanda a labs con query oparma per generare i font face, le classi di tailwind, css standard etc 

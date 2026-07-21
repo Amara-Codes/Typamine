@@ -53,6 +53,10 @@ export default async function FontListPage(props: FontListPageProps) {
     orderBy = { variants: { _count: "desc" } };
   } else if (sort === "variants_asc") {
     orderBy = { variants: { _count: "asc" } };
+  } else if (sort === "createdAt_desc") {
+    orderBy = { createdAt: "desc" };
+  } else if (sort === "createdAt_asc") {
+    orderBy = { createdAt: "asc" };
   } else {
     orderBy = { name: "asc" };
   }

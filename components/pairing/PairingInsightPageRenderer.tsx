@@ -62,7 +62,7 @@ export default function PairingInsightPageRenderer({ content }: { content: strin
                   weight={props.weight}
                   colorClassName={props.colorClassName}
                   className={cn(
-                    "lg:py-24 px-0 md:px-16 rounded-2xl",
+                    "px-0 md:px-16  py-8 rounded-xl bg-white/50 dark:bg-ocragray-800",
                     COLOR_PAIRS_MAP[props.colors],
                     FONT_FAMILIES_MAP[props.fontFamily]
                   )}
@@ -75,7 +75,7 @@ export default function PairingInsightPageRenderer({ content }: { content: strin
           case 'paragraphWithImage': {
             const isBg = props.imagePosition === 'background';
             return (
-              <section key={id} className={cn(!isBg && "md:px-12 lg:px-0")}>
+              <section key={id} className={cn(!isBg && "px-6 md:px-12 lg:px-0")}>
                 <ParagraphWithImage
                   imageSrc={resolveMediaUrl(props.imageUrl || props.image || props.imageSrc) || ""}
                   imageAlt={props.imageAlt}
@@ -87,7 +87,11 @@ export default function PairingInsightPageRenderer({ content }: { content: strin
                   size={props.size}
                   weight={props.weight}
                   colorClassName={props.colorClassName}
-                  className={cn(COLOR_PAIRS_MAP[props.colors], FONT_FAMILIES_MAP[props.fontFamily])}
+                  containerClassName={cn(
+                    "rounded-xl overflow-hidden",
+                    !isBg && cn("p-8 sm:p-12 md:p-16 bg-white/50 dark:bg-ocragray-800", COLOR_PAIRS_MAP[props.colors] )
+                  )}
+                  className={cn(FONT_FAMILIES_MAP[props.fontFamily])}
                 >
                   {props.children}
                 </ParagraphWithImage>
@@ -112,7 +116,7 @@ export default function PairingInsightPageRenderer({ content }: { content: strin
                   colorClassName={props.colorClassName}
                   bgColorClassName={props.bgColorClassName}
                   className={cn(
-                    "rounded-2xl p-8 sm:p-12 md:p-16 border border-black/5 dark:border-white/5 backdrop-blur-md",
+                    "rounded-xl p-8 sm:p-12 md:p-16 backdrop-blur-md",
                     fallbackBgClass,
                     FONT_FAMILIES_MAP[props.fontFamily]
                   )}

@@ -24,10 +24,10 @@ export const DoubleHero: React.FC<DoubleHeroProps> = ({
   badgeText,
   title,
   description,
-  ctaText = "[LAUNCH ARCHIVE]",
-  ctaHref = "/ingredients",
-  secondaryCtaText = "[DEV TOOLS]",
-  secondaryCtaHref = "/labs",
+  ctaText = "",
+  ctaHref = "",
+  secondaryCtaText = "",
+  secondaryCtaHref = "",
   bgImage,
   bgOpacity = 0.8,
   layout = "contentCenter",
@@ -72,7 +72,7 @@ export const DoubleHero: React.FC<DoubleHeroProps> = ({
         <div className={`max-w-3xl flex flex-col space-y-4 ${alignmentStyles[layout]}`}>
           {badgeText && <Badge ping>{badgeText}</Badge>}
 
-          <h1 className="font-haas text-2xl md:text-5xl font-bold tracking-tight text-foreground text-glow-red">
+          <h1 className="font-haas text-2xl md:text-5xl font-bold tracking-tight text-foreground text-glow-blue dark:text-glow-red">
             {title}
           </h1>
 

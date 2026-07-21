@@ -48,6 +48,8 @@ export default async function TagListPage(props: TagListPageProps) {
     orderBy = { name: "desc" };
   } else if (sort === "createdAt_desc") {
     orderBy = { createdAt: "desc" };
+  } else if (sort === "createdAt_asc") {
+    orderBy = { createdAt: "asc" };
   } else {
     orderBy = { name: "asc" };
   }

@@ -6,6 +6,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { uploadToR2, deleteFromR2 } from "@/lib/r2";
 import { withCreatedAtBackfill } from "@/lib/services/font";
+import { generateFontRatingWithGemini } from "@/lib/ai/fontRating";
 import crypto from "crypto";
 
 async function checkPermission(permission: string) {
@@ -73,6 +74,55 @@ export async function deleteFont(id: string) {
   revalidatePath("/admin/fonts");
 }
 
+// Fonts importati in bulk (Google Fonts / Fontshare) o creati senza dati
+// editoriali finiscono con "creator" impostato al provider stesso invece
+// dell'autore reale: questi sono i candidati per l'arricchimento via AI.
+const AI_RATING_CANDIDATE_WHERE = {
+  OR: [
+    { creator: "Google Fonts" },
+    { creator: "Typamine Import" },
+  ],
+};
+
+export async function getFontsNeedingAIRating() {
+  await checkPermission("font:read");
+  return prisma.ingredient.findMany({
+    where: AI_RATING_CANDIDATE_WHERE,
+    select: { id: true, name: true, creator: true, rating: true },
+    orderBy: { name: "asc" },
+  });
+}
+
+export async function hasFontsNeedingAIRating() {
+  await checkPermission("font:read");
+  const count = await prisma.ingredient.count({ where: AI_RATING_CANDIDATE_WHERE });
+  return count > 0;
+}
+
+export async function rateFontWithAI(fontId: string) {
+  await checkPermission("font:update");
+
+  const font = await prisma.ingredient.findUnique({
+    where: { id: fontId },
+    select: { id: true, name: true },
+  });
+  if (!font) throw new Error("Font not found");
+
+  const result = await generateFontRatingWithGemini(font.name);
+
+  await prisma.ingredient.update({
+    where: { id: fontId },
+    data: {
+      creator: result.author,
+      rating: result.rating.toFixed(1),
+    },
+  });
+
+  revalidatePath("/admin/fonts");
+
+  return { id: font.id, family: font.name, author: result.author, rating: result.rating };
+}
+
 export async function saveFont(prevState: any, formData: FormData, id?: string) {
   const session = await getServerAuthSession();
   if (!session?.user) return "Unauthorized";
@@ -87,7 +137,8 @@ export async function saveFont(prevState: any, formData: FormData, id?: string) 
     const name = formData.get("name") as string;
     const slug = formData.get("slug") as string;
     const category = formData.get("category") as string;
-    const creator = formData.get("creator") as string | null;
+    const creatorInput = (formData.get("creator") as string | null)?.trim();
+    const creator = creatorInput || "Typamine Import";
     const rating = formData.get("rating") as string;
     const symbol = formData.get("symbol") as string | null;
     const formula = formData.get("formula") as string | null;

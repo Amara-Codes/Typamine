@@ -24,7 +24,8 @@ import {
 import { Reorder } from "framer-motion";
 import { savePairing } from "@/lib/actions/pairing";
 import { Button } from "@/components/common/Button";
-import { Select } from "@/components/common/Select";
+import FontPicker from "@/components/common/FontPicker";
+import BaseModal from "@/components/common/BaseModal";
 import FormActions from "@/components/admin/common/FormActions";
 import SavingOverlay from "@/components/admin/common/SavingOverlay";
 
@@ -161,6 +162,10 @@ export default function PairingForm({ initialData, fonts, tags }: PairingFormPro
     return [];
   });
   const [collapsedInsightModules, setCollapsedInsightModules] = useState<Set<string>>(new Set());
+  // Id del modulo appena aggiunto: la pagina scrolla fino al suo accordion
+  // (via effect qui sotto) appena il DOM lo monta, invece di lasciare
+  // l'utente a cercarlo in fondo alla lista.
+  const [pendingScrollToInsightId, setPendingScrollToInsightId] = useState<string | null>(null);
 
   const addInsightModule = (type: InsightModuleType) => {
     const newId = Math.random().toString(36).substring(2, 11);
@@ -170,7 +175,15 @@ export default function PairingForm({ initialData, fonts, tags }: PairingFormPro
       props: getInsightDefaultProps(type),
     };
     setInsightModules((prev) => [...prev, newModule]);
+    setPendingScrollToInsightId(newId);
   };
+
+  useEffect(() => {
+    if (!pendingScrollToInsightId) return;
+    const el = document.getElementById(`insight-module-card-${pendingScrollToInsightId}`);
+    el?.scrollIntoView({ behavior: "smooth", block: "start" });
+    setPendingScrollToInsightId(null);
+  }, [pendingScrollToInsightId, insightModules]);
 
   const removeInsightModule = (id: string) => {
     setInsightModules((prev) => prev.filter((m) => m.id !== id));
@@ -212,6 +225,7 @@ export default function PairingForm({ initialData, fonts, tags }: PairingFormPro
   // generatore. Evita di mostrare di default un'anteprima canvas con testo
   // placeholder quando l'immagine reale è stata caricata a mano.
   const [activeTab, setActiveTab] = useState<"canvas" | "upload">(initialData ? "upload" : "canvas");
+  const [isCanvasModalOpen, setIsCanvasModalOpen] = useState(false);
 
   // Canvas Config States
   const [primaryText, setPrimaryText] = useState("Typamine Studio");
@@ -247,6 +261,16 @@ export default function PairingForm({ initialData, fonts, tags }: PairingFormPro
   ]);
 
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
+
+  // Il <canvas> vive solo dentro il modale (mount/unmount con isCanvasModalOpen),
+  // quindi appena si apre va disegnato subito: gli altri effect di redraw
+  // reagiscono ai parametri, non al mount del ref.
+  useEffect(() => {
+    if (isCanvasModalOpen) {
+      drawCanvas();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isCanvasModalOpen]);
 
   // Find selected font objects
   const primaryFontObj = fonts.find((f) => f.id === primaryFontId);
@@ -533,10 +557,9 @@ export default function PairingForm({ initialData, fonts, tags }: PairingFormPro
         {/* Card 1: Identity & Details (Basic Infos - Left, 2/3 width) */}
         <div className="lg:col-span-8 relative z-10 border border-black/5 dark:border-white/5 rounded-2xl p-6 shadow-xl backdrop-blur-xl bg-white/50 dark:bg-zinc-950/50 space-y-5">
           <div>
-            <h3 className="text-lg font-star font-bold text-black dark:text-white pb-2 border-b border-black/5 dark:border-white/5">
+            <h3 className="text-xl font-star font-bold text-black dark:text-white pb-3 border-b border-black/5 dark:border-white/5">
               Pairing basic infos
             </h3>
-            <p className="text-[10px] text-zinc-500 mt-1">Define the descriptive info for this typography recipe.</p>
           </div>
 
           {/* Name */}
@@ -608,10 +631,10 @@ export default function PairingForm({ initialData, fonts, tags }: PairingFormPro
         {/* Card 3: Categorization & Visibility (Taxonomy - Right, 1/3 width) */}
         <div className="lg:col-span-4 relative z-20 border border-black/5 dark:border-white/5 rounded-2xl p-6 shadow-xl backdrop-blur-xl bg-white/50 dark:bg-zinc-950/50 space-y-5">
           <div>
-            <h3 className="text-lg font-star font-bold text-black dark:text-white pb-2 border-b border-black/5 dark:border-white/5">
+            <h3 className="text-xl font-star font-bold text-black dark:text-white pb-3 border-b border-black/5 dark:border-white/5">
               Taxonomy & Visibility
             </h3>
-            <p className="text-[10px] text-zinc-500 mt-1">Set visibility status and tag associations.</p>
+
           </div>
 
           {/* Tags Multiselect */}
@@ -668,20 +691,16 @@ export default function PairingForm({ initialData, fonts, tags }: PairingFormPro
         {/* Card 2: Typography Pairing (Font Selection - Left, 1/3 width) */}
         <div className="lg:col-span-4 relative z-30 border border-black/5 dark:border-white/5 rounded-2xl p-6 shadow-xl backdrop-blur-xl bg-white/50 dark:bg-zinc-950/50 space-y-5">
           <div>
-            <h3 className="text-lg font-star font-bold text-black dark:text-white pb-2 border-b border-black/5 dark:border-white/5">
+            <h3 className="text-xl font-star font-bold text-black dark:text-white pb-3 border-b border-black/5 dark:border-white/5">
               Font Pairing Selection
             </h3>
-            <p className="text-[10px] text-zinc-500 mt-1">Select the primary and secondary components of this pairing.</p>
           </div>
 
           <div className="space-y-4">
             <div className="p-4 rounded-xl border border-black/5 dark:border-white/5 bg-black/[0.02] dark:bg-white/[0.02] relative z-20">
-              <Select
+              <FontPicker
                 label="Primary Font (Title / Display) *"
-                options={fonts.map((f) => ({
-                  label: `${f.name} (${f.category})`,
-                  value: f.id,
-                }))}
+                fonts={fonts}
                 value={primaryFontId}
                 onChange={(val) => setPrimaryFontId(val)}
                 placeholder="Select primary font..."
@@ -690,12 +709,9 @@ export default function PairingForm({ initialData, fonts, tags }: PairingFormPro
             </div>
 
             <div className="p-4 rounded-xl border border-black/5 dark:border-white/5 bg-black/[0.02] dark:bg-white/[0.02] relative z-10">
-              <Select
+              <FontPicker
                 label="Secondary Font (Body / Subtitle) *"
-                options={fonts.map((f) => ({
-                  label: `${f.name} (${f.category})`,
-                  value: f.id,
-                }))}
+                fonts={fonts}
                 value={secondaryFontId}
                 onChange={(val) => setSecondaryFontId(val)}
                 placeholder="Select secondary font..."
@@ -741,207 +757,30 @@ export default function PairingForm({ initialData, fonts, tags }: PairingFormPro
 
             {activeTab === "canvas" ? (
               <div className="space-y-4">
-                {/* Live Canvas View */}
+                {/* Compact read-only preview — editing happens in the modal below,
+                    so it can show controls + a big canvas side by side. */}
                 <div className="relative border border-black/10 dark:border-white/10 rounded-xl overflow-hidden shadow-inner bg-black aspect-[1.91/1] flex items-center justify-center">
-                  <canvas
-                    ref={canvasRef}
-                    className="w-full h-full object-contain"
-                  />
+                  {canvasDataUrl ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img src={canvasDataUrl} alt="Canvas preview" className="w-full h-full object-contain" />
+                  ) : (
+                    <p className="text-xs font-bold text-zinc-500 uppercase tracking-wider px-6 text-center">
+                      Open the generator to design your cover image
+                    </p>
+                  )}
                 </div>
 
-                {/* Canvas Controls */}
-                <div className="space-y-4 p-5 rounded-2xl border border-black/5 dark:border-white/5 bg-black/[0.02] dark:bg-white/[0.02] text-xs">
-                  {/* Group 1: Texts, Sizes & Content */}
-                  <div className="space-y-3 p-3 rounded-xl border border-black/5 dark:border-white/5 bg-white/50 dark:bg-zinc-900/50">
-                    <h4 className="font-bold text-[10px] uppercase tracking-wider text-zinc-400 mb-2">1. Text Content & Sizing</h4>
-                    <div className="space-y-3">
-                      <div>
-                        <div className="flex justify-between items-center mb-1">
-                          <label className="font-bold text-black dark:text-white">Primary Title Text</label>
-                          <span className="text-[10px] text-zinc-500 font-mono">Font Size: {primaryFontSize}px</span>
-                        </div>
-                        <div className="flex gap-3 items-center">
-                          <input
-                            type="text"
-                            value={primaryText}
-                            onChange={(e) => setPrimaryText(e.target.value)}
-                            className="flex-1 px-3 py-1.5 rounded border border-black/10 dark:border-white/10 bg-white dark:bg-zinc-900 text-black dark:text-white"
-                          />
-                          <input
-                            type="range"
-                            min="24"
-                            max="120"
-                            value={primaryFontSize}
-                            onChange={(e) => setPrimaryFontSize(Number(e.target.value))}
-                            className="w-24 accent-black dark:accent-white"
-                          />
-                        </div>
-                      </div>
-
-                      <div>
-                        <div className="flex justify-between items-center mb-1">
-                          <label className="font-bold text-black dark:text-white">Secondary Body Text</label>
-                          <span className="text-[10px] text-zinc-500 font-mono">Font Size: {secondaryFontSize}px</span>
-                        </div>
-                        <div className="flex gap-3 items-center">
-                          <input
-                            type="text"
-                            value={secondaryText}
-                            onChange={(e) => setSecondaryText(e.target.value)}
-                            className="flex-1 px-3 py-1.5 rounded border border-black/10 dark:border-white/10 bg-white dark:bg-zinc-900 text-black dark:text-white"
-                          />
-                          <input
-                            type="range"
-                            min="12"
-                            max="64"
-                            value={secondaryFontSize}
-                            onChange={(e) => setSecondaryFontSize(Number(e.target.value))}
-                            className="w-24 accent-black dark:accent-white"
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Group 2: Layout & Aesthetics */}
-                  <div className="p-3 rounded-xl border border-black/5 dark:border-white/5 bg-white/50 dark:bg-zinc-900/50 space-y-3">
-                    <h4 className="font-bold text-[10px] uppercase tracking-wider text-zinc-400 mb-1">2. Layout & Styles</h4>
-                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                      <div>
-                        <label className="block font-bold mb-1 text-black dark:text-white">Layout Preset</label>
-                        <select
-                          value={layoutPreset}
-                          onChange={(e) => setLayoutPreset(e.target.value as any)}
-                          className="w-full px-2 py-1.5 rounded border border-black/10 dark:border-white/10 bg-white dark:bg-zinc-900 text-black dark:text-white"
-                        >
-                          <option value="stacked">Stacked</option>
-                          <option value="centered">Centered</option>
-                          <option value="sideBySide">Side by Side</option>
-                        </select>
-                      </div>
-
-                      <div>
-                        <label className="block font-bold mb-1 text-black dark:text-white">Text Alignment</label>
-                        <select
-                          value={textAlign}
-                          onChange={(e) => setTextAlign(e.target.value as any)}
-                          className="w-full px-2 py-1.5 rounded border border-black/10 dark:border-white/10 bg-white dark:bg-zinc-900 text-black dark:text-white"
-                        >
-                          <option value="left">Left</option>
-                          <option value="center">Center</option>
-                          <option value="right">Right</option>
-                        </select>
-                      </div>
-
-                      <div className="flex items-center gap-2 pt-5">
-                        <input
-                          type="checkbox"
-                          id="swapFontsCheckbox"
-                          checked={swapFonts}
-                          onChange={(e) => setSwapFonts(e.target.checked)}
-                          className="rounded border-black/10 dark:border-white/10 focus:ring-black dark:focus:ring-white"
-                        />
-                        <label htmlFor="swapFontsCheckbox" className="font-bold text-black dark:text-white cursor-pointer select-none">
-                          Swap Fonts
-                        </label>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Group 3: Color Palette */}
-                  <div className="p-3 rounded-xl border border-black/5 dark:border-white/5 bg-white/50 dark:bg-zinc-900/50 space-y-3">
-                    <h4 className="font-bold text-[10px] uppercase tracking-wider text-zinc-400 mb-1">3. Color Palette</h4>
-                    <div className="grid grid-cols-3 gap-3">
-                      <div className="p-2 rounded border border-black/5 dark:border-white/5 bg-black/5 dark:bg-white/5 flex flex-col items-center">
-                        <span className="block font-bold mb-1 text-black dark:text-white">Bg Color</span>
-                        <input
-                          type="color"
-                          value={bgColor}
-                          onChange={(e) => setBgColor(e.target.value)}
-                          className="w-10 h-7 p-0 rounded cursor-pointer border-0 bg-transparent"
-                        />
-                      </div>
-                      <div className="p-2 rounded border border-black/5 dark:border-white/5 bg-black/5 dark:bg-white/5 flex flex-col items-center">
-                        <span className="block font-bold mb-1 text-black dark:text-white">Primary</span>
-                        <input
-                          type="color"
-                          value={primaryColor}
-                          onChange={(e) => setPrimaryColor(e.target.value)}
-                          className="w-10 h-7 p-0 rounded cursor-pointer border-0 bg-transparent"
-                        />
-                      </div>
-                      <div className="p-2 rounded border border-black/5 dark:border-white/5 bg-black/5 dark:bg-white/5 flex flex-col items-center">
-                        <span className="block font-bold mb-1 text-black dark:text-white">Secondary</span>
-                        <input
-                          type="color"
-                          value={secondaryColor}
-                          onChange={(e) => setSecondaryColor(e.target.value)}
-                          className="w-10 h-7 p-0 rounded cursor-pointer border-0 bg-transparent"
-                        />
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Group 4: Positioning & Margins */}
-                  <div className="p-3 rounded-xl border border-black/5 dark:border-white/5 bg-white/50 dark:bg-zinc-900/50 space-y-3">
-                    <h4 className="font-bold text-[10px] uppercase tracking-wider text-zinc-400 mb-1">4. Positioning & Spacing</h4>
-                    <div className="space-y-3">
-                      <div>
-                        <div className="flex justify-between font-bold mb-1 text-black dark:text-white">
-                          <span>Primary Font Y-Pos</span>
-                          <span>{primaryY}px</span>
-                        </div>
-                        <input
-                          type="range"
-                          min="50"
-                          max="580"
-                          value={primaryY}
-                          onChange={(e) => setPrimaryY(Number(e.target.value))}
-                          className="w-full accent-black dark:accent-white"
-                        />
-                      </div>
-                      <div>
-                        <div className="flex justify-between font-bold mb-1 text-black dark:text-white">
-                          <span>Secondary Font Y-Pos</span>
-                          <span>{secondaryY}px</span>
-                        </div>
-                        <input
-                          type="range"
-                          min="50"
-                          max="580"
-                          value={secondaryY}
-                          onChange={(e) => setSecondaryY(Number(e.target.value))}
-                          className="w-full accent-black dark:accent-white"
-                        />
-                      </div>
-                      <div>
-                        <div className="flex justify-between font-bold mb-1 text-black dark:text-white">
-                          <span>Horizontal Padding</span>
-                          <span>{paddingX}px</span>
-                        </div>
-                        <input
-                          type="range"
-                          min="20"
-                          max="300"
-                          value={paddingX}
-                          onChange={(e) => setPaddingX(Number(e.target.value))}
-                          className="w-full accent-black dark:accent-white"
-                        />
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="flex items-center justify-between pt-2 border-t border-black/5 dark:border-white/5">
-                    <span className="text-zinc-500 dark:text-zinc-400">Canvas resolution: 1200 x 630 px</span>
-                    <button
-                      type="button"
-                      onClick={drawCanvas}
-                      className="px-2.5 py-1 rounded bg-black text-white dark:bg-white dark:text-black hover:opacity-85 font-bold flex items-center gap-1.5 transition-opacity"
-                    >
-                      <RefreshCw className="w-3 h-3" /> Redraw Canvas
-                    </button>
-                  </div>
-                </div>
+                <Button
+                  type="button"
+                  variant="secondary"
+                  size="md"
+                  roundness="md"
+                  onClick={() => setIsCanvasModalOpen(true)}
+                  className="flex items-center justify-center gap-2 font-bold w-full"
+                >
+                  <Maximize2 className="w-3.5 h-3.5" />
+                  Open Canvas Generator
+                </Button>
               </div>
             ) : (
               <div className="space-y-4 py-2">
@@ -978,10 +817,232 @@ export default function PairingForm({ initialData, fonts, tags }: PairingFormPro
           </div>
         </div>
 
+        {/* Canvas Generator Modal — 3 colonne (controlli / preview / controlli)
+            invece di controlli-lunghi + canvas, apposta per tenere tutto
+            dentro il modale senza dover scrollare per raggiungere un controllo. */}
+        {isCanvasModalOpen && (
+          <BaseModal isOpen={isCanvasModalOpen} onClose={() => setIsCanvasModalOpen(false)} size="7xl">
+            <BaseModal.Header onClose={() => setIsCanvasModalOpen(false)}>
+              <h3 className="text-2xl font-star text-black dark:text-white leading-tight">Canvas Generator</h3>
+            </BaseModal.Header>
+            <BaseModal.Body className="overflow-visible max-h-none">
+              <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr_280px] gap-5 items-start">
+                {/* Left: text content & layout */}
+                <div className="space-y-4 text-xs">
+                  <div className="space-y-3 p-3 rounded-xl border border-black/5 dark:border-white/5 bg-white/50 dark:bg-zinc-900/50">
+                    <h4 className="font-bold text-[10px] uppercase tracking-wider text-zinc-400 mb-1">Text Content & Sizing</h4>
+                    <div className="space-y-3">
+                      <div>
+                        <div className="flex justify-between items-center mb-1">
+                          <label className="font-bold text-black dark:text-white">Primary Title</label>
+                          <span className="text-[10px] text-zinc-500 font-mono">{primaryFontSize}px</span>
+                        </div>
+                        <input
+                          type="text"
+                          value={primaryText}
+                          onChange={(e) => setPrimaryText(e.target.value)}
+                          className="w-full px-3 py-1.5 rounded border border-black/10 dark:border-white/10 bg-white dark:bg-zinc-900 text-black dark:text-white mb-1.5"
+                        />
+                        <input
+                          type="range"
+                          min="24"
+                          max="120"
+                          value={primaryFontSize}
+                          onChange={(e) => setPrimaryFontSize(Number(e.target.value))}
+                          className="w-full accent-black dark:accent-white"
+                        />
+                      </div>
+
+                      <div>
+                        <div className="flex justify-between items-center mb-1">
+                          <label className="font-bold text-black dark:text-white">Secondary Body</label>
+                          <span className="text-[10px] text-zinc-500 font-mono">{secondaryFontSize}px</span>
+                        </div>
+                        <input
+                          type="text"
+                          value={secondaryText}
+                          onChange={(e) => setSecondaryText(e.target.value)}
+                          className="w-full px-3 py-1.5 rounded border border-black/10 dark:border-white/10 bg-white dark:bg-zinc-900 text-black dark:text-white mb-1.5"
+                        />
+                        <input
+                          type="range"
+                          min="12"
+                          max="64"
+                          value={secondaryFontSize}
+                          onChange={(e) => setSecondaryFontSize(Number(e.target.value))}
+                          className="w-full accent-black dark:accent-white"
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="p-3 rounded-xl border border-black/5 dark:border-white/5 bg-white/50 dark:bg-zinc-900/50 space-y-3">
+                    <h4 className="font-bold text-[10px] uppercase tracking-wider text-zinc-400 mb-1">Layout & Styles</h4>
+                    <div className="space-y-3">
+                      <div>
+                        <label className="block font-bold mb-1 text-black dark:text-white">Layout Preset</label>
+                        <select
+                          value={layoutPreset}
+                          onChange={(e) => setLayoutPreset(e.target.value as any)}
+                          className="w-full px-2 py-1.5 rounded border border-black/10 dark:border-white/10 bg-white dark:bg-zinc-900 text-black dark:text-white"
+                        >
+                          <option value="stacked">Stacked</option>
+                          <option value="centered">Centered</option>
+                          <option value="sideBySide">Side by Side</option>
+                        </select>
+                      </div>
+
+                      <div>
+                        <label className="block font-bold mb-1 text-black dark:text-white">Text Alignment</label>
+                        <select
+                          value={textAlign}
+                          onChange={(e) => setTextAlign(e.target.value as any)}
+                          className="w-full px-2 py-1.5 rounded border border-black/10 dark:border-white/10 bg-white dark:bg-zinc-900 text-black dark:text-white"
+                        >
+                          <option value="left">Left</option>
+                          <option value="center">Center</option>
+                          <option value="right">Right</option>
+                        </select>
+                      </div>
+
+                      <div className="flex items-center gap-2 pt-1">
+                        <input
+                          type="checkbox"
+                          id="swapFontsCheckbox"
+                          checked={swapFonts}
+                          onChange={(e) => setSwapFonts(e.target.checked)}
+                          className="rounded border-black/10 dark:border-white/10 focus:ring-black dark:focus:ring-white"
+                        />
+                        <label htmlFor="swapFontsCheckbox" className="font-bold text-black dark:text-white cursor-pointer select-none">
+                          Swap Fonts
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Center: live canvas preview, redraw pinned over the drawing itself */}
+                <div className="relative border border-black/10 dark:border-white/10 rounded-xl overflow-hidden shadow-inner bg-black aspect-[1.91/1] flex items-center justify-center">
+                  <canvas
+                    ref={canvasRef}
+                    className="w-full h-full object-contain"
+                  />
+                  <button
+                    type="button"
+                    onClick={drawCanvas}
+                    title="Redraw Canvas"
+                    className="absolute top-3 right-3 z-10 flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-black/70 dark:bg-white/80 text-white dark:text-black backdrop-blur-md shadow-lg hover:opacity-90 font-bold text-xs transition-opacity"
+                  >
+                    <RefreshCw className="w-3 h-3" /> Redraw
+                  </button>
+                </div>
+
+                {/* Right: colors & positioning */}
+                <div className="space-y-4 text-xs">
+                  <div className="p-3 rounded-xl border border-black/5 dark:border-white/5 bg-white/50 dark:bg-zinc-900/50 space-y-3">
+                    <h4 className="font-bold text-[10px] uppercase tracking-wider text-zinc-400 mb-1">Color Palette</h4>
+                    <div className="grid grid-cols-3 gap-2">
+                      <div className="p-2 rounded border border-black/5 dark:border-white/5 bg-black/5 dark:bg-white/5 flex flex-col items-center">
+                        <span className="block font-bold mb-1 text-black dark:text-white text-center">Bg</span>
+                        <input
+                          type="color"
+                          value={bgColor}
+                          onChange={(e) => setBgColor(e.target.value)}
+                          className="w-10 h-7 p-0 rounded cursor-pointer border-0 bg-transparent"
+                        />
+                      </div>
+                      <div className="p-2 rounded border border-black/5 dark:border-white/5 bg-black/5 dark:bg-white/5 flex flex-col items-center">
+                        <span className="block font-bold mb-1 text-black dark:text-white text-center">Primary</span>
+                        <input
+                          type="color"
+                          value={primaryColor}
+                          onChange={(e) => setPrimaryColor(e.target.value)}
+                          className="w-10 h-7 p-0 rounded cursor-pointer border-0 bg-transparent"
+                        />
+                      </div>
+                      <div className="p-2 rounded border border-black/5 dark:border-white/5 bg-black/5 dark:bg-white/5 flex flex-col items-center">
+                        <span className="block font-bold mb-1 text-black dark:text-white text-center">Secondary</span>
+                        <input
+                          type="color"
+                          value={secondaryColor}
+                          onChange={(e) => setSecondaryColor(e.target.value)}
+                          className="w-10 h-7 p-0 rounded cursor-pointer border-0 bg-transparent"
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="p-3 rounded-xl border border-black/5 dark:border-white/5 bg-white/50 dark:bg-zinc-900/50 space-y-3">
+                    <h4 className="font-bold text-[10px] uppercase tracking-wider text-zinc-400 mb-1">Positioning & Spacing</h4>
+                    <div className="space-y-3">
+                      <div>
+                        <div className="flex justify-between font-bold mb-1 text-black dark:text-white">
+                          <span>Primary Y-Pos</span>
+                          <span>{primaryY}px</span>
+                        </div>
+                        <input
+                          type="range"
+                          min="50"
+                          max="580"
+                          value={primaryY}
+                          onChange={(e) => setPrimaryY(Number(e.target.value))}
+                          className="w-full accent-black dark:accent-white"
+                        />
+                      </div>
+                      <div>
+                        <div className="flex justify-between font-bold mb-1 text-black dark:text-white">
+                          <span>Secondary Y-Pos</span>
+                          <span>{secondaryY}px</span>
+                        </div>
+                        <input
+                          type="range"
+                          min="50"
+                          max="580"
+                          value={secondaryY}
+                          onChange={(e) => setSecondaryY(Number(e.target.value))}
+                          className="w-full accent-black dark:accent-white"
+                        />
+                      </div>
+                      <div>
+                        <div className="flex justify-between font-bold mb-1 text-black dark:text-white">
+                          <span>Horizontal Padding</span>
+                          <span>{paddingX}px</span>
+                        </div>
+                        <input
+                          type="range"
+                          min="20"
+                          max="300"
+                          value={paddingX}
+                          onChange={(e) => setPaddingX(Number(e.target.value))}
+                          className="w-full accent-black dark:accent-white"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </BaseModal.Body>
+            <BaseModal.Footer>
+              <Button
+                type="button"
+                variant="primary"
+                size="md"
+                roundness="md"
+                onClick={() => setIsCanvasModalOpen(false)}
+                fullWidth
+                className="flex items-center justify-center gap-2 font-bold"
+              >
+                <Check className="h-4 w-4" />
+                Done
+              </Button>
+            </BaseModal.Footer>
+          </BaseModal>
+        )}
+
         {/* Card 4: Pairing Insight Modules (Full Width) */}
         <div className="lg:col-span-12 space-y-6">
           <div className="border border-black/5 dark:border-white/5 rounded-2xl p-6 sm:p-8 shadow-xl backdrop-blur-xl bg-white/50 dark:bg-zinc-950/50 space-y-6">
-            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-black/5 dark:border-white/5 pb-4">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-black/5 dark:border-white/5 pb-3">
               <div className="flex items-center gap-3">
                 <div className="p-3 bg-black/5 dark:bg-white/10 rounded-2xl shadow-inner text-black dark:text-white">
                   <FileText className="h-6 w-6" />
@@ -1054,6 +1115,7 @@ export default function PairingForm({ initialData, fonts, tags }: PairingFormPro
                     key={module.id}
                     value={module}
                     id={`insight-module-card-${module.id}`}
+                    className="scroll-mt-28"
                     initial={{ opacity: 0, y: 15 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, scale: 0.95 }}

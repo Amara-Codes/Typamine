@@ -117,7 +117,7 @@ export const IngredientCard: React.FC<FontCardProps> = ({ font, idx, linklabel =
                 className="my-4"
             />
 
-            <div className="pt-2 pe-2 flex justify-between items-center border-t border-zinc-200 dark:border-zinc-800">
+            <div className="pt-2 pe-2 mx-2 flex justify-between items-center border-t border-zinc-200 dark:border-zinc-800">
                 <span className="font-haas text-[10px] text-zinc-500 dark:text-zinc-400">OUR SCORE: <span className="text-blue font-bold">{font.rating}</span></span>
                 <span className="flex flex-row items-center gap-2 font-haas text-[10px] text-red hover:underline transition-colors pe-4">
                     {linklabel}

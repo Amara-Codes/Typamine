@@ -142,9 +142,10 @@ export default function TagListClient({ tags, totalCount, canCreate, canUpdate, 
           },
         ]}
         sortOptions={[
+          { label: "Newest Created", value: "createdAt_desc" },
+          { label: "Oldest Created", value: "createdAt_asc" },
           { label: "Name (A-Z)", value: "name_asc" },
           { label: "Name (Z-A)", value: "name_desc" },
-          { label: "Newest Created", value: "createdAt_desc" },
         ]}
         searchPlaceholder="Search tags by name or description..."
       />

@@ -136,19 +136,11 @@ export default function IngredientDetailClient({ ingredient, hasPairings = false
 
             {/* Bottom Section: Pairings */}
             {hasPairings && (
-              <div className="space-y-4">
-                <div className="h-10 w-10 rounded-lg bg-blue/10 dark:bg-red/10 flex items-center justify-center">
-                  <Sparkles className="h-5 w-5 text-blue dark:text-red" />
-                </div>
-                <div>
-                  <h3 className="font-star text-lg text-black dark:text-white leading-tight">
-                    In the wild
-                  </h3>
+              <div className="space-y-4 flex flex-col justify-end">
                   <p className="text-sm text-zinc-500 dark:text-zinc-400 mt-1 leading-relaxed">
-                    See examples of how we used this font in our prescriptions.
+                    See examples of how we used this font in our Pairings.
                   </p>
-                </div>
-                <Link href={prescriptionsHref} className="inline-block">
+                <Link href={prescriptionsHref} className="inline-block self-end">
                   <Button variant="outline" size="md" roundness="md" className="flex items-center gap-2">
                     See Examples
                     <ArrowRight className="h-3.5 w-3.5" />

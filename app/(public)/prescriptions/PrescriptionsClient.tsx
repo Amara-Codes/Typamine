@@ -56,7 +56,7 @@ export default function PrescriptionsClient({ tags, children }: PrescriptionsCli
         bgImage="/images/prescriptions/cta-bg.png"
         useGlassmorphism
       >
-        <Link href="/prescriptions/archive" className="inline-block">
+        <Link href="/archive" className="inline-block">
           <Button variant="primary">Explore the Archive</Button>
         </Link>
       </Cta>
