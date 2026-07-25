@@ -4,7 +4,6 @@ import { useRef } from "react";
 import { Label } from "@/components/common/Input";
 import { Select } from "@/components/common/Select";
 import {
-  OpacitySelector,
   GranularBGColorPickerButton,
   Module
 } from "./shared";
@@ -134,8 +133,8 @@ export default function SpacerModule({ module, onChange }: SpacerModuleProps) {
               />
               <GranularBGColorPickerButton
                 label="Line Color - Dark Mode"
-                value={props.lineColorClassNameDark}
-                onChange={(v: string) => handleChange("lineColorClassNameDark", v)}
+                value={props.lineColorClassName}
+                onChange={(v: string) => handleChange("lineColorClassName", v)}
                 themeMode="dark"
               />
             </div>
@@ -161,17 +160,12 @@ export default function SpacerModule({ module, onChange }: SpacerModuleProps) {
             </div>
           </div>
 
-          {/* Width + Opacity sliders */}
+          {/* Width — l'opacità è già scelta dentro il color picker del colore linea, niente slider duplicato qui */}
           <div className="space-y-4">
               <LineWidthSelector
                 label="Line Width"
                 value={props.lineWidth ?? "100%"}
                 onChange={(v) => handleChange("lineWidth", v)}
-              />
-              <OpacitySelector
-                label="Line Opacity"
-                value={props.opacity ?? 0.2}
-                onChange={(v) => handleChange("opacity", v)}
               />
             </div>
         </>

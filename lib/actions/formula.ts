@@ -3,7 +3,6 @@
 import prisma from "@/lib/prisma";
 import { getServerAuthSession } from "@/lib/session";
 import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
 import { withSafeDbQuery } from "@/lib/services/dbMigration";
 import crypto from "crypto";
 
@@ -140,12 +139,13 @@ export async function saveFormula(prevState: any, formData: FormData, id?: strin
     }
   } catch (error: unknown) {
     const errorMessage = error instanceof Error ? error.message : String(error);
-    if (errorMessage === "NEXT_REDIRECT") throw error;
     console.error("[Formula Action] Error saving collection:", error);
     return errorMessage || "Failed to save collection.";
   }
 
+  // Niente redirect() qui — vedi il commento in lib/actions/font.ts: il
+  // ritorno alla lista con pagina/filtri intatti lo fa CollectionForm via
+  // router.back() lato client dopo un salvataggio riuscito.
   revalidatePath("/admin/collections");
   revalidatePath("/formulas");
-  redirect("/admin/collections");
 }

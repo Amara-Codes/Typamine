@@ -2,10 +2,10 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { Edit, Check, X, AlertTriangle, Image as ImageIcon, Tag } from "lucide-react";
+import { Edit, Check, X, AlertTriangle, Image as ImageIcon, Tag, Eye, EyeOff } from "lucide-react";
 import ContentTable from "@/components/common/ContentTable";
 import DeleteButton from "@/components/common/DeleteButton";
-import { deletePairing } from "@/lib/actions/pairing";
+import { deletePairing, publishPairing, unpublishPairing } from "@/lib/actions/pairing";
 import { ListHeaderHandlers, ListPagination } from "@/components/common/ListHandlers";
 import BaseModal from "@/components/common/BaseModal";
 import { Button } from "@/components/common/Button";
@@ -60,6 +60,36 @@ export default function PairingListClient({ pairings, totalCount, canUpdate, can
     }
   };
 
+  const [togglingId, setTogglingId] = useState<string | null>(null);
+
+  const handleTogglePublished = async (p: any) => {
+    setTogglingId(p.id);
+    try {
+      await (p.published ? unpublishPairing(p.id) : publishPairing(p.id));
+      router.refresh();
+    } catch (e: any) {
+      alert(e.message || "Failed to update status");
+    } finally {
+      setTogglingId(null);
+    }
+  };
+
+  // Publish/unpublish sono reversibili — nessuna modale di conferma, a
+  // differenza della delete.
+  const executeBulkPublish = async (published: boolean) => {
+    setIsProcessing(true);
+    try {
+      await Promise.all(selectedIds.map((id) => (published ? publishPairing(id) : unpublishPairing(id))));
+      setIsSelectionMode(false);
+      setSelectedIds([]);
+      router.refresh();
+    } catch (e: any) {
+      alert(e.message || "Bulk update failed");
+    } finally {
+      setIsProcessing(false);
+    }
+  };
+
   return (
     <div className="space-y-6">
       <ListHeaderHandlers
@@ -67,13 +97,15 @@ export default function PairingListClient({ pairings, totalCount, canUpdate, can
         onToggleSelectionMode={handleToggleSelectionMode}
         selectedCount={selectedIds.length}
         buttonLabel="Select Pairings"
-        canMassAction={canDelete}
+        canMassAction={canDelete || canUpdate}
         massActions={[
-          {
-            label: "Delete Selected",
-            variant: "primary",
-            onClick: () => setIsModalOpen(true),
-          },
+          ...(canUpdate ? [
+            { label: "Publish Selected", variant: "secondary" as const, onClick: () => executeBulkPublish(true) },
+            { label: "Unpublish Selected", variant: "outline" as const, onClick: () => executeBulkPublish(false) },
+          ] : []),
+          ...(canDelete ? [
+            { label: "Delete Selected", variant: "primary" as const, onClick: () => setIsModalOpen(true) },
+          ] : []),
         ]}
         sortOptions={[
           { label: "Newest Created", value: "createdAt_desc" },
@@ -97,7 +129,7 @@ export default function PairingListClient({ pairings, totalCount, canUpdate, can
             {
               key: "preview",
               header: "Preview",
-              className: "w-24 shrink-0",
+              className: "w-1/8 shrink-0",
               render: (p: any) => (
                 <div className="w-16 h-12 rounded-lg border border-black/10 dark:border-white/10 overflow-hidden bg-zinc-100 dark:bg-zinc-900 flex items-center justify-center relative">
                   {p.imageUrl ? (
@@ -112,13 +144,13 @@ export default function PairingListClient({ pairings, totalCount, canUpdate, can
             {
               key: "name",
               header: "Pairing / Slug",
-              className: "flex-[2] min-w-0",
+              className: "w-1/4 min-w-0",
               render: (p: any) => (
                 <div className="min-w-0 py-1">
-                  <p className="font-star text-xl font-bold text-black dark:text-white leading-tight truncate">
+                    <p className="font-star text-2xl text-black dark:text-white leading-tight truncate">
                     {p.name}
                   </p>
-                  <p className="text-[10px] text-zinc-500 dark:text-zinc-400 font-mono tracking-wider mt-0.5 truncate">
+                  <p className="text-[10px] text-blue-400 dark:text-red-400 font-bold uppercase tracking-widest mt-1 truncate">
                     /{p.slug}
                   </p>
                 </div>
@@ -127,15 +159,15 @@ export default function PairingListClient({ pairings, totalCount, canUpdate, can
             {
               key: "fonts",
               header: "Paired Fonts",
-              className: "flex-[2] hidden md:block",
+              className: "w-1/4 hidden md:block",
               render: (p: any) => (
                 <div className="text-xs font-bold text-black dark:text-white space-y-0.5">
                   <div className="flex items-center gap-1.5">
-                    <span className="text-[10px] font-black uppercase text-blue-600 dark:text-red-400">Primary:</span>
+                    <span className="text-[10px] font-black uppercase text-blue-400 dark:text-red-400">Primary:</span>
                     <span>{p.primaryFont?.name || "N/A"}</span>
                   </div>
-                  <div className="flex items-center gap-1.5 text-zinc-500 dark:text-zinc-400">
-                    <span className="text-[10px] font-black uppercase">Secondary:</span>
+                  <div className="flex items-center gap-1.5">
+                    <span className="text-[10px] font-black uppercase text-bluegray-400 dark:text-redgray-400">Secondary:</span>
                     <span>{p.secondaryFont?.name || "N/A"}</span>
                   </div>
                 </div>
@@ -144,13 +176,13 @@ export default function PairingListClient({ pairings, totalCount, canUpdate, can
             {
               key: "tags",
               header: "Tags",
-              className: "flex-1 hidden lg:block",
+              className: "w-1/8 hidden lg:block",
               render: (p: any) => (
                 <div
                   className={`px-3 py-1.5 rounded-md flex items-center gap-2 border shadow-sm text-xs max-w-fit mt-1 ${
                     p.tags?.length
                       ? "bg-white text-blue-800 dark:bg-redgray-800 dark:text-red-200 border-blue-800 dark:border-red-200"
-                      : "bg-zinc-400 dark:bg-zinc-900 border-zinc-900 dark:border-zinc-900 text-zinc-900 dark:text-zinc-400"
+                     : "bg-zinc-400 dark:bg-zinc-900 border-zinc-900 dark:border-zinc-900 text-zinc-900 dark:text-zinc-400"
                   }`}
                 >
                   <Tag className="h-3.5 w-3.5 shrink-0" />
@@ -163,7 +195,7 @@ export default function PairingListClient({ pairings, totalCount, canUpdate, can
             {
               key: "published",
               header: "Status",
-              className: "w-28 shrink-0",
+              className: "w-1/8 shrink-0",
               render: (p: any) => (
                 <div className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider">
                   {p.published ? (
@@ -181,6 +213,17 @@ export default function PairingListClient({ pairings, totalCount, canUpdate, can
           ]}
           rowActions={(p: any) => (
             <>
+              {canUpdate && (
+                <button
+                  type="button"
+                  onClick={() => handleTogglePublished(p)}
+                  disabled={togglingId === p.id}
+                  className="p-2.5 text-bluegray-800 dark:text-redgray-200 hover:text-black dark:hover:text-white hover:bg-white dark:hover:bg-white/10 rounded-md transition-all shadow-sm backdrop-blur-md disabled:opacity-50"
+                  title={p.published ? "Unpublish" : "Publish"}
+                >
+                  {p.published ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                </button>
+              )}
               {canUpdate && (
                 <Link
                   href={`/admin/pairings/${p.id}`}

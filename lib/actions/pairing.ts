@@ -3,8 +3,8 @@
 import prisma from "@/lib/prisma";
 import { getServerAuthSession } from "@/lib/session";
 import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
 import { uploadToR2, deleteFromR2 } from "@/lib/r2";
+import { parseSeoFormFields, upsertSeoModule } from "@/lib/services/seo";
 import crypto from "crypto";
 
 async function checkPermission(permission: string) {
@@ -70,6 +70,21 @@ export async function deletePairing(id: string) {
   revalidatePath("/prescriptions");
 }
 
+async function setPairingPublished(id: string, published: boolean) {
+  await checkPermission("font:update");
+  await prisma.prescription.update({ where: { id }, data: { published } });
+  revalidatePath("/admin/pairings");
+  revalidatePath("/prescriptions");
+}
+
+export async function publishPairing(id: string) {
+  return setPairingPublished(id, true);
+}
+
+export async function unpublishPairing(id: string) {
+  return setPairingPublished(id, false);
+}
+
 export async function savePairing(prevState: any, formData: FormData, id?: string) {
   const session = await getServerAuthSession();
   if (!session?.user) return "Unauthorized";
@@ -111,21 +126,105 @@ export async function savePairing(prevState: any, formData: FormData, id?: strin
       return "A pairing with this slug already exists.";
     }
 
-    let existingPairing: { imageUrl: string | null; insight: string | null } | null = null;
+    let existingPairing: {
+      imageUrl: string | null;
+      insight: string | null;
+      seo: { id: string } | null;
+    } | null = null;
     if (id) {
       existingPairing = await prisma.prescription.findUnique({
         where: { id },
-        select: { imageUrl: true, insight: true },
+        select: { imageUrl: true, insight: true, seo: { select: { id: true } } },
       });
     }
 
     const pairingId = id || crypto.randomUUID();
 
+    // Insight Modules Image Processing — PRIMA di scrivere su DB (stesso fix
+    // di lib/actions/post.ts): i moduli "paragraphWithImage" arrivano con
+    // l'immagine come data-URL base64 dentro il JSON `insight` (anteprima
+    // live) e il file vero in un input nascosto `module_<id>_image`. Se lo
+    // caricassimo dopo il primo create/update, quel base64 finirebbe scritto
+    // nella colonna `insight`, che su D1 ha un limite di dimensione per
+    // valore (SQLITE_TOOBIG con immagini grandi).
+    interface InsightModuleRecord {
+      id: string;
+      type: string;
+      props: Record<string, unknown> & { imageSrc?: string };
+    }
+    let finalInsight = insight;
+    try {
+      const modules: InsightModuleRecord[] = insight ? JSON.parse(insight) : [];
+      if (Array.isArray(modules)) {
+        let oldModulesById: Record<string, InsightModuleRecord> = {};
+        if (existingPairing?.insight) {
+          try {
+            const oldModules: InsightModuleRecord[] = JSON.parse(existingPairing.insight);
+            if (Array.isArray(oldModules)) {
+              oldModulesById = Object.fromEntries(oldModules.map((m) => [m.id, m]));
+            }
+          } catch {}
+        }
+
+        for (let index = 0; index < modules.length; index++) {
+          const mod = modules[index];
+          if (!mod || mod.type !== "paragraphWithImage") continue;
+
+          const file = formData.get(`module_${mod.id}_image`) as File | null;
+          const oldImageSrc = oldModulesById[mod.id]?.props?.imageSrc as string | undefined;
+
+          if (file && file.size > 0) {
+            try {
+              const buffer = Buffer.from(await file.arrayBuffer());
+              const ext = file.name.split(".").pop() || "png";
+              const timestamp = Date.now();
+              // Nome file: [pairingId]-[timestamp]-[indice del modulo in insight]
+              const fileName = `${pairingId}-${timestamp}-${index}.${ext}`;
+
+              const { url } = await uploadToR2(
+                buffer,
+                "pairings/insights/images",
+                fileName,
+                file.type || "image/png"
+              );
+              mod.props.imageSrc = url;
+
+              if (oldImageSrc && oldImageSrc.startsWith("http")) {
+                try {
+                  await deleteFromR2(oldImageSrc);
+                } catch (cleanError) {
+                  console.warn("Failed to delete previous insight module image from R2:", cleanError);
+                }
+              }
+            } catch (uploadError) {
+              console.error("Failed to upload insight module image to R2:", uploadError);
+            }
+          } else if (!mod.props?.imageSrc && oldImageSrc && oldImageSrc.startsWith("http")) {
+            // L'utente ha rimosso l'immagine senza sceglierne una nuova
+            try {
+              await deleteFromR2(oldImageSrc);
+            } catch (cleanError) {
+              console.warn("Failed to delete removed insight module image from R2:", cleanError);
+            }
+          } else if (typeof mod.props?.imageSrc === "string" && mod.props.imageSrc.startsWith("data:")) {
+            // Nessun file nell'input nascosto ma imageSrc è ancora un base64
+            // (stato client disallineato) — non va MAI scritto su D1: meglio
+            // perdere l'immagine che far fallire l'intero salvataggio.
+            mod.props.imageSrc = oldImageSrc && oldImageSrc.startsWith("http") ? oldImageSrc : "";
+          }
+        }
+
+        finalInsight = JSON.stringify(modules);
+      }
+    } catch (insightError) {
+      console.error("Failed to process insight modules images:", insightError);
+    }
+
     const baseData = {
       name,
       slug,
       description,
-      insight,
+      insight: finalInsight,
       published,
       primaryFontId,
       secondaryFontId,
@@ -157,12 +256,18 @@ export async function savePairing(prevState: any, formData: FormData, id?: strin
 
     // R2 Image Processing
     let uploadedKey: string | null = null;
+    // Immagine finale del pairing (canvas o upload dopo l'elaborazione qui
+    // sotto) — usata come fallback per le immagini social del modulo SEO:
+    // "assegna quella del canvas" se l'admin non ne assegna una propria
+    // (non c'è ancora una tab SEO su Pairing, quindi qui è sempre il fallback).
+    let finalImageUrl: string | null = existingPairing?.imageUrl ?? null;
     try {
       if (removeImage) {
         await prisma.prescription.update({
           where: { id: pairing.id },
           data: { imageUrl: null },
         });
+        finalImageUrl = null;
         if (existingPairing?.imageUrl) {
           try {
             await deleteFromR2(existingPairing.imageUrl);
@@ -187,6 +292,7 @@ export async function savePairing(prevState: any, formData: FormData, id?: strin
             contentType
           );
           uploadedKey = key;
+          finalImageUrl = url;
 
           await prisma.prescription.update({
             where: { id: pairing.id },
@@ -215,6 +321,7 @@ export async function savePairing(prevState: any, formData: FormData, id?: strin
           imageFile.type || "image/png"
         );
         uploadedKey = key;
+        finalImageUrl = url;
 
         await prisma.prescription.update({
           where: { id: pairing.id },
@@ -228,6 +335,16 @@ export async function savePairing(prevState: any, formData: FormData, id?: strin
             console.warn("Failed to delete previous pairing image from R2:", cleanError);
           }
         }
+      }
+
+      // Modulo SEO: nessuna tab dedicata ancora su Pairing, quindi qui non
+      // passiamo nessun campo testo — solo il fallback immagine ("assegna
+      // quella del canvas" se OG/Twitter non hanno un'immagine propria).
+      const seoId = await upsertSeoModule(existingPairing?.seo?.id, parseSeoFormFields(formData), {
+        fallbackImageUrl: finalImageUrl,
+      });
+      if (!existingPairing?.seo?.id) {
+        await prisma.prescription.update({ where: { id: pairing.id }, data: { seoId } });
       }
     } catch (r2Error) {
       if (uploadedKey) {
@@ -246,95 +363,15 @@ export async function savePairing(prevState: any, formData: FormData, id?: strin
       }
       throw r2Error;
     }
-
-    // Insight Modules Image Processing: i moduli "paragraphWithImage" arrivano
-    // con l'immagine come data-URL base64 dentro il JSON `insight` (solo per
-    // l'anteprima live) e il file vero in un input nascosto `module_<id>_image`
-    // dentro lo stesso <form>. Qui carichiamo il file reale su R2 e sostituiamo
-    // l'imageSrc con l'URL definitivo prima di scrivere `insight` a DB.
-    try {
-      interface InsightModuleRecord {
-        id: string;
-        type: string;
-        props: Record<string, unknown> & { imageSrc?: string };
-      }
-
-      const modules: InsightModuleRecord[] = insight ? JSON.parse(insight) : [];
-      if (Array.isArray(modules)) {
-        let oldModulesById: Record<string, InsightModuleRecord> = {};
-        if (existingPairing?.insight) {
-          try {
-            const oldModules: InsightModuleRecord[] = JSON.parse(existingPairing.insight);
-            if (Array.isArray(oldModules)) {
-              oldModulesById = Object.fromEntries(oldModules.map((m) => [m.id, m]));
-            }
-          } catch {}
-        }
-
-        let insightChanged = false;
-
-        for (let index = 0; index < modules.length; index++) {
-          const mod = modules[index];
-          if (!mod || mod.type !== "paragraphWithImage") continue;
-
-          const file = formData.get(`module_${mod.id}_image`) as File | null;
-          const oldImageSrc = oldModulesById[mod.id]?.props?.imageSrc as string | undefined;
-
-          if (file && file.size > 0) {
-            try {
-              const buffer = Buffer.from(await file.arrayBuffer());
-              const ext = file.name.split(".").pop() || "png";
-              const timestamp = Date.now();
-              // Nome file: [pairingId]-[timestamp]-[indice del modulo in insight]
-              const fileName = `${pairing.id}-${timestamp}-${index}.${ext}`;
-
-              const { url } = await uploadToR2(
-                buffer,
-                "pairings/insights/images",
-                fileName,
-                file.type || "image/png"
-              );
-              mod.props.imageSrc = url;
-              insightChanged = true;
-
-              if (oldImageSrc && oldImageSrc.startsWith("http")) {
-                try {
-                  await deleteFromR2(oldImageSrc);
-                } catch (cleanError) {
-                  console.warn("Failed to delete previous insight module image from R2:", cleanError);
-                }
-              }
-            } catch (uploadError) {
-              console.error("Failed to upload insight module image to R2:", uploadError);
-            }
-          } else if (!mod.props?.imageSrc && oldImageSrc && oldImageSrc.startsWith("http")) {
-            // L'utente ha rimosso l'immagine senza sceglierne una nuova
-            try {
-              await deleteFromR2(oldImageSrc);
-            } catch (cleanError) {
-              console.warn("Failed to delete removed insight module image from R2:", cleanError);
-            }
-          }
-        }
-
-        if (insightChanged) {
-          await prisma.prescription.update({
-            where: { id: pairing.id },
-            data: { insight: JSON.stringify(modules) },
-          });
-        }
-      }
-    } catch (insightError) {
-      console.error("Failed to process insight modules images:", insightError);
-    }
   } catch (error: unknown) {
     const errorMessage = error instanceof Error ? error.message : String(error);
-    if (errorMessage === "NEXT_REDIRECT") throw error;
     console.error("[Pairing Action] Error saving pairing:", error);
     return errorMessage || "Failed to save pairing.";
   }
 
+  // Niente redirect() qui — vedi il commento in lib/actions/font.ts: il
+  // ritorno alla lista con pagina/filtri intatti lo fa PairingForm via
+  // router.back() lato client dopo un salvataggio riuscito.
   revalidatePath("/admin/pairings");
   revalidatePath("/prescriptions");
-  redirect("/admin/pairings");
 }

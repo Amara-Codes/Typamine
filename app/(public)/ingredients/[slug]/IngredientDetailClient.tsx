@@ -6,6 +6,7 @@ import { MoveLeft, Sparkles, ArrowRight, Download, Loader2 } from "lucide-react"
 import MinimalLink from "@/components/common/MinimalLink";
 import { PageHeading } from "@/components/common/PageHeading";
 import { useThemeStore } from "@/store/themeStore";
+import Grainient from "@/components/cherry/Grainient";
 import { DynamicPlayground } from "@/components/font/DynamicPlayground";
 import { getDeterministicFormula } from "@/lib/utils";
 import { Cta } from "@/components/common/Cta";
@@ -34,6 +35,21 @@ export default function IngredientDetailClient({ ingredient, hasPairings = false
   const showRightSidebar = hasPairings || hasTags;
 
   const sourceUrl = ingredient.variants?.[0]?.woff2Url;
+
+  // Stessa palette già usata sotto per il Grainient di PageHeading — riusata
+  // anche per lo sfondo della sidebar destra, stesso trattamento theme-aware
+  // del pannello dossier in ArchivePostDetailClient.
+  const grainientColorsHeader = {
+    color1: theme === "light" ? "#fdfdfd" : "#09090b",
+    color2: theme === "light" ? "#c0d3ed" : "#570d22",
+    color3: theme === "light" ? "#e5e7eb" : "#27272a",
+  };
+
+    const grainientColors = {
+    color1: theme === "light" ? "#fdfdfd" : "#2e1e01",
+    color2: theme === "light" ? "#7fa8e0" : "#570d22",
+    color3: theme === "light" ? "#bbcff7" : "#614725",
+  };
 
   // Il file reale su R2 non ha un nome utile (spesso solo l'id della variante),
   // quindi lo rinominiamo lato client sullo slug prima del download. L'attributo
@@ -79,14 +95,10 @@ export default function IngredientDetailClient({ ingredient, hasPairings = false
       </div>
 
       <PageHeading
-        title={`COMPOUND: ${ingredient.name}`}
+        title={`${ingredient.name}`}
         subtitle={`CATEGORY: ${ingredient.category}`}
         useGrainient
-        grainientOptions={{
-          color1: theme === "light" ? "#fdfdfd" : "#09090b",
-          color2: theme === "light" ? "#c0d3ed" : "#570d22",
-          color3: theme === "light" ? "#e5e7eb" : "#27272a",
-        }}
+        grainientOptions={grainientColorsHeader}
         rightElement={
           <button
             onClick={handleDownload}
@@ -94,7 +106,7 @@ export default function IngredientDetailClient({ ingredient, hasPairings = false
             className="px-5 py-2.5 bg-red text-black font-haas font-bold text-xs rounded hover:bg-red-600 transition-colors glow-red disabled:opacity-50 disabled:pointer-events-none flex items-center gap-2"
           >
             {isDownloading ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Download className="h-3.5 w-3.5" />}
-            {isDownloading ? "PREPARING..." : "DOWNLOAD_SOURCE_ASSETS.woff2"}
+            {isDownloading ? "PREPARING..." : "DOWNLOAD WOFF2"}
           </button>
         }
       />
@@ -108,47 +120,76 @@ export default function IngredientDetailClient({ ingredient, hasPairings = false
             />
           </div>
 
-          <div className="lg:col-span-1 flex flex-col justify-between gap-6 p-6 border border-black/5 dark:border-white/5 rounded-lg bg-white/50 dark:bg-zinc-950/50 backdrop-blur-xl">
-            {/* Top Section: Tags */}
-            {hasTags && (
-              <div className="space-y-3">
-                <span className="text-xs font-bold uppercase tracking-widest text-zinc-500 dark:text-zinc-400 font-haas block">
-                  TAGS & CATEGORIES
-                </span>
-                <div className="flex flex-wrap gap-2">
-                  {tags.map((tag: any) => {
-                    const tagId = typeof tag === "string" ? tag : tag.id;
-                    const tagName = typeof tag === "string" ? tag : tag.name;
-                    return (
-                      <Link key={tagId} href={`/ingredients?tags=${encodeURIComponent(tagId)}`}>
-                        <Badge className="hover:scale-105 transition-transform">{tagName}</Badge>
-                      </Link>
-                    );
-                  })}
+          <section className="lg:col-span-1 relative overflow-hidden flex flex-col justify-between gap-6 p-6 border border-black/5 dark:border-white/5 rounded-lg backdrop-blur-xl">
+            <div className="absolute inset-0 h-full z-0 pointer-events-none opacity-50 dark:opacity-40">
+              <Grainient
+                timeSpeed={0.5}
+                colorBalance={0}
+                warpStrength={0.5}
+                warpFrequency={3}
+                warpSpeed={0.5}
+                warpAmplitude={30}
+                blendAngle={0}
+                blendSoftness={0.1}
+                rotationAmount={100}
+                noiseScale={2}
+                grainAmount={0.15}
+                grainScale={1.5}
+                grainAnimated={false}
+                contrast={1.2}
+                gamma={1}
+                saturation={0.7}
+                centerX={0}
+                centerY={0}
+                zoom={1}
+                color1={grainientColors.color1}
+                color2={grainientColors.color2}
+                color3={grainientColors.color3}
+              />
+            </div>
+
+            <div className="relative z-10 flex-1 flex flex-col justify-between gap-6">
+              {/* Top Section: Tags */}
+              {hasTags && (
+                <div className="space-y-3">
+                  <span className="text-xs font-bold uppercase tracking-widest text-zinc-500 dark:text-zinc-400 font-haas block">
+                    TAGS & CATEGORIES
+                  </span>
+                  <div className="flex flex-wrap gap-2">
+                    {tags.map((tag: any) => {
+                      const tagId = typeof tag === "string" ? tag : tag.id;
+                      const tagName = typeof tag === "string" ? tag : tag.name;
+                      return (
+                        <Link key={tagId} href={`/ingredients?tags=${encodeURIComponent(tagName)}`}>
+                          <Badge hoverZoom>{tagName}</Badge>
+                        </Link>
+                      );
+                    })}
+                  </div>
                 </div>
-              </div>
-            )}
+              )}
 
-            {/* Divider when both tags and pairings are present */}
-            {hasTags && hasPairings && (
-              <div className="border-t border-black/10 dark:border-white/10 my-1" />
-            )}
+              {/* Divider when both tags and pairings are present */}
+              {hasTags && hasPairings && (
+                <div className="border-t border-black/10 dark:border-white/10 my-1" />
+              )}
 
-            {/* Bottom Section: Pairings */}
-            {hasPairings && (
-              <div className="space-y-4 flex flex-col justify-end">
-                  <p className="text-sm text-zinc-500 dark:text-zinc-400 mt-1 leading-relaxed">
-                    See examples of how we used this font in our Pairings.
-                  </p>
-                <Link href={prescriptionsHref} className="inline-block self-end">
-                  <Button variant="outline" size="md" roundness="md" className="flex items-center gap-2">
-                    See Examples
-                    <ArrowRight className="h-3.5 w-3.5" />
-                  </Button>
-                </Link>
-              </div>
-            )}
-          </div>
+              {/* Bottom Section: Pairings */}
+              {hasPairings && (
+                <div className="space-y-4 flex flex-col justify-end">
+                    <p className="text-sm text-zinc-500 dark:text-zinc-400 mt-1 leading-relaxed">
+                      See examples of how we used this font in our Pairings.
+                    </p>
+                  <Link href={prescriptionsHref} className="inline-block self-end">
+                    <Button variant="outline" size="md" roundness="md" className="flex items-center gap-2">
+                      See Examples
+                      <ArrowRight className="h-3.5 w-3.5" />
+                    </Button>
+                  </Link>
+                </div>
+              )}
+            </div>
+          </section>
         </div>
       ) : (
         <DynamicPlayground

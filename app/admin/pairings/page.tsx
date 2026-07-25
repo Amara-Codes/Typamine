@@ -77,7 +77,6 @@ export default async function PairingListPage(props: PairingListPageProps) {
     <div className="space-y-10">
       <TabHeading
         title="Typography Pairings"
-        subtitle="Manage and publish font pairings"
         buttonHref="/admin/pairings/new"
         buttonLabel="Add Pairing"
         showButton={canCreate}

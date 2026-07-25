@@ -46,7 +46,7 @@ export const PrescriptionCard: React.FC<PrescriptionCardProps> = ({ prescription
               const tagName = typeof tag === "string" ? tag : tag.name;
               const tagKey = typeof tag === "string" ? tag : (tag.id || idx);
               return (
-                <Badge key={tagKey} className="!rounded-full border-zinc-200 dark:border-zinc-800">
+                <Badge key={tagKey} variant="monochrome">
                   {tagName}
                 </Badge>
               );
@@ -65,8 +65,8 @@ export const PrescriptionCard: React.FC<PrescriptionCardProps> = ({ prescription
           )}
           <div className="flex items-center justify-between border-t border-zinc-200/50 dark:border-zinc-800/50 pt-3">
             <span className="font-haas text-[10px] text-bluegray-800 dark:text-redgray-200 uppercase">Typamine Studio</span>
-            <div className="flex flex-row items-center gap-2 font-haas text-[10px] text-red transition-colors pe-4">
-              VIEW_PAIRING
+            <div className="flex flex-row items-center gap-2 font-haas text-lg font-bold  dark:text-red transition-colors pe-4 hover:underline">
+              View
               <MoveRight size={12} className="icon-altalenante" />
             </div>
           </div>

@@ -47,9 +47,28 @@ function hexToRgba(hex: string, opacityPct: number): string {
 }
 
 function colorTokenToRgba(rawToken: string, opacityPct: number): string {
+  // Colore custom scelto via react-colorful, scritto come valore Tailwind
+  // arbitrario ("text-[#ff3131]" / "bg-[#ff3131]") invece di un id della
+  // palette — l'hex è già letterale, nessun lookup nelle mappe sopra.
+  if (rawToken.startsWith("#")) {
+    return hexToRgba(rawToken, opacityPct);
+  }
   const colorId = REVERSE_COLOR_MAP[rawToken] || rawToken;
   const hex = HEX_MAP[colorId] || "#000000";
   return hexToRgba(hex, opacityPct);
+}
+
+/** Estrae "colore" (id palette o hex letterale tra [ ]) e opacità da un token tipo "text-blue-500/60" o "text-[#ff3131]/60". */
+export function extractColorToken(token: string, prefix: string): { raw: string; opacity: number } | null {
+  const hexMatch = token.match(new RegExp(`^${prefix}\\[(#[0-9a-fA-F]{3,8})\\](?:/(\\d+))?$`));
+  if (hexMatch) {
+    return { raw: hexMatch[1], opacity: hexMatch[2] ? parseInt(hexMatch[2], 10) : 100 };
+  }
+  const namedMatch = token.match(new RegExp(`^${prefix}([a-zA-Z0-9-]+)(?:/(\\d+))?$`));
+  if (namedMatch) {
+    return { raw: namedMatch[1], opacity: namedMatch[2] ? parseInt(namedMatch[2], 10) : 100 };
+  }
+  return null;
 }
 
 function splitLightDark(value: string): { lightTokens: string[]; darkTokens: string[] } {
@@ -72,9 +91,9 @@ export function resolveDynamicTextColor(value: string | undefined): DynamicColor
   const parseSide = (tokens: string[]): string | undefined => {
     const token = tokens.find((t) => t.startsWith("text-"));
     if (!token) return undefined;
-    const match = token.match(/^text-([a-zA-Z0-9-]+)(?:\/(\d+))?$/);
-    if (!match) return undefined;
-    return colorTokenToRgba(match[1], match[2] ? parseInt(match[2], 10) : 100);
+    const extracted = extractColorToken(token, "text-");
+    if (!extracted) return undefined;
+    return colorTokenToRgba(extracted.raw, extracted.opacity);
   };
 
   const { lightTokens, darkTokens } = splitLightDark(value);
@@ -91,8 +110,12 @@ export function resolveDynamicBgColor(value: string | undefined): DynamicColorPa
     if (isGradient) {
       const dirToken = tokens.find((t) => t.startsWith("bg-linear-to-") || t.startsWith("bg-gradient-to-"));
       const fromToken = tokens.find((t) => t.startsWith("from-"));
-      const viaToken = tokens.find((t) => t.startsWith("via-") && !t.includes("%") && !t.includes("["));
-      const viaPosToken = tokens.find((t) => t.startsWith("via-") && (t.includes("%") || t.includes("[")));
+      // La posizione percentuale del via ("via-[30%]") e il suo colore
+      // ("via-blue-500/80" oppure, per un colore custom, "via-[#ff3131]/80")
+      // condividono lo stesso prefisso — distinguiamo per contenuto: solo un
+      // numero seguito da "%" è una posizione, tutto il resto è un colore.
+      const viaPosToken = tokens.find((t) => t.startsWith("via-") && /^via-\[?\d+%\]?$/.test(t));
+      const viaToken = tokens.find((t) => t.startsWith("via-") && t !== viaPosToken);
       const toToken = tokens.find((t) => t.startsWith("to-"));
 
       const angleMap: Record<string, string> = {
@@ -104,9 +127,9 @@ export function resolveDynamicBgColor(value: string | undefined): DynamicColorPa
 
       const extract = (token: string | undefined, type: "from" | "via" | "to"): string | undefined => {
         if (!token) return undefined;
-        const match = token.match(new RegExp(`^${type}-([a-zA-Z0-9-]+)(?:/(\\d+))?$`));
-        if (!match) return undefined;
-        return colorTokenToRgba(match[1], match[2] ? parseInt(match[2], 10) : 100);
+        const extracted = extractColorToken(token, `${type}-`);
+        if (!extracted) return undefined;
+        return colorTokenToRgba(extracted.raw, extracted.opacity);
       };
 
       const from = extract(fromToken, "from") || "transparent";
@@ -122,9 +145,9 @@ export function resolveDynamicBgColor(value: string | undefined): DynamicColorPa
 
     const token = tokens.find((t) => t.startsWith("bg-") && !t.includes("linear-to") && !t.includes("gradient-to"));
     if (!token) return undefined;
-    const match = token.match(/^bg-([a-zA-Z0-9-]+)(?:\/(\d+))?$/);
-    if (!match) return undefined;
-    return colorTokenToRgba(match[1], match[2] ? parseInt(match[2], 10) : 100);
+    const extracted = extractColorToken(token, "bg-");
+    if (!extracted) return undefined;
+    return colorTokenToRgba(extracted.raw, extracted.opacity);
   };
 
   const { lightTokens, darkTokens } = splitLightDark(value);

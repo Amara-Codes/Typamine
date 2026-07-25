@@ -8,6 +8,16 @@ const nextConfig = {
       },
     ],
   },
+  experimental: {
+    serverActions: {
+      // Default Next.js è 1MB — troppo poco per form che caricano più
+      // immagini nella stessa submit (es. ArchivePost: thumbnail + hero +
+      // OG + Twitter, fino a 2MB l'una dopo la compressione client-side).
+      // Cloudflare Workers accetta richieste fino a 100MB, quindi il vincolo
+      // reale è qui, non lato piattaforma.
+      bodySizeLimit: "10mb",
+    },
+  },
 };
 
 export default nextConfig;

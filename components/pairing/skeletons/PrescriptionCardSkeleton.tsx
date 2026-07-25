@@ -20,10 +20,13 @@ export const PrescriptionCardSkeleton: React.FC = () => {
       {/* Description & Footer */}
       <div className="mt-8 space-y-3">
         <div className="h-3 w-1/3 rounded bg-zinc-200 dark:bg-zinc-800" />
-        <div className="h-4 w-5/6 rounded bg-zinc-200 dark:bg-zinc-800" />
+        <div className="space-y-2 mb-4">
+          <div className="h-4 w-full rounded bg-zinc-200 dark:bg-zinc-800" />
+          <div className="h-4 w-2/3 rounded bg-zinc-200 dark:bg-zinc-800" />
+        </div>
         <div className="flex items-center justify-between border-t border-zinc-200/50 dark:border-zinc-800/50 pt-3">
           <div className="h-3 w-24 rounded bg-zinc-200 dark:bg-zinc-800" />
-          <div className="h-3 w-20 rounded bg-zinc-200 dark:bg-zinc-800" />
+          <div className="h-4 w-16 rounded bg-zinc-200 dark:bg-zinc-800" />
         </div>
       </div>
     </div>

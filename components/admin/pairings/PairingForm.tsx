@@ -7,11 +7,9 @@ import {
   ArrowLeft,
   Save,
   Sparkles,
-  Image as ImageIcon,
   Trash2,
   RefreshCw,
   Check,
-  Tag as TagIcon,
   Type,
   Columns,
   Quote as QuoteIcon,
@@ -20,14 +18,19 @@ import {
   Maximize2,
   Minimize2,
   FileText,
+  Plus,
 } from "lucide-react";
 import { Reorder } from "framer-motion";
 import { savePairing } from "@/lib/actions/pairing";
 import { Button } from "@/components/common/Button";
 import FontPicker from "@/components/common/FontPicker";
+import TagPicker from "@/components/common/TagPicker";
 import BaseModal from "@/components/common/BaseModal";
 import FormActions from "@/components/admin/common/FormActions";
 import SavingOverlay from "@/components/admin/common/SavingOverlay";
+import { useFilePreview } from "@/components/admin/common/useFilePreview";
+import ImageDropInput from "@/components/admin/common/ImageDropInput";
+import HexColorPickerPopover from "@/components/common/HexColorPickerPopover";
 
 import ParagraphModule from "@/components/admin/common/content-modules/ParagraphModule";
 import ParagraphWithImageModule from "@/components/admin/common/content-modules/ParagraphWithImageModule";
@@ -51,7 +54,6 @@ function getInsightDefaultProps(type: InsightModuleType) {
         weight: "normal",
         variant: "default",
         align: "left",
-        scrollReveal: false,
         colorClassName: "text-black/100 dark:text-white/100",
         fontFamily: "standard",
       };
@@ -77,7 +79,7 @@ function getInsightDefaultProps(type: InsightModuleType) {
         imageAlt: "",
         imagePosition: "left",
         imageAspectRatio: "video",
-        parallax: true,
+        parallax: false,
         parallaxSpeed: 0.3,
         overlayOpacity: 0.4,
         colorClassName: "text-black/100 dark:text-white/100",
@@ -142,7 +144,7 @@ export default function PairingForm({ initialData, fonts, tags }: PairingFormPro
   const [slug, setSlug] = useState(initialData?.slug || "");
   const [autoSlug, setAutoSlug] = useState(!initialData?.slug);
   const [description, setDescription] = useState(initialData?.description || "");
-  const [published, setPublished] = useState(initialData?.published ?? true);
+  const [published, setPublished] = useState(initialData?.published ?? false);
   const [primaryFontId, setPrimaryFontId] = useState(initialData?.primaryFontId || (fonts[0]?.id || ""));
   const [secondaryFontId, setSecondaryFontId] = useState(initialData?.secondaryFontId || (fonts[1]?.id || fonts[0]?.id || ""));
   const [selectedTagIds, setSelectedTagIds] = useState<string[]>(
@@ -216,9 +218,16 @@ export default function PairingForm({ initialData, fonts, tags }: PairingFormPro
   const collapseAllInsight = () =>
     setCollapsedInsightModules(new Set(insightModules.map((m) => m.id)));
 
+  // Scorciatoia per tornare rapidamente alla toolbar "Add Insight Module"
+  // senza dover riscrollare a mano una volta che ci sono già molti moduli.
+  const scrollToModuleToolbar = () => {
+    document.getElementById("insight-module-toolbar")?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+
   // Image Upload & Canvas States
   const [currentImageUrl, setCurrentImageUrl] = useState<string | null>(initialData?.imageUrl || null);
   const [removeImage, setRemoveImage] = useState(false);
+  const uploadImagePreview = useFilePreview();
   const [canvasDataUrl, setCanvasDataUrl] = useState<string | null>(null);
   // In modifica partiamo dalla tab "upload" (mostra l'immagine attuale così
   // com'è); in creazione partiamo da "canvas" per invogliare a usare il
@@ -296,12 +305,6 @@ export default function PairingForm({ initialData, fonts, tags }: PairingFormPro
         .replace(/^-+|-+$/g, "");
       setSlug(generatedSlug);
     }
-  };
-
-  const handleTagToggle = (tagId: string) => {
-    setSelectedTagIds((prev) =>
-      prev.includes(tagId) ? prev.filter((id) => id !== tagId) : [...prev, tagId]
-    );
   };
 
   // Draw Canvas
@@ -487,8 +490,16 @@ export default function PairingForm({ initialData, fonts, tags }: PairingFormPro
     e.preventDefault();
     setErrorMessage(null);
 
+    // Evita di sottomettere prima che la compressione (async) abbia finito
+    // di sostituire il file nell'<input> — altrimenti si rischia di inviare
+    // ancora il file originale non compresso.
+    if (uploadImagePreview.isCompressing) {
+      setErrorMessage("Please wait for image compression to finish before saving.");
+      return;
+    }
+
     const formData = new FormData(e.currentTarget);
-    
+
     // Append tag IDs
     selectedTagIds.forEach((tId) => formData.append("tagIds", tId));
     formData.set("published", String(published));
@@ -510,6 +521,11 @@ export default function PairingForm({ initialData, fonts, tags }: PairingFormPro
       const err = await savePairing(null, formData, initialData?.id);
       if (err) {
         setErrorMessage(err);
+      } else {
+        // Torna esattamente alla lista con pagina/ricerca/ordinamento con cui
+        // l'utente era arrivato qui, invece di un redirect server-side fisso
+        // che riparte sempre da /admin/pairings pagina 1.
+        router.back();
       }
     });
   };
@@ -550,7 +566,7 @@ export default function PairingForm({ initialData, fonts, tags }: PairingFormPro
             backLink="/admin/pairings"
             backLabel="Back to pairings list"
             buttonLabel={initialData ? "Save Changes" : "Create Pairing"}
-            disabled={isPending}
+            disabled={isPending || uploadImagePreview.isCompressing}
           />
         </div>
 
@@ -638,37 +654,13 @@ export default function PairingForm({ initialData, fonts, tags }: PairingFormPro
           </div>
 
           {/* Tags Multiselect */}
-          <div>
-            <label className="block text-[10px] font-black uppercase tracking-wider text-black dark:text-white mb-2 flex items-center gap-1.5">
-              <TagIcon className="w-3.5 h-3.5" />
-              Assign Tags
-            </label>
-            <div className="flex flex-wrap gap-2 p-3 border border-black/10 dark:border-white/10 rounded-lg bg-white/50 dark:bg-zinc-900/50 max-h-36 overflow-y-auto">
-              {tags.map((t) => {
-                const isSelected = selectedTagIds.includes(t.id);
-                return (
-                  <button
-                    key={t.id}
-                    type="button"
-                    onClick={() => handleTagToggle(t.id)}
-                    className={`px-3 py-1 rounded-full text-xs font-bold transition-all flex items-center gap-1.5 border ${
-                      isSelected
-                        ? "bg-black text-white dark:bg-white dark:text-black border-transparent"
-                        : "bg-transparent text-zinc-600 dark:text-zinc-400 border-black/10 dark:border-white/10 hover:border-black/30 dark:hover:border-white/30"
-                    }`}
-                  >
-                    {isSelected && <Check className="w-3 h-3" />}
-                    {t.name}
-                  </button>
-                );
-              })}
-              {tags.length === 0 && (
-                <span className="text-xs text-zinc-400 italic">
-                  No tags available. You can create tags in /admin/tags.
-                </span>
-              )}
-            </div>
-          </div>
+          <TagPicker
+            label="Assign Tags"
+            tags={tags}
+            value={selectedTagIds}
+            onChange={setSelectedTagIds}
+            emptyLabel="No tags available. You can create tags in /admin/tags."
+          />
 
           {/* Published Toggle */}
           <div className="flex items-center justify-between p-4 border border-black/5 dark:border-white/5 rounded-xl bg-black/5 dark:bg-white/5">
@@ -784,34 +776,27 @@ export default function PairingForm({ initialData, fonts, tags }: PairingFormPro
               </div>
             ) : (
               <div className="space-y-4 py-2">
-                {currentImageUrl && !removeImage && (
-                  <div className="relative rounded-xl overflow-hidden border border-black/10 dark:border-white/10 group aspect-[1.91/1]">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={currentImageUrl} alt="Current Preview" className="w-full h-full object-cover" />
-                    <button
-                      type="button"
-                      onClick={() => setRemoveImage(true)}
-                      className="absolute top-3 right-3 p-2 rounded-lg bg-red-600 text-white shadow-lg opacity-90 hover:opacity-100 transition-all"
-                      title="Remove current image"
-                    >
-                      <Trash2 className="w-4 h-4" />
-                    </button>
-                  </div>
-                )}
-
-                <div>
-                  <label className="block text-xs font-black uppercase tracking-wider text-black dark:text-white mb-2">
-                    Upload Image File
-                  </label>
-                  <input
-                    type="file"
-                    name="image"
-                    accept="image/*"
-                    onChange={() => setRemoveImage(false)}
-                    className="w-full text-xs text-zinc-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-black file:text-white dark:file:bg-white dark:file:text-black hover:file:opacity-80"
-                  />
-                  <p className="text-[10px] text-zinc-400 mt-1">Recommended aspect ratio: 1.91:1 (e.g. 1200x630px PNG/JPG)</p>
-                </div>
+                <ImageDropInput
+                  name="image"
+                  inputRef={uploadImagePreview.inputRef}
+                  previewUrl={uploadImagePreview.previewUrl}
+                  currentUrl={removeImage ? null : currentImageUrl}
+                  isCompressing={uploadImagePreview.isCompressing}
+                  onSelect={(e) => {
+                    setRemoveImage(false);
+                    uploadImagePreview.onSelect(e);
+                  }}
+                  onRemove={() => {
+                    if (uploadImagePreview.previewUrl) {
+                      uploadImagePreview.clear();
+                    } else {
+                      setRemoveImage(true);
+                    }
+                  }}
+                  containerClassName="aspect-[1.91/1] rounded-xl w-full"
+                  label="Upload Image File"
+                  helperText="Recommended: 1200x630px"
+                />
               </div>
             )}
           </div>
@@ -942,32 +927,23 @@ export default function PairingForm({ initialData, fonts, tags }: PairingFormPro
                   <div className="p-3 rounded-xl border border-black/5 dark:border-white/5 bg-white/50 dark:bg-zinc-900/50 space-y-3">
                     <h4 className="font-bold text-[10px] uppercase tracking-wider text-zinc-400 mb-1">Color Palette</h4>
                     <div className="grid grid-cols-3 gap-2">
-                      <div className="p-2 rounded border border-black/5 dark:border-white/5 bg-black/5 dark:bg-white/5 flex flex-col items-center">
-                        <span className="block font-bold mb-1 text-black dark:text-white text-center">Bg</span>
-                        <input
-                          type="color"
-                          value={bgColor}
-                          onChange={(e) => setBgColor(e.target.value)}
-                          className="w-10 h-7 p-0 rounded cursor-pointer border-0 bg-transparent"
-                        />
+                      <div className="p-2 rounded border border-black/5 dark:border-white/5 bg-black/5 dark:bg-white/5 flex flex-col items-center gap-1">
+                        <span className="block font-bold text-black dark:text-white text-center">Bg</span>
+                        <HexColorPickerPopover color={bgColor} onChange={setBgColor} title="Background color">
+                          <span className="block w-10 h-7 rounded cursor-pointer border border-black/10 dark:border-white/10" style={{ backgroundColor: bgColor }} />
+                        </HexColorPickerPopover>
                       </div>
-                      <div className="p-2 rounded border border-black/5 dark:border-white/5 bg-black/5 dark:bg-white/5 flex flex-col items-center">
-                        <span className="block font-bold mb-1 text-black dark:text-white text-center">Primary</span>
-                        <input
-                          type="color"
-                          value={primaryColor}
-                          onChange={(e) => setPrimaryColor(e.target.value)}
-                          className="w-10 h-7 p-0 rounded cursor-pointer border-0 bg-transparent"
-                        />
+                      <div className="p-2 rounded border border-black/5 dark:border-white/5 bg-black/5 dark:bg-white/5 flex flex-col items-center gap-1">
+                        <span className="block font-bold text-black dark:text-white text-center">Primary</span>
+                        <HexColorPickerPopover color={primaryColor} onChange={setPrimaryColor} title="Primary color">
+                          <span className="block w-10 h-7 rounded cursor-pointer border border-black/10 dark:border-white/10" style={{ backgroundColor: primaryColor }} />
+                        </HexColorPickerPopover>
                       </div>
-                      <div className="p-2 rounded border border-black/5 dark:border-white/5 bg-black/5 dark:bg-white/5 flex flex-col items-center">
-                        <span className="block font-bold mb-1 text-black dark:text-white text-center">Secondary</span>
-                        <input
-                          type="color"
-                          value={secondaryColor}
-                          onChange={(e) => setSecondaryColor(e.target.value)}
-                          className="w-10 h-7 p-0 rounded cursor-pointer border-0 bg-transparent"
-                        />
+                      <div className="p-2 rounded border border-black/5 dark:border-white/5 bg-black/5 dark:bg-white/5 flex flex-col items-center gap-1">
+                        <span className="block font-bold text-black dark:text-white text-center">Secondary</span>
+                        <HexColorPickerPopover color={secondaryColor} onChange={setSecondaryColor} title="Secondary color">
+                          <span className="block w-10 h-7 rounded cursor-pointer border border-black/10 dark:border-white/10" style={{ backgroundColor: secondaryColor }} />
+                        </HexColorPickerPopover>
                       </div>
                     </div>
                   </div>
@@ -1078,7 +1054,7 @@ export default function PairingForm({ initialData, fonts, tags }: PairingFormPro
             </div>
 
             {/* Module Addition Toolbar */}
-            <div className="space-y-3">
+            <div id="insight-module-toolbar" className="space-y-3 scroll-mt-24">
               <label className="text-[10px] font-bold text-black/60 dark:text-white/60 uppercase tracking-[0.2em] block">
                 Add Insight Module
               </label>
@@ -1195,6 +1171,17 @@ export default function PairingForm({ initialData, fonts, tags }: PairingFormPro
           </div>
         </div>
       </form>
+
+      {insightModules.length > 0 && (
+        <button
+          type="button"
+          onClick={scrollToModuleToolbar}
+          className="fixed bottom-6 right-6 z-50 flex items-center gap-2 px-4 py-3 rounded-full bg-black dark:bg-white text-white dark:text-black font-bold text-xs uppercase tracking-wider shadow-2xl hover:scale-105 transition-transform"
+        >
+          <Plus className="h-4 w-4" />
+          Add Module
+        </button>
+      )}
 
       <SavingOverlay message="Saving Pairing..." show={isPending} />
     </div>

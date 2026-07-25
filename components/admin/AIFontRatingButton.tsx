@@ -32,7 +32,7 @@ export default function AIFontRatingButton() {
   const [progress, setProgress] = useState(0);
   const [logs, setLogs] = useState<string[]>([]);
   const [results, setResults] = useState<{
-    rated: Array<{ family: string; author: string; rating: number }>;
+    rated: Array<{ family: string; author: string; rating: number; tagNames: string[] }>;
     failed: Array<{ family: string; error: string }>;
   } | null>(null);
 
@@ -66,7 +66,7 @@ export default function AIFontRatingButton() {
     setProgress(0);
     setLogs([`Found ${candidates.length} font(s) with unresolved author/rating.`, "Starting AI rating session..."]);
 
-    const rated: Array<{ family: string; author: string; rating: number }> = [];
+    const rated: Array<{ family: string; author: string; rating: number; tagNames: string[] }> = [];
     const failed: Array<{ family: string; error: string }> = [];
 
     let lastRequestAt = 0;
@@ -86,7 +86,8 @@ export default function AIFontRatingButton() {
       try {
         const result = await rateFontWithAI(font.id);
         rated.push(result);
-        setLogs(prev => [...prev, `✓ ${font.name} → author: ${result.author}, rating: ${result.rating.toFixed(1)}`].slice(-40));
+        const tagsSuffix = result.tagNames.length > 0 ? `, tags: ${result.tagNames.join(", ")}` : ", tags: none matched";
+        setLogs(prev => [...prev, `✓ ${font.name} → author: ${result.author}, rating: ${result.rating.toFixed(1)}${tagsSuffix}`].slice(-40));
       } catch (err: any) {
         failed.push({ family: font.name, error: err.message || "Unknown error" });
         setLogs(prev => [...prev, `✗ ${font.name} failed: ${err.message}`].slice(-40));
@@ -112,16 +113,11 @@ export default function AIFontRatingButton() {
 
   return (
     <>
-      <Button
-        variant="primary"
-        size="md"
-        roundness="md"
-        onClick={openModal}
-        className="flex items-center gap-2 font-bold text-[10px]"
-      >
-        <Sparkles className="h-3.5 w-3.5" />
-        Rate Fonts with AI
-      </Button>
+    <Button className="!text-2xl !normal-case" variant="primary" shadowed fullWidth  onClick={openModal}>
+      Review Fonts with AI
+    </Button>
+
+
 
       {isOpen && (
         <BaseModal isOpen={isOpen} onClose={() => (phase !== "running" ? close() : undefined)} size="lg">
@@ -164,8 +160,9 @@ export default function AIFontRatingButton() {
                 <p className="text-xs text-zinc-600 dark:text-zinc-400 font-semibold">
                   Found <span className="text-black dark:text-white font-black">{candidates.length}</span> font(s)
                   whose author is still set to <span className="font-bold">Google Fonts</span> or{" "}
-                  <span className="font-bold">Typamine Import</span>. AI will look up the real designer and assign
-                  a rating (6.0&ndash;10.0) for each, then save it directly on the font.
+                  <span className="font-bold">Typamine Import</span>. AI will look up the real designer, assign
+                  a rating (6.0&ndash;10.0), and pick any matching tags from your existing tag list for each,
+                  then save it directly on the font.
                 </p>
                 {candidates.length > 0 && (
                   <div className="max-h-48 overflow-y-auto rounded-xl border border-zinc-200 dark:border-zinc-800 divide-y divide-zinc-200 dark:divide-zinc-800">

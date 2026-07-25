@@ -2,16 +2,31 @@ import { GoogleGenerativeAI, SchemaType } from "@google/generative-ai";
 import { z } from "zod";
 
 // Schema forzato lato Gemini (responseSchema): risposta sempre in questa
-// forma esatta, niente parsing euristico di testo libero.
-const fontRatingResponseSchema: any = {
-  type: SchemaType.OBJECT,
-  properties: {
-    fontFamily: { type: SchemaType.STRING },
-    author: { type: SchemaType.STRING },
-    rating: { type: SchemaType.NUMBER },
-  },
-  required: ["fontFamily", "author", "rating"],
-};
+// forma esatta, niente parsing euristico di testo libero. `tagNames` usa
+// enum sui singoli elementi dell'array: Gemini può SOLO scegliere tra i tag
+// che esistono davvero nel DB, non inventarne di nuovi — niente matching
+// fuzzy dei nomi dopo, niente tag fantasma creati per errore.
+function buildFontRatingResponseSchema(availableTagNames: string[]): any {
+  const schema: any = {
+    type: SchemaType.OBJECT,
+    properties: {
+      fontFamily: { type: SchemaType.STRING },
+      author: { type: SchemaType.STRING },
+      rating: { type: SchemaType.NUMBER },
+    },
+    required: ["fontFamily", "author", "rating"],
+  };
+
+  if (availableTagNames.length > 0) {
+    schema.properties.tagNames = {
+      type: SchemaType.ARRAY,
+      items: { type: SchemaType.STRING, enum: availableTagNames },
+    };
+    schema.required.push("tagNames");
+  }
+
+  return schema;
+}
 
 // Seconda validazione lato nostro: responseSchema di Gemini vincola la forma
 // ma non garantisce tipi/contenuti sensati (né è escluso che il modello a
@@ -20,11 +35,13 @@ const fontRatingSchema = z.object({
   fontFamily: z.string().min(1),
   author: z.string().min(1),
   rating: z.number(),
+  tagNames: z.array(z.string()).optional(),
 });
 
 export interface FontRatingResult {
   author: string;
   rating: number; // 6.0 - 10.0, step 0.2
+  tagNames: string[];
 }
 
 function clampRating(value: number): number {
@@ -54,7 +71,10 @@ function isRateLimitError(error: unknown): boolean {
   return message.includes("429") || /quota|too many requests/i.test(message);
 }
 
-export async function generateFontRatingWithGemini(fontFamily: string): Promise<FontRatingResult> {
+export async function generateFontRatingWithGemini(
+  fontFamily: string,
+  availableTagNames: string[] = []
+): Promise<FontRatingResult> {
   const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey) {
     throw new Error("GEMINI_API_KEY non configurata nell'ambiente.");
@@ -73,13 +93,19 @@ export async function generateFontRatingWithGemini(fontFamily: string): Promise<
       model: "gemini-3.1-flash-lite",
       generationConfig: {
         responseMimeType: "application/json",
-        responseSchema: fontRatingResponseSchema,
+        responseSchema: buildFontRatingResponseSchema(availableTagNames),
         temperature: 0.3,
         maxOutputTokens: 512,
       },
     },
     { apiVersion: "v1beta" }
   );
+
+  const tagInstruction = availableTagNames.length > 0
+    ? `
+3. From this exact list of tags: ${JSON.stringify(availableTagNames)}
+   Pick ONLY the ones that accurately describe this typeface (style, mood, use case, era, etc.). Pick as many as genuinely fit, or none at all if nothing in the list applies well — do not force a match. Never invent a tag that isn't in the list.`
+    : "";
 
   const prompt = `
 You are a typography expert with deep knowledge of type design history and the type design community.
@@ -89,9 +115,10 @@ Font family: "${fontFamily}"
 Tasks:
 1. Identify the real author/designer or foundry who created this typeface. If genuinely unknown or unverifiable, answer "Unknown".
 2. Rate this typeface from 6.0 to 10.0, using steps of 0.2 (e.g. 6.0, 6.2, 6.4, 6.6, ... 10.0), based on how expert graphic/type designers and the broader typography community generally perceive it (craftsmanship, versatility, legibility, popularity, influence).
+${tagInstruction}
 
 Respond ONLY with JSON matching exactly this shape, no extra commentary:
-{"fontFamily": "${fontFamily}", "author": "<author name>", "rating": <number>}
+{"fontFamily": "${fontFamily}", "author": "<author name>", "rating": <number>${availableTagNames.length > 0 ? ', "tagNames": ["<tag from the list>", ...]' : ""}}
 `;
 
   const MAX_RETRIES = 4;
@@ -130,8 +157,15 @@ Respond ONLY with JSON matching exactly this shape, no extra commentary:
     throw new Error(`Risposta Gemini per "${fontFamily}" fuori schema atteso.`);
   }
 
+  // Difesa in profondità: lo schema con enum già vincola Gemini ai soli tag
+  // esistenti, ma ri-filtriamo comunque contro la lista reale nel caso il
+  // modello ignori l'enum (già successo in passato con altri campi).
+  const availableTagNamesSet = new Set(availableTagNames);
+  const tagNames = (validated.data.tagNames || []).filter((t) => availableTagNamesSet.has(t));
+
   return {
     author: validated.data.author.trim(),
     rating: clampRating(validated.data.rating),
+    tagNames,
   };
 }

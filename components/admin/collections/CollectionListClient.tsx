@@ -2,14 +2,13 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { Edit, Layers, AlertTriangle } from "lucide-react";
+import { Edit, Layers, Tag, AlertTriangle } from "lucide-react";
 import ContentTable from "@/components/common/ContentTable";
 import DeleteButton from "@/components/common/DeleteButton";
 import { deleteFormula } from "@/lib/actions/formula";
 import { ListHeaderHandlers, ListPagination } from "@/components/common/ListHandlers";
 import BaseModal from "@/components/common/BaseModal";
 import { Button } from "@/components/common/Button";
-import { Badge } from "@/components/common/Badge";
 import { useRouter } from "next/navigation";
 
 interface CollectionListClientProps {
@@ -97,13 +96,14 @@ export default function CollectionListClient({ formulas, totalCount, canUpdate, 
             {
               key: "name",
               header: "Collection / Slug",
-              className: "flex-[2] min-w-0",
+              className: "w-1/4 min-w-0",
               render: (f: any) => (
                 <div className="min-w-0 py-1">
-                  <p className="font-star text-xl font-bold text-black dark:text-white leading-tight truncate">
+                  <p className="font-star text-2xl font-bold text-black dark:text-white leading-tight truncate">
                     {f.name}
                   </p>
-                  <p className="text-[10px] text-zinc-500 dark:text-zinc-400 font-mono tracking-wider mt-0.5 truncate">
+                  <p className="text-[10px] text-blue-400 dark:text-red-400 font-bold uppercase tracking-widest mt-1 truncate">
+
                     /{f.slug}
                   </p>
                 </div>
@@ -112,9 +112,9 @@ export default function CollectionListClient({ formulas, totalCount, canUpdate, 
             {
               key: "fontCategory",
               header: "Category",
-              className: "flex-1 hidden sm:block",
+              className: "w-1/8 hidden sm:block",
               render: (f: any) => (
-                <div className="px-3 py-1.5 rounded-md bg-bluegray-200 text-black dark:bg-redgray-800 dark:text-white flex items-center gap-2 border border-blue-800 dark:border-red-200 shadow-sm text-xs max-w-fit mt-1">
+                <div className="px-3 py-1.5 rounded-md flex items-center gap-2 border shadow-sm text-xs max-w-fit mt-1 bg-white text-blue-800 dark:bg-redgray-800 dark:text-red-200 border-blue-800 dark:border-red-200">
                   <span className="text-[10px] font-black uppercase tracking-tighter">{f.fontCategory}</span>
                 </div>
               ),
@@ -122,27 +122,37 @@ export default function CollectionListClient({ formulas, totalCount, canUpdate, 
             {
               key: "fonts",
               header: "Fonts",
-              className: "flex-1 hidden md:block",
+              className: "w-1/8 hidden md:block",
               render: (f: any) => (
-                <div className="flex items-center gap-2 text-xs font-bold text-black dark:text-white">
-                  <Layers className="h-3.5 w-3.5 shrink-0 text-zinc-500 dark:text-zinc-400" />
-                  {f.fonts?.length || 0} Fonts
+                <div
+                  className={`px-3 py-1.5 rounded-md flex items-center gap-2 border shadow-sm text-xs max-w-fit mt-1 ${
+                    f.fonts?.length
+                      ? "bg-white text-blue-800 dark:bg-redgray-800 dark:text-red-200 border-blue-800 dark:border-red-200"
+                      : "bg-zinc-400 dark:bg-zinc-900 border-zinc-900 dark:border-zinc-900 text-zinc-900 dark:text-zinc-400"
+                  }`}
+                >
+                  <Layers className="h-3.5 w-3.5 shrink-0" />
+                  <span className="text-[10px] font-black uppercase tracking-tighter">
+                    {f.fonts?.length || 0} {f.fonts?.length === 1 ? "Font" : "Fonts"}
+                  </span>
                 </div>
               ),
             },
             {
               key: "tags",
               header: "Tags",
-              className: "flex-1 hidden lg:block",
+              className: "w-1/8 hidden lg:block",
               render: (f: any) => (
-<div className={`px-3 py-1.5 rounded-md flex items-center gap-2 border shadow-sm text-xs max-w-fit mt-1 ${
+                <div
+                  className={`px-3 py-1.5 rounded-md flex items-center gap-2 border shadow-sm text-xs max-w-fit mt-1 ${
                     f.tags?.length
                       ? "bg-white text-blue-800 dark:bg-redgray-800 dark:text-red-200 border-blue-800 dark:border-red-200"
                       : "bg-zinc-400 dark:bg-zinc-900 border-zinc-900 dark:border-zinc-900 text-zinc-900 dark:text-zinc-400"
                   }`}
-                >                  <Layers className="h-3.5 w-3.5 shrink-0" />
+                >
+                  <Tag className="h-3.5 w-3.5 shrink-0" />
                   <span className="text-[10px] font-black uppercase tracking-tighter">
-                    {f.tags?.length || 0} {f.tags?.length == 1 ? 'Tag' : 'Tags'}
+                    {f.tags?.length || 0} {f.tags?.length === 1 ? "Tag" : "Tags"}
                   </span>
                 </div>
               ),

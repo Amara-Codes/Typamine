@@ -29,10 +29,10 @@ export type Role = $Result.DefaultSelection<Prisma.$RolePayload>
  */
 export type Permission = $Result.DefaultSelection<Prisma.$PermissionPayload>
 /**
- * Model BlogPost
+ * Model SeoModule
  * 
  */
-export type BlogPost = $Result.DefaultSelection<Prisma.$BlogPostPayload>
+export type SeoModule = $Result.DefaultSelection<Prisma.$SeoModulePayload>
 /**
  * Model FontVariant
  * 
@@ -58,6 +58,11 @@ export type Prescription = $Result.DefaultSelection<Prisma.$PrescriptionPayload>
  * 
  */
 export type Tag = $Result.DefaultSelection<Prisma.$TagPayload>
+/**
+ * Model Post
+ * 
+ */
+export type Post = $Result.DefaultSelection<Prisma.$PostPayload>
 
 /**
  * ##  Prisma Client ʲˢ
@@ -208,14 +213,14 @@ export class PrismaClient<
   get permission(): Prisma.PermissionDelegate<ExtArgs, ClientOptions>;
 
   /**
-   * `prisma.blogPost`: Exposes CRUD operations for the **BlogPost** model.
+   * `prisma.seoModule`: Exposes CRUD operations for the **SeoModule** model.
     * Example usage:
     * ```ts
-    * // Fetch zero or more BlogPosts
-    * const blogPosts = await prisma.blogPost.findMany()
+    * // Fetch zero or more SeoModules
+    * const seoModules = await prisma.seoModule.findMany()
     * ```
     */
-  get blogPost(): Prisma.BlogPostDelegate<ExtArgs, ClientOptions>;
+  get seoModule(): Prisma.SeoModuleDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.fontVariant`: Exposes CRUD operations for the **FontVariant** model.
@@ -266,6 +271,16 @@ export class PrismaClient<
     * ```
     */
   get tag(): Prisma.TagDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.post`: Exposes CRUD operations for the **Post** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Posts
+    * const posts = await prisma.post.findMany()
+    * ```
+    */
+  get post(): Prisma.PostDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -710,12 +725,13 @@ export namespace Prisma {
     User: 'User',
     Role: 'Role',
     Permission: 'Permission',
-    BlogPost: 'BlogPost',
+    SeoModule: 'SeoModule',
     FontVariant: 'FontVariant',
     Ingredient: 'Ingredient',
     Formula: 'Formula',
     Prescription: 'Prescription',
-    Tag: 'Tag'
+    Tag: 'Tag',
+    Post: 'Post'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -734,7 +750,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "role" | "permission" | "blogPost" | "fontVariant" | "ingredient" | "formula" | "prescription" | "tag"
+      modelProps: "user" | "role" | "permission" | "seoModule" | "fontVariant" | "ingredient" | "formula" | "prescription" | "tag" | "post"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -960,77 +976,77 @@ export namespace Prisma {
           }
         }
       }
-      BlogPost: {
-        payload: Prisma.$BlogPostPayload<ExtArgs>
-        fields: Prisma.BlogPostFieldRefs
+      SeoModule: {
+        payload: Prisma.$SeoModulePayload<ExtArgs>
+        fields: Prisma.SeoModuleFieldRefs
         operations: {
           findUnique: {
-            args: Prisma.BlogPostFindUniqueArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$BlogPostPayload> | null
+            args: Prisma.SeoModuleFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SeoModulePayload> | null
           }
           findUniqueOrThrow: {
-            args: Prisma.BlogPostFindUniqueOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$BlogPostPayload>
+            args: Prisma.SeoModuleFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SeoModulePayload>
           }
           findFirst: {
-            args: Prisma.BlogPostFindFirstArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$BlogPostPayload> | null
+            args: Prisma.SeoModuleFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SeoModulePayload> | null
           }
           findFirstOrThrow: {
-            args: Prisma.BlogPostFindFirstOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$BlogPostPayload>
+            args: Prisma.SeoModuleFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SeoModulePayload>
           }
           findMany: {
-            args: Prisma.BlogPostFindManyArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$BlogPostPayload>[]
+            args: Prisma.SeoModuleFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SeoModulePayload>[]
           }
           create: {
-            args: Prisma.BlogPostCreateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$BlogPostPayload>
+            args: Prisma.SeoModuleCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SeoModulePayload>
           }
           createMany: {
-            args: Prisma.BlogPostCreateManyArgs<ExtArgs>
+            args: Prisma.SeoModuleCreateManyArgs<ExtArgs>
             result: BatchPayload
           }
           createManyAndReturn: {
-            args: Prisma.BlogPostCreateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$BlogPostPayload>[]
+            args: Prisma.SeoModuleCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SeoModulePayload>[]
           }
           delete: {
-            args: Prisma.BlogPostDeleteArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$BlogPostPayload>
+            args: Prisma.SeoModuleDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SeoModulePayload>
           }
           update: {
-            args: Prisma.BlogPostUpdateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$BlogPostPayload>
+            args: Prisma.SeoModuleUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SeoModulePayload>
           }
           deleteMany: {
-            args: Prisma.BlogPostDeleteManyArgs<ExtArgs>
+            args: Prisma.SeoModuleDeleteManyArgs<ExtArgs>
             result: BatchPayload
           }
           updateMany: {
-            args: Prisma.BlogPostUpdateManyArgs<ExtArgs>
+            args: Prisma.SeoModuleUpdateManyArgs<ExtArgs>
             result: BatchPayload
           }
           updateManyAndReturn: {
-            args: Prisma.BlogPostUpdateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$BlogPostPayload>[]
+            args: Prisma.SeoModuleUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SeoModulePayload>[]
           }
           upsert: {
-            args: Prisma.BlogPostUpsertArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$BlogPostPayload>
+            args: Prisma.SeoModuleUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SeoModulePayload>
           }
           aggregate: {
-            args: Prisma.BlogPostAggregateArgs<ExtArgs>
-            result: $Utils.Optional<AggregateBlogPost>
+            args: Prisma.SeoModuleAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateSeoModule>
           }
           groupBy: {
-            args: Prisma.BlogPostGroupByArgs<ExtArgs>
-            result: $Utils.Optional<BlogPostGroupByOutputType>[]
+            args: Prisma.SeoModuleGroupByArgs<ExtArgs>
+            result: $Utils.Optional<SeoModuleGroupByOutputType>[]
           }
           count: {
-            args: Prisma.BlogPostCountArgs<ExtArgs>
-            result: $Utils.Optional<BlogPostCountAggregateOutputType> | number
+            args: Prisma.SeoModuleCountArgs<ExtArgs>
+            result: $Utils.Optional<SeoModuleCountAggregateOutputType> | number
           }
         }
       }
@@ -1404,6 +1420,80 @@ export namespace Prisma {
           }
         }
       }
+      Post: {
+        payload: Prisma.$PostPayload<ExtArgs>
+        fields: Prisma.PostFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.PostFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PostPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.PostFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PostPayload>
+          }
+          findFirst: {
+            args: Prisma.PostFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PostPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.PostFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PostPayload>
+          }
+          findMany: {
+            args: Prisma.PostFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PostPayload>[]
+          }
+          create: {
+            args: Prisma.PostCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PostPayload>
+          }
+          createMany: {
+            args: Prisma.PostCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.PostCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PostPayload>[]
+          }
+          delete: {
+            args: Prisma.PostDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PostPayload>
+          }
+          update: {
+            args: Prisma.PostUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PostPayload>
+          }
+          deleteMany: {
+            args: Prisma.PostDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.PostUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.PostUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PostPayload>[]
+          }
+          upsert: {
+            args: Prisma.PostUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PostPayload>
+          }
+          aggregate: {
+            args: Prisma.PostAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregatePost>
+          }
+          groupBy: {
+            args: Prisma.PostGroupByArgs<ExtArgs>
+            result: $Utils.Optional<PostGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.PostCountArgs<ExtArgs>
+            result: $Utils.Optional<PostCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -1503,12 +1593,13 @@ export namespace Prisma {
     user?: UserOmit
     role?: RoleOmit
     permission?: PermissionOmit
-    blogPost?: BlogPostOmit
+    seoModule?: SeoModuleOmit
     fontVariant?: FontVariantOmit
     ingredient?: IngredientOmit
     formula?: FormulaOmit
     prescription?: PrescriptionOmit
     tag?: TagOmit
+    post?: PostOmit
   }
 
   /* Types for Logging */
@@ -1613,7 +1704,7 @@ export namespace Prisma {
    * UserCountOutputType without action
    */
   export type UserCountOutputTypeCountPostsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: BlogPostWhereInput
+    where?: PostWhereInput
   }
 
   /**
@@ -1705,6 +1796,7 @@ export namespace Prisma {
     primaryPrescriptions: number
     secondaryPrescriptions: number
     tags: number
+    posts: number
   }
 
   export type IngredientCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -1713,6 +1805,7 @@ export namespace Prisma {
     primaryPrescriptions?: boolean | IngredientCountOutputTypeCountPrimaryPrescriptionsArgs
     secondaryPrescriptions?: boolean | IngredientCountOutputTypeCountSecondaryPrescriptionsArgs
     tags?: boolean | IngredientCountOutputTypeCountTagsArgs
+    posts?: boolean | IngredientCountOutputTypeCountPostsArgs
   }
 
   // Custom InputTypes
@@ -1759,6 +1852,13 @@ export namespace Prisma {
    */
   export type IngredientCountOutputTypeCountTagsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: TagWhereInput
+  }
+
+  /**
+   * IngredientCountOutputType without action
+   */
+  export type IngredientCountOutputTypeCountPostsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PostWhereInput
   }
 
 
@@ -1841,12 +1941,14 @@ export namespace Prisma {
     prescriptions: number
     ingredients: number
     formulas: number
+    posts: number
   }
 
   export type TagCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     prescriptions?: boolean | TagCountOutputTypeCountPrescriptionsArgs
     ingredients?: boolean | TagCountOutputTypeCountIngredientsArgs
     formulas?: boolean | TagCountOutputTypeCountFormulasArgs
+    posts?: boolean | TagCountOutputTypeCountPostsArgs
   }
 
   // Custom InputTypes
@@ -1879,6 +1981,53 @@ export namespace Prisma {
    */
   export type TagCountOutputTypeCountFormulasArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: FormulaWhereInput
+  }
+
+  /**
+   * TagCountOutputType without action
+   */
+  export type TagCountOutputTypeCountPostsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PostWhereInput
+  }
+
+
+  /**
+   * Count Type PostCountOutputType
+   */
+
+  export type PostCountOutputType = {
+    tags: number
+    fonts: number
+  }
+
+  export type PostCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    tags?: boolean | PostCountOutputTypeCountTagsArgs
+    fonts?: boolean | PostCountOutputTypeCountFontsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * PostCountOutputType without action
+   */
+  export type PostCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PostCountOutputType
+     */
+    select?: PostCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * PostCountOutputType without action
+   */
+  export type PostCountOutputTypeCountTagsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TagWhereInput
+  }
+
+  /**
+   * PostCountOutputType without action
+   */
+  export type PostCountOutputTypeCountFontsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: IngredientWhereInput
   }
 
 
@@ -2146,7 +2295,7 @@ export namespace Prisma {
   export type $UserPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "User"
     objects: {
-      posts: Prisma.$BlogPostPayload<ExtArgs>[]
+      posts: Prisma.$PostPayload<ExtArgs>[]
       roles: Prisma.$RolePayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
@@ -2554,7 +2703,7 @@ export namespace Prisma {
    */
   export interface Prisma__UserClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    posts<T extends User$postsArgs<ExtArgs> = {}>(args?: Subset<T, User$postsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BlogPostPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    posts<T extends User$postsArgs<ExtArgs> = {}>(args?: Subset<T, User$postsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PostPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     roles<T extends User$rolesArgs<ExtArgs> = {}>(args?: Subset<T, User$rolesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RolePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -2985,23 +3134,23 @@ export namespace Prisma {
    */
   export type User$postsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the BlogPost
+     * Select specific fields to fetch from the Post
      */
-    select?: BlogPostSelect<ExtArgs> | null
+    select?: PostSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the BlogPost
+     * Omit specific fields from the Post
      */
-    omit?: BlogPostOmit<ExtArgs> | null
+    omit?: PostOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: BlogPostInclude<ExtArgs> | null
-    where?: BlogPostWhereInput
-    orderBy?: BlogPostOrderByWithRelationInput | BlogPostOrderByWithRelationInput[]
-    cursor?: BlogPostWhereUniqueInput
+    include?: PostInclude<ExtArgs> | null
+    where?: PostWhereInput
+    orderBy?: PostOrderByWithRelationInput | PostOrderByWithRelationInput[]
+    cursor?: PostWhereUniqueInput
     take?: number
     skip?: number
-    distinct?: BlogPostScalarFieldEnum | BlogPostScalarFieldEnum[]
+    distinct?: PostScalarFieldEnum | PostScalarFieldEnum[]
   }
 
   /**
@@ -5186,362 +5335,491 @@ export namespace Prisma {
 
 
   /**
-   * Model BlogPost
+   * Model SeoModule
    */
 
-  export type AggregateBlogPost = {
-    _count: BlogPostCountAggregateOutputType | null
-    _min: BlogPostMinAggregateOutputType | null
-    _max: BlogPostMaxAggregateOutputType | null
+  export type AggregateSeoModule = {
+    _count: SeoModuleCountAggregateOutputType | null
+    _min: SeoModuleMinAggregateOutputType | null
+    _max: SeoModuleMaxAggregateOutputType | null
   }
 
-  export type BlogPostMinAggregateOutputType = {
+  export type SeoModuleMinAggregateOutputType = {
     id: string | null
-    title: string | null
-    content: string | null
-    authorId: string | null
+    metaTitle: string | null
+    metaDescription: string | null
+    keywords: string | null
+    ogTitle: string | null
+    ogDescription: string | null
+    ogImageUrl: string | null
+    ogImageAlt: string | null
+    twitterCard: string | null
+    twitterTitle: string | null
+    twitterDescription: string | null
+    twitterImageUrl: string | null
+    twitterImageAlt: string | null
+    canonicalUrl: string | null
+    noIndex: boolean | null
     createdAt: Date | null
     updatedAt: Date | null
   }
 
-  export type BlogPostMaxAggregateOutputType = {
+  export type SeoModuleMaxAggregateOutputType = {
     id: string | null
-    title: string | null
-    content: string | null
-    authorId: string | null
+    metaTitle: string | null
+    metaDescription: string | null
+    keywords: string | null
+    ogTitle: string | null
+    ogDescription: string | null
+    ogImageUrl: string | null
+    ogImageAlt: string | null
+    twitterCard: string | null
+    twitterTitle: string | null
+    twitterDescription: string | null
+    twitterImageUrl: string | null
+    twitterImageAlt: string | null
+    canonicalUrl: string | null
+    noIndex: boolean | null
     createdAt: Date | null
     updatedAt: Date | null
   }
 
-  export type BlogPostCountAggregateOutputType = {
+  export type SeoModuleCountAggregateOutputType = {
     id: number
-    title: number
-    content: number
-    authorId: number
+    metaTitle: number
+    metaDescription: number
+    keywords: number
+    ogTitle: number
+    ogDescription: number
+    ogImageUrl: number
+    ogImageAlt: number
+    twitterCard: number
+    twitterTitle: number
+    twitterDescription: number
+    twitterImageUrl: number
+    twitterImageAlt: number
+    canonicalUrl: number
+    noIndex: number
     createdAt: number
     updatedAt: number
     _all: number
   }
 
 
-  export type BlogPostMinAggregateInputType = {
+  export type SeoModuleMinAggregateInputType = {
     id?: true
-    title?: true
-    content?: true
-    authorId?: true
+    metaTitle?: true
+    metaDescription?: true
+    keywords?: true
+    ogTitle?: true
+    ogDescription?: true
+    ogImageUrl?: true
+    ogImageAlt?: true
+    twitterCard?: true
+    twitterTitle?: true
+    twitterDescription?: true
+    twitterImageUrl?: true
+    twitterImageAlt?: true
+    canonicalUrl?: true
+    noIndex?: true
     createdAt?: true
     updatedAt?: true
   }
 
-  export type BlogPostMaxAggregateInputType = {
+  export type SeoModuleMaxAggregateInputType = {
     id?: true
-    title?: true
-    content?: true
-    authorId?: true
+    metaTitle?: true
+    metaDescription?: true
+    keywords?: true
+    ogTitle?: true
+    ogDescription?: true
+    ogImageUrl?: true
+    ogImageAlt?: true
+    twitterCard?: true
+    twitterTitle?: true
+    twitterDescription?: true
+    twitterImageUrl?: true
+    twitterImageAlt?: true
+    canonicalUrl?: true
+    noIndex?: true
     createdAt?: true
     updatedAt?: true
   }
 
-  export type BlogPostCountAggregateInputType = {
+  export type SeoModuleCountAggregateInputType = {
     id?: true
-    title?: true
-    content?: true
-    authorId?: true
+    metaTitle?: true
+    metaDescription?: true
+    keywords?: true
+    ogTitle?: true
+    ogDescription?: true
+    ogImageUrl?: true
+    ogImageAlt?: true
+    twitterCard?: true
+    twitterTitle?: true
+    twitterDescription?: true
+    twitterImageUrl?: true
+    twitterImageAlt?: true
+    canonicalUrl?: true
+    noIndex?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
   }
 
-  export type BlogPostAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type SeoModuleAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Filter which BlogPost to aggregate.
+     * Filter which SeoModule to aggregate.
      */
-    where?: BlogPostWhereInput
+    where?: SeoModuleWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of BlogPosts to fetch.
+     * Determine the order of SeoModules to fetch.
      */
-    orderBy?: BlogPostOrderByWithRelationInput | BlogPostOrderByWithRelationInput[]
+    orderBy?: SeoModuleOrderByWithRelationInput | SeoModuleOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
      * Sets the start position
      */
-    cursor?: BlogPostWhereUniqueInput
+    cursor?: SeoModuleWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` BlogPosts from the position of the cursor.
+     * Take `±n` SeoModules from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` BlogPosts.
+     * Skip the first `n` SeoModules.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
-     * Count returned BlogPosts
+     * Count returned SeoModules
     **/
-    _count?: true | BlogPostCountAggregateInputType
+    _count?: true | SeoModuleCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
      * Select which fields to find the minimum value
     **/
-    _min?: BlogPostMinAggregateInputType
+    _min?: SeoModuleMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
      * Select which fields to find the maximum value
     **/
-    _max?: BlogPostMaxAggregateInputType
+    _max?: SeoModuleMaxAggregateInputType
   }
 
-  export type GetBlogPostAggregateType<T extends BlogPostAggregateArgs> = {
-        [P in keyof T & keyof AggregateBlogPost]: P extends '_count' | 'count'
+  export type GetSeoModuleAggregateType<T extends SeoModuleAggregateArgs> = {
+        [P in keyof T & keyof AggregateSeoModule]: P extends '_count' | 'count'
       ? T[P] extends true
         ? number
-        : GetScalarType<T[P], AggregateBlogPost[P]>
-      : GetScalarType<T[P], AggregateBlogPost[P]>
+        : GetScalarType<T[P], AggregateSeoModule[P]>
+      : GetScalarType<T[P], AggregateSeoModule[P]>
   }
 
 
 
 
-  export type BlogPostGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: BlogPostWhereInput
-    orderBy?: BlogPostOrderByWithAggregationInput | BlogPostOrderByWithAggregationInput[]
-    by: BlogPostScalarFieldEnum[] | BlogPostScalarFieldEnum
-    having?: BlogPostScalarWhereWithAggregatesInput
+  export type SeoModuleGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SeoModuleWhereInput
+    orderBy?: SeoModuleOrderByWithAggregationInput | SeoModuleOrderByWithAggregationInput[]
+    by: SeoModuleScalarFieldEnum[] | SeoModuleScalarFieldEnum
+    having?: SeoModuleScalarWhereWithAggregatesInput
     take?: number
     skip?: number
-    _count?: BlogPostCountAggregateInputType | true
-    _min?: BlogPostMinAggregateInputType
-    _max?: BlogPostMaxAggregateInputType
+    _count?: SeoModuleCountAggregateInputType | true
+    _min?: SeoModuleMinAggregateInputType
+    _max?: SeoModuleMaxAggregateInputType
   }
 
-  export type BlogPostGroupByOutputType = {
+  export type SeoModuleGroupByOutputType = {
     id: string
-    title: string
-    content: string
-    authorId: string
+    metaTitle: string | null
+    metaDescription: string | null
+    keywords: string | null
+    ogTitle: string | null
+    ogDescription: string | null
+    ogImageUrl: string | null
+    ogImageAlt: string | null
+    twitterCard: string
+    twitterTitle: string | null
+    twitterDescription: string | null
+    twitterImageUrl: string | null
+    twitterImageAlt: string | null
+    canonicalUrl: string | null
+    noIndex: boolean
     createdAt: Date
     updatedAt: Date
-    _count: BlogPostCountAggregateOutputType | null
-    _min: BlogPostMinAggregateOutputType | null
-    _max: BlogPostMaxAggregateOutputType | null
+    _count: SeoModuleCountAggregateOutputType | null
+    _min: SeoModuleMinAggregateOutputType | null
+    _max: SeoModuleMaxAggregateOutputType | null
   }
 
-  type GetBlogPostGroupByPayload<T extends BlogPostGroupByArgs> = Prisma.PrismaPromise<
+  type GetSeoModuleGroupByPayload<T extends SeoModuleGroupByArgs> = Prisma.PrismaPromise<
     Array<
-      PickEnumerable<BlogPostGroupByOutputType, T['by']> &
+      PickEnumerable<SeoModuleGroupByOutputType, T['by']> &
         {
-          [P in ((keyof T) & (keyof BlogPostGroupByOutputType))]: P extends '_count'
+          [P in ((keyof T) & (keyof SeoModuleGroupByOutputType))]: P extends '_count'
             ? T[P] extends boolean
               ? number
-              : GetScalarType<T[P], BlogPostGroupByOutputType[P]>
-            : GetScalarType<T[P], BlogPostGroupByOutputType[P]>
+              : GetScalarType<T[P], SeoModuleGroupByOutputType[P]>
+            : GetScalarType<T[P], SeoModuleGroupByOutputType[P]>
         }
       >
     >
 
 
-  export type BlogPostSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+  export type SeoModuleSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    title?: boolean
-    content?: boolean
-    authorId?: boolean
+    metaTitle?: boolean
+    metaDescription?: boolean
+    keywords?: boolean
+    ogTitle?: boolean
+    ogDescription?: boolean
+    ogImageUrl?: boolean
+    ogImageAlt?: boolean
+    twitterCard?: boolean
+    twitterTitle?: boolean
+    twitterDescription?: boolean
+    twitterImageUrl?: boolean
+    twitterImageAlt?: boolean
+    canonicalUrl?: boolean
+    noIndex?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    author?: boolean | UserDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["blogPost"]>
+    post?: boolean | SeoModule$postArgs<ExtArgs>
+    prescription?: boolean | SeoModule$prescriptionArgs<ExtArgs>
+  }, ExtArgs["result"]["seoModule"]>
 
-  export type BlogPostSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+  export type SeoModuleSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    title?: boolean
-    content?: boolean
-    authorId?: boolean
+    metaTitle?: boolean
+    metaDescription?: boolean
+    keywords?: boolean
+    ogTitle?: boolean
+    ogDescription?: boolean
+    ogImageUrl?: boolean
+    ogImageAlt?: boolean
+    twitterCard?: boolean
+    twitterTitle?: boolean
+    twitterDescription?: boolean
+    twitterImageUrl?: boolean
+    twitterImageAlt?: boolean
+    canonicalUrl?: boolean
+    noIndex?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    author?: boolean | UserDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["blogPost"]>
+  }, ExtArgs["result"]["seoModule"]>
 
-  export type BlogPostSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+  export type SeoModuleSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    title?: boolean
-    content?: boolean
-    authorId?: boolean
+    metaTitle?: boolean
+    metaDescription?: boolean
+    keywords?: boolean
+    ogTitle?: boolean
+    ogDescription?: boolean
+    ogImageUrl?: boolean
+    ogImageAlt?: boolean
+    twitterCard?: boolean
+    twitterTitle?: boolean
+    twitterDescription?: boolean
+    twitterImageUrl?: boolean
+    twitterImageAlt?: boolean
+    canonicalUrl?: boolean
+    noIndex?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    author?: boolean | UserDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["blogPost"]>
+  }, ExtArgs["result"]["seoModule"]>
 
-  export type BlogPostSelectScalar = {
+  export type SeoModuleSelectScalar = {
     id?: boolean
-    title?: boolean
-    content?: boolean
-    authorId?: boolean
+    metaTitle?: boolean
+    metaDescription?: boolean
+    keywords?: boolean
+    ogTitle?: boolean
+    ogDescription?: boolean
+    ogImageUrl?: boolean
+    ogImageAlt?: boolean
+    twitterCard?: boolean
+    twitterTitle?: boolean
+    twitterDescription?: boolean
+    twitterImageUrl?: boolean
+    twitterImageAlt?: boolean
+    canonicalUrl?: boolean
+    noIndex?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type BlogPostOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "content" | "authorId" | "createdAt" | "updatedAt", ExtArgs["result"]["blogPost"]>
-  export type BlogPostInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    author?: boolean | UserDefaultArgs<ExtArgs>
+  export type SeoModuleOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "metaTitle" | "metaDescription" | "keywords" | "ogTitle" | "ogDescription" | "ogImageUrl" | "ogImageAlt" | "twitterCard" | "twitterTitle" | "twitterDescription" | "twitterImageUrl" | "twitterImageAlt" | "canonicalUrl" | "noIndex" | "createdAt" | "updatedAt", ExtArgs["result"]["seoModule"]>
+  export type SeoModuleInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    post?: boolean | SeoModule$postArgs<ExtArgs>
+    prescription?: boolean | SeoModule$prescriptionArgs<ExtArgs>
   }
-  export type BlogPostIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    author?: boolean | UserDefaultArgs<ExtArgs>
-  }
-  export type BlogPostIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    author?: boolean | UserDefaultArgs<ExtArgs>
-  }
+  export type SeoModuleIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+  export type SeoModuleIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
 
-  export type $BlogPostPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    name: "BlogPost"
+  export type $SeoModulePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "SeoModule"
     objects: {
-      author: Prisma.$UserPayload<ExtArgs>
+      post: Prisma.$PostPayload<ExtArgs> | null
+      prescription: Prisma.$PrescriptionPayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
-      title: string
-      content: string
-      authorId: string
+      metaTitle: string | null
+      metaDescription: string | null
+      keywords: string | null
+      ogTitle: string | null
+      ogDescription: string | null
+      ogImageUrl: string | null
+      ogImageAlt: string | null
+      twitterCard: string
+      twitterTitle: string | null
+      twitterDescription: string | null
+      twitterImageUrl: string | null
+      twitterImageAlt: string | null
+      canonicalUrl: string | null
+      noIndex: boolean
       createdAt: Date
       updatedAt: Date
-    }, ExtArgs["result"]["blogPost"]>
+    }, ExtArgs["result"]["seoModule"]>
     composites: {}
   }
 
-  type BlogPostGetPayload<S extends boolean | null | undefined | BlogPostDefaultArgs> = $Result.GetResult<Prisma.$BlogPostPayload, S>
+  type SeoModuleGetPayload<S extends boolean | null | undefined | SeoModuleDefaultArgs> = $Result.GetResult<Prisma.$SeoModulePayload, S>
 
-  type BlogPostCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<BlogPostFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
-      select?: BlogPostCountAggregateInputType | true
+  type SeoModuleCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<SeoModuleFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: SeoModuleCountAggregateInputType | true
     }
 
-  export interface BlogPostDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['BlogPost'], meta: { name: 'BlogPost' } }
+  export interface SeoModuleDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['SeoModule'], meta: { name: 'SeoModule' } }
     /**
-     * Find zero or one BlogPost that matches the filter.
-     * @param {BlogPostFindUniqueArgs} args - Arguments to find a BlogPost
+     * Find zero or one SeoModule that matches the filter.
+     * @param {SeoModuleFindUniqueArgs} args - Arguments to find a SeoModule
      * @example
-     * // Get one BlogPost
-     * const blogPost = await prisma.blogPost.findUnique({
+     * // Get one SeoModule
+     * const seoModule = await prisma.seoModule.findUnique({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findUnique<T extends BlogPostFindUniqueArgs>(args: SelectSubset<T, BlogPostFindUniqueArgs<ExtArgs>>): Prisma__BlogPostClient<$Result.GetResult<Prisma.$BlogPostPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    findUnique<T extends SeoModuleFindUniqueArgs>(args: SelectSubset<T, SeoModuleFindUniqueArgs<ExtArgs>>): Prisma__SeoModuleClient<$Result.GetResult<Prisma.$SeoModulePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find one BlogPost that matches the filter or throw an error with `error.code='P2025'`
+     * Find one SeoModule that matches the filter or throw an error with `error.code='P2025'`
      * if no matches were found.
-     * @param {BlogPostFindUniqueOrThrowArgs} args - Arguments to find a BlogPost
+     * @param {SeoModuleFindUniqueOrThrowArgs} args - Arguments to find a SeoModule
      * @example
-     * // Get one BlogPost
-     * const blogPost = await prisma.blogPost.findUniqueOrThrow({
+     * // Get one SeoModule
+     * const seoModule = await prisma.seoModule.findUniqueOrThrow({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findUniqueOrThrow<T extends BlogPostFindUniqueOrThrowArgs>(args: SelectSubset<T, BlogPostFindUniqueOrThrowArgs<ExtArgs>>): Prisma__BlogPostClient<$Result.GetResult<Prisma.$BlogPostPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    findUniqueOrThrow<T extends SeoModuleFindUniqueOrThrowArgs>(args: SelectSubset<T, SeoModuleFindUniqueOrThrowArgs<ExtArgs>>): Prisma__SeoModuleClient<$Result.GetResult<Prisma.$SeoModulePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find the first BlogPost that matches the filter.
+     * Find the first SeoModule that matches the filter.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {BlogPostFindFirstArgs} args - Arguments to find a BlogPost
+     * @param {SeoModuleFindFirstArgs} args - Arguments to find a SeoModule
      * @example
-     * // Get one BlogPost
-     * const blogPost = await prisma.blogPost.findFirst({
+     * // Get one SeoModule
+     * const seoModule = await prisma.seoModule.findFirst({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findFirst<T extends BlogPostFindFirstArgs>(args?: SelectSubset<T, BlogPostFindFirstArgs<ExtArgs>>): Prisma__BlogPostClient<$Result.GetResult<Prisma.$BlogPostPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    findFirst<T extends SeoModuleFindFirstArgs>(args?: SelectSubset<T, SeoModuleFindFirstArgs<ExtArgs>>): Prisma__SeoModuleClient<$Result.GetResult<Prisma.$SeoModulePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find the first BlogPost that matches the filter or
+     * Find the first SeoModule that matches the filter or
      * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {BlogPostFindFirstOrThrowArgs} args - Arguments to find a BlogPost
+     * @param {SeoModuleFindFirstOrThrowArgs} args - Arguments to find a SeoModule
      * @example
-     * // Get one BlogPost
-     * const blogPost = await prisma.blogPost.findFirstOrThrow({
+     * // Get one SeoModule
+     * const seoModule = await prisma.seoModule.findFirstOrThrow({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findFirstOrThrow<T extends BlogPostFindFirstOrThrowArgs>(args?: SelectSubset<T, BlogPostFindFirstOrThrowArgs<ExtArgs>>): Prisma__BlogPostClient<$Result.GetResult<Prisma.$BlogPostPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    findFirstOrThrow<T extends SeoModuleFindFirstOrThrowArgs>(args?: SelectSubset<T, SeoModuleFindFirstOrThrowArgs<ExtArgs>>): Prisma__SeoModuleClient<$Result.GetResult<Prisma.$SeoModulePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find zero or more BlogPosts that matches the filter.
+     * Find zero or more SeoModules that matches the filter.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {BlogPostFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @param {SeoModuleFindManyArgs} args - Arguments to filter and select certain fields only.
      * @example
-     * // Get all BlogPosts
-     * const blogPosts = await prisma.blogPost.findMany()
+     * // Get all SeoModules
+     * const seoModules = await prisma.seoModule.findMany()
      * 
-     * // Get first 10 BlogPosts
-     * const blogPosts = await prisma.blogPost.findMany({ take: 10 })
+     * // Get first 10 SeoModules
+     * const seoModules = await prisma.seoModule.findMany({ take: 10 })
      * 
      * // Only select the `id`
-     * const blogPostWithIdOnly = await prisma.blogPost.findMany({ select: { id: true } })
+     * const seoModuleWithIdOnly = await prisma.seoModule.findMany({ select: { id: true } })
      * 
      */
-    findMany<T extends BlogPostFindManyArgs>(args?: SelectSubset<T, BlogPostFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BlogPostPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+    findMany<T extends SeoModuleFindManyArgs>(args?: SelectSubset<T, SeoModuleFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SeoModulePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
     /**
-     * Create a BlogPost.
-     * @param {BlogPostCreateArgs} args - Arguments to create a BlogPost.
+     * Create a SeoModule.
+     * @param {SeoModuleCreateArgs} args - Arguments to create a SeoModule.
      * @example
-     * // Create one BlogPost
-     * const BlogPost = await prisma.blogPost.create({
+     * // Create one SeoModule
+     * const SeoModule = await prisma.seoModule.create({
      *   data: {
-     *     // ... data to create a BlogPost
+     *     // ... data to create a SeoModule
      *   }
      * })
      * 
      */
-    create<T extends BlogPostCreateArgs>(args: SelectSubset<T, BlogPostCreateArgs<ExtArgs>>): Prisma__BlogPostClient<$Result.GetResult<Prisma.$BlogPostPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    create<T extends SeoModuleCreateArgs>(args: SelectSubset<T, SeoModuleCreateArgs<ExtArgs>>): Prisma__SeoModuleClient<$Result.GetResult<Prisma.$SeoModulePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Create many BlogPosts.
-     * @param {BlogPostCreateManyArgs} args - Arguments to create many BlogPosts.
+     * Create many SeoModules.
+     * @param {SeoModuleCreateManyArgs} args - Arguments to create many SeoModules.
      * @example
-     * // Create many BlogPosts
-     * const blogPost = await prisma.blogPost.createMany({
+     * // Create many SeoModules
+     * const seoModule = await prisma.seoModule.createMany({
      *   data: [
      *     // ... provide data here
      *   ]
      * })
      *     
      */
-    createMany<T extends BlogPostCreateManyArgs>(args?: SelectSubset<T, BlogPostCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+    createMany<T extends SeoModuleCreateManyArgs>(args?: SelectSubset<T, SeoModuleCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
     /**
-     * Create many BlogPosts and returns the data saved in the database.
-     * @param {BlogPostCreateManyAndReturnArgs} args - Arguments to create many BlogPosts.
+     * Create many SeoModules and returns the data saved in the database.
+     * @param {SeoModuleCreateManyAndReturnArgs} args - Arguments to create many SeoModules.
      * @example
-     * // Create many BlogPosts
-     * const blogPost = await prisma.blogPost.createManyAndReturn({
+     * // Create many SeoModules
+     * const seoModule = await prisma.seoModule.createManyAndReturn({
      *   data: [
      *     // ... provide data here
      *   ]
      * })
      * 
-     * // Create many BlogPosts and only return the `id`
-     * const blogPostWithIdOnly = await prisma.blogPost.createManyAndReturn({
+     * // Create many SeoModules and only return the `id`
+     * const seoModuleWithIdOnly = await prisma.seoModule.createManyAndReturn({
      *   select: { id: true },
      *   data: [
      *     // ... provide data here
@@ -5551,28 +5829,28 @@ export namespace Prisma {
      * Read more here: https://pris.ly/d/null-undefined
      * 
      */
-    createManyAndReturn<T extends BlogPostCreateManyAndReturnArgs>(args?: SelectSubset<T, BlogPostCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BlogPostPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+    createManyAndReturn<T extends SeoModuleCreateManyAndReturnArgs>(args?: SelectSubset<T, SeoModuleCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SeoModulePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
 
     /**
-     * Delete a BlogPost.
-     * @param {BlogPostDeleteArgs} args - Arguments to delete one BlogPost.
+     * Delete a SeoModule.
+     * @param {SeoModuleDeleteArgs} args - Arguments to delete one SeoModule.
      * @example
-     * // Delete one BlogPost
-     * const BlogPost = await prisma.blogPost.delete({
+     * // Delete one SeoModule
+     * const SeoModule = await prisma.seoModule.delete({
      *   where: {
-     *     // ... filter to delete one BlogPost
+     *     // ... filter to delete one SeoModule
      *   }
      * })
      * 
      */
-    delete<T extends BlogPostDeleteArgs>(args: SelectSubset<T, BlogPostDeleteArgs<ExtArgs>>): Prisma__BlogPostClient<$Result.GetResult<Prisma.$BlogPostPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    delete<T extends SeoModuleDeleteArgs>(args: SelectSubset<T, SeoModuleDeleteArgs<ExtArgs>>): Prisma__SeoModuleClient<$Result.GetResult<Prisma.$SeoModulePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Update one BlogPost.
-     * @param {BlogPostUpdateArgs} args - Arguments to update one BlogPost.
+     * Update one SeoModule.
+     * @param {SeoModuleUpdateArgs} args - Arguments to update one SeoModule.
      * @example
-     * // Update one BlogPost
-     * const blogPost = await prisma.blogPost.update({
+     * // Update one SeoModule
+     * const seoModule = await prisma.seoModule.update({
      *   where: {
      *     // ... provide filter here
      *   },
@@ -5582,30 +5860,30 @@ export namespace Prisma {
      * })
      * 
      */
-    update<T extends BlogPostUpdateArgs>(args: SelectSubset<T, BlogPostUpdateArgs<ExtArgs>>): Prisma__BlogPostClient<$Result.GetResult<Prisma.$BlogPostPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    update<T extends SeoModuleUpdateArgs>(args: SelectSubset<T, SeoModuleUpdateArgs<ExtArgs>>): Prisma__SeoModuleClient<$Result.GetResult<Prisma.$SeoModulePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Delete zero or more BlogPosts.
-     * @param {BlogPostDeleteManyArgs} args - Arguments to filter BlogPosts to delete.
+     * Delete zero or more SeoModules.
+     * @param {SeoModuleDeleteManyArgs} args - Arguments to filter SeoModules to delete.
      * @example
-     * // Delete a few BlogPosts
-     * const { count } = await prisma.blogPost.deleteMany({
+     * // Delete a few SeoModules
+     * const { count } = await prisma.seoModule.deleteMany({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      * 
      */
-    deleteMany<T extends BlogPostDeleteManyArgs>(args?: SelectSubset<T, BlogPostDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+    deleteMany<T extends SeoModuleDeleteManyArgs>(args?: SelectSubset<T, SeoModuleDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
     /**
-     * Update zero or more BlogPosts.
+     * Update zero or more SeoModules.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {BlogPostUpdateManyArgs} args - Arguments to update one or more rows.
+     * @param {SeoModuleUpdateManyArgs} args - Arguments to update one or more rows.
      * @example
-     * // Update many BlogPosts
-     * const blogPost = await prisma.blogPost.updateMany({
+     * // Update many SeoModules
+     * const seoModule = await prisma.seoModule.updateMany({
      *   where: {
      *     // ... provide filter here
      *   },
@@ -5615,14 +5893,14 @@ export namespace Prisma {
      * })
      * 
      */
-    updateMany<T extends BlogPostUpdateManyArgs>(args: SelectSubset<T, BlogPostUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+    updateMany<T extends SeoModuleUpdateManyArgs>(args: SelectSubset<T, SeoModuleUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
     /**
-     * Update zero or more BlogPosts and returns the data updated in the database.
-     * @param {BlogPostUpdateManyAndReturnArgs} args - Arguments to update many BlogPosts.
+     * Update zero or more SeoModules and returns the data updated in the database.
+     * @param {SeoModuleUpdateManyAndReturnArgs} args - Arguments to update many SeoModules.
      * @example
-     * // Update many BlogPosts
-     * const blogPost = await prisma.blogPost.updateManyAndReturn({
+     * // Update many SeoModules
+     * const seoModule = await prisma.seoModule.updateManyAndReturn({
      *   where: {
      *     // ... provide filter here
      *   },
@@ -5631,8 +5909,8 @@ export namespace Prisma {
      *   ]
      * })
      * 
-     * // Update zero or more BlogPosts and only return the `id`
-     * const blogPostWithIdOnly = await prisma.blogPost.updateManyAndReturn({
+     * // Update zero or more SeoModules and only return the `id`
+     * const seoModuleWithIdOnly = await prisma.seoModule.updateManyAndReturn({
      *   select: { id: true },
      *   where: {
      *     // ... provide filter here
@@ -5645,56 +5923,56 @@ export namespace Prisma {
      * Read more here: https://pris.ly/d/null-undefined
      * 
      */
-    updateManyAndReturn<T extends BlogPostUpdateManyAndReturnArgs>(args: SelectSubset<T, BlogPostUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BlogPostPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+    updateManyAndReturn<T extends SeoModuleUpdateManyAndReturnArgs>(args: SelectSubset<T, SeoModuleUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SeoModulePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
 
     /**
-     * Create or update one BlogPost.
-     * @param {BlogPostUpsertArgs} args - Arguments to update or create a BlogPost.
+     * Create or update one SeoModule.
+     * @param {SeoModuleUpsertArgs} args - Arguments to update or create a SeoModule.
      * @example
-     * // Update or create a BlogPost
-     * const blogPost = await prisma.blogPost.upsert({
+     * // Update or create a SeoModule
+     * const seoModule = await prisma.seoModule.upsert({
      *   create: {
-     *     // ... data to create a BlogPost
+     *     // ... data to create a SeoModule
      *   },
      *   update: {
      *     // ... in case it already exists, update
      *   },
      *   where: {
-     *     // ... the filter for the BlogPost we want to update
+     *     // ... the filter for the SeoModule we want to update
      *   }
      * })
      */
-    upsert<T extends BlogPostUpsertArgs>(args: SelectSubset<T, BlogPostUpsertArgs<ExtArgs>>): Prisma__BlogPostClient<$Result.GetResult<Prisma.$BlogPostPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    upsert<T extends SeoModuleUpsertArgs>(args: SelectSubset<T, SeoModuleUpsertArgs<ExtArgs>>): Prisma__SeoModuleClient<$Result.GetResult<Prisma.$SeoModulePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
 
     /**
-     * Count the number of BlogPosts.
+     * Count the number of SeoModules.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {BlogPostCountArgs} args - Arguments to filter BlogPosts to count.
+     * @param {SeoModuleCountArgs} args - Arguments to filter SeoModules to count.
      * @example
-     * // Count the number of BlogPosts
-     * const count = await prisma.blogPost.count({
+     * // Count the number of SeoModules
+     * const count = await prisma.seoModule.count({
      *   where: {
-     *     // ... the filter for the BlogPosts we want to count
+     *     // ... the filter for the SeoModules we want to count
      *   }
      * })
     **/
-    count<T extends BlogPostCountArgs>(
-      args?: Subset<T, BlogPostCountArgs>,
+    count<T extends SeoModuleCountArgs>(
+      args?: Subset<T, SeoModuleCountArgs>,
     ): Prisma.PrismaPromise<
       T extends $Utils.Record<'select', any>
         ? T['select'] extends true
           ? number
-          : GetScalarType<T['select'], BlogPostCountAggregateOutputType>
+          : GetScalarType<T['select'], SeoModuleCountAggregateOutputType>
         : number
     >
 
     /**
-     * Allows you to perform aggregations operations on a BlogPost.
+     * Allows you to perform aggregations operations on a SeoModule.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {BlogPostAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @param {SeoModuleAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
      * @example
      * // Ordered by age ascending
      * // Where email contains prisma.io
@@ -5714,13 +5992,13 @@ export namespace Prisma {
      *   take: 10,
      * })
     **/
-    aggregate<T extends BlogPostAggregateArgs>(args: Subset<T, BlogPostAggregateArgs>): Prisma.PrismaPromise<GetBlogPostAggregateType<T>>
+    aggregate<T extends SeoModuleAggregateArgs>(args: Subset<T, SeoModuleAggregateArgs>): Prisma.PrismaPromise<GetSeoModuleAggregateType<T>>
 
     /**
-     * Group by BlogPost.
+     * Group by SeoModule.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {BlogPostGroupByArgs} args - Group by arguments.
+     * @param {SeoModuleGroupByArgs} args - Group by arguments.
      * @example
      * // Group by city, order by createdAt, get count
      * const result = await prisma.user.groupBy({
@@ -5735,14 +6013,14 @@ export namespace Prisma {
      * 
     **/
     groupBy<
-      T extends BlogPostGroupByArgs,
+      T extends SeoModuleGroupByArgs,
       HasSelectOrTake extends Or<
         Extends<'skip', Keys<T>>,
         Extends<'take', Keys<T>>
       >,
       OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: BlogPostGroupByArgs['orderBy'] }
-        : { orderBy?: BlogPostGroupByArgs['orderBy'] },
+        ? { orderBy: SeoModuleGroupByArgs['orderBy'] }
+        : { orderBy?: SeoModuleGroupByArgs['orderBy'] },
       OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
       ByFields extends MaybeTupleToUnion<T['by']>,
       ByValid extends Has<ByFields, OrderFields>,
@@ -5791,22 +6069,23 @@ export namespace Prisma {
             ? never
             : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
         }[OrderFields]
-    >(args: SubsetIntersection<T, BlogPostGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetBlogPostGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+    >(args: SubsetIntersection<T, SeoModuleGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetSeoModuleGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
   /**
-   * Fields of the BlogPost model
+   * Fields of the SeoModule model
    */
-  readonly fields: BlogPostFieldRefs;
+  readonly fields: SeoModuleFieldRefs;
   }
 
   /**
-   * The delegate class that acts as a "Promise-like" for BlogPost.
+   * The delegate class that acts as a "Promise-like" for SeoModule.
    * Why is this prefixed with `Prisma__`?
    * Because we want to prevent naming conflicts as mentioned in
    * https://github.com/prisma/prisma-client-js/issues/707
    */
-  export interface Prisma__BlogPostClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+  export interface Prisma__SeoModuleClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    author<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    post<T extends SeoModule$postArgs<ExtArgs> = {}>(args?: Subset<T, SeoModule$postArgs<ExtArgs>>): Prisma__PostClient<$Result.GetResult<Prisma.$PostPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    prescription<T extends SeoModule$prescriptionArgs<ExtArgs> = {}>(args?: Subset<T, SeoModule$prescriptionArgs<ExtArgs>>): Prisma__PrescriptionClient<$Result.GetResult<Prisma.$PrescriptionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -5833,424 +6112,465 @@ export namespace Prisma {
 
 
   /**
-   * Fields of the BlogPost model
+   * Fields of the SeoModule model
    */
-  interface BlogPostFieldRefs {
-    readonly id: FieldRef<"BlogPost", 'String'>
-    readonly title: FieldRef<"BlogPost", 'String'>
-    readonly content: FieldRef<"BlogPost", 'String'>
-    readonly authorId: FieldRef<"BlogPost", 'String'>
-    readonly createdAt: FieldRef<"BlogPost", 'DateTime'>
-    readonly updatedAt: FieldRef<"BlogPost", 'DateTime'>
+  interface SeoModuleFieldRefs {
+    readonly id: FieldRef<"SeoModule", 'String'>
+    readonly metaTitle: FieldRef<"SeoModule", 'String'>
+    readonly metaDescription: FieldRef<"SeoModule", 'String'>
+    readonly keywords: FieldRef<"SeoModule", 'String'>
+    readonly ogTitle: FieldRef<"SeoModule", 'String'>
+    readonly ogDescription: FieldRef<"SeoModule", 'String'>
+    readonly ogImageUrl: FieldRef<"SeoModule", 'String'>
+    readonly ogImageAlt: FieldRef<"SeoModule", 'String'>
+    readonly twitterCard: FieldRef<"SeoModule", 'String'>
+    readonly twitterTitle: FieldRef<"SeoModule", 'String'>
+    readonly twitterDescription: FieldRef<"SeoModule", 'String'>
+    readonly twitterImageUrl: FieldRef<"SeoModule", 'String'>
+    readonly twitterImageAlt: FieldRef<"SeoModule", 'String'>
+    readonly canonicalUrl: FieldRef<"SeoModule", 'String'>
+    readonly noIndex: FieldRef<"SeoModule", 'Boolean'>
+    readonly createdAt: FieldRef<"SeoModule", 'DateTime'>
+    readonly updatedAt: FieldRef<"SeoModule", 'DateTime'>
   }
     
 
   // Custom InputTypes
   /**
-   * BlogPost findUnique
+   * SeoModule findUnique
    */
-  export type BlogPostFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type SeoModuleFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the BlogPost
+     * Select specific fields to fetch from the SeoModule
      */
-    select?: BlogPostSelect<ExtArgs> | null
+    select?: SeoModuleSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the BlogPost
+     * Omit specific fields from the SeoModule
      */
-    omit?: BlogPostOmit<ExtArgs> | null
+    omit?: SeoModuleOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: BlogPostInclude<ExtArgs> | null
+    include?: SeoModuleInclude<ExtArgs> | null
     /**
-     * Filter, which BlogPost to fetch.
+     * Filter, which SeoModule to fetch.
      */
-    where: BlogPostWhereUniqueInput
+    where: SeoModuleWhereUniqueInput
   }
 
   /**
-   * BlogPost findUniqueOrThrow
+   * SeoModule findUniqueOrThrow
    */
-  export type BlogPostFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type SeoModuleFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the BlogPost
+     * Select specific fields to fetch from the SeoModule
      */
-    select?: BlogPostSelect<ExtArgs> | null
+    select?: SeoModuleSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the BlogPost
+     * Omit specific fields from the SeoModule
      */
-    omit?: BlogPostOmit<ExtArgs> | null
+    omit?: SeoModuleOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: BlogPostInclude<ExtArgs> | null
+    include?: SeoModuleInclude<ExtArgs> | null
     /**
-     * Filter, which BlogPost to fetch.
+     * Filter, which SeoModule to fetch.
      */
-    where: BlogPostWhereUniqueInput
+    where: SeoModuleWhereUniqueInput
   }
 
   /**
-   * BlogPost findFirst
+   * SeoModule findFirst
    */
-  export type BlogPostFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type SeoModuleFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the BlogPost
+     * Select specific fields to fetch from the SeoModule
      */
-    select?: BlogPostSelect<ExtArgs> | null
+    select?: SeoModuleSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the BlogPost
+     * Omit specific fields from the SeoModule
      */
-    omit?: BlogPostOmit<ExtArgs> | null
+    omit?: SeoModuleOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: BlogPostInclude<ExtArgs> | null
+    include?: SeoModuleInclude<ExtArgs> | null
     /**
-     * Filter, which BlogPost to fetch.
+     * Filter, which SeoModule to fetch.
      */
-    where?: BlogPostWhereInput
+    where?: SeoModuleWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of BlogPosts to fetch.
+     * Determine the order of SeoModules to fetch.
      */
-    orderBy?: BlogPostOrderByWithRelationInput | BlogPostOrderByWithRelationInput[]
+    orderBy?: SeoModuleOrderByWithRelationInput | SeoModuleOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for searching for BlogPosts.
+     * Sets the position for searching for SeoModules.
      */
-    cursor?: BlogPostWhereUniqueInput
+    cursor?: SeoModuleWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` BlogPosts from the position of the cursor.
+     * Take `±n` SeoModules from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` BlogPosts.
+     * Skip the first `n` SeoModules.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
      * 
-     * Filter by unique combinations of BlogPosts.
+     * Filter by unique combinations of SeoModules.
      */
-    distinct?: BlogPostScalarFieldEnum | BlogPostScalarFieldEnum[]
+    distinct?: SeoModuleScalarFieldEnum | SeoModuleScalarFieldEnum[]
   }
 
   /**
-   * BlogPost findFirstOrThrow
+   * SeoModule findFirstOrThrow
    */
-  export type BlogPostFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type SeoModuleFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the BlogPost
+     * Select specific fields to fetch from the SeoModule
      */
-    select?: BlogPostSelect<ExtArgs> | null
+    select?: SeoModuleSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the BlogPost
+     * Omit specific fields from the SeoModule
      */
-    omit?: BlogPostOmit<ExtArgs> | null
+    omit?: SeoModuleOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: BlogPostInclude<ExtArgs> | null
+    include?: SeoModuleInclude<ExtArgs> | null
     /**
-     * Filter, which BlogPost to fetch.
+     * Filter, which SeoModule to fetch.
      */
-    where?: BlogPostWhereInput
+    where?: SeoModuleWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of BlogPosts to fetch.
+     * Determine the order of SeoModules to fetch.
      */
-    orderBy?: BlogPostOrderByWithRelationInput | BlogPostOrderByWithRelationInput[]
+    orderBy?: SeoModuleOrderByWithRelationInput | SeoModuleOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for searching for BlogPosts.
+     * Sets the position for searching for SeoModules.
      */
-    cursor?: BlogPostWhereUniqueInput
+    cursor?: SeoModuleWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` BlogPosts from the position of the cursor.
+     * Take `±n` SeoModules from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` BlogPosts.
+     * Skip the first `n` SeoModules.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
      * 
-     * Filter by unique combinations of BlogPosts.
+     * Filter by unique combinations of SeoModules.
      */
-    distinct?: BlogPostScalarFieldEnum | BlogPostScalarFieldEnum[]
+    distinct?: SeoModuleScalarFieldEnum | SeoModuleScalarFieldEnum[]
   }
 
   /**
-   * BlogPost findMany
+   * SeoModule findMany
    */
-  export type BlogPostFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type SeoModuleFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the BlogPost
+     * Select specific fields to fetch from the SeoModule
      */
-    select?: BlogPostSelect<ExtArgs> | null
+    select?: SeoModuleSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the BlogPost
+     * Omit specific fields from the SeoModule
      */
-    omit?: BlogPostOmit<ExtArgs> | null
+    omit?: SeoModuleOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: BlogPostInclude<ExtArgs> | null
+    include?: SeoModuleInclude<ExtArgs> | null
     /**
-     * Filter, which BlogPosts to fetch.
+     * Filter, which SeoModules to fetch.
      */
-    where?: BlogPostWhereInput
+    where?: SeoModuleWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of BlogPosts to fetch.
+     * Determine the order of SeoModules to fetch.
      */
-    orderBy?: BlogPostOrderByWithRelationInput | BlogPostOrderByWithRelationInput[]
+    orderBy?: SeoModuleOrderByWithRelationInput | SeoModuleOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for listing BlogPosts.
+     * Sets the position for listing SeoModules.
      */
-    cursor?: BlogPostWhereUniqueInput
+    cursor?: SeoModuleWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` BlogPosts from the position of the cursor.
+     * Take `±n` SeoModules from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` BlogPosts.
+     * Skip the first `n` SeoModules.
      */
     skip?: number
-    distinct?: BlogPostScalarFieldEnum | BlogPostScalarFieldEnum[]
+    distinct?: SeoModuleScalarFieldEnum | SeoModuleScalarFieldEnum[]
   }
 
   /**
-   * BlogPost create
+   * SeoModule create
    */
-  export type BlogPostCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type SeoModuleCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the BlogPost
+     * Select specific fields to fetch from the SeoModule
      */
-    select?: BlogPostSelect<ExtArgs> | null
+    select?: SeoModuleSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the BlogPost
+     * Omit specific fields from the SeoModule
      */
-    omit?: BlogPostOmit<ExtArgs> | null
+    omit?: SeoModuleOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: BlogPostInclude<ExtArgs> | null
+    include?: SeoModuleInclude<ExtArgs> | null
     /**
-     * The data needed to create a BlogPost.
+     * The data needed to create a SeoModule.
      */
-    data: XOR<BlogPostCreateInput, BlogPostUncheckedCreateInput>
+    data?: XOR<SeoModuleCreateInput, SeoModuleUncheckedCreateInput>
   }
 
   /**
-   * BlogPost createMany
+   * SeoModule createMany
    */
-  export type BlogPostCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type SeoModuleCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * The data used to create many BlogPosts.
+     * The data used to create many SeoModules.
      */
-    data: BlogPostCreateManyInput | BlogPostCreateManyInput[]
+    data: SeoModuleCreateManyInput | SeoModuleCreateManyInput[]
   }
 
   /**
-   * BlogPost createManyAndReturn
+   * SeoModule createManyAndReturn
    */
-  export type BlogPostCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type SeoModuleCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the BlogPost
+     * Select specific fields to fetch from the SeoModule
      */
-    select?: BlogPostSelectCreateManyAndReturn<ExtArgs> | null
+    select?: SeoModuleSelectCreateManyAndReturn<ExtArgs> | null
     /**
-     * Omit specific fields from the BlogPost
+     * Omit specific fields from the SeoModule
      */
-    omit?: BlogPostOmit<ExtArgs> | null
+    omit?: SeoModuleOmit<ExtArgs> | null
     /**
-     * The data used to create many BlogPosts.
+     * The data used to create many SeoModules.
      */
-    data: BlogPostCreateManyInput | BlogPostCreateManyInput[]
+    data: SeoModuleCreateManyInput | SeoModuleCreateManyInput[]
+  }
+
+  /**
+   * SeoModule update
+   */
+  export type SeoModuleUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SeoModule
+     */
+    select?: SeoModuleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SeoModule
+     */
+    omit?: SeoModuleOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: BlogPostIncludeCreateManyAndReturn<ExtArgs> | null
+    include?: SeoModuleInclude<ExtArgs> | null
+    /**
+     * The data needed to update a SeoModule.
+     */
+    data: XOR<SeoModuleUpdateInput, SeoModuleUncheckedUpdateInput>
+    /**
+     * Choose, which SeoModule to update.
+     */
+    where: SeoModuleWhereUniqueInput
   }
 
   /**
-   * BlogPost update
+   * SeoModule updateMany
    */
-  export type BlogPostUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type SeoModuleUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the BlogPost
+     * The data used to update SeoModules.
      */
-    select?: BlogPostSelect<ExtArgs> | null
+    data: XOR<SeoModuleUpdateManyMutationInput, SeoModuleUncheckedUpdateManyInput>
     /**
-     * Omit specific fields from the BlogPost
+     * Filter which SeoModules to update
      */
-    omit?: BlogPostOmit<ExtArgs> | null
+    where?: SeoModuleWhereInput
     /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: BlogPostInclude<ExtArgs> | null
-    /**
-     * The data needed to update a BlogPost.
-     */
-    data: XOR<BlogPostUpdateInput, BlogPostUncheckedUpdateInput>
-    /**
-     * Choose, which BlogPost to update.
-     */
-    where: BlogPostWhereUniqueInput
-  }
-
-  /**
-   * BlogPost updateMany
-   */
-  export type BlogPostUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to update BlogPosts.
-     */
-    data: XOR<BlogPostUpdateManyMutationInput, BlogPostUncheckedUpdateManyInput>
-    /**
-     * Filter which BlogPosts to update
-     */
-    where?: BlogPostWhereInput
-    /**
-     * Limit how many BlogPosts to update.
+     * Limit how many SeoModules to update.
      */
     limit?: number
   }
 
   /**
-   * BlogPost updateManyAndReturn
+   * SeoModule updateManyAndReturn
    */
-  export type BlogPostUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type SeoModuleUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the BlogPost
+     * Select specific fields to fetch from the SeoModule
      */
-    select?: BlogPostSelectUpdateManyAndReturn<ExtArgs> | null
+    select?: SeoModuleSelectUpdateManyAndReturn<ExtArgs> | null
     /**
-     * Omit specific fields from the BlogPost
+     * Omit specific fields from the SeoModule
      */
-    omit?: BlogPostOmit<ExtArgs> | null
+    omit?: SeoModuleOmit<ExtArgs> | null
     /**
-     * The data used to update BlogPosts.
+     * The data used to update SeoModules.
      */
-    data: XOR<BlogPostUpdateManyMutationInput, BlogPostUncheckedUpdateManyInput>
+    data: XOR<SeoModuleUpdateManyMutationInput, SeoModuleUncheckedUpdateManyInput>
     /**
-     * Filter which BlogPosts to update
+     * Filter which SeoModules to update
      */
-    where?: BlogPostWhereInput
+    where?: SeoModuleWhereInput
     /**
-     * Limit how many BlogPosts to update.
-     */
-    limit?: number
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: BlogPostIncludeUpdateManyAndReturn<ExtArgs> | null
-  }
-
-  /**
-   * BlogPost upsert
-   */
-  export type BlogPostUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the BlogPost
-     */
-    select?: BlogPostSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the BlogPost
-     */
-    omit?: BlogPostOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: BlogPostInclude<ExtArgs> | null
-    /**
-     * The filter to search for the BlogPost to update in case it exists.
-     */
-    where: BlogPostWhereUniqueInput
-    /**
-     * In case the BlogPost found by the `where` argument doesn't exist, create a new BlogPost with this data.
-     */
-    create: XOR<BlogPostCreateInput, BlogPostUncheckedCreateInput>
-    /**
-     * In case the BlogPost was found with the provided `where` argument, update it with this data.
-     */
-    update: XOR<BlogPostUpdateInput, BlogPostUncheckedUpdateInput>
-  }
-
-  /**
-   * BlogPost delete
-   */
-  export type BlogPostDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the BlogPost
-     */
-    select?: BlogPostSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the BlogPost
-     */
-    omit?: BlogPostOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: BlogPostInclude<ExtArgs> | null
-    /**
-     * Filter which BlogPost to delete.
-     */
-    where: BlogPostWhereUniqueInput
-  }
-
-  /**
-   * BlogPost deleteMany
-   */
-  export type BlogPostDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which BlogPosts to delete
-     */
-    where?: BlogPostWhereInput
-    /**
-     * Limit how many BlogPosts to delete.
+     * Limit how many SeoModules to update.
      */
     limit?: number
   }
 
   /**
-   * BlogPost without action
+   * SeoModule upsert
    */
-  export type BlogPostDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type SeoModuleUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the BlogPost
+     * Select specific fields to fetch from the SeoModule
      */
-    select?: BlogPostSelect<ExtArgs> | null
+    select?: SeoModuleSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the BlogPost
+     * Omit specific fields from the SeoModule
      */
-    omit?: BlogPostOmit<ExtArgs> | null
+    omit?: SeoModuleOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: BlogPostInclude<ExtArgs> | null
+    include?: SeoModuleInclude<ExtArgs> | null
+    /**
+     * The filter to search for the SeoModule to update in case it exists.
+     */
+    where: SeoModuleWhereUniqueInput
+    /**
+     * In case the SeoModule found by the `where` argument doesn't exist, create a new SeoModule with this data.
+     */
+    create: XOR<SeoModuleCreateInput, SeoModuleUncheckedCreateInput>
+    /**
+     * In case the SeoModule was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<SeoModuleUpdateInput, SeoModuleUncheckedUpdateInput>
+  }
+
+  /**
+   * SeoModule delete
+   */
+  export type SeoModuleDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SeoModule
+     */
+    select?: SeoModuleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SeoModule
+     */
+    omit?: SeoModuleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SeoModuleInclude<ExtArgs> | null
+    /**
+     * Filter which SeoModule to delete.
+     */
+    where: SeoModuleWhereUniqueInput
+  }
+
+  /**
+   * SeoModule deleteMany
+   */
+  export type SeoModuleDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which SeoModules to delete
+     */
+    where?: SeoModuleWhereInput
+    /**
+     * Limit how many SeoModules to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * SeoModule.post
+   */
+  export type SeoModule$postArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Post
+     */
+    select?: PostSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Post
+     */
+    omit?: PostOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PostInclude<ExtArgs> | null
+    where?: PostWhereInput
+  }
+
+  /**
+   * SeoModule.prescription
+   */
+  export type SeoModule$prescriptionArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Prescription
+     */
+    select?: PrescriptionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Prescription
+     */
+    omit?: PrescriptionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PrescriptionInclude<ExtArgs> | null
+    where?: PrescriptionWhereInput
+  }
+
+  /**
+   * SeoModule without action
+   */
+  export type SeoModuleDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SeoModule
+     */
+    select?: SeoModuleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SeoModule
+     */
+    omit?: SeoModuleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SeoModuleInclude<ExtArgs> | null
   }
 
 
@@ -7587,6 +7907,7 @@ export namespace Prisma {
     primaryPrescriptions?: boolean | Ingredient$primaryPrescriptionsArgs<ExtArgs>
     secondaryPrescriptions?: boolean | Ingredient$secondaryPrescriptionsArgs<ExtArgs>
     tags?: boolean | Ingredient$tagsArgs<ExtArgs>
+    posts?: boolean | Ingredient$postsArgs<ExtArgs>
     _count?: boolean | IngredientCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["ingredient"]>
 
@@ -7639,6 +7960,7 @@ export namespace Prisma {
     primaryPrescriptions?: boolean | Ingredient$primaryPrescriptionsArgs<ExtArgs>
     secondaryPrescriptions?: boolean | Ingredient$secondaryPrescriptionsArgs<ExtArgs>
     tags?: boolean | Ingredient$tagsArgs<ExtArgs>
+    posts?: boolean | Ingredient$postsArgs<ExtArgs>
     _count?: boolean | IngredientCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type IngredientIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -7652,6 +7974,7 @@ export namespace Prisma {
       primaryPrescriptions: Prisma.$PrescriptionPayload<ExtArgs>[]
       secondaryPrescriptions: Prisma.$PrescriptionPayload<ExtArgs>[]
       tags: Prisma.$TagPayload<ExtArgs>[]
+      posts: Prisma.$PostPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -8064,6 +8387,7 @@ export namespace Prisma {
     primaryPrescriptions<T extends Ingredient$primaryPrescriptionsArgs<ExtArgs> = {}>(args?: Subset<T, Ingredient$primaryPrescriptionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PrescriptionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     secondaryPrescriptions<T extends Ingredient$secondaryPrescriptionsArgs<ExtArgs> = {}>(args?: Subset<T, Ingredient$secondaryPrescriptionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PrescriptionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     tags<T extends Ingredient$tagsArgs<ExtArgs> = {}>(args?: Subset<T, Ingredient$tagsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TagPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    posts<T extends Ingredient$postsArgs<ExtArgs> = {}>(args?: Subset<T, Ingredient$postsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PostPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -8607,6 +8931,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: TagScalarFieldEnum | TagScalarFieldEnum[]
+  }
+
+  /**
+   * Ingredient.posts
+   */
+  export type Ingredient$postsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Post
+     */
+    select?: PostSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Post
+     */
+    omit?: PostOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PostInclude<ExtArgs> | null
+    where?: PostWhereInput
+    orderBy?: PostOrderByWithRelationInput | PostOrderByWithRelationInput[]
+    cursor?: PostWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: PostScalarFieldEnum | PostScalarFieldEnum[]
   }
 
   /**
@@ -9772,6 +10120,7 @@ export namespace Prisma {
     updatedAt: Date | null
     primaryFontId: string | null
     secondaryFontId: string | null
+    seoId: string | null
   }
 
   export type PrescriptionMaxAggregateOutputType = {
@@ -9786,6 +10135,7 @@ export namespace Prisma {
     updatedAt: Date | null
     primaryFontId: string | null
     secondaryFontId: string | null
+    seoId: string | null
   }
 
   export type PrescriptionCountAggregateOutputType = {
@@ -9800,6 +10150,7 @@ export namespace Prisma {
     updatedAt: number
     primaryFontId: number
     secondaryFontId: number
+    seoId: number
     _all: number
   }
 
@@ -9816,6 +10167,7 @@ export namespace Prisma {
     updatedAt?: true
     primaryFontId?: true
     secondaryFontId?: true
+    seoId?: true
   }
 
   export type PrescriptionMaxAggregateInputType = {
@@ -9830,6 +10182,7 @@ export namespace Prisma {
     updatedAt?: true
     primaryFontId?: true
     secondaryFontId?: true
+    seoId?: true
   }
 
   export type PrescriptionCountAggregateInputType = {
@@ -9844,6 +10197,7 @@ export namespace Prisma {
     updatedAt?: true
     primaryFontId?: true
     secondaryFontId?: true
+    seoId?: true
     _all?: true
   }
 
@@ -9931,6 +10285,7 @@ export namespace Prisma {
     updatedAt: Date
     primaryFontId: string
     secondaryFontId: string
+    seoId: string | null
     _count: PrescriptionCountAggregateOutputType | null
     _min: PrescriptionMinAggregateOutputType | null
     _max: PrescriptionMaxAggregateOutputType | null
@@ -9962,9 +10317,11 @@ export namespace Prisma {
     updatedAt?: boolean
     primaryFontId?: boolean
     secondaryFontId?: boolean
+    seoId?: boolean
     primaryFont?: boolean | IngredientDefaultArgs<ExtArgs>
     secondaryFont?: boolean | IngredientDefaultArgs<ExtArgs>
     tags?: boolean | Prescription$tagsArgs<ExtArgs>
+    seo?: boolean | Prescription$seoArgs<ExtArgs>
     _count?: boolean | PrescriptionCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["prescription"]>
 
@@ -9980,8 +10337,10 @@ export namespace Prisma {
     updatedAt?: boolean
     primaryFontId?: boolean
     secondaryFontId?: boolean
+    seoId?: boolean
     primaryFont?: boolean | IngredientDefaultArgs<ExtArgs>
     secondaryFont?: boolean | IngredientDefaultArgs<ExtArgs>
+    seo?: boolean | Prescription$seoArgs<ExtArgs>
   }, ExtArgs["result"]["prescription"]>
 
   export type PrescriptionSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -9996,8 +10355,10 @@ export namespace Prisma {
     updatedAt?: boolean
     primaryFontId?: boolean
     secondaryFontId?: boolean
+    seoId?: boolean
     primaryFont?: boolean | IngredientDefaultArgs<ExtArgs>
     secondaryFont?: boolean | IngredientDefaultArgs<ExtArgs>
+    seo?: boolean | Prescription$seoArgs<ExtArgs>
   }, ExtArgs["result"]["prescription"]>
 
   export type PrescriptionSelectScalar = {
@@ -10012,22 +10373,26 @@ export namespace Prisma {
     updatedAt?: boolean
     primaryFontId?: boolean
     secondaryFontId?: boolean
+    seoId?: boolean
   }
 
-  export type PrescriptionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "slug" | "description" | "imageUrl" | "insight" | "published" | "createdAt" | "updatedAt" | "primaryFontId" | "secondaryFontId", ExtArgs["result"]["prescription"]>
+  export type PrescriptionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "slug" | "description" | "imageUrl" | "insight" | "published" | "createdAt" | "updatedAt" | "primaryFontId" | "secondaryFontId" | "seoId", ExtArgs["result"]["prescription"]>
   export type PrescriptionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     primaryFont?: boolean | IngredientDefaultArgs<ExtArgs>
     secondaryFont?: boolean | IngredientDefaultArgs<ExtArgs>
     tags?: boolean | Prescription$tagsArgs<ExtArgs>
+    seo?: boolean | Prescription$seoArgs<ExtArgs>
     _count?: boolean | PrescriptionCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type PrescriptionIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     primaryFont?: boolean | IngredientDefaultArgs<ExtArgs>
     secondaryFont?: boolean | IngredientDefaultArgs<ExtArgs>
+    seo?: boolean | Prescription$seoArgs<ExtArgs>
   }
   export type PrescriptionIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     primaryFont?: boolean | IngredientDefaultArgs<ExtArgs>
     secondaryFont?: boolean | IngredientDefaultArgs<ExtArgs>
+    seo?: boolean | Prescription$seoArgs<ExtArgs>
   }
 
   export type $PrescriptionPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -10036,6 +10401,7 @@ export namespace Prisma {
       primaryFont: Prisma.$IngredientPayload<ExtArgs>
       secondaryFont: Prisma.$IngredientPayload<ExtArgs>
       tags: Prisma.$TagPayload<ExtArgs>[]
+      seo: Prisma.$SeoModulePayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -10049,6 +10415,7 @@ export namespace Prisma {
       updatedAt: Date
       primaryFontId: string
       secondaryFontId: string
+      seoId: string | null
     }, ExtArgs["result"]["prescription"]>
     composites: {}
   }
@@ -10446,6 +10813,7 @@ export namespace Prisma {
     primaryFont<T extends IngredientDefaultArgs<ExtArgs> = {}>(args?: Subset<T, IngredientDefaultArgs<ExtArgs>>): Prisma__IngredientClient<$Result.GetResult<Prisma.$IngredientPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     secondaryFont<T extends IngredientDefaultArgs<ExtArgs> = {}>(args?: Subset<T, IngredientDefaultArgs<ExtArgs>>): Prisma__IngredientClient<$Result.GetResult<Prisma.$IngredientPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     tags<T extends Prescription$tagsArgs<ExtArgs> = {}>(args?: Subset<T, Prescription$tagsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TagPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    seo<T extends Prescription$seoArgs<ExtArgs> = {}>(args?: Subset<T, Prescription$seoArgs<ExtArgs>>): Prisma__SeoModuleClient<$Result.GetResult<Prisma.$SeoModulePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -10486,6 +10854,7 @@ export namespace Prisma {
     readonly updatedAt: FieldRef<"Prescription", 'DateTime'>
     readonly primaryFontId: FieldRef<"Prescription", 'String'>
     readonly secondaryFontId: FieldRef<"Prescription", 'String'>
+    readonly seoId: FieldRef<"Prescription", 'String'>
   }
     
 
@@ -10904,6 +11273,25 @@ export namespace Prisma {
   }
 
   /**
+   * Prescription.seo
+   */
+  export type Prescription$seoArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SeoModule
+     */
+    select?: SeoModuleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SeoModule
+     */
+    omit?: SeoModuleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SeoModuleInclude<ExtArgs> | null
+    where?: SeoModuleWhereInput
+  }
+
+  /**
    * Prescription without action
    */
   export type PrescriptionDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -11089,6 +11477,7 @@ export namespace Prisma {
     prescriptions?: boolean | Tag$prescriptionsArgs<ExtArgs>
     ingredients?: boolean | Tag$ingredientsArgs<ExtArgs>
     formulas?: boolean | Tag$formulasArgs<ExtArgs>
+    posts?: boolean | Tag$postsArgs<ExtArgs>
     _count?: boolean | TagCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["tag"]>
 
@@ -11121,6 +11510,7 @@ export namespace Prisma {
     prescriptions?: boolean | Tag$prescriptionsArgs<ExtArgs>
     ingredients?: boolean | Tag$ingredientsArgs<ExtArgs>
     formulas?: boolean | Tag$formulasArgs<ExtArgs>
+    posts?: boolean | Tag$postsArgs<ExtArgs>
     _count?: boolean | TagCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type TagIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -11132,6 +11522,7 @@ export namespace Prisma {
       prescriptions: Prisma.$PrescriptionPayload<ExtArgs>[]
       ingredients: Prisma.$IngredientPayload<ExtArgs>[]
       formulas: Prisma.$FormulaPayload<ExtArgs>[]
+      posts: Prisma.$PostPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -11536,6 +11927,7 @@ export namespace Prisma {
     prescriptions<T extends Tag$prescriptionsArgs<ExtArgs> = {}>(args?: Subset<T, Tag$prescriptionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PrescriptionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     ingredients<T extends Tag$ingredientsArgs<ExtArgs> = {}>(args?: Subset<T, Tag$ingredientsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$IngredientPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     formulas<T extends Tag$formulasArgs<ExtArgs> = {}>(args?: Subset<T, Tag$formulasArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FormulaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    posts<T extends Tag$postsArgs<ExtArgs> = {}>(args?: Subset<T, Tag$postsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PostPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -12028,6 +12420,30 @@ export namespace Prisma {
   }
 
   /**
+   * Tag.posts
+   */
+  export type Tag$postsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Post
+     */
+    select?: PostSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Post
+     */
+    omit?: PostOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PostInclude<ExtArgs> | null
+    where?: PostWhereInput
+    orderBy?: PostOrderByWithRelationInput | PostOrderByWithRelationInput[]
+    cursor?: PostWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: PostScalarFieldEnum | PostScalarFieldEnum[]
+  }
+
+  /**
    * Tag without action
    */
   export type TagDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -12043,6 +12459,1277 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: TagInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model Post
+   */
+
+  export type AggregatePost = {
+    _count: PostCountAggregateOutputType | null
+    _min: PostMinAggregateOutputType | null
+    _max: PostMaxAggregateOutputType | null
+  }
+
+  export type PostMinAggregateOutputType = {
+    id: string | null
+    postType: string | null
+    title: string | null
+    slug: string | null
+    caption: string | null
+    description: string | null
+    thumbnailUrl: string | null
+    imageUrl: string | null
+    imageAlt: string | null
+    insight: string | null
+    published: boolean | null
+    createdAt: Date | null
+    updatedAt: Date | null
+    authorId: string | null
+    seoId: string | null
+  }
+
+  export type PostMaxAggregateOutputType = {
+    id: string | null
+    postType: string | null
+    title: string | null
+    slug: string | null
+    caption: string | null
+    description: string | null
+    thumbnailUrl: string | null
+    imageUrl: string | null
+    imageAlt: string | null
+    insight: string | null
+    published: boolean | null
+    createdAt: Date | null
+    updatedAt: Date | null
+    authorId: string | null
+    seoId: string | null
+  }
+
+  export type PostCountAggregateOutputType = {
+    id: number
+    postType: number
+    title: number
+    slug: number
+    caption: number
+    description: number
+    thumbnailUrl: number
+    imageUrl: number
+    imageAlt: number
+    insight: number
+    published: number
+    createdAt: number
+    updatedAt: number
+    authorId: number
+    seoId: number
+    _all: number
+  }
+
+
+  export type PostMinAggregateInputType = {
+    id?: true
+    postType?: true
+    title?: true
+    slug?: true
+    caption?: true
+    description?: true
+    thumbnailUrl?: true
+    imageUrl?: true
+    imageAlt?: true
+    insight?: true
+    published?: true
+    createdAt?: true
+    updatedAt?: true
+    authorId?: true
+    seoId?: true
+  }
+
+  export type PostMaxAggregateInputType = {
+    id?: true
+    postType?: true
+    title?: true
+    slug?: true
+    caption?: true
+    description?: true
+    thumbnailUrl?: true
+    imageUrl?: true
+    imageAlt?: true
+    insight?: true
+    published?: true
+    createdAt?: true
+    updatedAt?: true
+    authorId?: true
+    seoId?: true
+  }
+
+  export type PostCountAggregateInputType = {
+    id?: true
+    postType?: true
+    title?: true
+    slug?: true
+    caption?: true
+    description?: true
+    thumbnailUrl?: true
+    imageUrl?: true
+    imageAlt?: true
+    insight?: true
+    published?: true
+    createdAt?: true
+    updatedAt?: true
+    authorId?: true
+    seoId?: true
+    _all?: true
+  }
+
+  export type PostAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Post to aggregate.
+     */
+    where?: PostWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Posts to fetch.
+     */
+    orderBy?: PostOrderByWithRelationInput | PostOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: PostWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Posts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Posts.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Posts
+    **/
+    _count?: true | PostCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: PostMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: PostMaxAggregateInputType
+  }
+
+  export type GetPostAggregateType<T extends PostAggregateArgs> = {
+        [P in keyof T & keyof AggregatePost]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregatePost[P]>
+      : GetScalarType<T[P], AggregatePost[P]>
+  }
+
+
+
+
+  export type PostGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PostWhereInput
+    orderBy?: PostOrderByWithAggregationInput | PostOrderByWithAggregationInput[]
+    by: PostScalarFieldEnum[] | PostScalarFieldEnum
+    having?: PostScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: PostCountAggregateInputType | true
+    _min?: PostMinAggregateInputType
+    _max?: PostMaxAggregateInputType
+  }
+
+  export type PostGroupByOutputType = {
+    id: string
+    postType: string
+    title: string
+    slug: string
+    caption: string | null
+    description: string | null
+    thumbnailUrl: string | null
+    imageUrl: string | null
+    imageAlt: string | null
+    insight: string | null
+    published: boolean
+    createdAt: Date
+    updatedAt: Date
+    authorId: string
+    seoId: string | null
+    _count: PostCountAggregateOutputType | null
+    _min: PostMinAggregateOutputType | null
+    _max: PostMaxAggregateOutputType | null
+  }
+
+  type GetPostGroupByPayload<T extends PostGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<PostGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof PostGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], PostGroupByOutputType[P]>
+            : GetScalarType<T[P], PostGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type PostSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    postType?: boolean
+    title?: boolean
+    slug?: boolean
+    caption?: boolean
+    description?: boolean
+    thumbnailUrl?: boolean
+    imageUrl?: boolean
+    imageAlt?: boolean
+    insight?: boolean
+    published?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    authorId?: boolean
+    seoId?: boolean
+    author?: boolean | UserDefaultArgs<ExtArgs>
+    tags?: boolean | Post$tagsArgs<ExtArgs>
+    fonts?: boolean | Post$fontsArgs<ExtArgs>
+    seo?: boolean | Post$seoArgs<ExtArgs>
+    _count?: boolean | PostCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["post"]>
+
+  export type PostSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    postType?: boolean
+    title?: boolean
+    slug?: boolean
+    caption?: boolean
+    description?: boolean
+    thumbnailUrl?: boolean
+    imageUrl?: boolean
+    imageAlt?: boolean
+    insight?: boolean
+    published?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    authorId?: boolean
+    seoId?: boolean
+    author?: boolean | UserDefaultArgs<ExtArgs>
+    seo?: boolean | Post$seoArgs<ExtArgs>
+  }, ExtArgs["result"]["post"]>
+
+  export type PostSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    postType?: boolean
+    title?: boolean
+    slug?: boolean
+    caption?: boolean
+    description?: boolean
+    thumbnailUrl?: boolean
+    imageUrl?: boolean
+    imageAlt?: boolean
+    insight?: boolean
+    published?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    authorId?: boolean
+    seoId?: boolean
+    author?: boolean | UserDefaultArgs<ExtArgs>
+    seo?: boolean | Post$seoArgs<ExtArgs>
+  }, ExtArgs["result"]["post"]>
+
+  export type PostSelectScalar = {
+    id?: boolean
+    postType?: boolean
+    title?: boolean
+    slug?: boolean
+    caption?: boolean
+    description?: boolean
+    thumbnailUrl?: boolean
+    imageUrl?: boolean
+    imageAlt?: boolean
+    insight?: boolean
+    published?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    authorId?: boolean
+    seoId?: boolean
+  }
+
+  export type PostOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "postType" | "title" | "slug" | "caption" | "description" | "thumbnailUrl" | "imageUrl" | "imageAlt" | "insight" | "published" | "createdAt" | "updatedAt" | "authorId" | "seoId", ExtArgs["result"]["post"]>
+  export type PostInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    author?: boolean | UserDefaultArgs<ExtArgs>
+    tags?: boolean | Post$tagsArgs<ExtArgs>
+    fonts?: boolean | Post$fontsArgs<ExtArgs>
+    seo?: boolean | Post$seoArgs<ExtArgs>
+    _count?: boolean | PostCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type PostIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    author?: boolean | UserDefaultArgs<ExtArgs>
+    seo?: boolean | Post$seoArgs<ExtArgs>
+  }
+  export type PostIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    author?: boolean | UserDefaultArgs<ExtArgs>
+    seo?: boolean | Post$seoArgs<ExtArgs>
+  }
+
+  export type $PostPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Post"
+    objects: {
+      author: Prisma.$UserPayload<ExtArgs>
+      tags: Prisma.$TagPayload<ExtArgs>[]
+      fonts: Prisma.$IngredientPayload<ExtArgs>[]
+      seo: Prisma.$SeoModulePayload<ExtArgs> | null
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      postType: string
+      title: string
+      slug: string
+      caption: string | null
+      description: string | null
+      thumbnailUrl: string | null
+      imageUrl: string | null
+      imageAlt: string | null
+      insight: string | null
+      published: boolean
+      createdAt: Date
+      updatedAt: Date
+      authorId: string
+      seoId: string | null
+    }, ExtArgs["result"]["post"]>
+    composites: {}
+  }
+
+  type PostGetPayload<S extends boolean | null | undefined | PostDefaultArgs> = $Result.GetResult<Prisma.$PostPayload, S>
+
+  type PostCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<PostFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: PostCountAggregateInputType | true
+    }
+
+  export interface PostDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Post'], meta: { name: 'Post' } }
+    /**
+     * Find zero or one Post that matches the filter.
+     * @param {PostFindUniqueArgs} args - Arguments to find a Post
+     * @example
+     * // Get one Post
+     * const post = await prisma.post.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends PostFindUniqueArgs>(args: SelectSubset<T, PostFindUniqueArgs<ExtArgs>>): Prisma__PostClient<$Result.GetResult<Prisma.$PostPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Post that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {PostFindUniqueOrThrowArgs} args - Arguments to find a Post
+     * @example
+     * // Get one Post
+     * const post = await prisma.post.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends PostFindUniqueOrThrowArgs>(args: SelectSubset<T, PostFindUniqueOrThrowArgs<ExtArgs>>): Prisma__PostClient<$Result.GetResult<Prisma.$PostPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Post that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PostFindFirstArgs} args - Arguments to find a Post
+     * @example
+     * // Get one Post
+     * const post = await prisma.post.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends PostFindFirstArgs>(args?: SelectSubset<T, PostFindFirstArgs<ExtArgs>>): Prisma__PostClient<$Result.GetResult<Prisma.$PostPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Post that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PostFindFirstOrThrowArgs} args - Arguments to find a Post
+     * @example
+     * // Get one Post
+     * const post = await prisma.post.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends PostFindFirstOrThrowArgs>(args?: SelectSubset<T, PostFindFirstOrThrowArgs<ExtArgs>>): Prisma__PostClient<$Result.GetResult<Prisma.$PostPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Posts that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PostFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Posts
+     * const posts = await prisma.post.findMany()
+     * 
+     * // Get first 10 Posts
+     * const posts = await prisma.post.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const postWithIdOnly = await prisma.post.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends PostFindManyArgs>(args?: SelectSubset<T, PostFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PostPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Post.
+     * @param {PostCreateArgs} args - Arguments to create a Post.
+     * @example
+     * // Create one Post
+     * const Post = await prisma.post.create({
+     *   data: {
+     *     // ... data to create a Post
+     *   }
+     * })
+     * 
+     */
+    create<T extends PostCreateArgs>(args: SelectSubset<T, PostCreateArgs<ExtArgs>>): Prisma__PostClient<$Result.GetResult<Prisma.$PostPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Posts.
+     * @param {PostCreateManyArgs} args - Arguments to create many Posts.
+     * @example
+     * // Create many Posts
+     * const post = await prisma.post.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends PostCreateManyArgs>(args?: SelectSubset<T, PostCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Posts and returns the data saved in the database.
+     * @param {PostCreateManyAndReturnArgs} args - Arguments to create many Posts.
+     * @example
+     * // Create many Posts
+     * const post = await prisma.post.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Posts and only return the `id`
+     * const postWithIdOnly = await prisma.post.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends PostCreateManyAndReturnArgs>(args?: SelectSubset<T, PostCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PostPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Post.
+     * @param {PostDeleteArgs} args - Arguments to delete one Post.
+     * @example
+     * // Delete one Post
+     * const Post = await prisma.post.delete({
+     *   where: {
+     *     // ... filter to delete one Post
+     *   }
+     * })
+     * 
+     */
+    delete<T extends PostDeleteArgs>(args: SelectSubset<T, PostDeleteArgs<ExtArgs>>): Prisma__PostClient<$Result.GetResult<Prisma.$PostPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Post.
+     * @param {PostUpdateArgs} args - Arguments to update one Post.
+     * @example
+     * // Update one Post
+     * const post = await prisma.post.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends PostUpdateArgs>(args: SelectSubset<T, PostUpdateArgs<ExtArgs>>): Prisma__PostClient<$Result.GetResult<Prisma.$PostPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Posts.
+     * @param {PostDeleteManyArgs} args - Arguments to filter Posts to delete.
+     * @example
+     * // Delete a few Posts
+     * const { count } = await prisma.post.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends PostDeleteManyArgs>(args?: SelectSubset<T, PostDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Posts.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PostUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Posts
+     * const post = await prisma.post.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends PostUpdateManyArgs>(args: SelectSubset<T, PostUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Posts and returns the data updated in the database.
+     * @param {PostUpdateManyAndReturnArgs} args - Arguments to update many Posts.
+     * @example
+     * // Update many Posts
+     * const post = await prisma.post.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Posts and only return the `id`
+     * const postWithIdOnly = await prisma.post.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends PostUpdateManyAndReturnArgs>(args: SelectSubset<T, PostUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PostPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Post.
+     * @param {PostUpsertArgs} args - Arguments to update or create a Post.
+     * @example
+     * // Update or create a Post
+     * const post = await prisma.post.upsert({
+     *   create: {
+     *     // ... data to create a Post
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Post we want to update
+     *   }
+     * })
+     */
+    upsert<T extends PostUpsertArgs>(args: SelectSubset<T, PostUpsertArgs<ExtArgs>>): Prisma__PostClient<$Result.GetResult<Prisma.$PostPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Posts.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PostCountArgs} args - Arguments to filter Posts to count.
+     * @example
+     * // Count the number of Posts
+     * const count = await prisma.post.count({
+     *   where: {
+     *     // ... the filter for the Posts we want to count
+     *   }
+     * })
+    **/
+    count<T extends PostCountArgs>(
+      args?: Subset<T, PostCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], PostCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Post.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PostAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends PostAggregateArgs>(args: Subset<T, PostAggregateArgs>): Prisma.PrismaPromise<GetPostAggregateType<T>>
+
+    /**
+     * Group by Post.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PostGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends PostGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: PostGroupByArgs['orderBy'] }
+        : { orderBy?: PostGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, PostGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetPostGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Post model
+   */
+  readonly fields: PostFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Post.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__PostClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    author<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    tags<T extends Post$tagsArgs<ExtArgs> = {}>(args?: Subset<T, Post$tagsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TagPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    fonts<T extends Post$fontsArgs<ExtArgs> = {}>(args?: Subset<T, Post$fontsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$IngredientPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    seo<T extends Post$seoArgs<ExtArgs> = {}>(args?: Subset<T, Post$seoArgs<ExtArgs>>): Prisma__SeoModuleClient<$Result.GetResult<Prisma.$SeoModulePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Post model
+   */
+  interface PostFieldRefs {
+    readonly id: FieldRef<"Post", 'String'>
+    readonly postType: FieldRef<"Post", 'String'>
+    readonly title: FieldRef<"Post", 'String'>
+    readonly slug: FieldRef<"Post", 'String'>
+    readonly caption: FieldRef<"Post", 'String'>
+    readonly description: FieldRef<"Post", 'String'>
+    readonly thumbnailUrl: FieldRef<"Post", 'String'>
+    readonly imageUrl: FieldRef<"Post", 'String'>
+    readonly imageAlt: FieldRef<"Post", 'String'>
+    readonly insight: FieldRef<"Post", 'String'>
+    readonly published: FieldRef<"Post", 'Boolean'>
+    readonly createdAt: FieldRef<"Post", 'DateTime'>
+    readonly updatedAt: FieldRef<"Post", 'DateTime'>
+    readonly authorId: FieldRef<"Post", 'String'>
+    readonly seoId: FieldRef<"Post", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Post findUnique
+   */
+  export type PostFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Post
+     */
+    select?: PostSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Post
+     */
+    omit?: PostOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PostInclude<ExtArgs> | null
+    /**
+     * Filter, which Post to fetch.
+     */
+    where: PostWhereUniqueInput
+  }
+
+  /**
+   * Post findUniqueOrThrow
+   */
+  export type PostFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Post
+     */
+    select?: PostSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Post
+     */
+    omit?: PostOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PostInclude<ExtArgs> | null
+    /**
+     * Filter, which Post to fetch.
+     */
+    where: PostWhereUniqueInput
+  }
+
+  /**
+   * Post findFirst
+   */
+  export type PostFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Post
+     */
+    select?: PostSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Post
+     */
+    omit?: PostOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PostInclude<ExtArgs> | null
+    /**
+     * Filter, which Post to fetch.
+     */
+    where?: PostWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Posts to fetch.
+     */
+    orderBy?: PostOrderByWithRelationInput | PostOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Posts.
+     */
+    cursor?: PostWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Posts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Posts.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Posts.
+     */
+    distinct?: PostScalarFieldEnum | PostScalarFieldEnum[]
+  }
+
+  /**
+   * Post findFirstOrThrow
+   */
+  export type PostFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Post
+     */
+    select?: PostSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Post
+     */
+    omit?: PostOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PostInclude<ExtArgs> | null
+    /**
+     * Filter, which Post to fetch.
+     */
+    where?: PostWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Posts to fetch.
+     */
+    orderBy?: PostOrderByWithRelationInput | PostOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Posts.
+     */
+    cursor?: PostWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Posts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Posts.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Posts.
+     */
+    distinct?: PostScalarFieldEnum | PostScalarFieldEnum[]
+  }
+
+  /**
+   * Post findMany
+   */
+  export type PostFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Post
+     */
+    select?: PostSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Post
+     */
+    omit?: PostOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PostInclude<ExtArgs> | null
+    /**
+     * Filter, which Posts to fetch.
+     */
+    where?: PostWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Posts to fetch.
+     */
+    orderBy?: PostOrderByWithRelationInput | PostOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Posts.
+     */
+    cursor?: PostWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Posts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Posts.
+     */
+    skip?: number
+    distinct?: PostScalarFieldEnum | PostScalarFieldEnum[]
+  }
+
+  /**
+   * Post create
+   */
+  export type PostCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Post
+     */
+    select?: PostSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Post
+     */
+    omit?: PostOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PostInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Post.
+     */
+    data: XOR<PostCreateInput, PostUncheckedCreateInput>
+  }
+
+  /**
+   * Post createMany
+   */
+  export type PostCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Posts.
+     */
+    data: PostCreateManyInput | PostCreateManyInput[]
+  }
+
+  /**
+   * Post createManyAndReturn
+   */
+  export type PostCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Post
+     */
+    select?: PostSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Post
+     */
+    omit?: PostOmit<ExtArgs> | null
+    /**
+     * The data used to create many Posts.
+     */
+    data: PostCreateManyInput | PostCreateManyInput[]
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PostIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Post update
+   */
+  export type PostUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Post
+     */
+    select?: PostSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Post
+     */
+    omit?: PostOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PostInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Post.
+     */
+    data: XOR<PostUpdateInput, PostUncheckedUpdateInput>
+    /**
+     * Choose, which Post to update.
+     */
+    where: PostWhereUniqueInput
+  }
+
+  /**
+   * Post updateMany
+   */
+  export type PostUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Posts.
+     */
+    data: XOR<PostUpdateManyMutationInput, PostUncheckedUpdateManyInput>
+    /**
+     * Filter which Posts to update
+     */
+    where?: PostWhereInput
+    /**
+     * Limit how many Posts to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Post updateManyAndReturn
+   */
+  export type PostUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Post
+     */
+    select?: PostSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Post
+     */
+    omit?: PostOmit<ExtArgs> | null
+    /**
+     * The data used to update Posts.
+     */
+    data: XOR<PostUpdateManyMutationInput, PostUncheckedUpdateManyInput>
+    /**
+     * Filter which Posts to update
+     */
+    where?: PostWhereInput
+    /**
+     * Limit how many Posts to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PostIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Post upsert
+   */
+  export type PostUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Post
+     */
+    select?: PostSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Post
+     */
+    omit?: PostOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PostInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Post to update in case it exists.
+     */
+    where: PostWhereUniqueInput
+    /**
+     * In case the Post found by the `where` argument doesn't exist, create a new Post with this data.
+     */
+    create: XOR<PostCreateInput, PostUncheckedCreateInput>
+    /**
+     * In case the Post was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<PostUpdateInput, PostUncheckedUpdateInput>
+  }
+
+  /**
+   * Post delete
+   */
+  export type PostDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Post
+     */
+    select?: PostSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Post
+     */
+    omit?: PostOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PostInclude<ExtArgs> | null
+    /**
+     * Filter which Post to delete.
+     */
+    where: PostWhereUniqueInput
+  }
+
+  /**
+   * Post deleteMany
+   */
+  export type PostDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Posts to delete
+     */
+    where?: PostWhereInput
+    /**
+     * Limit how many Posts to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Post.tags
+   */
+  export type Post$tagsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Tag
+     */
+    select?: TagSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Tag
+     */
+    omit?: TagOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TagInclude<ExtArgs> | null
+    where?: TagWhereInput
+    orderBy?: TagOrderByWithRelationInput | TagOrderByWithRelationInput[]
+    cursor?: TagWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: TagScalarFieldEnum | TagScalarFieldEnum[]
+  }
+
+  /**
+   * Post.fonts
+   */
+  export type Post$fontsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Ingredient
+     */
+    select?: IngredientSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Ingredient
+     */
+    omit?: IngredientOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: IngredientInclude<ExtArgs> | null
+    where?: IngredientWhereInput
+    orderBy?: IngredientOrderByWithRelationInput | IngredientOrderByWithRelationInput[]
+    cursor?: IngredientWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: IngredientScalarFieldEnum | IngredientScalarFieldEnum[]
+  }
+
+  /**
+   * Post.seo
+   */
+  export type Post$seoArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SeoModule
+     */
+    select?: SeoModuleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SeoModule
+     */
+    omit?: SeoModuleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SeoModuleInclude<ExtArgs> | null
+    where?: SeoModuleWhereInput
+  }
+
+  /**
+   * Post without action
+   */
+  export type PostDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Post
+     */
+    select?: PostSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Post
+     */
+    omit?: PostOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PostInclude<ExtArgs> | null
   }
 
 
@@ -12093,16 +13780,27 @@ export namespace Prisma {
   export type PermissionScalarFieldEnum = (typeof PermissionScalarFieldEnum)[keyof typeof PermissionScalarFieldEnum]
 
 
-  export const BlogPostScalarFieldEnum: {
+  export const SeoModuleScalarFieldEnum: {
     id: 'id',
-    title: 'title',
-    content: 'content',
-    authorId: 'authorId',
+    metaTitle: 'metaTitle',
+    metaDescription: 'metaDescription',
+    keywords: 'keywords',
+    ogTitle: 'ogTitle',
+    ogDescription: 'ogDescription',
+    ogImageUrl: 'ogImageUrl',
+    ogImageAlt: 'ogImageAlt',
+    twitterCard: 'twitterCard',
+    twitterTitle: 'twitterTitle',
+    twitterDescription: 'twitterDescription',
+    twitterImageUrl: 'twitterImageUrl',
+    twitterImageAlt: 'twitterImageAlt',
+    canonicalUrl: 'canonicalUrl',
+    noIndex: 'noIndex',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
 
-  export type BlogPostScalarFieldEnum = (typeof BlogPostScalarFieldEnum)[keyof typeof BlogPostScalarFieldEnum]
+  export type SeoModuleScalarFieldEnum = (typeof SeoModuleScalarFieldEnum)[keyof typeof SeoModuleScalarFieldEnum]
 
 
   export const FontVariantScalarFieldEnum: {
@@ -12159,7 +13857,8 @@ export namespace Prisma {
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
     primaryFontId: 'primaryFontId',
-    secondaryFontId: 'secondaryFontId'
+    secondaryFontId: 'secondaryFontId',
+    seoId: 'seoId'
   };
 
   export type PrescriptionScalarFieldEnum = (typeof PrescriptionScalarFieldEnum)[keyof typeof PrescriptionScalarFieldEnum]
@@ -12174,6 +13873,27 @@ export namespace Prisma {
   };
 
   export type TagScalarFieldEnum = (typeof TagScalarFieldEnum)[keyof typeof TagScalarFieldEnum]
+
+
+  export const PostScalarFieldEnum: {
+    id: 'id',
+    postType: 'postType',
+    title: 'title',
+    slug: 'slug',
+    caption: 'caption',
+    description: 'description',
+    thumbnailUrl: 'thumbnailUrl',
+    imageUrl: 'imageUrl',
+    imageAlt: 'imageAlt',
+    insight: 'insight',
+    published: 'published',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt',
+    authorId: 'authorId',
+    seoId: 'seoId'
+  };
+
+  export type PostScalarFieldEnum = (typeof PostScalarFieldEnum)[keyof typeof PostScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -12219,16 +13939,16 @@ export namespace Prisma {
 
 
   /**
-   * Reference to a field of type 'Int'
+   * Reference to a field of type 'Boolean'
    */
-  export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
+  export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
     
 
 
   /**
-   * Reference to a field of type 'Boolean'
+   * Reference to a field of type 'Int'
    */
-  export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
+  export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
     
 
 
@@ -12256,7 +13976,7 @@ export namespace Prisma {
     imageUrl?: StringNullableFilter<"User"> | string | null
     surname?: StringNullableFilter<"User"> | string | null
     biography?: StringNullableFilter<"User"> | string | null
-    posts?: BlogPostListRelationFilter
+    posts?: PostListRelationFilter
     roles?: RoleListRelationFilter
   }
 
@@ -12271,7 +13991,7 @@ export namespace Prisma {
     imageUrl?: SortOrderInput | SortOrder
     surname?: SortOrderInput | SortOrder
     biography?: SortOrderInput | SortOrder
-    posts?: BlogPostOrderByRelationAggregateInput
+    posts?: PostOrderByRelationAggregateInput
     roles?: RoleOrderByRelationAggregateInput
   }
 
@@ -12289,7 +14009,7 @@ export namespace Prisma {
     imageUrl?: StringNullableFilter<"User"> | string | null
     surname?: StringNullableFilter<"User"> | string | null
     biography?: StringNullableFilter<"User"> | string | null
-    posts?: BlogPostListRelationFilter
+    posts?: PostListRelationFilter
     roles?: RoleListRelationFilter
   }, "id" | "email">
 
@@ -12428,64 +14148,122 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"Permission"> | Date | string
   }
 
-  export type BlogPostWhereInput = {
-    AND?: BlogPostWhereInput | BlogPostWhereInput[]
-    OR?: BlogPostWhereInput[]
-    NOT?: BlogPostWhereInput | BlogPostWhereInput[]
-    id?: StringFilter<"BlogPost"> | string
-    title?: StringFilter<"BlogPost"> | string
-    content?: StringFilter<"BlogPost"> | string
-    authorId?: StringFilter<"BlogPost"> | string
-    createdAt?: DateTimeFilter<"BlogPost"> | Date | string
-    updatedAt?: DateTimeFilter<"BlogPost"> | Date | string
-    author?: XOR<UserScalarRelationFilter, UserWhereInput>
+  export type SeoModuleWhereInput = {
+    AND?: SeoModuleWhereInput | SeoModuleWhereInput[]
+    OR?: SeoModuleWhereInput[]
+    NOT?: SeoModuleWhereInput | SeoModuleWhereInput[]
+    id?: StringFilter<"SeoModule"> | string
+    metaTitle?: StringNullableFilter<"SeoModule"> | string | null
+    metaDescription?: StringNullableFilter<"SeoModule"> | string | null
+    keywords?: StringNullableFilter<"SeoModule"> | string | null
+    ogTitle?: StringNullableFilter<"SeoModule"> | string | null
+    ogDescription?: StringNullableFilter<"SeoModule"> | string | null
+    ogImageUrl?: StringNullableFilter<"SeoModule"> | string | null
+    ogImageAlt?: StringNullableFilter<"SeoModule"> | string | null
+    twitterCard?: StringFilter<"SeoModule"> | string
+    twitterTitle?: StringNullableFilter<"SeoModule"> | string | null
+    twitterDescription?: StringNullableFilter<"SeoModule"> | string | null
+    twitterImageUrl?: StringNullableFilter<"SeoModule"> | string | null
+    twitterImageAlt?: StringNullableFilter<"SeoModule"> | string | null
+    canonicalUrl?: StringNullableFilter<"SeoModule"> | string | null
+    noIndex?: BoolFilter<"SeoModule"> | boolean
+    createdAt?: DateTimeFilter<"SeoModule"> | Date | string
+    updatedAt?: DateTimeFilter<"SeoModule"> | Date | string
+    post?: XOR<PostNullableScalarRelationFilter, PostWhereInput> | null
+    prescription?: XOR<PrescriptionNullableScalarRelationFilter, PrescriptionWhereInput> | null
   }
 
-  export type BlogPostOrderByWithRelationInput = {
+  export type SeoModuleOrderByWithRelationInput = {
     id?: SortOrder
-    title?: SortOrder
-    content?: SortOrder
-    authorId?: SortOrder
+    metaTitle?: SortOrderInput | SortOrder
+    metaDescription?: SortOrderInput | SortOrder
+    keywords?: SortOrderInput | SortOrder
+    ogTitle?: SortOrderInput | SortOrder
+    ogDescription?: SortOrderInput | SortOrder
+    ogImageUrl?: SortOrderInput | SortOrder
+    ogImageAlt?: SortOrderInput | SortOrder
+    twitterCard?: SortOrder
+    twitterTitle?: SortOrderInput | SortOrder
+    twitterDescription?: SortOrderInput | SortOrder
+    twitterImageUrl?: SortOrderInput | SortOrder
+    twitterImageAlt?: SortOrderInput | SortOrder
+    canonicalUrl?: SortOrderInput | SortOrder
+    noIndex?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    author?: UserOrderByWithRelationInput
+    post?: PostOrderByWithRelationInput
+    prescription?: PrescriptionOrderByWithRelationInput
   }
 
-  export type BlogPostWhereUniqueInput = Prisma.AtLeast<{
+  export type SeoModuleWhereUniqueInput = Prisma.AtLeast<{
     id?: string
-    AND?: BlogPostWhereInput | BlogPostWhereInput[]
-    OR?: BlogPostWhereInput[]
-    NOT?: BlogPostWhereInput | BlogPostWhereInput[]
-    title?: StringFilter<"BlogPost"> | string
-    content?: StringFilter<"BlogPost"> | string
-    authorId?: StringFilter<"BlogPost"> | string
-    createdAt?: DateTimeFilter<"BlogPost"> | Date | string
-    updatedAt?: DateTimeFilter<"BlogPost"> | Date | string
-    author?: XOR<UserScalarRelationFilter, UserWhereInput>
+    AND?: SeoModuleWhereInput | SeoModuleWhereInput[]
+    OR?: SeoModuleWhereInput[]
+    NOT?: SeoModuleWhereInput | SeoModuleWhereInput[]
+    metaTitle?: StringNullableFilter<"SeoModule"> | string | null
+    metaDescription?: StringNullableFilter<"SeoModule"> | string | null
+    keywords?: StringNullableFilter<"SeoModule"> | string | null
+    ogTitle?: StringNullableFilter<"SeoModule"> | string | null
+    ogDescription?: StringNullableFilter<"SeoModule"> | string | null
+    ogImageUrl?: StringNullableFilter<"SeoModule"> | string | null
+    ogImageAlt?: StringNullableFilter<"SeoModule"> | string | null
+    twitterCard?: StringFilter<"SeoModule"> | string
+    twitterTitle?: StringNullableFilter<"SeoModule"> | string | null
+    twitterDescription?: StringNullableFilter<"SeoModule"> | string | null
+    twitterImageUrl?: StringNullableFilter<"SeoModule"> | string | null
+    twitterImageAlt?: StringNullableFilter<"SeoModule"> | string | null
+    canonicalUrl?: StringNullableFilter<"SeoModule"> | string | null
+    noIndex?: BoolFilter<"SeoModule"> | boolean
+    createdAt?: DateTimeFilter<"SeoModule"> | Date | string
+    updatedAt?: DateTimeFilter<"SeoModule"> | Date | string
+    post?: XOR<PostNullableScalarRelationFilter, PostWhereInput> | null
+    prescription?: XOR<PrescriptionNullableScalarRelationFilter, PrescriptionWhereInput> | null
   }, "id">
 
-  export type BlogPostOrderByWithAggregationInput = {
+  export type SeoModuleOrderByWithAggregationInput = {
     id?: SortOrder
-    title?: SortOrder
-    content?: SortOrder
-    authorId?: SortOrder
+    metaTitle?: SortOrderInput | SortOrder
+    metaDescription?: SortOrderInput | SortOrder
+    keywords?: SortOrderInput | SortOrder
+    ogTitle?: SortOrderInput | SortOrder
+    ogDescription?: SortOrderInput | SortOrder
+    ogImageUrl?: SortOrderInput | SortOrder
+    ogImageAlt?: SortOrderInput | SortOrder
+    twitterCard?: SortOrder
+    twitterTitle?: SortOrderInput | SortOrder
+    twitterDescription?: SortOrderInput | SortOrder
+    twitterImageUrl?: SortOrderInput | SortOrder
+    twitterImageAlt?: SortOrderInput | SortOrder
+    canonicalUrl?: SortOrderInput | SortOrder
+    noIndex?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    _count?: BlogPostCountOrderByAggregateInput
-    _max?: BlogPostMaxOrderByAggregateInput
-    _min?: BlogPostMinOrderByAggregateInput
+    _count?: SeoModuleCountOrderByAggregateInput
+    _max?: SeoModuleMaxOrderByAggregateInput
+    _min?: SeoModuleMinOrderByAggregateInput
   }
 
-  export type BlogPostScalarWhereWithAggregatesInput = {
-    AND?: BlogPostScalarWhereWithAggregatesInput | BlogPostScalarWhereWithAggregatesInput[]
-    OR?: BlogPostScalarWhereWithAggregatesInput[]
-    NOT?: BlogPostScalarWhereWithAggregatesInput | BlogPostScalarWhereWithAggregatesInput[]
-    id?: StringWithAggregatesFilter<"BlogPost"> | string
-    title?: StringWithAggregatesFilter<"BlogPost"> | string
-    content?: StringWithAggregatesFilter<"BlogPost"> | string
-    authorId?: StringWithAggregatesFilter<"BlogPost"> | string
-    createdAt?: DateTimeWithAggregatesFilter<"BlogPost"> | Date | string
-    updatedAt?: DateTimeWithAggregatesFilter<"BlogPost"> | Date | string
+  export type SeoModuleScalarWhereWithAggregatesInput = {
+    AND?: SeoModuleScalarWhereWithAggregatesInput | SeoModuleScalarWhereWithAggregatesInput[]
+    OR?: SeoModuleScalarWhereWithAggregatesInput[]
+    NOT?: SeoModuleScalarWhereWithAggregatesInput | SeoModuleScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"SeoModule"> | string
+    metaTitle?: StringNullableWithAggregatesFilter<"SeoModule"> | string | null
+    metaDescription?: StringNullableWithAggregatesFilter<"SeoModule"> | string | null
+    keywords?: StringNullableWithAggregatesFilter<"SeoModule"> | string | null
+    ogTitle?: StringNullableWithAggregatesFilter<"SeoModule"> | string | null
+    ogDescription?: StringNullableWithAggregatesFilter<"SeoModule"> | string | null
+    ogImageUrl?: StringNullableWithAggregatesFilter<"SeoModule"> | string | null
+    ogImageAlt?: StringNullableWithAggregatesFilter<"SeoModule"> | string | null
+    twitterCard?: StringWithAggregatesFilter<"SeoModule"> | string
+    twitterTitle?: StringNullableWithAggregatesFilter<"SeoModule"> | string | null
+    twitterDescription?: StringNullableWithAggregatesFilter<"SeoModule"> | string | null
+    twitterImageUrl?: StringNullableWithAggregatesFilter<"SeoModule"> | string | null
+    twitterImageAlt?: StringNullableWithAggregatesFilter<"SeoModule"> | string | null
+    canonicalUrl?: StringNullableWithAggregatesFilter<"SeoModule"> | string | null
+    noIndex?: BoolWithAggregatesFilter<"SeoModule"> | boolean
+    createdAt?: DateTimeWithAggregatesFilter<"SeoModule"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"SeoModule"> | Date | string
   }
 
   export type FontVariantWhereInput = {
@@ -12575,6 +14353,7 @@ export namespace Prisma {
     primaryPrescriptions?: PrescriptionListRelationFilter
     secondaryPrescriptions?: PrescriptionListRelationFilter
     tags?: TagListRelationFilter
+    posts?: PostListRelationFilter
   }
 
   export type IngredientOrderByWithRelationInput = {
@@ -12594,6 +14373,7 @@ export namespace Prisma {
     primaryPrescriptions?: PrescriptionOrderByRelationAggregateInput
     secondaryPrescriptions?: PrescriptionOrderByRelationAggregateInput
     tags?: TagOrderByRelationAggregateInput
+    posts?: PostOrderByRelationAggregateInput
   }
 
   export type IngredientWhereUniqueInput = Prisma.AtLeast<{
@@ -12616,6 +14396,7 @@ export namespace Prisma {
     primaryPrescriptions?: PrescriptionListRelationFilter
     secondaryPrescriptions?: PrescriptionListRelationFilter
     tags?: TagListRelationFilter
+    posts?: PostListRelationFilter
   }, "id" | "slug">
 
   export type IngredientOrderByWithAggregationInput = {
@@ -12735,9 +14516,11 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Prescription"> | Date | string
     primaryFontId?: StringFilter<"Prescription"> | string
     secondaryFontId?: StringFilter<"Prescription"> | string
+    seoId?: StringNullableFilter<"Prescription"> | string | null
     primaryFont?: XOR<IngredientScalarRelationFilter, IngredientWhereInput>
     secondaryFont?: XOR<IngredientScalarRelationFilter, IngredientWhereInput>
     tags?: TagListRelationFilter
+    seo?: XOR<SeoModuleNullableScalarRelationFilter, SeoModuleWhereInput> | null
   }
 
   export type PrescriptionOrderByWithRelationInput = {
@@ -12752,14 +14535,17 @@ export namespace Prisma {
     updatedAt?: SortOrder
     primaryFontId?: SortOrder
     secondaryFontId?: SortOrder
+    seoId?: SortOrderInput | SortOrder
     primaryFont?: IngredientOrderByWithRelationInput
     secondaryFont?: IngredientOrderByWithRelationInput
     tags?: TagOrderByRelationAggregateInput
+    seo?: SeoModuleOrderByWithRelationInput
   }
 
   export type PrescriptionWhereUniqueInput = Prisma.AtLeast<{
     id?: string
     slug?: string
+    seoId?: string
     AND?: PrescriptionWhereInput | PrescriptionWhereInput[]
     OR?: PrescriptionWhereInput[]
     NOT?: PrescriptionWhereInput | PrescriptionWhereInput[]
@@ -12775,7 +14561,8 @@ export namespace Prisma {
     primaryFont?: XOR<IngredientScalarRelationFilter, IngredientWhereInput>
     secondaryFont?: XOR<IngredientScalarRelationFilter, IngredientWhereInput>
     tags?: TagListRelationFilter
-  }, "id" | "slug">
+    seo?: XOR<SeoModuleNullableScalarRelationFilter, SeoModuleWhereInput> | null
+  }, "id" | "slug" | "seoId">
 
   export type PrescriptionOrderByWithAggregationInput = {
     id?: SortOrder
@@ -12789,6 +14576,7 @@ export namespace Prisma {
     updatedAt?: SortOrder
     primaryFontId?: SortOrder
     secondaryFontId?: SortOrder
+    seoId?: SortOrderInput | SortOrder
     _count?: PrescriptionCountOrderByAggregateInput
     _max?: PrescriptionMaxOrderByAggregateInput
     _min?: PrescriptionMinOrderByAggregateInput
@@ -12809,6 +14597,7 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"Prescription"> | Date | string
     primaryFontId?: StringWithAggregatesFilter<"Prescription"> | string
     secondaryFontId?: StringWithAggregatesFilter<"Prescription"> | string
+    seoId?: StringNullableWithAggregatesFilter<"Prescription"> | string | null
   }
 
   export type TagWhereInput = {
@@ -12823,6 +14612,7 @@ export namespace Prisma {
     prescriptions?: PrescriptionListRelationFilter
     ingredients?: IngredientListRelationFilter
     formulas?: FormulaListRelationFilter
+    posts?: PostListRelationFilter
   }
 
   export type TagOrderByWithRelationInput = {
@@ -12834,6 +14624,7 @@ export namespace Prisma {
     prescriptions?: PrescriptionOrderByRelationAggregateInput
     ingredients?: IngredientOrderByRelationAggregateInput
     formulas?: FormulaOrderByRelationAggregateInput
+    posts?: PostOrderByRelationAggregateInput
   }
 
   export type TagWhereUniqueInput = Prisma.AtLeast<{
@@ -12848,6 +14639,7 @@ export namespace Prisma {
     prescriptions?: PrescriptionListRelationFilter
     ingredients?: IngredientListRelationFilter
     formulas?: FormulaListRelationFilter
+    posts?: PostListRelationFilter
   }, "id" | "name">
 
   export type TagOrderByWithAggregationInput = {
@@ -12872,6 +14664,120 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"Tag"> | Date | string
   }
 
+  export type PostWhereInput = {
+    AND?: PostWhereInput | PostWhereInput[]
+    OR?: PostWhereInput[]
+    NOT?: PostWhereInput | PostWhereInput[]
+    id?: StringFilter<"Post"> | string
+    postType?: StringFilter<"Post"> | string
+    title?: StringFilter<"Post"> | string
+    slug?: StringFilter<"Post"> | string
+    caption?: StringNullableFilter<"Post"> | string | null
+    description?: StringNullableFilter<"Post"> | string | null
+    thumbnailUrl?: StringNullableFilter<"Post"> | string | null
+    imageUrl?: StringNullableFilter<"Post"> | string | null
+    imageAlt?: StringNullableFilter<"Post"> | string | null
+    insight?: StringNullableFilter<"Post"> | string | null
+    published?: BoolFilter<"Post"> | boolean
+    createdAt?: DateTimeFilter<"Post"> | Date | string
+    updatedAt?: DateTimeFilter<"Post"> | Date | string
+    authorId?: StringFilter<"Post"> | string
+    seoId?: StringNullableFilter<"Post"> | string | null
+    author?: XOR<UserScalarRelationFilter, UserWhereInput>
+    tags?: TagListRelationFilter
+    fonts?: IngredientListRelationFilter
+    seo?: XOR<SeoModuleNullableScalarRelationFilter, SeoModuleWhereInput> | null
+  }
+
+  export type PostOrderByWithRelationInput = {
+    id?: SortOrder
+    postType?: SortOrder
+    title?: SortOrder
+    slug?: SortOrder
+    caption?: SortOrderInput | SortOrder
+    description?: SortOrderInput | SortOrder
+    thumbnailUrl?: SortOrderInput | SortOrder
+    imageUrl?: SortOrderInput | SortOrder
+    imageAlt?: SortOrderInput | SortOrder
+    insight?: SortOrderInput | SortOrder
+    published?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    authorId?: SortOrder
+    seoId?: SortOrderInput | SortOrder
+    author?: UserOrderByWithRelationInput
+    tags?: TagOrderByRelationAggregateInput
+    fonts?: IngredientOrderByRelationAggregateInput
+    seo?: SeoModuleOrderByWithRelationInput
+  }
+
+  export type PostWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    slug?: string
+    seoId?: string
+    AND?: PostWhereInput | PostWhereInput[]
+    OR?: PostWhereInput[]
+    NOT?: PostWhereInput | PostWhereInput[]
+    postType?: StringFilter<"Post"> | string
+    title?: StringFilter<"Post"> | string
+    caption?: StringNullableFilter<"Post"> | string | null
+    description?: StringNullableFilter<"Post"> | string | null
+    thumbnailUrl?: StringNullableFilter<"Post"> | string | null
+    imageUrl?: StringNullableFilter<"Post"> | string | null
+    imageAlt?: StringNullableFilter<"Post"> | string | null
+    insight?: StringNullableFilter<"Post"> | string | null
+    published?: BoolFilter<"Post"> | boolean
+    createdAt?: DateTimeFilter<"Post"> | Date | string
+    updatedAt?: DateTimeFilter<"Post"> | Date | string
+    authorId?: StringFilter<"Post"> | string
+    author?: XOR<UserScalarRelationFilter, UserWhereInput>
+    tags?: TagListRelationFilter
+    fonts?: IngredientListRelationFilter
+    seo?: XOR<SeoModuleNullableScalarRelationFilter, SeoModuleWhereInput> | null
+  }, "id" | "slug" | "seoId">
+
+  export type PostOrderByWithAggregationInput = {
+    id?: SortOrder
+    postType?: SortOrder
+    title?: SortOrder
+    slug?: SortOrder
+    caption?: SortOrderInput | SortOrder
+    description?: SortOrderInput | SortOrder
+    thumbnailUrl?: SortOrderInput | SortOrder
+    imageUrl?: SortOrderInput | SortOrder
+    imageAlt?: SortOrderInput | SortOrder
+    insight?: SortOrderInput | SortOrder
+    published?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    authorId?: SortOrder
+    seoId?: SortOrderInput | SortOrder
+    _count?: PostCountOrderByAggregateInput
+    _max?: PostMaxOrderByAggregateInput
+    _min?: PostMinOrderByAggregateInput
+  }
+
+  export type PostScalarWhereWithAggregatesInput = {
+    AND?: PostScalarWhereWithAggregatesInput | PostScalarWhereWithAggregatesInput[]
+    OR?: PostScalarWhereWithAggregatesInput[]
+    NOT?: PostScalarWhereWithAggregatesInput | PostScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Post"> | string
+    postType?: StringWithAggregatesFilter<"Post"> | string
+    title?: StringWithAggregatesFilter<"Post"> | string
+    slug?: StringWithAggregatesFilter<"Post"> | string
+    caption?: StringNullableWithAggregatesFilter<"Post"> | string | null
+    description?: StringNullableWithAggregatesFilter<"Post"> | string | null
+    thumbnailUrl?: StringNullableWithAggregatesFilter<"Post"> | string | null
+    imageUrl?: StringNullableWithAggregatesFilter<"Post"> | string | null
+    imageAlt?: StringNullableWithAggregatesFilter<"Post"> | string | null
+    insight?: StringNullableWithAggregatesFilter<"Post"> | string | null
+    published?: BoolWithAggregatesFilter<"Post"> | boolean
+    createdAt?: DateTimeWithAggregatesFilter<"Post"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"Post"> | Date | string
+    authorId?: StringWithAggregatesFilter<"Post"> | string
+    seoId?: StringNullableWithAggregatesFilter<"Post"> | string | null
+  }
+
   export type UserCreateInput = {
     id?: string
     name?: string | null
@@ -12883,7 +14789,7 @@ export namespace Prisma {
     imageUrl?: string | null
     surname?: string | null
     biography?: string | null
-    posts?: BlogPostCreateNestedManyWithoutAuthorInput
+    posts?: PostCreateNestedManyWithoutAuthorInput
     roles?: RoleCreateNestedManyWithoutUsersInput
   }
 
@@ -12898,7 +14804,7 @@ export namespace Prisma {
     imageUrl?: string | null
     surname?: string | null
     biography?: string | null
-    posts?: BlogPostUncheckedCreateNestedManyWithoutAuthorInput
+    posts?: PostUncheckedCreateNestedManyWithoutAuthorInput
     roles?: RoleUncheckedCreateNestedManyWithoutUsersInput
   }
 
@@ -12913,7 +14819,7 @@ export namespace Prisma {
     imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     surname?: NullableStringFieldUpdateOperationsInput | string | null
     biography?: NullableStringFieldUpdateOperationsInput | string | null
-    posts?: BlogPostUpdateManyWithoutAuthorNestedInput
+    posts?: PostUpdateManyWithoutAuthorNestedInput
     roles?: RoleUpdateManyWithoutUsersNestedInput
   }
 
@@ -12928,7 +14834,7 @@ export namespace Prisma {
     imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     surname?: NullableStringFieldUpdateOperationsInput | string | null
     biography?: NullableStringFieldUpdateOperationsInput | string | null
-    posts?: BlogPostUncheckedUpdateManyWithoutAuthorNestedInput
+    posts?: PostUncheckedUpdateManyWithoutAuthorNestedInput
     roles?: RoleUncheckedUpdateManyWithoutUsersNestedInput
   }
 
@@ -13081,64 +14987,150 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type BlogPostCreateInput = {
+  export type SeoModuleCreateInput = {
     id?: string
-    title: string
-    content: string
+    metaTitle?: string | null
+    metaDescription?: string | null
+    keywords?: string | null
+    ogTitle?: string | null
+    ogDescription?: string | null
+    ogImageUrl?: string | null
+    ogImageAlt?: string | null
+    twitterCard?: string
+    twitterTitle?: string | null
+    twitterDescription?: string | null
+    twitterImageUrl?: string | null
+    twitterImageAlt?: string | null
+    canonicalUrl?: string | null
+    noIndex?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
-    author: UserCreateNestedOneWithoutPostsInput
+    post?: PostCreateNestedOneWithoutSeoInput
+    prescription?: PrescriptionCreateNestedOneWithoutSeoInput
   }
 
-  export type BlogPostUncheckedCreateInput = {
+  export type SeoModuleUncheckedCreateInput = {
     id?: string
-    title: string
-    content: string
-    authorId: string
+    metaTitle?: string | null
+    metaDescription?: string | null
+    keywords?: string | null
+    ogTitle?: string | null
+    ogDescription?: string | null
+    ogImageUrl?: string | null
+    ogImageAlt?: string | null
+    twitterCard?: string
+    twitterTitle?: string | null
+    twitterDescription?: string | null
+    twitterImageUrl?: string | null
+    twitterImageAlt?: string | null
+    canonicalUrl?: string | null
+    noIndex?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    post?: PostUncheckedCreateNestedOneWithoutSeoInput
+    prescription?: PrescriptionUncheckedCreateNestedOneWithoutSeoInput
+  }
+
+  export type SeoModuleUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    metaTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    metaDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    keywords?: NullableStringFieldUpdateOperationsInput | string | null
+    ogTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    ogDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    ogImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    ogImageAlt?: NullableStringFieldUpdateOperationsInput | string | null
+    twitterCard?: StringFieldUpdateOperationsInput | string
+    twitterTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    twitterDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    twitterImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    twitterImageAlt?: NullableStringFieldUpdateOperationsInput | string | null
+    canonicalUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    noIndex?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    post?: PostUpdateOneWithoutSeoNestedInput
+    prescription?: PrescriptionUpdateOneWithoutSeoNestedInput
+  }
+
+  export type SeoModuleUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    metaTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    metaDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    keywords?: NullableStringFieldUpdateOperationsInput | string | null
+    ogTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    ogDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    ogImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    ogImageAlt?: NullableStringFieldUpdateOperationsInput | string | null
+    twitterCard?: StringFieldUpdateOperationsInput | string
+    twitterTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    twitterDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    twitterImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    twitterImageAlt?: NullableStringFieldUpdateOperationsInput | string | null
+    canonicalUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    noIndex?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    post?: PostUncheckedUpdateOneWithoutSeoNestedInput
+    prescription?: PrescriptionUncheckedUpdateOneWithoutSeoNestedInput
+  }
+
+  export type SeoModuleCreateManyInput = {
+    id?: string
+    metaTitle?: string | null
+    metaDescription?: string | null
+    keywords?: string | null
+    ogTitle?: string | null
+    ogDescription?: string | null
+    ogImageUrl?: string | null
+    ogImageAlt?: string | null
+    twitterCard?: string
+    twitterTitle?: string | null
+    twitterDescription?: string | null
+    twitterImageUrl?: string | null
+    twitterImageAlt?: string | null
+    canonicalUrl?: string | null
+    noIndex?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
   }
 
-  export type BlogPostUpdateInput = {
+  export type SeoModuleUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
-    title?: StringFieldUpdateOperationsInput | string
-    content?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    author?: UserUpdateOneRequiredWithoutPostsNestedInput
-  }
-
-  export type BlogPostUncheckedUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    title?: StringFieldUpdateOperationsInput | string
-    content?: StringFieldUpdateOperationsInput | string
-    authorId?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type BlogPostCreateManyInput = {
-    id?: string
-    title: string
-    content: string
-    authorId: string
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type BlogPostUpdateManyMutationInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    title?: StringFieldUpdateOperationsInput | string
-    content?: StringFieldUpdateOperationsInput | string
+    metaTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    metaDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    keywords?: NullableStringFieldUpdateOperationsInput | string | null
+    ogTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    ogDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    ogImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    ogImageAlt?: NullableStringFieldUpdateOperationsInput | string | null
+    twitterCard?: StringFieldUpdateOperationsInput | string
+    twitterTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    twitterDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    twitterImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    twitterImageAlt?: NullableStringFieldUpdateOperationsInput | string | null
+    canonicalUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    noIndex?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type BlogPostUncheckedUpdateManyInput = {
+  export type SeoModuleUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
-    title?: StringFieldUpdateOperationsInput | string
-    content?: StringFieldUpdateOperationsInput | string
-    authorId?: StringFieldUpdateOperationsInput | string
+    metaTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    metaDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    keywords?: NullableStringFieldUpdateOperationsInput | string | null
+    ogTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    ogDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    ogImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    ogImageAlt?: NullableStringFieldUpdateOperationsInput | string | null
+    twitterCard?: StringFieldUpdateOperationsInput | string
+    twitterTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    twitterDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    twitterImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    twitterImageAlt?: NullableStringFieldUpdateOperationsInput | string | null
+    canonicalUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    noIndex?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -13229,6 +15221,7 @@ export namespace Prisma {
     primaryPrescriptions?: PrescriptionCreateNestedManyWithoutPrimaryFontInput
     secondaryPrescriptions?: PrescriptionCreateNestedManyWithoutSecondaryFontInput
     tags?: TagCreateNestedManyWithoutIngredientsInput
+    posts?: PostCreateNestedManyWithoutFontsInput
   }
 
   export type IngredientUncheckedCreateInput = {
@@ -13248,6 +15241,7 @@ export namespace Prisma {
     primaryPrescriptions?: PrescriptionUncheckedCreateNestedManyWithoutPrimaryFontInput
     secondaryPrescriptions?: PrescriptionUncheckedCreateNestedManyWithoutSecondaryFontInput
     tags?: TagUncheckedCreateNestedManyWithoutIngredientsInput
+    posts?: PostUncheckedCreateNestedManyWithoutFontsInput
   }
 
   export type IngredientUpdateInput = {
@@ -13267,6 +15261,7 @@ export namespace Prisma {
     primaryPrescriptions?: PrescriptionUpdateManyWithoutPrimaryFontNestedInput
     secondaryPrescriptions?: PrescriptionUpdateManyWithoutSecondaryFontNestedInput
     tags?: TagUpdateManyWithoutIngredientsNestedInput
+    posts?: PostUpdateManyWithoutFontsNestedInput
   }
 
   export type IngredientUncheckedUpdateInput = {
@@ -13286,6 +15281,7 @@ export namespace Prisma {
     primaryPrescriptions?: PrescriptionUncheckedUpdateManyWithoutPrimaryFontNestedInput
     secondaryPrescriptions?: PrescriptionUncheckedUpdateManyWithoutSecondaryFontNestedInput
     tags?: TagUncheckedUpdateManyWithoutIngredientsNestedInput
+    posts?: PostUncheckedUpdateManyWithoutFontsNestedInput
   }
 
   export type IngredientCreateManyInput = {
@@ -13421,6 +15417,7 @@ export namespace Prisma {
     primaryFont: IngredientCreateNestedOneWithoutPrimaryPrescriptionsInput
     secondaryFont: IngredientCreateNestedOneWithoutSecondaryPrescriptionsInput
     tags?: TagCreateNestedManyWithoutPrescriptionsInput
+    seo?: SeoModuleCreateNestedOneWithoutPrescriptionInput
   }
 
   export type PrescriptionUncheckedCreateInput = {
@@ -13435,6 +15432,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     primaryFontId: string
     secondaryFontId: string
+    seoId?: string | null
     tags?: TagUncheckedCreateNestedManyWithoutPrescriptionsInput
   }
 
@@ -13451,6 +15449,7 @@ export namespace Prisma {
     primaryFont?: IngredientUpdateOneRequiredWithoutPrimaryPrescriptionsNestedInput
     secondaryFont?: IngredientUpdateOneRequiredWithoutSecondaryPrescriptionsNestedInput
     tags?: TagUpdateManyWithoutPrescriptionsNestedInput
+    seo?: SeoModuleUpdateOneWithoutPrescriptionNestedInput
   }
 
   export type PrescriptionUncheckedUpdateInput = {
@@ -13465,6 +15464,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     primaryFontId?: StringFieldUpdateOperationsInput | string
     secondaryFontId?: StringFieldUpdateOperationsInput | string
+    seoId?: NullableStringFieldUpdateOperationsInput | string | null
     tags?: TagUncheckedUpdateManyWithoutPrescriptionsNestedInput
   }
 
@@ -13480,6 +15480,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     primaryFontId: string
     secondaryFontId: string
+    seoId?: string | null
   }
 
   export type PrescriptionUpdateManyMutationInput = {
@@ -13506,6 +15507,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     primaryFontId?: StringFieldUpdateOperationsInput | string
     secondaryFontId?: StringFieldUpdateOperationsInput | string
+    seoId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type TagCreateInput = {
@@ -13517,6 +15519,7 @@ export namespace Prisma {
     prescriptions?: PrescriptionCreateNestedManyWithoutTagsInput
     ingredients?: IngredientCreateNestedManyWithoutTagsInput
     formulas?: FormulaCreateNestedManyWithoutTagsInput
+    posts?: PostCreateNestedManyWithoutTagsInput
   }
 
   export type TagUncheckedCreateInput = {
@@ -13528,6 +15531,7 @@ export namespace Prisma {
     prescriptions?: PrescriptionUncheckedCreateNestedManyWithoutTagsInput
     ingredients?: IngredientUncheckedCreateNestedManyWithoutTagsInput
     formulas?: FormulaUncheckedCreateNestedManyWithoutTagsInput
+    posts?: PostUncheckedCreateNestedManyWithoutTagsInput
   }
 
   export type TagUpdateInput = {
@@ -13539,6 +15543,7 @@ export namespace Prisma {
     prescriptions?: PrescriptionUpdateManyWithoutTagsNestedInput
     ingredients?: IngredientUpdateManyWithoutTagsNestedInput
     formulas?: FormulaUpdateManyWithoutTagsNestedInput
+    posts?: PostUpdateManyWithoutTagsNestedInput
   }
 
   export type TagUncheckedUpdateInput = {
@@ -13550,6 +15555,7 @@ export namespace Prisma {
     prescriptions?: PrescriptionUncheckedUpdateManyWithoutTagsNestedInput
     ingredients?: IngredientUncheckedUpdateManyWithoutTagsNestedInput
     formulas?: FormulaUncheckedUpdateManyWithoutTagsNestedInput
+    posts?: PostUncheckedUpdateManyWithoutTagsNestedInput
   }
 
   export type TagCreateManyInput = {
@@ -13574,6 +15580,138 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PostCreateInput = {
+    id?: string
+    postType?: string
+    title: string
+    slug: string
+    caption?: string | null
+    description?: string | null
+    thumbnailUrl?: string | null
+    imageUrl?: string | null
+    imageAlt?: string | null
+    insight?: string | null
+    published?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    author: UserCreateNestedOneWithoutPostsInput
+    tags?: TagCreateNestedManyWithoutPostsInput
+    fonts?: IngredientCreateNestedManyWithoutPostsInput
+    seo?: SeoModuleCreateNestedOneWithoutPostInput
+  }
+
+  export type PostUncheckedCreateInput = {
+    id?: string
+    postType?: string
+    title: string
+    slug: string
+    caption?: string | null
+    description?: string | null
+    thumbnailUrl?: string | null
+    imageUrl?: string | null
+    imageAlt?: string | null
+    insight?: string | null
+    published?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    authorId: string
+    seoId?: string | null
+    tags?: TagUncheckedCreateNestedManyWithoutPostsInput
+    fonts?: IngredientUncheckedCreateNestedManyWithoutPostsInput
+  }
+
+  export type PostUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    postType?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    caption?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    thumbnailUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    imageAlt?: NullableStringFieldUpdateOperationsInput | string | null
+    insight?: NullableStringFieldUpdateOperationsInput | string | null
+    published?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    author?: UserUpdateOneRequiredWithoutPostsNestedInput
+    tags?: TagUpdateManyWithoutPostsNestedInput
+    fonts?: IngredientUpdateManyWithoutPostsNestedInput
+    seo?: SeoModuleUpdateOneWithoutPostNestedInput
+  }
+
+  export type PostUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    postType?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    caption?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    thumbnailUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    imageAlt?: NullableStringFieldUpdateOperationsInput | string | null
+    insight?: NullableStringFieldUpdateOperationsInput | string | null
+    published?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    authorId?: StringFieldUpdateOperationsInput | string
+    seoId?: NullableStringFieldUpdateOperationsInput | string | null
+    tags?: TagUncheckedUpdateManyWithoutPostsNestedInput
+    fonts?: IngredientUncheckedUpdateManyWithoutPostsNestedInput
+  }
+
+  export type PostCreateManyInput = {
+    id?: string
+    postType?: string
+    title: string
+    slug: string
+    caption?: string | null
+    description?: string | null
+    thumbnailUrl?: string | null
+    imageUrl?: string | null
+    imageAlt?: string | null
+    insight?: string | null
+    published?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    authorId: string
+    seoId?: string | null
+  }
+
+  export type PostUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    postType?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    caption?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    thumbnailUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    imageAlt?: NullableStringFieldUpdateOperationsInput | string | null
+    insight?: NullableStringFieldUpdateOperationsInput | string | null
+    published?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PostUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    postType?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    caption?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    thumbnailUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    imageAlt?: NullableStringFieldUpdateOperationsInput | string | null
+    insight?: NullableStringFieldUpdateOperationsInput | string | null
+    published?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    authorId?: StringFieldUpdateOperationsInput | string
+    seoId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type StringFilter<$PrismaModel = never> = {
@@ -13622,10 +15760,10 @@ export namespace Prisma {
     not?: NestedBytesNullableFilter<$PrismaModel> | Bytes | null
   }
 
-  export type BlogPostListRelationFilter = {
-    every?: BlogPostWhereInput
-    some?: BlogPostWhereInput
-    none?: BlogPostWhereInput
+  export type PostListRelationFilter = {
+    every?: PostWhereInput
+    some?: PostWhereInput
+    none?: PostWhereInput
   }
 
   export type RoleListRelationFilter = {
@@ -13639,7 +15777,7 @@ export namespace Prisma {
     nulls?: NullsOrder
   }
 
-  export type BlogPostOrderByRelationAggregateInput = {
+  export type PostOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -13806,36 +15944,87 @@ export namespace Prisma {
     updatedAt?: SortOrder
   }
 
-  export type UserScalarRelationFilter = {
-    is?: UserWhereInput
-    isNot?: UserWhereInput
+  export type BoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
   }
 
-  export type BlogPostCountOrderByAggregateInput = {
+  export type PostNullableScalarRelationFilter = {
+    is?: PostWhereInput | null
+    isNot?: PostWhereInput | null
+  }
+
+  export type PrescriptionNullableScalarRelationFilter = {
+    is?: PrescriptionWhereInput | null
+    isNot?: PrescriptionWhereInput | null
+  }
+
+  export type SeoModuleCountOrderByAggregateInput = {
     id?: SortOrder
-    title?: SortOrder
-    content?: SortOrder
-    authorId?: SortOrder
+    metaTitle?: SortOrder
+    metaDescription?: SortOrder
+    keywords?: SortOrder
+    ogTitle?: SortOrder
+    ogDescription?: SortOrder
+    ogImageUrl?: SortOrder
+    ogImageAlt?: SortOrder
+    twitterCard?: SortOrder
+    twitterTitle?: SortOrder
+    twitterDescription?: SortOrder
+    twitterImageUrl?: SortOrder
+    twitterImageAlt?: SortOrder
+    canonicalUrl?: SortOrder
+    noIndex?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
 
-  export type BlogPostMaxOrderByAggregateInput = {
+  export type SeoModuleMaxOrderByAggregateInput = {
     id?: SortOrder
-    title?: SortOrder
-    content?: SortOrder
-    authorId?: SortOrder
+    metaTitle?: SortOrder
+    metaDescription?: SortOrder
+    keywords?: SortOrder
+    ogTitle?: SortOrder
+    ogDescription?: SortOrder
+    ogImageUrl?: SortOrder
+    ogImageAlt?: SortOrder
+    twitterCard?: SortOrder
+    twitterTitle?: SortOrder
+    twitterDescription?: SortOrder
+    twitterImageUrl?: SortOrder
+    twitterImageAlt?: SortOrder
+    canonicalUrl?: SortOrder
+    noIndex?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
 
-  export type BlogPostMinOrderByAggregateInput = {
+  export type SeoModuleMinOrderByAggregateInput = {
     id?: SortOrder
-    title?: SortOrder
-    content?: SortOrder
-    authorId?: SortOrder
+    metaTitle?: SortOrder
+    metaDescription?: SortOrder
+    keywords?: SortOrder
+    ogTitle?: SortOrder
+    ogDescription?: SortOrder
+    ogImageUrl?: SortOrder
+    ogImageAlt?: SortOrder
+    twitterCard?: SortOrder
+    twitterTitle?: SortOrder
+    twitterDescription?: SortOrder
+    twitterImageUrl?: SortOrder
+    twitterImageAlt?: SortOrder
+    canonicalUrl?: SortOrder
+    noIndex?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+  }
+
+  export type BoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
   }
 
   export type IntFilter<$PrismaModel = never> = {
@@ -13906,11 +16095,6 @@ export namespace Prisma {
     _sum?: NestedIntFilter<$PrismaModel>
     _min?: NestedIntFilter<$PrismaModel>
     _max?: NestedIntFilter<$PrismaModel>
-  }
-
-  export type BoolFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolFilter<$PrismaModel> | boolean
   }
 
   export type FontVariantListRelationFilter = {
@@ -13995,14 +16179,6 @@ export namespace Prisma {
     updatedAt?: SortOrder
   }
 
-  export type BoolWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedBoolFilter<$PrismaModel>
-    _max?: NestedBoolFilter<$PrismaModel>
-  }
-
   export type IngredientListRelationFilter = {
     every?: IngredientWhereInput
     some?: IngredientWhereInput
@@ -14043,6 +16219,11 @@ export namespace Prisma {
     updatedAt?: SortOrder
   }
 
+  export type SeoModuleNullableScalarRelationFilter = {
+    is?: SeoModuleWhereInput | null
+    isNot?: SeoModuleWhereInput | null
+  }
+
   export type PrescriptionCountOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
@@ -14055,6 +16236,7 @@ export namespace Prisma {
     updatedAt?: SortOrder
     primaryFontId?: SortOrder
     secondaryFontId?: SortOrder
+    seoId?: SortOrder
   }
 
   export type PrescriptionMaxOrderByAggregateInput = {
@@ -14069,6 +16251,7 @@ export namespace Prisma {
     updatedAt?: SortOrder
     primaryFontId?: SortOrder
     secondaryFontId?: SortOrder
+    seoId?: SortOrder
   }
 
   export type PrescriptionMinOrderByAggregateInput = {
@@ -14083,6 +16266,7 @@ export namespace Prisma {
     updatedAt?: SortOrder
     primaryFontId?: SortOrder
     secondaryFontId?: SortOrder
+    seoId?: SortOrder
   }
 
   export type TagCountOrderByAggregateInput = {
@@ -14109,11 +16293,70 @@ export namespace Prisma {
     updatedAt?: SortOrder
   }
 
-  export type BlogPostCreateNestedManyWithoutAuthorInput = {
-    create?: XOR<BlogPostCreateWithoutAuthorInput, BlogPostUncheckedCreateWithoutAuthorInput> | BlogPostCreateWithoutAuthorInput[] | BlogPostUncheckedCreateWithoutAuthorInput[]
-    connectOrCreate?: BlogPostCreateOrConnectWithoutAuthorInput | BlogPostCreateOrConnectWithoutAuthorInput[]
-    createMany?: BlogPostCreateManyAuthorInputEnvelope
-    connect?: BlogPostWhereUniqueInput | BlogPostWhereUniqueInput[]
+  export type UserScalarRelationFilter = {
+    is?: UserWhereInput
+    isNot?: UserWhereInput
+  }
+
+  export type PostCountOrderByAggregateInput = {
+    id?: SortOrder
+    postType?: SortOrder
+    title?: SortOrder
+    slug?: SortOrder
+    caption?: SortOrder
+    description?: SortOrder
+    thumbnailUrl?: SortOrder
+    imageUrl?: SortOrder
+    imageAlt?: SortOrder
+    insight?: SortOrder
+    published?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    authorId?: SortOrder
+    seoId?: SortOrder
+  }
+
+  export type PostMaxOrderByAggregateInput = {
+    id?: SortOrder
+    postType?: SortOrder
+    title?: SortOrder
+    slug?: SortOrder
+    caption?: SortOrder
+    description?: SortOrder
+    thumbnailUrl?: SortOrder
+    imageUrl?: SortOrder
+    imageAlt?: SortOrder
+    insight?: SortOrder
+    published?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    authorId?: SortOrder
+    seoId?: SortOrder
+  }
+
+  export type PostMinOrderByAggregateInput = {
+    id?: SortOrder
+    postType?: SortOrder
+    title?: SortOrder
+    slug?: SortOrder
+    caption?: SortOrder
+    description?: SortOrder
+    thumbnailUrl?: SortOrder
+    imageUrl?: SortOrder
+    imageAlt?: SortOrder
+    insight?: SortOrder
+    published?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    authorId?: SortOrder
+    seoId?: SortOrder
+  }
+
+  export type PostCreateNestedManyWithoutAuthorInput = {
+    create?: XOR<PostCreateWithoutAuthorInput, PostUncheckedCreateWithoutAuthorInput> | PostCreateWithoutAuthorInput[] | PostUncheckedCreateWithoutAuthorInput[]
+    connectOrCreate?: PostCreateOrConnectWithoutAuthorInput | PostCreateOrConnectWithoutAuthorInput[]
+    createMany?: PostCreateManyAuthorInputEnvelope
+    connect?: PostWhereUniqueInput | PostWhereUniqueInput[]
   }
 
   export type RoleCreateNestedManyWithoutUsersInput = {
@@ -14122,11 +16365,11 @@ export namespace Prisma {
     connect?: RoleWhereUniqueInput | RoleWhereUniqueInput[]
   }
 
-  export type BlogPostUncheckedCreateNestedManyWithoutAuthorInput = {
-    create?: XOR<BlogPostCreateWithoutAuthorInput, BlogPostUncheckedCreateWithoutAuthorInput> | BlogPostCreateWithoutAuthorInput[] | BlogPostUncheckedCreateWithoutAuthorInput[]
-    connectOrCreate?: BlogPostCreateOrConnectWithoutAuthorInput | BlogPostCreateOrConnectWithoutAuthorInput[]
-    createMany?: BlogPostCreateManyAuthorInputEnvelope
-    connect?: BlogPostWhereUniqueInput | BlogPostWhereUniqueInput[]
+  export type PostUncheckedCreateNestedManyWithoutAuthorInput = {
+    create?: XOR<PostCreateWithoutAuthorInput, PostUncheckedCreateWithoutAuthorInput> | PostCreateWithoutAuthorInput[] | PostUncheckedCreateWithoutAuthorInput[]
+    connectOrCreate?: PostCreateOrConnectWithoutAuthorInput | PostCreateOrConnectWithoutAuthorInput[]
+    createMany?: PostCreateManyAuthorInputEnvelope
+    connect?: PostWhereUniqueInput | PostWhereUniqueInput[]
   }
 
   export type RoleUncheckedCreateNestedManyWithoutUsersInput = {
@@ -14151,18 +16394,18 @@ export namespace Prisma {
     set?: Bytes | null
   }
 
-  export type BlogPostUpdateManyWithoutAuthorNestedInput = {
-    create?: XOR<BlogPostCreateWithoutAuthorInput, BlogPostUncheckedCreateWithoutAuthorInput> | BlogPostCreateWithoutAuthorInput[] | BlogPostUncheckedCreateWithoutAuthorInput[]
-    connectOrCreate?: BlogPostCreateOrConnectWithoutAuthorInput | BlogPostCreateOrConnectWithoutAuthorInput[]
-    upsert?: BlogPostUpsertWithWhereUniqueWithoutAuthorInput | BlogPostUpsertWithWhereUniqueWithoutAuthorInput[]
-    createMany?: BlogPostCreateManyAuthorInputEnvelope
-    set?: BlogPostWhereUniqueInput | BlogPostWhereUniqueInput[]
-    disconnect?: BlogPostWhereUniqueInput | BlogPostWhereUniqueInput[]
-    delete?: BlogPostWhereUniqueInput | BlogPostWhereUniqueInput[]
-    connect?: BlogPostWhereUniqueInput | BlogPostWhereUniqueInput[]
-    update?: BlogPostUpdateWithWhereUniqueWithoutAuthorInput | BlogPostUpdateWithWhereUniqueWithoutAuthorInput[]
-    updateMany?: BlogPostUpdateManyWithWhereWithoutAuthorInput | BlogPostUpdateManyWithWhereWithoutAuthorInput[]
-    deleteMany?: BlogPostScalarWhereInput | BlogPostScalarWhereInput[]
+  export type PostUpdateManyWithoutAuthorNestedInput = {
+    create?: XOR<PostCreateWithoutAuthorInput, PostUncheckedCreateWithoutAuthorInput> | PostCreateWithoutAuthorInput[] | PostUncheckedCreateWithoutAuthorInput[]
+    connectOrCreate?: PostCreateOrConnectWithoutAuthorInput | PostCreateOrConnectWithoutAuthorInput[]
+    upsert?: PostUpsertWithWhereUniqueWithoutAuthorInput | PostUpsertWithWhereUniqueWithoutAuthorInput[]
+    createMany?: PostCreateManyAuthorInputEnvelope
+    set?: PostWhereUniqueInput | PostWhereUniqueInput[]
+    disconnect?: PostWhereUniqueInput | PostWhereUniqueInput[]
+    delete?: PostWhereUniqueInput | PostWhereUniqueInput[]
+    connect?: PostWhereUniqueInput | PostWhereUniqueInput[]
+    update?: PostUpdateWithWhereUniqueWithoutAuthorInput | PostUpdateWithWhereUniqueWithoutAuthorInput[]
+    updateMany?: PostUpdateManyWithWhereWithoutAuthorInput | PostUpdateManyWithWhereWithoutAuthorInput[]
+    deleteMany?: PostScalarWhereInput | PostScalarWhereInput[]
   }
 
   export type RoleUpdateManyWithoutUsersNestedInput = {
@@ -14178,18 +16421,18 @@ export namespace Prisma {
     deleteMany?: RoleScalarWhereInput | RoleScalarWhereInput[]
   }
 
-  export type BlogPostUncheckedUpdateManyWithoutAuthorNestedInput = {
-    create?: XOR<BlogPostCreateWithoutAuthorInput, BlogPostUncheckedCreateWithoutAuthorInput> | BlogPostCreateWithoutAuthorInput[] | BlogPostUncheckedCreateWithoutAuthorInput[]
-    connectOrCreate?: BlogPostCreateOrConnectWithoutAuthorInput | BlogPostCreateOrConnectWithoutAuthorInput[]
-    upsert?: BlogPostUpsertWithWhereUniqueWithoutAuthorInput | BlogPostUpsertWithWhereUniqueWithoutAuthorInput[]
-    createMany?: BlogPostCreateManyAuthorInputEnvelope
-    set?: BlogPostWhereUniqueInput | BlogPostWhereUniqueInput[]
-    disconnect?: BlogPostWhereUniqueInput | BlogPostWhereUniqueInput[]
-    delete?: BlogPostWhereUniqueInput | BlogPostWhereUniqueInput[]
-    connect?: BlogPostWhereUniqueInput | BlogPostWhereUniqueInput[]
-    update?: BlogPostUpdateWithWhereUniqueWithoutAuthorInput | BlogPostUpdateWithWhereUniqueWithoutAuthorInput[]
-    updateMany?: BlogPostUpdateManyWithWhereWithoutAuthorInput | BlogPostUpdateManyWithWhereWithoutAuthorInput[]
-    deleteMany?: BlogPostScalarWhereInput | BlogPostScalarWhereInput[]
+  export type PostUncheckedUpdateManyWithoutAuthorNestedInput = {
+    create?: XOR<PostCreateWithoutAuthorInput, PostUncheckedCreateWithoutAuthorInput> | PostCreateWithoutAuthorInput[] | PostUncheckedCreateWithoutAuthorInput[]
+    connectOrCreate?: PostCreateOrConnectWithoutAuthorInput | PostCreateOrConnectWithoutAuthorInput[]
+    upsert?: PostUpsertWithWhereUniqueWithoutAuthorInput | PostUpsertWithWhereUniqueWithoutAuthorInput[]
+    createMany?: PostCreateManyAuthorInputEnvelope
+    set?: PostWhereUniqueInput | PostWhereUniqueInput[]
+    disconnect?: PostWhereUniqueInput | PostWhereUniqueInput[]
+    delete?: PostWhereUniqueInput | PostWhereUniqueInput[]
+    connect?: PostWhereUniqueInput | PostWhereUniqueInput[]
+    update?: PostUpdateWithWhereUniqueWithoutAuthorInput | PostUpdateWithWhereUniqueWithoutAuthorInput[]
+    updateMany?: PostUpdateManyWithWhereWithoutAuthorInput | PostUpdateManyWithWhereWithoutAuthorInput[]
+    deleteMany?: PostScalarWhereInput | PostScalarWhereInput[]
   }
 
   export type RoleUncheckedUpdateManyWithoutUsersNestedInput = {
@@ -14319,18 +16562,72 @@ export namespace Prisma {
     deleteMany?: RoleScalarWhereInput | RoleScalarWhereInput[]
   }
 
-  export type UserCreateNestedOneWithoutPostsInput = {
-    create?: XOR<UserCreateWithoutPostsInput, UserUncheckedCreateWithoutPostsInput>
-    connectOrCreate?: UserCreateOrConnectWithoutPostsInput
-    connect?: UserWhereUniqueInput
+  export type PostCreateNestedOneWithoutSeoInput = {
+    create?: XOR<PostCreateWithoutSeoInput, PostUncheckedCreateWithoutSeoInput>
+    connectOrCreate?: PostCreateOrConnectWithoutSeoInput
+    connect?: PostWhereUniqueInput
   }
 
-  export type UserUpdateOneRequiredWithoutPostsNestedInput = {
-    create?: XOR<UserCreateWithoutPostsInput, UserUncheckedCreateWithoutPostsInput>
-    connectOrCreate?: UserCreateOrConnectWithoutPostsInput
-    upsert?: UserUpsertWithoutPostsInput
-    connect?: UserWhereUniqueInput
-    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutPostsInput, UserUpdateWithoutPostsInput>, UserUncheckedUpdateWithoutPostsInput>
+  export type PrescriptionCreateNestedOneWithoutSeoInput = {
+    create?: XOR<PrescriptionCreateWithoutSeoInput, PrescriptionUncheckedCreateWithoutSeoInput>
+    connectOrCreate?: PrescriptionCreateOrConnectWithoutSeoInput
+    connect?: PrescriptionWhereUniqueInput
+  }
+
+  export type PostUncheckedCreateNestedOneWithoutSeoInput = {
+    create?: XOR<PostCreateWithoutSeoInput, PostUncheckedCreateWithoutSeoInput>
+    connectOrCreate?: PostCreateOrConnectWithoutSeoInput
+    connect?: PostWhereUniqueInput
+  }
+
+  export type PrescriptionUncheckedCreateNestedOneWithoutSeoInput = {
+    create?: XOR<PrescriptionCreateWithoutSeoInput, PrescriptionUncheckedCreateWithoutSeoInput>
+    connectOrCreate?: PrescriptionCreateOrConnectWithoutSeoInput
+    connect?: PrescriptionWhereUniqueInput
+  }
+
+  export type BoolFieldUpdateOperationsInput = {
+    set?: boolean
+  }
+
+  export type PostUpdateOneWithoutSeoNestedInput = {
+    create?: XOR<PostCreateWithoutSeoInput, PostUncheckedCreateWithoutSeoInput>
+    connectOrCreate?: PostCreateOrConnectWithoutSeoInput
+    upsert?: PostUpsertWithoutSeoInput
+    disconnect?: PostWhereInput | boolean
+    delete?: PostWhereInput | boolean
+    connect?: PostWhereUniqueInput
+    update?: XOR<XOR<PostUpdateToOneWithWhereWithoutSeoInput, PostUpdateWithoutSeoInput>, PostUncheckedUpdateWithoutSeoInput>
+  }
+
+  export type PrescriptionUpdateOneWithoutSeoNestedInput = {
+    create?: XOR<PrescriptionCreateWithoutSeoInput, PrescriptionUncheckedCreateWithoutSeoInput>
+    connectOrCreate?: PrescriptionCreateOrConnectWithoutSeoInput
+    upsert?: PrescriptionUpsertWithoutSeoInput
+    disconnect?: PrescriptionWhereInput | boolean
+    delete?: PrescriptionWhereInput | boolean
+    connect?: PrescriptionWhereUniqueInput
+    update?: XOR<XOR<PrescriptionUpdateToOneWithWhereWithoutSeoInput, PrescriptionUpdateWithoutSeoInput>, PrescriptionUncheckedUpdateWithoutSeoInput>
+  }
+
+  export type PostUncheckedUpdateOneWithoutSeoNestedInput = {
+    create?: XOR<PostCreateWithoutSeoInput, PostUncheckedCreateWithoutSeoInput>
+    connectOrCreate?: PostCreateOrConnectWithoutSeoInput
+    upsert?: PostUpsertWithoutSeoInput
+    disconnect?: PostWhereInput | boolean
+    delete?: PostWhereInput | boolean
+    connect?: PostWhereUniqueInput
+    update?: XOR<XOR<PostUpdateToOneWithWhereWithoutSeoInput, PostUpdateWithoutSeoInput>, PostUncheckedUpdateWithoutSeoInput>
+  }
+
+  export type PrescriptionUncheckedUpdateOneWithoutSeoNestedInput = {
+    create?: XOR<PrescriptionCreateWithoutSeoInput, PrescriptionUncheckedCreateWithoutSeoInput>
+    connectOrCreate?: PrescriptionCreateOrConnectWithoutSeoInput
+    upsert?: PrescriptionUpsertWithoutSeoInput
+    disconnect?: PrescriptionWhereInput | boolean
+    delete?: PrescriptionWhereInput | boolean
+    connect?: PrescriptionWhereUniqueInput
+    update?: XOR<XOR<PrescriptionUpdateToOneWithWhereWithoutSeoInput, PrescriptionUpdateWithoutSeoInput>, PrescriptionUncheckedUpdateWithoutSeoInput>
   }
 
   export type IngredientCreateNestedOneWithoutVariantsInput = {
@@ -14388,6 +16685,12 @@ export namespace Prisma {
     connect?: TagWhereUniqueInput | TagWhereUniqueInput[]
   }
 
+  export type PostCreateNestedManyWithoutFontsInput = {
+    create?: XOR<PostCreateWithoutFontsInput, PostUncheckedCreateWithoutFontsInput> | PostCreateWithoutFontsInput[] | PostUncheckedCreateWithoutFontsInput[]
+    connectOrCreate?: PostCreateOrConnectWithoutFontsInput | PostCreateOrConnectWithoutFontsInput[]
+    connect?: PostWhereUniqueInput | PostWhereUniqueInput[]
+  }
+
   export type FontVariantUncheckedCreateNestedManyWithoutIngredientInput = {
     create?: XOR<FontVariantCreateWithoutIngredientInput, FontVariantUncheckedCreateWithoutIngredientInput> | FontVariantCreateWithoutIngredientInput[] | FontVariantUncheckedCreateWithoutIngredientInput[]
     connectOrCreate?: FontVariantCreateOrConnectWithoutIngredientInput | FontVariantCreateOrConnectWithoutIngredientInput[]
@@ -14421,8 +16724,10 @@ export namespace Prisma {
     connect?: TagWhereUniqueInput | TagWhereUniqueInput[]
   }
 
-  export type BoolFieldUpdateOperationsInput = {
-    set?: boolean
+  export type PostUncheckedCreateNestedManyWithoutFontsInput = {
+    create?: XOR<PostCreateWithoutFontsInput, PostUncheckedCreateWithoutFontsInput> | PostCreateWithoutFontsInput[] | PostUncheckedCreateWithoutFontsInput[]
+    connectOrCreate?: PostCreateOrConnectWithoutFontsInput | PostCreateOrConnectWithoutFontsInput[]
+    connect?: PostWhereUniqueInput | PostWhereUniqueInput[]
   }
 
   export type FontVariantUpdateManyWithoutIngredientNestedInput = {
@@ -14493,6 +16798,19 @@ export namespace Prisma {
     deleteMany?: TagScalarWhereInput | TagScalarWhereInput[]
   }
 
+  export type PostUpdateManyWithoutFontsNestedInput = {
+    create?: XOR<PostCreateWithoutFontsInput, PostUncheckedCreateWithoutFontsInput> | PostCreateWithoutFontsInput[] | PostUncheckedCreateWithoutFontsInput[]
+    connectOrCreate?: PostCreateOrConnectWithoutFontsInput | PostCreateOrConnectWithoutFontsInput[]
+    upsert?: PostUpsertWithWhereUniqueWithoutFontsInput | PostUpsertWithWhereUniqueWithoutFontsInput[]
+    set?: PostWhereUniqueInput | PostWhereUniqueInput[]
+    disconnect?: PostWhereUniqueInput | PostWhereUniqueInput[]
+    delete?: PostWhereUniqueInput | PostWhereUniqueInput[]
+    connect?: PostWhereUniqueInput | PostWhereUniqueInput[]
+    update?: PostUpdateWithWhereUniqueWithoutFontsInput | PostUpdateWithWhereUniqueWithoutFontsInput[]
+    updateMany?: PostUpdateManyWithWhereWithoutFontsInput | PostUpdateManyWithWhereWithoutFontsInput[]
+    deleteMany?: PostScalarWhereInput | PostScalarWhereInput[]
+  }
+
   export type FontVariantUncheckedUpdateManyWithoutIngredientNestedInput = {
     create?: XOR<FontVariantCreateWithoutIngredientInput, FontVariantUncheckedCreateWithoutIngredientInput> | FontVariantCreateWithoutIngredientInput[] | FontVariantUncheckedCreateWithoutIngredientInput[]
     connectOrCreate?: FontVariantCreateOrConnectWithoutIngredientInput | FontVariantCreateOrConnectWithoutIngredientInput[]
@@ -14559,6 +16877,19 @@ export namespace Prisma {
     update?: TagUpdateWithWhereUniqueWithoutIngredientsInput | TagUpdateWithWhereUniqueWithoutIngredientsInput[]
     updateMany?: TagUpdateManyWithWhereWithoutIngredientsInput | TagUpdateManyWithWhereWithoutIngredientsInput[]
     deleteMany?: TagScalarWhereInput | TagScalarWhereInput[]
+  }
+
+  export type PostUncheckedUpdateManyWithoutFontsNestedInput = {
+    create?: XOR<PostCreateWithoutFontsInput, PostUncheckedCreateWithoutFontsInput> | PostCreateWithoutFontsInput[] | PostUncheckedCreateWithoutFontsInput[]
+    connectOrCreate?: PostCreateOrConnectWithoutFontsInput | PostCreateOrConnectWithoutFontsInput[]
+    upsert?: PostUpsertWithWhereUniqueWithoutFontsInput | PostUpsertWithWhereUniqueWithoutFontsInput[]
+    set?: PostWhereUniqueInput | PostWhereUniqueInput[]
+    disconnect?: PostWhereUniqueInput | PostWhereUniqueInput[]
+    delete?: PostWhereUniqueInput | PostWhereUniqueInput[]
+    connect?: PostWhereUniqueInput | PostWhereUniqueInput[]
+    update?: PostUpdateWithWhereUniqueWithoutFontsInput | PostUpdateWithWhereUniqueWithoutFontsInput[]
+    updateMany?: PostUpdateManyWithWhereWithoutFontsInput | PostUpdateManyWithWhereWithoutFontsInput[]
+    deleteMany?: PostScalarWhereInput | PostScalarWhereInput[]
   }
 
   export type IngredientCreateNestedManyWithoutFormulasInput = {
@@ -14655,6 +16986,12 @@ export namespace Prisma {
     connect?: TagWhereUniqueInput | TagWhereUniqueInput[]
   }
 
+  export type SeoModuleCreateNestedOneWithoutPrescriptionInput = {
+    create?: XOR<SeoModuleCreateWithoutPrescriptionInput, SeoModuleUncheckedCreateWithoutPrescriptionInput>
+    connectOrCreate?: SeoModuleCreateOrConnectWithoutPrescriptionInput
+    connect?: SeoModuleWhereUniqueInput
+  }
+
   export type TagUncheckedCreateNestedManyWithoutPrescriptionsInput = {
     create?: XOR<TagCreateWithoutPrescriptionsInput, TagUncheckedCreateWithoutPrescriptionsInput> | TagCreateWithoutPrescriptionsInput[] | TagUncheckedCreateWithoutPrescriptionsInput[]
     connectOrCreate?: TagCreateOrConnectWithoutPrescriptionsInput | TagCreateOrConnectWithoutPrescriptionsInput[]
@@ -14690,6 +17027,16 @@ export namespace Prisma {
     deleteMany?: TagScalarWhereInput | TagScalarWhereInput[]
   }
 
+  export type SeoModuleUpdateOneWithoutPrescriptionNestedInput = {
+    create?: XOR<SeoModuleCreateWithoutPrescriptionInput, SeoModuleUncheckedCreateWithoutPrescriptionInput>
+    connectOrCreate?: SeoModuleCreateOrConnectWithoutPrescriptionInput
+    upsert?: SeoModuleUpsertWithoutPrescriptionInput
+    disconnect?: SeoModuleWhereInput | boolean
+    delete?: SeoModuleWhereInput | boolean
+    connect?: SeoModuleWhereUniqueInput
+    update?: XOR<XOR<SeoModuleUpdateToOneWithWhereWithoutPrescriptionInput, SeoModuleUpdateWithoutPrescriptionInput>, SeoModuleUncheckedUpdateWithoutPrescriptionInput>
+  }
+
   export type TagUncheckedUpdateManyWithoutPrescriptionsNestedInput = {
     create?: XOR<TagCreateWithoutPrescriptionsInput, TagUncheckedCreateWithoutPrescriptionsInput> | TagCreateWithoutPrescriptionsInput[] | TagUncheckedCreateWithoutPrescriptionsInput[]
     connectOrCreate?: TagCreateOrConnectWithoutPrescriptionsInput | TagCreateOrConnectWithoutPrescriptionsInput[]
@@ -14721,6 +17068,12 @@ export namespace Prisma {
     connect?: FormulaWhereUniqueInput | FormulaWhereUniqueInput[]
   }
 
+  export type PostCreateNestedManyWithoutTagsInput = {
+    create?: XOR<PostCreateWithoutTagsInput, PostUncheckedCreateWithoutTagsInput> | PostCreateWithoutTagsInput[] | PostUncheckedCreateWithoutTagsInput[]
+    connectOrCreate?: PostCreateOrConnectWithoutTagsInput | PostCreateOrConnectWithoutTagsInput[]
+    connect?: PostWhereUniqueInput | PostWhereUniqueInput[]
+  }
+
   export type PrescriptionUncheckedCreateNestedManyWithoutTagsInput = {
     create?: XOR<PrescriptionCreateWithoutTagsInput, PrescriptionUncheckedCreateWithoutTagsInput> | PrescriptionCreateWithoutTagsInput[] | PrescriptionUncheckedCreateWithoutTagsInput[]
     connectOrCreate?: PrescriptionCreateOrConnectWithoutTagsInput | PrescriptionCreateOrConnectWithoutTagsInput[]
@@ -14737,6 +17090,12 @@ export namespace Prisma {
     create?: XOR<FormulaCreateWithoutTagsInput, FormulaUncheckedCreateWithoutTagsInput> | FormulaCreateWithoutTagsInput[] | FormulaUncheckedCreateWithoutTagsInput[]
     connectOrCreate?: FormulaCreateOrConnectWithoutTagsInput | FormulaCreateOrConnectWithoutTagsInput[]
     connect?: FormulaWhereUniqueInput | FormulaWhereUniqueInput[]
+  }
+
+  export type PostUncheckedCreateNestedManyWithoutTagsInput = {
+    create?: XOR<PostCreateWithoutTagsInput, PostUncheckedCreateWithoutTagsInput> | PostCreateWithoutTagsInput[] | PostUncheckedCreateWithoutTagsInput[]
+    connectOrCreate?: PostCreateOrConnectWithoutTagsInput | PostCreateOrConnectWithoutTagsInput[]
+    connect?: PostWhereUniqueInput | PostWhereUniqueInput[]
   }
 
   export type PrescriptionUpdateManyWithoutTagsNestedInput = {
@@ -14778,6 +17137,19 @@ export namespace Prisma {
     deleteMany?: FormulaScalarWhereInput | FormulaScalarWhereInput[]
   }
 
+  export type PostUpdateManyWithoutTagsNestedInput = {
+    create?: XOR<PostCreateWithoutTagsInput, PostUncheckedCreateWithoutTagsInput> | PostCreateWithoutTagsInput[] | PostUncheckedCreateWithoutTagsInput[]
+    connectOrCreate?: PostCreateOrConnectWithoutTagsInput | PostCreateOrConnectWithoutTagsInput[]
+    upsert?: PostUpsertWithWhereUniqueWithoutTagsInput | PostUpsertWithWhereUniqueWithoutTagsInput[]
+    set?: PostWhereUniqueInput | PostWhereUniqueInput[]
+    disconnect?: PostWhereUniqueInput | PostWhereUniqueInput[]
+    delete?: PostWhereUniqueInput | PostWhereUniqueInput[]
+    connect?: PostWhereUniqueInput | PostWhereUniqueInput[]
+    update?: PostUpdateWithWhereUniqueWithoutTagsInput | PostUpdateWithWhereUniqueWithoutTagsInput[]
+    updateMany?: PostUpdateManyWithWhereWithoutTagsInput | PostUpdateManyWithWhereWithoutTagsInput[]
+    deleteMany?: PostScalarWhereInput | PostScalarWhereInput[]
+  }
+
   export type PrescriptionUncheckedUpdateManyWithoutTagsNestedInput = {
     create?: XOR<PrescriptionCreateWithoutTagsInput, PrescriptionUncheckedCreateWithoutTagsInput> | PrescriptionCreateWithoutTagsInput[] | PrescriptionUncheckedCreateWithoutTagsInput[]
     connectOrCreate?: PrescriptionCreateOrConnectWithoutTagsInput | PrescriptionCreateOrConnectWithoutTagsInput[]
@@ -14815,6 +17187,125 @@ export namespace Prisma {
     update?: FormulaUpdateWithWhereUniqueWithoutTagsInput | FormulaUpdateWithWhereUniqueWithoutTagsInput[]
     updateMany?: FormulaUpdateManyWithWhereWithoutTagsInput | FormulaUpdateManyWithWhereWithoutTagsInput[]
     deleteMany?: FormulaScalarWhereInput | FormulaScalarWhereInput[]
+  }
+
+  export type PostUncheckedUpdateManyWithoutTagsNestedInput = {
+    create?: XOR<PostCreateWithoutTagsInput, PostUncheckedCreateWithoutTagsInput> | PostCreateWithoutTagsInput[] | PostUncheckedCreateWithoutTagsInput[]
+    connectOrCreate?: PostCreateOrConnectWithoutTagsInput | PostCreateOrConnectWithoutTagsInput[]
+    upsert?: PostUpsertWithWhereUniqueWithoutTagsInput | PostUpsertWithWhereUniqueWithoutTagsInput[]
+    set?: PostWhereUniqueInput | PostWhereUniqueInput[]
+    disconnect?: PostWhereUniqueInput | PostWhereUniqueInput[]
+    delete?: PostWhereUniqueInput | PostWhereUniqueInput[]
+    connect?: PostWhereUniqueInput | PostWhereUniqueInput[]
+    update?: PostUpdateWithWhereUniqueWithoutTagsInput | PostUpdateWithWhereUniqueWithoutTagsInput[]
+    updateMany?: PostUpdateManyWithWhereWithoutTagsInput | PostUpdateManyWithWhereWithoutTagsInput[]
+    deleteMany?: PostScalarWhereInput | PostScalarWhereInput[]
+  }
+
+  export type UserCreateNestedOneWithoutPostsInput = {
+    create?: XOR<UserCreateWithoutPostsInput, UserUncheckedCreateWithoutPostsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutPostsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type TagCreateNestedManyWithoutPostsInput = {
+    create?: XOR<TagCreateWithoutPostsInput, TagUncheckedCreateWithoutPostsInput> | TagCreateWithoutPostsInput[] | TagUncheckedCreateWithoutPostsInput[]
+    connectOrCreate?: TagCreateOrConnectWithoutPostsInput | TagCreateOrConnectWithoutPostsInput[]
+    connect?: TagWhereUniqueInput | TagWhereUniqueInput[]
+  }
+
+  export type IngredientCreateNestedManyWithoutPostsInput = {
+    create?: XOR<IngredientCreateWithoutPostsInput, IngredientUncheckedCreateWithoutPostsInput> | IngredientCreateWithoutPostsInput[] | IngredientUncheckedCreateWithoutPostsInput[]
+    connectOrCreate?: IngredientCreateOrConnectWithoutPostsInput | IngredientCreateOrConnectWithoutPostsInput[]
+    connect?: IngredientWhereUniqueInput | IngredientWhereUniqueInput[]
+  }
+
+  export type SeoModuleCreateNestedOneWithoutPostInput = {
+    create?: XOR<SeoModuleCreateWithoutPostInput, SeoModuleUncheckedCreateWithoutPostInput>
+    connectOrCreate?: SeoModuleCreateOrConnectWithoutPostInput
+    connect?: SeoModuleWhereUniqueInput
+  }
+
+  export type TagUncheckedCreateNestedManyWithoutPostsInput = {
+    create?: XOR<TagCreateWithoutPostsInput, TagUncheckedCreateWithoutPostsInput> | TagCreateWithoutPostsInput[] | TagUncheckedCreateWithoutPostsInput[]
+    connectOrCreate?: TagCreateOrConnectWithoutPostsInput | TagCreateOrConnectWithoutPostsInput[]
+    connect?: TagWhereUniqueInput | TagWhereUniqueInput[]
+  }
+
+  export type IngredientUncheckedCreateNestedManyWithoutPostsInput = {
+    create?: XOR<IngredientCreateWithoutPostsInput, IngredientUncheckedCreateWithoutPostsInput> | IngredientCreateWithoutPostsInput[] | IngredientUncheckedCreateWithoutPostsInput[]
+    connectOrCreate?: IngredientCreateOrConnectWithoutPostsInput | IngredientCreateOrConnectWithoutPostsInput[]
+    connect?: IngredientWhereUniqueInput | IngredientWhereUniqueInput[]
+  }
+
+  export type UserUpdateOneRequiredWithoutPostsNestedInput = {
+    create?: XOR<UserCreateWithoutPostsInput, UserUncheckedCreateWithoutPostsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutPostsInput
+    upsert?: UserUpsertWithoutPostsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutPostsInput, UserUpdateWithoutPostsInput>, UserUncheckedUpdateWithoutPostsInput>
+  }
+
+  export type TagUpdateManyWithoutPostsNestedInput = {
+    create?: XOR<TagCreateWithoutPostsInput, TagUncheckedCreateWithoutPostsInput> | TagCreateWithoutPostsInput[] | TagUncheckedCreateWithoutPostsInput[]
+    connectOrCreate?: TagCreateOrConnectWithoutPostsInput | TagCreateOrConnectWithoutPostsInput[]
+    upsert?: TagUpsertWithWhereUniqueWithoutPostsInput | TagUpsertWithWhereUniqueWithoutPostsInput[]
+    set?: TagWhereUniqueInput | TagWhereUniqueInput[]
+    disconnect?: TagWhereUniqueInput | TagWhereUniqueInput[]
+    delete?: TagWhereUniqueInput | TagWhereUniqueInput[]
+    connect?: TagWhereUniqueInput | TagWhereUniqueInput[]
+    update?: TagUpdateWithWhereUniqueWithoutPostsInput | TagUpdateWithWhereUniqueWithoutPostsInput[]
+    updateMany?: TagUpdateManyWithWhereWithoutPostsInput | TagUpdateManyWithWhereWithoutPostsInput[]
+    deleteMany?: TagScalarWhereInput | TagScalarWhereInput[]
+  }
+
+  export type IngredientUpdateManyWithoutPostsNestedInput = {
+    create?: XOR<IngredientCreateWithoutPostsInput, IngredientUncheckedCreateWithoutPostsInput> | IngredientCreateWithoutPostsInput[] | IngredientUncheckedCreateWithoutPostsInput[]
+    connectOrCreate?: IngredientCreateOrConnectWithoutPostsInput | IngredientCreateOrConnectWithoutPostsInput[]
+    upsert?: IngredientUpsertWithWhereUniqueWithoutPostsInput | IngredientUpsertWithWhereUniqueWithoutPostsInput[]
+    set?: IngredientWhereUniqueInput | IngredientWhereUniqueInput[]
+    disconnect?: IngredientWhereUniqueInput | IngredientWhereUniqueInput[]
+    delete?: IngredientWhereUniqueInput | IngredientWhereUniqueInput[]
+    connect?: IngredientWhereUniqueInput | IngredientWhereUniqueInput[]
+    update?: IngredientUpdateWithWhereUniqueWithoutPostsInput | IngredientUpdateWithWhereUniqueWithoutPostsInput[]
+    updateMany?: IngredientUpdateManyWithWhereWithoutPostsInput | IngredientUpdateManyWithWhereWithoutPostsInput[]
+    deleteMany?: IngredientScalarWhereInput | IngredientScalarWhereInput[]
+  }
+
+  export type SeoModuleUpdateOneWithoutPostNestedInput = {
+    create?: XOR<SeoModuleCreateWithoutPostInput, SeoModuleUncheckedCreateWithoutPostInput>
+    connectOrCreate?: SeoModuleCreateOrConnectWithoutPostInput
+    upsert?: SeoModuleUpsertWithoutPostInput
+    disconnect?: SeoModuleWhereInput | boolean
+    delete?: SeoModuleWhereInput | boolean
+    connect?: SeoModuleWhereUniqueInput
+    update?: XOR<XOR<SeoModuleUpdateToOneWithWhereWithoutPostInput, SeoModuleUpdateWithoutPostInput>, SeoModuleUncheckedUpdateWithoutPostInput>
+  }
+
+  export type TagUncheckedUpdateManyWithoutPostsNestedInput = {
+    create?: XOR<TagCreateWithoutPostsInput, TagUncheckedCreateWithoutPostsInput> | TagCreateWithoutPostsInput[] | TagUncheckedCreateWithoutPostsInput[]
+    connectOrCreate?: TagCreateOrConnectWithoutPostsInput | TagCreateOrConnectWithoutPostsInput[]
+    upsert?: TagUpsertWithWhereUniqueWithoutPostsInput | TagUpsertWithWhereUniqueWithoutPostsInput[]
+    set?: TagWhereUniqueInput | TagWhereUniqueInput[]
+    disconnect?: TagWhereUniqueInput | TagWhereUniqueInput[]
+    delete?: TagWhereUniqueInput | TagWhereUniqueInput[]
+    connect?: TagWhereUniqueInput | TagWhereUniqueInput[]
+    update?: TagUpdateWithWhereUniqueWithoutPostsInput | TagUpdateWithWhereUniqueWithoutPostsInput[]
+    updateMany?: TagUpdateManyWithWhereWithoutPostsInput | TagUpdateManyWithWhereWithoutPostsInput[]
+    deleteMany?: TagScalarWhereInput | TagScalarWhereInput[]
+  }
+
+  export type IngredientUncheckedUpdateManyWithoutPostsNestedInput = {
+    create?: XOR<IngredientCreateWithoutPostsInput, IngredientUncheckedCreateWithoutPostsInput> | IngredientCreateWithoutPostsInput[] | IngredientUncheckedCreateWithoutPostsInput[]
+    connectOrCreate?: IngredientCreateOrConnectWithoutPostsInput | IngredientCreateOrConnectWithoutPostsInput[]
+    upsert?: IngredientUpsertWithWhereUniqueWithoutPostsInput | IngredientUpsertWithWhereUniqueWithoutPostsInput[]
+    set?: IngredientWhereUniqueInput | IngredientWhereUniqueInput[]
+    disconnect?: IngredientWhereUniqueInput | IngredientWhereUniqueInput[]
+    delete?: IngredientWhereUniqueInput | IngredientWhereUniqueInput[]
+    connect?: IngredientWhereUniqueInput | IngredientWhereUniqueInput[]
+    update?: IngredientUpdateWithWhereUniqueWithoutPostsInput | IngredientUpdateWithWhereUniqueWithoutPostsInput[]
+    updateMany?: IngredientUpdateManyWithWhereWithoutPostsInput | IngredientUpdateManyWithWhereWithoutPostsInput[]
+    deleteMany?: IngredientScalarWhereInput | IngredientScalarWhereInput[]
   }
 
   export type NestedStringFilter<$PrismaModel = never> = {
@@ -14943,6 +17434,19 @@ export namespace Prisma {
     _max?: NestedBytesNullableFilter<$PrismaModel>
   }
 
+  export type NestedBoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
+  }
+
+  export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
+  }
+
   export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel>
     in?: number[]
@@ -14970,42 +17474,51 @@ export namespace Prisma {
     not?: NestedFloatFilter<$PrismaModel> | number
   }
 
-  export type NestedBoolFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolFilter<$PrismaModel> | boolean
-  }
-
-  export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedBoolFilter<$PrismaModel>
-    _max?: NestedBoolFilter<$PrismaModel>
-  }
-
-  export type BlogPostCreateWithoutAuthorInput = {
+  export type PostCreateWithoutAuthorInput = {
     id?: string
+    postType?: string
     title: string
-    content: string
+    slug: string
+    caption?: string | null
+    description?: string | null
+    thumbnailUrl?: string | null
+    imageUrl?: string | null
+    imageAlt?: string | null
+    insight?: string | null
+    published?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+    tags?: TagCreateNestedManyWithoutPostsInput
+    fonts?: IngredientCreateNestedManyWithoutPostsInput
+    seo?: SeoModuleCreateNestedOneWithoutPostInput
   }
 
-  export type BlogPostUncheckedCreateWithoutAuthorInput = {
+  export type PostUncheckedCreateWithoutAuthorInput = {
     id?: string
+    postType?: string
     title: string
-    content: string
+    slug: string
+    caption?: string | null
+    description?: string | null
+    thumbnailUrl?: string | null
+    imageUrl?: string | null
+    imageAlt?: string | null
+    insight?: string | null
+    published?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+    seoId?: string | null
+    tags?: TagUncheckedCreateNestedManyWithoutPostsInput
+    fonts?: IngredientUncheckedCreateNestedManyWithoutPostsInput
   }
 
-  export type BlogPostCreateOrConnectWithoutAuthorInput = {
-    where: BlogPostWhereUniqueInput
-    create: XOR<BlogPostCreateWithoutAuthorInput, BlogPostUncheckedCreateWithoutAuthorInput>
+  export type PostCreateOrConnectWithoutAuthorInput = {
+    where: PostWhereUniqueInput
+    create: XOR<PostCreateWithoutAuthorInput, PostUncheckedCreateWithoutAuthorInput>
   }
 
-  export type BlogPostCreateManyAuthorInputEnvelope = {
-    data: BlogPostCreateManyAuthorInput | BlogPostCreateManyAuthorInput[]
+  export type PostCreateManyAuthorInputEnvelope = {
+    data: PostCreateManyAuthorInput | PostCreateManyAuthorInput[]
   }
 
   export type RoleCreateWithoutUsersInput = {
@@ -15029,32 +17542,41 @@ export namespace Prisma {
     create: XOR<RoleCreateWithoutUsersInput, RoleUncheckedCreateWithoutUsersInput>
   }
 
-  export type BlogPostUpsertWithWhereUniqueWithoutAuthorInput = {
-    where: BlogPostWhereUniqueInput
-    update: XOR<BlogPostUpdateWithoutAuthorInput, BlogPostUncheckedUpdateWithoutAuthorInput>
-    create: XOR<BlogPostCreateWithoutAuthorInput, BlogPostUncheckedCreateWithoutAuthorInput>
+  export type PostUpsertWithWhereUniqueWithoutAuthorInput = {
+    where: PostWhereUniqueInput
+    update: XOR<PostUpdateWithoutAuthorInput, PostUncheckedUpdateWithoutAuthorInput>
+    create: XOR<PostCreateWithoutAuthorInput, PostUncheckedCreateWithoutAuthorInput>
   }
 
-  export type BlogPostUpdateWithWhereUniqueWithoutAuthorInput = {
-    where: BlogPostWhereUniqueInput
-    data: XOR<BlogPostUpdateWithoutAuthorInput, BlogPostUncheckedUpdateWithoutAuthorInput>
+  export type PostUpdateWithWhereUniqueWithoutAuthorInput = {
+    where: PostWhereUniqueInput
+    data: XOR<PostUpdateWithoutAuthorInput, PostUncheckedUpdateWithoutAuthorInput>
   }
 
-  export type BlogPostUpdateManyWithWhereWithoutAuthorInput = {
-    where: BlogPostScalarWhereInput
-    data: XOR<BlogPostUpdateManyMutationInput, BlogPostUncheckedUpdateManyWithoutAuthorInput>
+  export type PostUpdateManyWithWhereWithoutAuthorInput = {
+    where: PostScalarWhereInput
+    data: XOR<PostUpdateManyMutationInput, PostUncheckedUpdateManyWithoutAuthorInput>
   }
 
-  export type BlogPostScalarWhereInput = {
-    AND?: BlogPostScalarWhereInput | BlogPostScalarWhereInput[]
-    OR?: BlogPostScalarWhereInput[]
-    NOT?: BlogPostScalarWhereInput | BlogPostScalarWhereInput[]
-    id?: StringFilter<"BlogPost"> | string
-    title?: StringFilter<"BlogPost"> | string
-    content?: StringFilter<"BlogPost"> | string
-    authorId?: StringFilter<"BlogPost"> | string
-    createdAt?: DateTimeFilter<"BlogPost"> | Date | string
-    updatedAt?: DateTimeFilter<"BlogPost"> | Date | string
+  export type PostScalarWhereInput = {
+    AND?: PostScalarWhereInput | PostScalarWhereInput[]
+    OR?: PostScalarWhereInput[]
+    NOT?: PostScalarWhereInput | PostScalarWhereInput[]
+    id?: StringFilter<"Post"> | string
+    postType?: StringFilter<"Post"> | string
+    title?: StringFilter<"Post"> | string
+    slug?: StringFilter<"Post"> | string
+    caption?: StringNullableFilter<"Post"> | string | null
+    description?: StringNullableFilter<"Post"> | string | null
+    thumbnailUrl?: StringNullableFilter<"Post"> | string | null
+    imageUrl?: StringNullableFilter<"Post"> | string | null
+    imageAlt?: StringNullableFilter<"Post"> | string | null
+    insight?: StringNullableFilter<"Post"> | string | null
+    published?: BoolFilter<"Post"> | boolean
+    createdAt?: DateTimeFilter<"Post"> | Date | string
+    updatedAt?: DateTimeFilter<"Post"> | Date | string
+    authorId?: StringFilter<"Post"> | string
+    seoId?: StringNullableFilter<"Post"> | string | null
   }
 
   export type RoleUpsertWithWhereUniqueWithoutUsersInput = {
@@ -15113,7 +17635,7 @@ export namespace Prisma {
     imageUrl?: string | null
     surname?: string | null
     biography?: string | null
-    posts?: BlogPostCreateNestedManyWithoutAuthorInput
+    posts?: PostCreateNestedManyWithoutAuthorInput
   }
 
   export type UserUncheckedCreateWithoutRolesInput = {
@@ -15127,7 +17649,7 @@ export namespace Prisma {
     imageUrl?: string | null
     surname?: string | null
     biography?: string | null
-    posts?: BlogPostUncheckedCreateNestedManyWithoutAuthorInput
+    posts?: PostUncheckedCreateNestedManyWithoutAuthorInput
   }
 
   export type UserCreateOrConnectWithoutRolesInput = {
@@ -15230,76 +17752,172 @@ export namespace Prisma {
     data: XOR<RoleUpdateManyMutationInput, RoleUncheckedUpdateManyWithoutPermissionsInput>
   }
 
-  export type UserCreateWithoutPostsInput = {
+  export type PostCreateWithoutSeoInput = {
     id?: string
-    name?: string | null
-    email: string
-    password: string
+    postType?: string
+    title: string
+    slug: string
+    caption?: string | null
+    description?: string | null
+    thumbnailUrl?: string | null
+    imageUrl?: string | null
+    imageAlt?: string | null
+    insight?: string | null
+    published?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
-    image?: Bytes | null
-    imageUrl?: string | null
-    surname?: string | null
-    biography?: string | null
-    roles?: RoleCreateNestedManyWithoutUsersInput
+    author: UserCreateNestedOneWithoutPostsInput
+    tags?: TagCreateNestedManyWithoutPostsInput
+    fonts?: IngredientCreateNestedManyWithoutPostsInput
   }
 
-  export type UserUncheckedCreateWithoutPostsInput = {
+  export type PostUncheckedCreateWithoutSeoInput = {
     id?: string
-    name?: string | null
-    email: string
-    password: string
+    postType?: string
+    title: string
+    slug: string
+    caption?: string | null
+    description?: string | null
+    thumbnailUrl?: string | null
+    imageUrl?: string | null
+    imageAlt?: string | null
+    insight?: string | null
+    published?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
-    image?: Bytes | null
+    authorId: string
+    tags?: TagUncheckedCreateNestedManyWithoutPostsInput
+    fonts?: IngredientUncheckedCreateNestedManyWithoutPostsInput
+  }
+
+  export type PostCreateOrConnectWithoutSeoInput = {
+    where: PostWhereUniqueInput
+    create: XOR<PostCreateWithoutSeoInput, PostUncheckedCreateWithoutSeoInput>
+  }
+
+  export type PrescriptionCreateWithoutSeoInput = {
+    id?: string
+    name: string
+    slug: string
+    description?: string | null
     imageUrl?: string | null
-    surname?: string | null
-    biography?: string | null
-    roles?: RoleUncheckedCreateNestedManyWithoutUsersInput
+    insight?: string | null
+    published?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    primaryFont: IngredientCreateNestedOneWithoutPrimaryPrescriptionsInput
+    secondaryFont: IngredientCreateNestedOneWithoutSecondaryPrescriptionsInput
+    tags?: TagCreateNestedManyWithoutPrescriptionsInput
   }
 
-  export type UserCreateOrConnectWithoutPostsInput = {
-    where: UserWhereUniqueInput
-    create: XOR<UserCreateWithoutPostsInput, UserUncheckedCreateWithoutPostsInput>
+  export type PrescriptionUncheckedCreateWithoutSeoInput = {
+    id?: string
+    name: string
+    slug: string
+    description?: string | null
+    imageUrl?: string | null
+    insight?: string | null
+    published?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    primaryFontId: string
+    secondaryFontId: string
+    tags?: TagUncheckedCreateNestedManyWithoutPrescriptionsInput
   }
 
-  export type UserUpsertWithoutPostsInput = {
-    update: XOR<UserUpdateWithoutPostsInput, UserUncheckedUpdateWithoutPostsInput>
-    create: XOR<UserCreateWithoutPostsInput, UserUncheckedCreateWithoutPostsInput>
-    where?: UserWhereInput
+  export type PrescriptionCreateOrConnectWithoutSeoInput = {
+    where: PrescriptionWhereUniqueInput
+    create: XOR<PrescriptionCreateWithoutSeoInput, PrescriptionUncheckedCreateWithoutSeoInput>
   }
 
-  export type UserUpdateToOneWithWhereWithoutPostsInput = {
-    where?: UserWhereInput
-    data: XOR<UserUpdateWithoutPostsInput, UserUncheckedUpdateWithoutPostsInput>
+  export type PostUpsertWithoutSeoInput = {
+    update: XOR<PostUpdateWithoutSeoInput, PostUncheckedUpdateWithoutSeoInput>
+    create: XOR<PostCreateWithoutSeoInput, PostUncheckedCreateWithoutSeoInput>
+    where?: PostWhereInput
   }
 
-  export type UserUpdateWithoutPostsInput = {
+  export type PostUpdateToOneWithWhereWithoutSeoInput = {
+    where?: PostWhereInput
+    data: XOR<PostUpdateWithoutSeoInput, PostUncheckedUpdateWithoutSeoInput>
+  }
+
+  export type PostUpdateWithoutSeoInput = {
     id?: StringFieldUpdateOperationsInput | string
-    name?: NullableStringFieldUpdateOperationsInput | string | null
-    email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
+    postType?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    caption?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    thumbnailUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    imageAlt?: NullableStringFieldUpdateOperationsInput | string | null
+    insight?: NullableStringFieldUpdateOperationsInput | string | null
+    published?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    image?: NullableBytesFieldUpdateOperationsInput | Bytes | null
-    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    surname?: NullableStringFieldUpdateOperationsInput | string | null
-    biography?: NullableStringFieldUpdateOperationsInput | string | null
-    roles?: RoleUpdateManyWithoutUsersNestedInput
+    author?: UserUpdateOneRequiredWithoutPostsNestedInput
+    tags?: TagUpdateManyWithoutPostsNestedInput
+    fonts?: IngredientUpdateManyWithoutPostsNestedInput
   }
 
-  export type UserUncheckedUpdateWithoutPostsInput = {
+  export type PostUncheckedUpdateWithoutSeoInput = {
     id?: StringFieldUpdateOperationsInput | string
-    name?: NullableStringFieldUpdateOperationsInput | string | null
-    email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
+    postType?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    caption?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    thumbnailUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    imageAlt?: NullableStringFieldUpdateOperationsInput | string | null
+    insight?: NullableStringFieldUpdateOperationsInput | string | null
+    published?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    image?: NullableBytesFieldUpdateOperationsInput | Bytes | null
+    authorId?: StringFieldUpdateOperationsInput | string
+    tags?: TagUncheckedUpdateManyWithoutPostsNestedInput
+    fonts?: IngredientUncheckedUpdateManyWithoutPostsNestedInput
+  }
+
+  export type PrescriptionUpsertWithoutSeoInput = {
+    update: XOR<PrescriptionUpdateWithoutSeoInput, PrescriptionUncheckedUpdateWithoutSeoInput>
+    create: XOR<PrescriptionCreateWithoutSeoInput, PrescriptionUncheckedCreateWithoutSeoInput>
+    where?: PrescriptionWhereInput
+  }
+
+  export type PrescriptionUpdateToOneWithWhereWithoutSeoInput = {
+    where?: PrescriptionWhereInput
+    data: XOR<PrescriptionUpdateWithoutSeoInput, PrescriptionUncheckedUpdateWithoutSeoInput>
+  }
+
+  export type PrescriptionUpdateWithoutSeoInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
     imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    surname?: NullableStringFieldUpdateOperationsInput | string | null
-    biography?: NullableStringFieldUpdateOperationsInput | string | null
-    roles?: RoleUncheckedUpdateManyWithoutUsersNestedInput
+    insight?: NullableStringFieldUpdateOperationsInput | string | null
+    published?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    primaryFont?: IngredientUpdateOneRequiredWithoutPrimaryPrescriptionsNestedInput
+    secondaryFont?: IngredientUpdateOneRequiredWithoutSecondaryPrescriptionsNestedInput
+    tags?: TagUpdateManyWithoutPrescriptionsNestedInput
+  }
+
+  export type PrescriptionUncheckedUpdateWithoutSeoInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    insight?: NullableStringFieldUpdateOperationsInput | string | null
+    published?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    primaryFontId?: StringFieldUpdateOperationsInput | string
+    secondaryFontId?: StringFieldUpdateOperationsInput | string
+    tags?: TagUncheckedUpdateManyWithoutPrescriptionsNestedInput
   }
 
   export type IngredientCreateWithoutVariantsInput = {
@@ -15318,6 +17936,7 @@ export namespace Prisma {
     primaryPrescriptions?: PrescriptionCreateNestedManyWithoutPrimaryFontInput
     secondaryPrescriptions?: PrescriptionCreateNestedManyWithoutSecondaryFontInput
     tags?: TagCreateNestedManyWithoutIngredientsInput
+    posts?: PostCreateNestedManyWithoutFontsInput
   }
 
   export type IngredientUncheckedCreateWithoutVariantsInput = {
@@ -15336,6 +17955,7 @@ export namespace Prisma {
     primaryPrescriptions?: PrescriptionUncheckedCreateNestedManyWithoutPrimaryFontInput
     secondaryPrescriptions?: PrescriptionUncheckedCreateNestedManyWithoutSecondaryFontInput
     tags?: TagUncheckedCreateNestedManyWithoutIngredientsInput
+    posts?: PostUncheckedCreateNestedManyWithoutFontsInput
   }
 
   export type IngredientCreateOrConnectWithoutVariantsInput = {
@@ -15370,6 +17990,7 @@ export namespace Prisma {
     primaryPrescriptions?: PrescriptionUpdateManyWithoutPrimaryFontNestedInput
     secondaryPrescriptions?: PrescriptionUpdateManyWithoutSecondaryFontNestedInput
     tags?: TagUpdateManyWithoutIngredientsNestedInput
+    posts?: PostUpdateManyWithoutFontsNestedInput
   }
 
   export type IngredientUncheckedUpdateWithoutVariantsInput = {
@@ -15388,6 +18009,7 @@ export namespace Prisma {
     primaryPrescriptions?: PrescriptionUncheckedUpdateManyWithoutPrimaryFontNestedInput
     secondaryPrescriptions?: PrescriptionUncheckedUpdateManyWithoutSecondaryFontNestedInput
     tags?: TagUncheckedUpdateManyWithoutIngredientsNestedInput
+    posts?: PostUncheckedUpdateManyWithoutFontsNestedInput
   }
 
   export type FontVariantCreateWithoutIngredientInput = {
@@ -15456,6 +18078,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     secondaryFont: IngredientCreateNestedOneWithoutSecondaryPrescriptionsInput
     tags?: TagCreateNestedManyWithoutPrescriptionsInput
+    seo?: SeoModuleCreateNestedOneWithoutPrescriptionInput
   }
 
   export type PrescriptionUncheckedCreateWithoutPrimaryFontInput = {
@@ -15469,6 +18092,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     secondaryFontId: string
+    seoId?: string | null
     tags?: TagUncheckedCreateNestedManyWithoutPrescriptionsInput
   }
 
@@ -15493,6 +18117,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     primaryFont: IngredientCreateNestedOneWithoutPrimaryPrescriptionsInput
     tags?: TagCreateNestedManyWithoutPrescriptionsInput
+    seo?: SeoModuleCreateNestedOneWithoutPrescriptionInput
   }
 
   export type PrescriptionUncheckedCreateWithoutSecondaryFontInput = {
@@ -15506,6 +18131,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     primaryFontId: string
+    seoId?: string | null
     tags?: TagUncheckedCreateNestedManyWithoutPrescriptionsInput
   }
 
@@ -15526,6 +18152,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     prescriptions?: PrescriptionCreateNestedManyWithoutTagsInput
     formulas?: FormulaCreateNestedManyWithoutTagsInput
+    posts?: PostCreateNestedManyWithoutTagsInput
   }
 
   export type TagUncheckedCreateWithoutIngredientsInput = {
@@ -15536,11 +18163,55 @@ export namespace Prisma {
     updatedAt?: Date | string
     prescriptions?: PrescriptionUncheckedCreateNestedManyWithoutTagsInput
     formulas?: FormulaUncheckedCreateNestedManyWithoutTagsInput
+    posts?: PostUncheckedCreateNestedManyWithoutTagsInput
   }
 
   export type TagCreateOrConnectWithoutIngredientsInput = {
     where: TagWhereUniqueInput
     create: XOR<TagCreateWithoutIngredientsInput, TagUncheckedCreateWithoutIngredientsInput>
+  }
+
+  export type PostCreateWithoutFontsInput = {
+    id?: string
+    postType?: string
+    title: string
+    slug: string
+    caption?: string | null
+    description?: string | null
+    thumbnailUrl?: string | null
+    imageUrl?: string | null
+    imageAlt?: string | null
+    insight?: string | null
+    published?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    author: UserCreateNestedOneWithoutPostsInput
+    tags?: TagCreateNestedManyWithoutPostsInput
+    seo?: SeoModuleCreateNestedOneWithoutPostInput
+  }
+
+  export type PostUncheckedCreateWithoutFontsInput = {
+    id?: string
+    postType?: string
+    title: string
+    slug: string
+    caption?: string | null
+    description?: string | null
+    thumbnailUrl?: string | null
+    imageUrl?: string | null
+    imageAlt?: string | null
+    insight?: string | null
+    published?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    authorId: string
+    seoId?: string | null
+    tags?: TagUncheckedCreateNestedManyWithoutPostsInput
+  }
+
+  export type PostCreateOrConnectWithoutFontsInput = {
+    where: PostWhereUniqueInput
+    create: XOR<PostCreateWithoutFontsInput, PostUncheckedCreateWithoutFontsInput>
   }
 
   export type FontVariantUpsertWithWhereUniqueWithoutIngredientInput = {
@@ -15632,6 +18303,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Prescription"> | Date | string
     primaryFontId?: StringFilter<"Prescription"> | string
     secondaryFontId?: StringFilter<"Prescription"> | string
+    seoId?: StringNullableFilter<"Prescription"> | string | null
   }
 
   export type PrescriptionUpsertWithWhereUniqueWithoutSecondaryFontInput = {
@@ -15677,6 +18349,22 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Tag"> | Date | string
   }
 
+  export type PostUpsertWithWhereUniqueWithoutFontsInput = {
+    where: PostWhereUniqueInput
+    update: XOR<PostUpdateWithoutFontsInput, PostUncheckedUpdateWithoutFontsInput>
+    create: XOR<PostCreateWithoutFontsInput, PostUncheckedCreateWithoutFontsInput>
+  }
+
+  export type PostUpdateWithWhereUniqueWithoutFontsInput = {
+    where: PostWhereUniqueInput
+    data: XOR<PostUpdateWithoutFontsInput, PostUncheckedUpdateWithoutFontsInput>
+  }
+
+  export type PostUpdateManyWithWhereWithoutFontsInput = {
+    where: PostScalarWhereInput
+    data: XOR<PostUpdateManyMutationInput, PostUncheckedUpdateManyWithoutFontsInput>
+  }
+
   export type IngredientCreateWithoutFormulasInput = {
     id?: string
     name: string
@@ -15693,6 +18381,7 @@ export namespace Prisma {
     primaryPrescriptions?: PrescriptionCreateNestedManyWithoutPrimaryFontInput
     secondaryPrescriptions?: PrescriptionCreateNestedManyWithoutSecondaryFontInput
     tags?: TagCreateNestedManyWithoutIngredientsInput
+    posts?: PostCreateNestedManyWithoutFontsInput
   }
 
   export type IngredientUncheckedCreateWithoutFormulasInput = {
@@ -15711,6 +18400,7 @@ export namespace Prisma {
     primaryPrescriptions?: PrescriptionUncheckedCreateNestedManyWithoutPrimaryFontInput
     secondaryPrescriptions?: PrescriptionUncheckedCreateNestedManyWithoutSecondaryFontInput
     tags?: TagUncheckedCreateNestedManyWithoutIngredientsInput
+    posts?: PostUncheckedCreateNestedManyWithoutFontsInput
   }
 
   export type IngredientCreateOrConnectWithoutFormulasInput = {
@@ -15726,6 +18416,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     prescriptions?: PrescriptionCreateNestedManyWithoutTagsInput
     ingredients?: IngredientCreateNestedManyWithoutTagsInput
+    posts?: PostCreateNestedManyWithoutTagsInput
   }
 
   export type TagUncheckedCreateWithoutFormulasInput = {
@@ -15736,6 +18427,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     prescriptions?: PrescriptionUncheckedCreateNestedManyWithoutTagsInput
     ingredients?: IngredientUncheckedCreateNestedManyWithoutTagsInput
+    posts?: PostUncheckedCreateNestedManyWithoutTagsInput
   }
 
   export type TagCreateOrConnectWithoutFormulasInput = {
@@ -15808,6 +18500,7 @@ export namespace Prisma {
     formulas?: FormulaCreateNestedManyWithoutFontsInput
     secondaryPrescriptions?: PrescriptionCreateNestedManyWithoutSecondaryFontInput
     tags?: TagCreateNestedManyWithoutIngredientsInput
+    posts?: PostCreateNestedManyWithoutFontsInput
   }
 
   export type IngredientUncheckedCreateWithoutPrimaryPrescriptionsInput = {
@@ -15826,6 +18519,7 @@ export namespace Prisma {
     formulas?: FormulaUncheckedCreateNestedManyWithoutFontsInput
     secondaryPrescriptions?: PrescriptionUncheckedCreateNestedManyWithoutSecondaryFontInput
     tags?: TagUncheckedCreateNestedManyWithoutIngredientsInput
+    posts?: PostUncheckedCreateNestedManyWithoutFontsInput
   }
 
   export type IngredientCreateOrConnectWithoutPrimaryPrescriptionsInput = {
@@ -15849,6 +18543,7 @@ export namespace Prisma {
     formulas?: FormulaCreateNestedManyWithoutFontsInput
     primaryPrescriptions?: PrescriptionCreateNestedManyWithoutPrimaryFontInput
     tags?: TagCreateNestedManyWithoutIngredientsInput
+    posts?: PostCreateNestedManyWithoutFontsInput
   }
 
   export type IngredientUncheckedCreateWithoutSecondaryPrescriptionsInput = {
@@ -15867,6 +18562,7 @@ export namespace Prisma {
     formulas?: FormulaUncheckedCreateNestedManyWithoutFontsInput
     primaryPrescriptions?: PrescriptionUncheckedCreateNestedManyWithoutPrimaryFontInput
     tags?: TagUncheckedCreateNestedManyWithoutIngredientsInput
+    posts?: PostUncheckedCreateNestedManyWithoutFontsInput
   }
 
   export type IngredientCreateOrConnectWithoutSecondaryPrescriptionsInput = {
@@ -15882,6 +18578,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     ingredients?: IngredientCreateNestedManyWithoutTagsInput
     formulas?: FormulaCreateNestedManyWithoutTagsInput
+    posts?: PostCreateNestedManyWithoutTagsInput
   }
 
   export type TagUncheckedCreateWithoutPrescriptionsInput = {
@@ -15892,11 +18589,59 @@ export namespace Prisma {
     updatedAt?: Date | string
     ingredients?: IngredientUncheckedCreateNestedManyWithoutTagsInput
     formulas?: FormulaUncheckedCreateNestedManyWithoutTagsInput
+    posts?: PostUncheckedCreateNestedManyWithoutTagsInput
   }
 
   export type TagCreateOrConnectWithoutPrescriptionsInput = {
     where: TagWhereUniqueInput
     create: XOR<TagCreateWithoutPrescriptionsInput, TagUncheckedCreateWithoutPrescriptionsInput>
+  }
+
+  export type SeoModuleCreateWithoutPrescriptionInput = {
+    id?: string
+    metaTitle?: string | null
+    metaDescription?: string | null
+    keywords?: string | null
+    ogTitle?: string | null
+    ogDescription?: string | null
+    ogImageUrl?: string | null
+    ogImageAlt?: string | null
+    twitterCard?: string
+    twitterTitle?: string | null
+    twitterDescription?: string | null
+    twitterImageUrl?: string | null
+    twitterImageAlt?: string | null
+    canonicalUrl?: string | null
+    noIndex?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    post?: PostCreateNestedOneWithoutSeoInput
+  }
+
+  export type SeoModuleUncheckedCreateWithoutPrescriptionInput = {
+    id?: string
+    metaTitle?: string | null
+    metaDescription?: string | null
+    keywords?: string | null
+    ogTitle?: string | null
+    ogDescription?: string | null
+    ogImageUrl?: string | null
+    ogImageAlt?: string | null
+    twitterCard?: string
+    twitterTitle?: string | null
+    twitterDescription?: string | null
+    twitterImageUrl?: string | null
+    twitterImageAlt?: string | null
+    canonicalUrl?: string | null
+    noIndex?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    post?: PostUncheckedCreateNestedOneWithoutSeoInput
+  }
+
+  export type SeoModuleCreateOrConnectWithoutPrescriptionInput = {
+    where: SeoModuleWhereUniqueInput
+    create: XOR<SeoModuleCreateWithoutPrescriptionInput, SeoModuleUncheckedCreateWithoutPrescriptionInput>
   }
 
   export type IngredientUpsertWithoutPrimaryPrescriptionsInput = {
@@ -15926,6 +18671,7 @@ export namespace Prisma {
     formulas?: FormulaUpdateManyWithoutFontsNestedInput
     secondaryPrescriptions?: PrescriptionUpdateManyWithoutSecondaryFontNestedInput
     tags?: TagUpdateManyWithoutIngredientsNestedInput
+    posts?: PostUpdateManyWithoutFontsNestedInput
   }
 
   export type IngredientUncheckedUpdateWithoutPrimaryPrescriptionsInput = {
@@ -15944,6 +18690,7 @@ export namespace Prisma {
     formulas?: FormulaUncheckedUpdateManyWithoutFontsNestedInput
     secondaryPrescriptions?: PrescriptionUncheckedUpdateManyWithoutSecondaryFontNestedInput
     tags?: TagUncheckedUpdateManyWithoutIngredientsNestedInput
+    posts?: PostUncheckedUpdateManyWithoutFontsNestedInput
   }
 
   export type IngredientUpsertWithoutSecondaryPrescriptionsInput = {
@@ -15973,6 +18720,7 @@ export namespace Prisma {
     formulas?: FormulaUpdateManyWithoutFontsNestedInput
     primaryPrescriptions?: PrescriptionUpdateManyWithoutPrimaryFontNestedInput
     tags?: TagUpdateManyWithoutIngredientsNestedInput
+    posts?: PostUpdateManyWithoutFontsNestedInput
   }
 
   export type IngredientUncheckedUpdateWithoutSecondaryPrescriptionsInput = {
@@ -15991,6 +18739,7 @@ export namespace Prisma {
     formulas?: FormulaUncheckedUpdateManyWithoutFontsNestedInput
     primaryPrescriptions?: PrescriptionUncheckedUpdateManyWithoutPrimaryFontNestedInput
     tags?: TagUncheckedUpdateManyWithoutIngredientsNestedInput
+    posts?: PostUncheckedUpdateManyWithoutFontsNestedInput
   }
 
   export type TagUpsertWithWhereUniqueWithoutPrescriptionsInput = {
@@ -16009,6 +18758,59 @@ export namespace Prisma {
     data: XOR<TagUpdateManyMutationInput, TagUncheckedUpdateManyWithoutPrescriptionsInput>
   }
 
+  export type SeoModuleUpsertWithoutPrescriptionInput = {
+    update: XOR<SeoModuleUpdateWithoutPrescriptionInput, SeoModuleUncheckedUpdateWithoutPrescriptionInput>
+    create: XOR<SeoModuleCreateWithoutPrescriptionInput, SeoModuleUncheckedCreateWithoutPrescriptionInput>
+    where?: SeoModuleWhereInput
+  }
+
+  export type SeoModuleUpdateToOneWithWhereWithoutPrescriptionInput = {
+    where?: SeoModuleWhereInput
+    data: XOR<SeoModuleUpdateWithoutPrescriptionInput, SeoModuleUncheckedUpdateWithoutPrescriptionInput>
+  }
+
+  export type SeoModuleUpdateWithoutPrescriptionInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    metaTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    metaDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    keywords?: NullableStringFieldUpdateOperationsInput | string | null
+    ogTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    ogDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    ogImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    ogImageAlt?: NullableStringFieldUpdateOperationsInput | string | null
+    twitterCard?: StringFieldUpdateOperationsInput | string
+    twitterTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    twitterDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    twitterImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    twitterImageAlt?: NullableStringFieldUpdateOperationsInput | string | null
+    canonicalUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    noIndex?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    post?: PostUpdateOneWithoutSeoNestedInput
+  }
+
+  export type SeoModuleUncheckedUpdateWithoutPrescriptionInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    metaTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    metaDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    keywords?: NullableStringFieldUpdateOperationsInput | string | null
+    ogTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    ogDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    ogImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    ogImageAlt?: NullableStringFieldUpdateOperationsInput | string | null
+    twitterCard?: StringFieldUpdateOperationsInput | string
+    twitterTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    twitterDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    twitterImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    twitterImageAlt?: NullableStringFieldUpdateOperationsInput | string | null
+    canonicalUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    noIndex?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    post?: PostUncheckedUpdateOneWithoutSeoNestedInput
+  }
+
   export type PrescriptionCreateWithoutTagsInput = {
     id?: string
     name: string
@@ -16021,6 +18823,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     primaryFont: IngredientCreateNestedOneWithoutPrimaryPrescriptionsInput
     secondaryFont: IngredientCreateNestedOneWithoutSecondaryPrescriptionsInput
+    seo?: SeoModuleCreateNestedOneWithoutPrescriptionInput
   }
 
   export type PrescriptionUncheckedCreateWithoutTagsInput = {
@@ -16035,6 +18838,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     primaryFontId: string
     secondaryFontId: string
+    seoId?: string | null
   }
 
   export type PrescriptionCreateOrConnectWithoutTagsInput = {
@@ -16058,6 +18862,7 @@ export namespace Prisma {
     formulas?: FormulaCreateNestedManyWithoutFontsInput
     primaryPrescriptions?: PrescriptionCreateNestedManyWithoutPrimaryFontInput
     secondaryPrescriptions?: PrescriptionCreateNestedManyWithoutSecondaryFontInput
+    posts?: PostCreateNestedManyWithoutFontsInput
   }
 
   export type IngredientUncheckedCreateWithoutTagsInput = {
@@ -16076,6 +18881,7 @@ export namespace Prisma {
     formulas?: FormulaUncheckedCreateNestedManyWithoutFontsInput
     primaryPrescriptions?: PrescriptionUncheckedCreateNestedManyWithoutPrimaryFontInput
     secondaryPrescriptions?: PrescriptionUncheckedCreateNestedManyWithoutSecondaryFontInput
+    posts?: PostUncheckedCreateNestedManyWithoutFontsInput
   }
 
   export type IngredientCreateOrConnectWithoutTagsInput = {
@@ -16108,6 +18914,49 @@ export namespace Prisma {
   export type FormulaCreateOrConnectWithoutTagsInput = {
     where: FormulaWhereUniqueInput
     create: XOR<FormulaCreateWithoutTagsInput, FormulaUncheckedCreateWithoutTagsInput>
+  }
+
+  export type PostCreateWithoutTagsInput = {
+    id?: string
+    postType?: string
+    title: string
+    slug: string
+    caption?: string | null
+    description?: string | null
+    thumbnailUrl?: string | null
+    imageUrl?: string | null
+    imageAlt?: string | null
+    insight?: string | null
+    published?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    author: UserCreateNestedOneWithoutPostsInput
+    fonts?: IngredientCreateNestedManyWithoutPostsInput
+    seo?: SeoModuleCreateNestedOneWithoutPostInput
+  }
+
+  export type PostUncheckedCreateWithoutTagsInput = {
+    id?: string
+    postType?: string
+    title: string
+    slug: string
+    caption?: string | null
+    description?: string | null
+    thumbnailUrl?: string | null
+    imageUrl?: string | null
+    imageAlt?: string | null
+    insight?: string | null
+    published?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    authorId: string
+    seoId?: string | null
+    fonts?: IngredientUncheckedCreateNestedManyWithoutPostsInput
+  }
+
+  export type PostCreateOrConnectWithoutTagsInput = {
+    where: PostWhereUniqueInput
+    create: XOR<PostCreateWithoutTagsInput, PostUncheckedCreateWithoutTagsInput>
   }
 
   export type PrescriptionUpsertWithWhereUniqueWithoutTagsInput = {
@@ -16158,36 +19007,366 @@ export namespace Prisma {
     data: XOR<FormulaUpdateManyMutationInput, FormulaUncheckedUpdateManyWithoutTagsInput>
   }
 
-  export type BlogPostCreateManyAuthorInput = {
+  export type PostUpsertWithWhereUniqueWithoutTagsInput = {
+    where: PostWhereUniqueInput
+    update: XOR<PostUpdateWithoutTagsInput, PostUncheckedUpdateWithoutTagsInput>
+    create: XOR<PostCreateWithoutTagsInput, PostUncheckedCreateWithoutTagsInput>
+  }
+
+  export type PostUpdateWithWhereUniqueWithoutTagsInput = {
+    where: PostWhereUniqueInput
+    data: XOR<PostUpdateWithoutTagsInput, PostUncheckedUpdateWithoutTagsInput>
+  }
+
+  export type PostUpdateManyWithWhereWithoutTagsInput = {
+    where: PostScalarWhereInput
+    data: XOR<PostUpdateManyMutationInput, PostUncheckedUpdateManyWithoutTagsInput>
+  }
+
+  export type UserCreateWithoutPostsInput = {
     id?: string
-    title: string
-    content: string
+    name?: string | null
+    email: string
+    password: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    image?: Bytes | null
+    imageUrl?: string | null
+    surname?: string | null
+    biography?: string | null
+    roles?: RoleCreateNestedManyWithoutUsersInput
   }
 
-  export type BlogPostUpdateWithoutAuthorInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    title?: StringFieldUpdateOperationsInput | string
-    content?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  export type UserUncheckedCreateWithoutPostsInput = {
+    id?: string
+    name?: string | null
+    email: string
+    password: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    image?: Bytes | null
+    imageUrl?: string | null
+    surname?: string | null
+    biography?: string | null
+    roles?: RoleUncheckedCreateNestedManyWithoutUsersInput
   }
 
-  export type BlogPostUncheckedUpdateWithoutAuthorInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    title?: StringFieldUpdateOperationsInput | string
-    content?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  export type UserCreateOrConnectWithoutPostsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutPostsInput, UserUncheckedCreateWithoutPostsInput>
   }
 
-  export type BlogPostUncheckedUpdateManyWithoutAuthorInput = {
+  export type TagCreateWithoutPostsInput = {
+    id?: string
+    name: string
+    description?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    prescriptions?: PrescriptionCreateNestedManyWithoutTagsInput
+    ingredients?: IngredientCreateNestedManyWithoutTagsInput
+    formulas?: FormulaCreateNestedManyWithoutTagsInput
+  }
+
+  export type TagUncheckedCreateWithoutPostsInput = {
+    id?: string
+    name: string
+    description?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    prescriptions?: PrescriptionUncheckedCreateNestedManyWithoutTagsInput
+    ingredients?: IngredientUncheckedCreateNestedManyWithoutTagsInput
+    formulas?: FormulaUncheckedCreateNestedManyWithoutTagsInput
+  }
+
+  export type TagCreateOrConnectWithoutPostsInput = {
+    where: TagWhereUniqueInput
+    create: XOR<TagCreateWithoutPostsInput, TagUncheckedCreateWithoutPostsInput>
+  }
+
+  export type IngredientCreateWithoutPostsInput = {
+    id?: string
+    name: string
+    slug: string
+    category: string
+    creator?: string | null
+    rating: string
+    symbol?: string | null
+    formula?: string | null
+    isVariable?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    variants?: FontVariantCreateNestedManyWithoutIngredientInput
+    formulas?: FormulaCreateNestedManyWithoutFontsInput
+    primaryPrescriptions?: PrescriptionCreateNestedManyWithoutPrimaryFontInput
+    secondaryPrescriptions?: PrescriptionCreateNestedManyWithoutSecondaryFontInput
+    tags?: TagCreateNestedManyWithoutIngredientsInput
+  }
+
+  export type IngredientUncheckedCreateWithoutPostsInput = {
+    id?: string
+    name: string
+    slug: string
+    category: string
+    creator?: string | null
+    rating: string
+    symbol?: string | null
+    formula?: string | null
+    isVariable?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    variants?: FontVariantUncheckedCreateNestedManyWithoutIngredientInput
+    formulas?: FormulaUncheckedCreateNestedManyWithoutFontsInput
+    primaryPrescriptions?: PrescriptionUncheckedCreateNestedManyWithoutPrimaryFontInput
+    secondaryPrescriptions?: PrescriptionUncheckedCreateNestedManyWithoutSecondaryFontInput
+    tags?: TagUncheckedCreateNestedManyWithoutIngredientsInput
+  }
+
+  export type IngredientCreateOrConnectWithoutPostsInput = {
+    where: IngredientWhereUniqueInput
+    create: XOR<IngredientCreateWithoutPostsInput, IngredientUncheckedCreateWithoutPostsInput>
+  }
+
+  export type SeoModuleCreateWithoutPostInput = {
+    id?: string
+    metaTitle?: string | null
+    metaDescription?: string | null
+    keywords?: string | null
+    ogTitle?: string | null
+    ogDescription?: string | null
+    ogImageUrl?: string | null
+    ogImageAlt?: string | null
+    twitterCard?: string
+    twitterTitle?: string | null
+    twitterDescription?: string | null
+    twitterImageUrl?: string | null
+    twitterImageAlt?: string | null
+    canonicalUrl?: string | null
+    noIndex?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    prescription?: PrescriptionCreateNestedOneWithoutSeoInput
+  }
+
+  export type SeoModuleUncheckedCreateWithoutPostInput = {
+    id?: string
+    metaTitle?: string | null
+    metaDescription?: string | null
+    keywords?: string | null
+    ogTitle?: string | null
+    ogDescription?: string | null
+    ogImageUrl?: string | null
+    ogImageAlt?: string | null
+    twitterCard?: string
+    twitterTitle?: string | null
+    twitterDescription?: string | null
+    twitterImageUrl?: string | null
+    twitterImageAlt?: string | null
+    canonicalUrl?: string | null
+    noIndex?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    prescription?: PrescriptionUncheckedCreateNestedOneWithoutSeoInput
+  }
+
+  export type SeoModuleCreateOrConnectWithoutPostInput = {
+    where: SeoModuleWhereUniqueInput
+    create: XOR<SeoModuleCreateWithoutPostInput, SeoModuleUncheckedCreateWithoutPostInput>
+  }
+
+  export type UserUpsertWithoutPostsInput = {
+    update: XOR<UserUpdateWithoutPostsInput, UserUncheckedUpdateWithoutPostsInput>
+    create: XOR<UserCreateWithoutPostsInput, UserUncheckedCreateWithoutPostsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutPostsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutPostsInput, UserUncheckedUpdateWithoutPostsInput>
+  }
+
+  export type UserUpdateWithoutPostsInput = {
     id?: StringFieldUpdateOperationsInput | string
-    title?: StringFieldUpdateOperationsInput | string
-    content?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    image?: NullableBytesFieldUpdateOperationsInput | Bytes | null
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    surname?: NullableStringFieldUpdateOperationsInput | string | null
+    biography?: NullableStringFieldUpdateOperationsInput | string | null
+    roles?: RoleUpdateManyWithoutUsersNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutPostsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    image?: NullableBytesFieldUpdateOperationsInput | Bytes | null
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    surname?: NullableStringFieldUpdateOperationsInput | string | null
+    biography?: NullableStringFieldUpdateOperationsInput | string | null
+    roles?: RoleUncheckedUpdateManyWithoutUsersNestedInput
+  }
+
+  export type TagUpsertWithWhereUniqueWithoutPostsInput = {
+    where: TagWhereUniqueInput
+    update: XOR<TagUpdateWithoutPostsInput, TagUncheckedUpdateWithoutPostsInput>
+    create: XOR<TagCreateWithoutPostsInput, TagUncheckedCreateWithoutPostsInput>
+  }
+
+  export type TagUpdateWithWhereUniqueWithoutPostsInput = {
+    where: TagWhereUniqueInput
+    data: XOR<TagUpdateWithoutPostsInput, TagUncheckedUpdateWithoutPostsInput>
+  }
+
+  export type TagUpdateManyWithWhereWithoutPostsInput = {
+    where: TagScalarWhereInput
+    data: XOR<TagUpdateManyMutationInput, TagUncheckedUpdateManyWithoutPostsInput>
+  }
+
+  export type IngredientUpsertWithWhereUniqueWithoutPostsInput = {
+    where: IngredientWhereUniqueInput
+    update: XOR<IngredientUpdateWithoutPostsInput, IngredientUncheckedUpdateWithoutPostsInput>
+    create: XOR<IngredientCreateWithoutPostsInput, IngredientUncheckedCreateWithoutPostsInput>
+  }
+
+  export type IngredientUpdateWithWhereUniqueWithoutPostsInput = {
+    where: IngredientWhereUniqueInput
+    data: XOR<IngredientUpdateWithoutPostsInput, IngredientUncheckedUpdateWithoutPostsInput>
+  }
+
+  export type IngredientUpdateManyWithWhereWithoutPostsInput = {
+    where: IngredientScalarWhereInput
+    data: XOR<IngredientUpdateManyMutationInput, IngredientUncheckedUpdateManyWithoutPostsInput>
+  }
+
+  export type SeoModuleUpsertWithoutPostInput = {
+    update: XOR<SeoModuleUpdateWithoutPostInput, SeoModuleUncheckedUpdateWithoutPostInput>
+    create: XOR<SeoModuleCreateWithoutPostInput, SeoModuleUncheckedCreateWithoutPostInput>
+    where?: SeoModuleWhereInput
+  }
+
+  export type SeoModuleUpdateToOneWithWhereWithoutPostInput = {
+    where?: SeoModuleWhereInput
+    data: XOR<SeoModuleUpdateWithoutPostInput, SeoModuleUncheckedUpdateWithoutPostInput>
+  }
+
+  export type SeoModuleUpdateWithoutPostInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    metaTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    metaDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    keywords?: NullableStringFieldUpdateOperationsInput | string | null
+    ogTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    ogDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    ogImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    ogImageAlt?: NullableStringFieldUpdateOperationsInput | string | null
+    twitterCard?: StringFieldUpdateOperationsInput | string
+    twitterTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    twitterDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    twitterImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    twitterImageAlt?: NullableStringFieldUpdateOperationsInput | string | null
+    canonicalUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    noIndex?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    prescription?: PrescriptionUpdateOneWithoutSeoNestedInput
+  }
+
+  export type SeoModuleUncheckedUpdateWithoutPostInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    metaTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    metaDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    keywords?: NullableStringFieldUpdateOperationsInput | string | null
+    ogTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    ogDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    ogImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    ogImageAlt?: NullableStringFieldUpdateOperationsInput | string | null
+    twitterCard?: StringFieldUpdateOperationsInput | string
+    twitterTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    twitterDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    twitterImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    twitterImageAlt?: NullableStringFieldUpdateOperationsInput | string | null
+    canonicalUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    noIndex?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    prescription?: PrescriptionUncheckedUpdateOneWithoutSeoNestedInput
+  }
+
+  export type PostCreateManyAuthorInput = {
+    id?: string
+    postType?: string
+    title: string
+    slug: string
+    caption?: string | null
+    description?: string | null
+    thumbnailUrl?: string | null
+    imageUrl?: string | null
+    imageAlt?: string | null
+    insight?: string | null
+    published?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    seoId?: string | null
+  }
+
+  export type PostUpdateWithoutAuthorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    postType?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    caption?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    thumbnailUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    imageAlt?: NullableStringFieldUpdateOperationsInput | string | null
+    insight?: NullableStringFieldUpdateOperationsInput | string | null
+    published?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    tags?: TagUpdateManyWithoutPostsNestedInput
+    fonts?: IngredientUpdateManyWithoutPostsNestedInput
+    seo?: SeoModuleUpdateOneWithoutPostNestedInput
+  }
+
+  export type PostUncheckedUpdateWithoutAuthorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    postType?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    caption?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    thumbnailUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    imageAlt?: NullableStringFieldUpdateOperationsInput | string | null
+    insight?: NullableStringFieldUpdateOperationsInput | string | null
+    published?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    seoId?: NullableStringFieldUpdateOperationsInput | string | null
+    tags?: TagUncheckedUpdateManyWithoutPostsNestedInput
+    fonts?: IngredientUncheckedUpdateManyWithoutPostsNestedInput
+  }
+
+  export type PostUncheckedUpdateManyWithoutAuthorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    postType?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    caption?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    thumbnailUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    imageAlt?: NullableStringFieldUpdateOperationsInput | string | null
+    insight?: NullableStringFieldUpdateOperationsInput | string | null
+    published?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    seoId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type RoleUpdateWithoutUsersInput = {
@@ -16245,7 +19424,7 @@ export namespace Prisma {
     imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     surname?: NullableStringFieldUpdateOperationsInput | string | null
     biography?: NullableStringFieldUpdateOperationsInput | string | null
-    posts?: BlogPostUpdateManyWithoutAuthorNestedInput
+    posts?: PostUpdateManyWithoutAuthorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutRolesInput = {
@@ -16259,7 +19438,7 @@ export namespace Prisma {
     imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     surname?: NullableStringFieldUpdateOperationsInput | string | null
     biography?: NullableStringFieldUpdateOperationsInput | string | null
-    posts?: BlogPostUncheckedUpdateManyWithoutAuthorNestedInput
+    posts?: PostUncheckedUpdateManyWithoutAuthorNestedInput
   }
 
   export type UserUncheckedUpdateManyWithoutRolesInput = {
@@ -16318,6 +19497,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     secondaryFontId: string
+    seoId?: string | null
   }
 
   export type PrescriptionCreateManySecondaryFontInput = {
@@ -16331,6 +19511,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     primaryFontId: string
+    seoId?: string | null
   }
 
   export type FontVariantUpdateWithoutIngredientInput = {
@@ -16404,6 +19585,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     secondaryFont?: IngredientUpdateOneRequiredWithoutSecondaryPrescriptionsNestedInput
     tags?: TagUpdateManyWithoutPrescriptionsNestedInput
+    seo?: SeoModuleUpdateOneWithoutPrescriptionNestedInput
   }
 
   export type PrescriptionUncheckedUpdateWithoutPrimaryFontInput = {
@@ -16417,6 +19599,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     secondaryFontId?: StringFieldUpdateOperationsInput | string
+    seoId?: NullableStringFieldUpdateOperationsInput | string | null
     tags?: TagUncheckedUpdateManyWithoutPrescriptionsNestedInput
   }
 
@@ -16431,6 +19614,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     secondaryFontId?: StringFieldUpdateOperationsInput | string
+    seoId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type PrescriptionUpdateWithoutSecondaryFontInput = {
@@ -16445,6 +19629,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     primaryFont?: IngredientUpdateOneRequiredWithoutPrimaryPrescriptionsNestedInput
     tags?: TagUpdateManyWithoutPrescriptionsNestedInput
+    seo?: SeoModuleUpdateOneWithoutPrescriptionNestedInput
   }
 
   export type PrescriptionUncheckedUpdateWithoutSecondaryFontInput = {
@@ -16458,6 +19643,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     primaryFontId?: StringFieldUpdateOperationsInput | string
+    seoId?: NullableStringFieldUpdateOperationsInput | string | null
     tags?: TagUncheckedUpdateManyWithoutPrescriptionsNestedInput
   }
 
@@ -16472,6 +19658,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     primaryFontId?: StringFieldUpdateOperationsInput | string
+    seoId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type TagUpdateWithoutIngredientsInput = {
@@ -16482,6 +19669,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     prescriptions?: PrescriptionUpdateManyWithoutTagsNestedInput
     formulas?: FormulaUpdateManyWithoutTagsNestedInput
+    posts?: PostUpdateManyWithoutTagsNestedInput
   }
 
   export type TagUncheckedUpdateWithoutIngredientsInput = {
@@ -16492,6 +19680,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     prescriptions?: PrescriptionUncheckedUpdateManyWithoutTagsNestedInput
     formulas?: FormulaUncheckedUpdateManyWithoutTagsNestedInput
+    posts?: PostUncheckedUpdateManyWithoutTagsNestedInput
   }
 
   export type TagUncheckedUpdateManyWithoutIngredientsInput = {
@@ -16500,6 +19689,62 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PostUpdateWithoutFontsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    postType?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    caption?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    thumbnailUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    imageAlt?: NullableStringFieldUpdateOperationsInput | string | null
+    insight?: NullableStringFieldUpdateOperationsInput | string | null
+    published?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    author?: UserUpdateOneRequiredWithoutPostsNestedInput
+    tags?: TagUpdateManyWithoutPostsNestedInput
+    seo?: SeoModuleUpdateOneWithoutPostNestedInput
+  }
+
+  export type PostUncheckedUpdateWithoutFontsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    postType?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    caption?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    thumbnailUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    imageAlt?: NullableStringFieldUpdateOperationsInput | string | null
+    insight?: NullableStringFieldUpdateOperationsInput | string | null
+    published?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    authorId?: StringFieldUpdateOperationsInput | string
+    seoId?: NullableStringFieldUpdateOperationsInput | string | null
+    tags?: TagUncheckedUpdateManyWithoutPostsNestedInput
+  }
+
+  export type PostUncheckedUpdateManyWithoutFontsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    postType?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    caption?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    thumbnailUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    imageAlt?: NullableStringFieldUpdateOperationsInput | string | null
+    insight?: NullableStringFieldUpdateOperationsInput | string | null
+    published?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    authorId?: StringFieldUpdateOperationsInput | string
+    seoId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type IngredientUpdateWithoutFormulasInput = {
@@ -16518,6 +19763,7 @@ export namespace Prisma {
     primaryPrescriptions?: PrescriptionUpdateManyWithoutPrimaryFontNestedInput
     secondaryPrescriptions?: PrescriptionUpdateManyWithoutSecondaryFontNestedInput
     tags?: TagUpdateManyWithoutIngredientsNestedInput
+    posts?: PostUpdateManyWithoutFontsNestedInput
   }
 
   export type IngredientUncheckedUpdateWithoutFormulasInput = {
@@ -16536,6 +19782,7 @@ export namespace Prisma {
     primaryPrescriptions?: PrescriptionUncheckedUpdateManyWithoutPrimaryFontNestedInput
     secondaryPrescriptions?: PrescriptionUncheckedUpdateManyWithoutSecondaryFontNestedInput
     tags?: TagUncheckedUpdateManyWithoutIngredientsNestedInput
+    posts?: PostUncheckedUpdateManyWithoutFontsNestedInput
   }
 
   export type IngredientUncheckedUpdateManyWithoutFormulasInput = {
@@ -16560,6 +19807,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     prescriptions?: PrescriptionUpdateManyWithoutTagsNestedInput
     ingredients?: IngredientUpdateManyWithoutTagsNestedInput
+    posts?: PostUpdateManyWithoutTagsNestedInput
   }
 
   export type TagUncheckedUpdateWithoutFormulasInput = {
@@ -16570,6 +19818,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     prescriptions?: PrescriptionUncheckedUpdateManyWithoutTagsNestedInput
     ingredients?: IngredientUncheckedUpdateManyWithoutTagsNestedInput
+    posts?: PostUncheckedUpdateManyWithoutTagsNestedInput
   }
 
   export type TagUncheckedUpdateManyWithoutFormulasInput = {
@@ -16588,6 +19837,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     ingredients?: IngredientUpdateManyWithoutTagsNestedInput
     formulas?: FormulaUpdateManyWithoutTagsNestedInput
+    posts?: PostUpdateManyWithoutTagsNestedInput
   }
 
   export type TagUncheckedUpdateWithoutPrescriptionsInput = {
@@ -16598,6 +19848,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     ingredients?: IngredientUncheckedUpdateManyWithoutTagsNestedInput
     formulas?: FormulaUncheckedUpdateManyWithoutTagsNestedInput
+    posts?: PostUncheckedUpdateManyWithoutTagsNestedInput
   }
 
   export type TagUncheckedUpdateManyWithoutPrescriptionsInput = {
@@ -16620,6 +19871,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     primaryFont?: IngredientUpdateOneRequiredWithoutPrimaryPrescriptionsNestedInput
     secondaryFont?: IngredientUpdateOneRequiredWithoutSecondaryPrescriptionsNestedInput
+    seo?: SeoModuleUpdateOneWithoutPrescriptionNestedInput
   }
 
   export type PrescriptionUncheckedUpdateWithoutTagsInput = {
@@ -16634,6 +19886,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     primaryFontId?: StringFieldUpdateOperationsInput | string
     secondaryFontId?: StringFieldUpdateOperationsInput | string
+    seoId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type PrescriptionUncheckedUpdateManyWithoutTagsInput = {
@@ -16648,6 +19901,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     primaryFontId?: StringFieldUpdateOperationsInput | string
     secondaryFontId?: StringFieldUpdateOperationsInput | string
+    seoId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type IngredientUpdateWithoutTagsInput = {
@@ -16666,6 +19920,7 @@ export namespace Prisma {
     formulas?: FormulaUpdateManyWithoutFontsNestedInput
     primaryPrescriptions?: PrescriptionUpdateManyWithoutPrimaryFontNestedInput
     secondaryPrescriptions?: PrescriptionUpdateManyWithoutSecondaryFontNestedInput
+    posts?: PostUpdateManyWithoutFontsNestedInput
   }
 
   export type IngredientUncheckedUpdateWithoutTagsInput = {
@@ -16684,6 +19939,7 @@ export namespace Prisma {
     formulas?: FormulaUncheckedUpdateManyWithoutFontsNestedInput
     primaryPrescriptions?: PrescriptionUncheckedUpdateManyWithoutPrimaryFontNestedInput
     secondaryPrescriptions?: PrescriptionUncheckedUpdateManyWithoutSecondaryFontNestedInput
+    posts?: PostUncheckedUpdateManyWithoutFontsNestedInput
   }
 
   export type IngredientUncheckedUpdateManyWithoutTagsInput = {
@@ -16728,6 +19984,144 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     slug?: StringFieldUpdateOperationsInput | string
     fontCategory?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PostUpdateWithoutTagsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    postType?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    caption?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    thumbnailUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    imageAlt?: NullableStringFieldUpdateOperationsInput | string | null
+    insight?: NullableStringFieldUpdateOperationsInput | string | null
+    published?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    author?: UserUpdateOneRequiredWithoutPostsNestedInput
+    fonts?: IngredientUpdateManyWithoutPostsNestedInput
+    seo?: SeoModuleUpdateOneWithoutPostNestedInput
+  }
+
+  export type PostUncheckedUpdateWithoutTagsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    postType?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    caption?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    thumbnailUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    imageAlt?: NullableStringFieldUpdateOperationsInput | string | null
+    insight?: NullableStringFieldUpdateOperationsInput | string | null
+    published?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    authorId?: StringFieldUpdateOperationsInput | string
+    seoId?: NullableStringFieldUpdateOperationsInput | string | null
+    fonts?: IngredientUncheckedUpdateManyWithoutPostsNestedInput
+  }
+
+  export type PostUncheckedUpdateManyWithoutTagsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    postType?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    caption?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    thumbnailUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    imageAlt?: NullableStringFieldUpdateOperationsInput | string | null
+    insight?: NullableStringFieldUpdateOperationsInput | string | null
+    published?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    authorId?: StringFieldUpdateOperationsInput | string
+    seoId?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type TagUpdateWithoutPostsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    prescriptions?: PrescriptionUpdateManyWithoutTagsNestedInput
+    ingredients?: IngredientUpdateManyWithoutTagsNestedInput
+    formulas?: FormulaUpdateManyWithoutTagsNestedInput
+  }
+
+  export type TagUncheckedUpdateWithoutPostsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    prescriptions?: PrescriptionUncheckedUpdateManyWithoutTagsNestedInput
+    ingredients?: IngredientUncheckedUpdateManyWithoutTagsNestedInput
+    formulas?: FormulaUncheckedUpdateManyWithoutTagsNestedInput
+  }
+
+  export type TagUncheckedUpdateManyWithoutPostsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type IngredientUpdateWithoutPostsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    category?: StringFieldUpdateOperationsInput | string
+    creator?: NullableStringFieldUpdateOperationsInput | string | null
+    rating?: StringFieldUpdateOperationsInput | string
+    symbol?: NullableStringFieldUpdateOperationsInput | string | null
+    formula?: NullableStringFieldUpdateOperationsInput | string | null
+    isVariable?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    variants?: FontVariantUpdateManyWithoutIngredientNestedInput
+    formulas?: FormulaUpdateManyWithoutFontsNestedInput
+    primaryPrescriptions?: PrescriptionUpdateManyWithoutPrimaryFontNestedInput
+    secondaryPrescriptions?: PrescriptionUpdateManyWithoutSecondaryFontNestedInput
+    tags?: TagUpdateManyWithoutIngredientsNestedInput
+  }
+
+  export type IngredientUncheckedUpdateWithoutPostsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    category?: StringFieldUpdateOperationsInput | string
+    creator?: NullableStringFieldUpdateOperationsInput | string | null
+    rating?: StringFieldUpdateOperationsInput | string
+    symbol?: NullableStringFieldUpdateOperationsInput | string | null
+    formula?: NullableStringFieldUpdateOperationsInput | string | null
+    isVariable?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    variants?: FontVariantUncheckedUpdateManyWithoutIngredientNestedInput
+    formulas?: FormulaUncheckedUpdateManyWithoutFontsNestedInput
+    primaryPrescriptions?: PrescriptionUncheckedUpdateManyWithoutPrimaryFontNestedInput
+    secondaryPrescriptions?: PrescriptionUncheckedUpdateManyWithoutSecondaryFontNestedInput
+    tags?: TagUncheckedUpdateManyWithoutIngredientsNestedInput
+  }
+
+  export type IngredientUncheckedUpdateManyWithoutPostsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    category?: StringFieldUpdateOperationsInput | string
+    creator?: NullableStringFieldUpdateOperationsInput | string | null
+    rating?: StringFieldUpdateOperationsInput | string
+    symbol?: NullableStringFieldUpdateOperationsInput | string | null
+    formula?: NullableStringFieldUpdateOperationsInput | string | null
+    isVariable?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }

@@ -74,7 +74,6 @@ export default async function CollectionListPage(props: CollectionListPageProps)
     <div className="space-y-10">
       <TabHeading
         title="Collections"
-        subtitle="Manage curated font collections"
         buttonHref="/admin/collections/new"
         buttonLabel="Add Collection"
         showButton={canCreate}

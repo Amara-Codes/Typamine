@@ -4,6 +4,7 @@ import React, { useState, useId } from "react";
 import { Type } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useThemeStore } from "@/store/themeStore";
+import HexColorPickerPopover from "@/components/common/HexColorPickerPopover";
 
 /**
  * Iniettore di font sicuro: usa i children per evitare XSS.
@@ -218,26 +219,32 @@ export default function LivePreview({
               {hasTextColorGroup && (
                 <div className={cn("flex items-center gap-2 px-2", hasBgColorGroup && "border-r border-zinc-200 dark:border-zinc-800")}>
                   <span className="text-[10px] text-zinc-500 dark:text-zinc-400 uppercase tracking-widest font-black">Text</span>
-                  <input
-                    type="color"
-                    value={textColor}
-                    onChange={(e) => setTextColor(e.target.value)}
+                  <HexColorPickerPopover
+                    color={textColor}
+                    onChange={setTextColor}
                     title="Text color"
-                    className="h-5 w-5 rounded border border-zinc-200 dark:border-zinc-800 cursor-pointer bg-transparent p-0"
-                  />
+                  >
+                    <span
+                      className="h-5 w-5 block rounded border border-zinc-200 dark:border-zinc-800 cursor-pointer"
+                      style={{ backgroundColor: textColor }}
+                    />
+                  </HexColorPickerPopover>
                 </div>
               )}
 
               {hasBgColorGroup && (
                 <div className="flex items-center gap-2 px-2">
                   <span className="text-[10px] text-zinc-500 dark:text-zinc-400 uppercase tracking-widest font-black">BG</span>
-                  <input
-                    type="color"
-                    value={bgColor}
-                    onChange={(e) => setBgColor(e.target.value)}
+                  <HexColorPickerPopover
+                    color={bgColor}
+                    onChange={setBgColor}
                     title="Background color"
-                    className="h-5 w-5 rounded border border-zinc-200 dark:border-zinc-800 cursor-pointer bg-transparent p-0"
-                  />
+                  >
+                    <span
+                      className="h-5 w-5 block rounded border border-zinc-200 dark:border-zinc-800 cursor-pointer"
+                      style={{ backgroundColor: bgColor }}
+                    />
+                  </HexColorPickerPopover>
                 </div>
               )}
             </div>
@@ -274,13 +281,13 @@ export default function LivePreview({
       fontSize: `${size}px`,
       fontWeight: isVariable ? weight : initialWeight || 400,
       fontVariationSettings: isVariable ? `'wght' ${weight}` : 'normal',
-      lineHeight: hasLeadingGroup ? lineHeight : undefined,
+      lineHeight: hasLeadingGroup ? lineHeight : compact ? 1.35 : undefined,
       letterSpacing: hasTrackingGroup ? `${letterSpacing}px` : undefined,
       color: hasTextColorGroup ? textColor : undefined,
     };
     const previewClassName = cn(
-      "relative z-10 w-full h-full bg-transparent border-none text-center overflow-hidden",
-      !hasLeadingGroup && "leading-tight",
+      "relative z-10 w-full bg-transparent border-none text-center overflow-visible",
+      !hasLeadingGroup && (compact ? "leading-normal" : "leading-tight"),
       !hasTextColorGroup && "text-black dark:text-white"
     );
 
@@ -291,12 +298,12 @@ export default function LivePreview({
       <textarea
         value={text}
         onChange={(e) => setText(e.target.value)}
-        className={cn(previewClassName, "resize-none focus:outline-none focus:ring-0")}
+        className={cn(previewClassName, "h-full resize-none focus:outline-none focus:ring-0 overflow-auto")}
         style={previewStyle}
         spellCheck="false"
       />
     ) : (
-      <p className={cn(previewClassName, "cursor-default whitespace-pre-wrap")} style={previewStyle}>
+      <p className={cn(previewClassName, "h-full flex items-center justify-center cursor-default whitespace-pre-wrap")} style={previewStyle}>
         {text}
       </p>
     );

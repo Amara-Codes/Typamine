@@ -1,14 +1,13 @@
 "use client";
 
-import React, { useState } from "react";
+import  { useState } from "react";
 import Link from "next/link";
-import { Edit, Plus, Blend, Check, X, Image as ImageIcon } from "lucide-react";
+import { Edit, Check, X, Image as ImageIcon } from "lucide-react";
 import ContentTable from "@/components/common/ContentTable";
 import DeleteButton from "@/components/common/DeleteButton";
 import { deletePairing } from "@/lib/actions/pairing";
 import { ListHeaderHandlers } from "@/components/common/ListHandlers";
-import { Button } from "@/components/common/Button";
-import { Badge } from "@/components/common/Badge";
+
 
 import TabHeading from "@/components/admin/common/TabHeading";
 

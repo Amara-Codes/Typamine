@@ -145,11 +145,22 @@ exports.Prisma.PermissionScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
-exports.Prisma.BlogPostScalarFieldEnum = {
+exports.Prisma.SeoModuleScalarFieldEnum = {
   id: 'id',
-  title: 'title',
-  content: 'content',
-  authorId: 'authorId',
+  metaTitle: 'metaTitle',
+  metaDescription: 'metaDescription',
+  keywords: 'keywords',
+  ogTitle: 'ogTitle',
+  ogDescription: 'ogDescription',
+  ogImageUrl: 'ogImageUrl',
+  ogImageAlt: 'ogImageAlt',
+  twitterCard: 'twitterCard',
+  twitterTitle: 'twitterTitle',
+  twitterDescription: 'twitterDescription',
+  twitterImageUrl: 'twitterImageUrl',
+  twitterImageAlt: 'twitterImageAlt',
+  canonicalUrl: 'canonicalUrl',
+  noIndex: 'noIndex',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -199,7 +210,8 @@ exports.Prisma.PrescriptionScalarFieldEnum = {
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   primaryFontId: 'primaryFontId',
-  secondaryFontId: 'secondaryFontId'
+  secondaryFontId: 'secondaryFontId',
+  seoId: 'seoId'
 };
 
 exports.Prisma.TagScalarFieldEnum = {
@@ -208,6 +220,24 @@ exports.Prisma.TagScalarFieldEnum = {
   description: 'description',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
+};
+
+exports.Prisma.PostScalarFieldEnum = {
+  id: 'id',
+  postType: 'postType',
+  title: 'title',
+  slug: 'slug',
+  caption: 'caption',
+  description: 'description',
+  thumbnailUrl: 'thumbnailUrl',
+  imageUrl: 'imageUrl',
+  imageAlt: 'imageAlt',
+  insight: 'insight',
+  published: 'published',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  authorId: 'authorId',
+  seoId: 'seoId'
 };
 
 exports.Prisma.SortOrder = {
@@ -225,12 +255,13 @@ exports.Prisma.ModelName = {
   User: 'User',
   Role: 'Role',
   Permission: 'Permission',
-  BlogPost: 'BlogPost',
+  SeoModule: 'SeoModule',
   FontVariant: 'FontVariant',
   Ingredient: 'Ingredient',
   Formula: 'Formula',
   Prescription: 'Prescription',
-  Tag: 'Tag'
+  Tag: 'Tag',
+  Post: 'Post'
 };
 
 /**

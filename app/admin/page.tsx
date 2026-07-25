@@ -25,11 +25,12 @@ export default async function AdminDashboard() {
     <div className="space-y-10">
 
       <div className="flex items-center justify-between">
-        <h1 className="text-5xl text-white">Hello Admin</h1>
-        {showAIRating && <AIFontRatingButton />}
+
+      
       </div>
 
-      <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
+      <div className="grid grid-cols-2 xl:grid-cols-3 gap-6">
+        { showAIRating && <AIFontRatingButton />}
       </div>
     </div>
   );

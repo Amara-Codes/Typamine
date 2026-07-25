@@ -3,7 +3,9 @@ import prisma from "@/lib/prisma";
 import { hasPermission, protectPage } from "@/lib/rbac";
 import TabHeading from "@/components/admin/common/TabHeading";
 import TagListClient from "@/components/admin/tags/TagListClient";
+import { Button } from "@/components/common/Button";
 import { withSafeDbQuery } from "@/lib/services/dbMigration";
+import Link from "next/link";
 
 export const dynamic = "force-dynamic";
 
@@ -24,12 +26,15 @@ export default async function TagListPage(props: TagListPageProps) {
 
   const page = parseInt(resolvedParams.page || "1", 10);
   const perPage = parseInt(resolvedParams.perPage || "10", 10);
-  const sort = resolvedParams.sort || "name_asc";
+  // Deve combaciare col primo elemento di sortOptions in TagListClient
+  // ("Newest Created" / createdAt_desc) — altrimenti la select mostra un
+  // default diverso da quello che il fetch usa davvero in assenza di ?sort.
+  const sort = resolvedParams.sort || "createdAt_desc";
   const search = resolvedParams.search || "";
 
-  const canCreate = hasPermission(session, "font", "create");
-  const canUpdate = hasPermission(session, "font", "update");
-  const canDelete = hasPermission(session, "font", "delete");
+  const canCreate = hasPermission(session, "tag", "create");
+  const canUpdate = hasPermission(session, "tag", "update");
+  const canDelete = hasPermission(session, "tag", "delete");
 
   // Build filter query
   const where: any = {};
@@ -71,11 +76,16 @@ export default async function TagListPage(props: TagListPageProps) {
   );
 
   return (
-    <div className="p-6 max-w-7xl mx-auto space-y-6">
+    <div className="space-y-10">
+       <TabHeading
+        title="Tags"
+        buttonHref="/admin/tags/new"
+        buttonLabel="Add Tag"
+        showButton={canCreate}
+      />
       <TagListClient
         tags={tags}
         totalCount={totalCount}
-        canCreate={canCreate}
         canUpdate={canUpdate}
         canDelete={canDelete}
       />

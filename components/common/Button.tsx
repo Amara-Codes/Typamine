@@ -89,8 +89,8 @@ export const Button: React.FC<ButtonProps> = ({
 
     // OUTLINE — scala neutra "stone" del tema (prima usava "zinc", assente dalla palette).
     outline:
-      "bg-transparent border-bluegray-300 dark:border-redgray-700 hover:border-bluegray-400 dark:hover:border-redgray-600  " +
-      "text-black dark:text-stone-200 hover:bg-stone-200 dark:hover:bg-stone-800 " +
+      "bg-transparent border-black backdrop-blur-md dark:border-red-200 dark:hover:border-red-400  " +
+      "text-black dark:text-red-200 dark:hover:text-red-400 hover:bg-ocragray-200 dark:hover:bg-ocragray-800 " +
       "focus-visible:ring-stone-500 ring-offset-white dark:ring-offset-black",
 
     // GHOST — stessa scala neutra, ancora più leggero.

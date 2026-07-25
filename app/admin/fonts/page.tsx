@@ -25,7 +25,10 @@ export default async function FontListPage(props: FontListPageProps) {
 
   const page = parseInt(resolvedParams.page || "1", 10);
   const perPage = parseInt(resolvedParams.perPage || "10", 10);
-  const sort = resolvedParams.sort || "name_asc";
+  // Deve combaciare col primo elemento di sortOptions in FontListClient
+  // ("Newest Created" / createdAt_desc) — altrimenti la select mostra un
+  // default diverso da quello che il fetch usa davvero in assenza di ?sort.
+  const sort = resolvedParams.sort || "createdAt_desc";
   const search = resolvedParams.search || "";
 
   const canCreate = hasPermission(session, "font", "create");
@@ -68,6 +71,7 @@ export default async function FontListPage(props: FontListPageProps) {
       where,
       include: {
         variants: true,
+        tags: true,
       },
       orderBy,
       skip: (page - 1) * perPage,
@@ -79,7 +83,6 @@ export default async function FontListPage(props: FontListPageProps) {
     <div className="space-y-10">
       <TabHeading
         title="Fonts"
-        subtitle="Manage all the typographic elements"
         buttonHref="/admin/fonts/new"
         buttonLabel="Add Font"
         showButton={canCreate}

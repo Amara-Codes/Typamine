@@ -60,6 +60,28 @@ export interface Formula {
   updatedAt: string;
 }
 
+// Entità SEO condivisa — un unico set di meta-tag riusabile da qualunque
+// contenuto pubblico (archive, blog article, prescription, ...) invece di
+// duplicare gli stessi campi su ogni modello/form.
+export interface SeoModule {
+  id: string;
+  metaTitle?: string;
+  metaDescription?: string;
+  /** Stringa singola comma-separated, stesso formato storico del meta tag "keywords". */
+  keywords?: string;
+  ogTitle?: string;
+  ogDescription?: string;
+  ogImageUrl?: string;
+  ogImageAlt?: string;
+  twitterCard?: "summary" | "summary_large_image";
+  twitterTitle?: string;
+  twitterDescription?: string;
+  twitterImageUrl?: string;
+  twitterImageAlt?: string;
+  canonicalUrl?: string;
+  noIndex?: boolean;
+}
+
 export interface Prescription {
   id: string;
   name: string;
@@ -75,9 +97,49 @@ export interface Prescription {
   secondaryFontId?: string;
   secondaryFont?: Ingredient;
   tags?: (Tag | string)[];
+  seoId?: string;
+  seo?: SeoModule;
 
   // Backward compatibility fields for legacy UI components
   href?: string;
   fonts?: Ingredient[];
+  imgUrl?: string;
+}
+
+export interface PostAuthor {
+  id: string;
+  name?: string;
+  surname?: string;
+  imageUrl?: string;
+}
+
+export type PostType = "ARCHIVE" | "BLOG";
+
+// Entità generica di contenuto editoriale: serve sia /archive (postType
+// "ARCHIVE") che /blog (postType "BLOG") — stessi campi, stesso editor di
+// content-module, l'unica differenza è la varietà di moduli offerta in admin.
+export interface Post {
+  id: string;
+  postType: PostType;
+  title: string;
+  slug: string;
+  caption?: string;
+  description?: string;
+  thumbnailUrl?: string;
+  imageUrl?: string;
+  imageAlt?: string;
+  insight?: string;
+  published?: boolean;
+  createdAt?: string;
+  updatedAt?: string;
+  authorId?: string;
+  author?: PostAuthor;
+  tags?: Tag[];
+  fonts?: Ingredient[];
+  seoId?: string;
+  seo?: SeoModule;
+
+  // Backward compatibility per componenti card generici (stesso pattern di Prescription.href/imgUrl)
+  href?: string;
   imgUrl?: string;
 }

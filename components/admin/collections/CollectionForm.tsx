@@ -1,10 +1,12 @@
 "use client";
 
-import React, { useActionState, useState, useEffect } from "react";
+import React, { useActionState, useState, useEffect, useRef } from "react";
+import { useRouter } from "next/navigation";
 import { saveFormula } from "@/lib/actions/formula";
-import { AlertCircle, Tag as TagIcon, Type as FontIcon, Check } from "lucide-react";
+import { AlertCircle, Type as FontIcon, Check } from "lucide-react";
 import { Select } from "@/components/common/Select";
 import { Input, Label } from "@/components/common/Input";
+import TagPicker from "@/components/common/TagPicker";
 import FormActions from "@/components/admin/common/FormActions";
 import BaseModal from "@/components/common/BaseModal";
 import SavingOverlay from "@/components/admin/common/SavingOverlay";
@@ -26,8 +28,9 @@ interface CollectionFormProps {
 }
 
 export default function CollectionForm({ formula, fonts = [], tags = [] }: CollectionFormProps) {
+  const router = useRouter();
   const saveAction = (prevState: any, formData: FormData) => saveFormula(prevState, formData, formula?.id);
-  const [errorMessage, dispatch] = useActionState(saveAction, undefined);
+  const [errorMessage, dispatch, isSaving] = useActionState(saveAction, undefined);
   const [showErrorModal, setShowErrorModal] = useState(false);
 
   const [name, setName] = useState(formula?.name || "");
@@ -47,12 +50,6 @@ export default function CollectionForm({ formula, fonts = [], tags = [] }: Colle
     );
   };
 
-  const handleTagToggle = (tagId: string) => {
-    setSelectedTagIds((prev) =>
-      prev.includes(tagId) ? prev.filter((id) => id !== tagId) : [...prev, tagId]
-    );
-  };
-
   useEffect(() => {
     if (!formula?.id && name) {
       const generated = name
@@ -69,6 +66,17 @@ export default function CollectionForm({ formula, fonts = [], tags = [] }: Colle
       setShowErrorModal(true);
     }
   }, [errorMessage]);
+
+  // Vedi lo stesso commento in FontForm.tsx: router.back() torna alla lista
+  // con pagina/ricerca/ordinamento con cui l'utente era arrivato al form,
+  // invece del redirect server-side fisso di prima.
+  const wasSaving = useRef(false);
+  useEffect(() => {
+    if (wasSaving.current && !isSaving && !errorMessage) {
+      router.back();
+    }
+    wasSaving.current = isSaving;
+  }, [isSaving, errorMessage, router]);
 
   return (
     <form action={dispatch} className="max-w-6xl ml-auto space-y-8 pb-20 transition-colors duration-300">
@@ -182,32 +190,13 @@ export default function CollectionForm({ formula, fonts = [], tags = [] }: Colle
                 </div>
 
                 <div>
-                  <Label icon={TagIcon}>Tags</Label>
-                  <div className="flex flex-wrap gap-2 p-3 border border-black/10 dark:border-white/10 rounded-lg bg-white/50 dark:bg-zinc-900/50 max-h-36 overflow-y-auto">
-                    {tags.map((t) => {
-                      const isSelected = selectedTagIds.includes(t.id);
-                      return (
-                        <button
-                          key={t.id}
-                          type="button"
-                          onClick={() => handleTagToggle(t.id)}
-                          className={`px-3 py-1 rounded-full text-xs font-bold transition-all flex items-center gap-1.5 border ${
-                            isSelected
-                              ? "bg-black text-white dark:bg-white dark:text-black border-transparent"
-                              : "bg-transparent text-zinc-600 dark:text-zinc-400 border-black/10 dark:border-white/10 hover:border-black/30 dark:hover:border-white/30"
-                          }`}
-                        >
-                          {isSelected && <Check className="w-3 h-3" />}
-                          {t.name}
-                        </button>
-                      );
-                    })}
-                    {tags.length === 0 && (
-                      <span className="text-xs text-zinc-400 italic">
-                        No tags available. You can create tags in /admin/tags.
-                      </span>
-                    )}
-                  </div>
+                  <TagPicker
+                    label="Tags"
+                    tags={tags}
+                    value={selectedTagIds}
+                    onChange={setSelectedTagIds}
+                    emptyLabel="No tags available. You can create tags in /admin/tags."
+                  />
                   {selectedTagIds.map((tagId) => (
                     <input key={tagId} type="hidden" name="tagIds" value={tagId} />
                   ))}

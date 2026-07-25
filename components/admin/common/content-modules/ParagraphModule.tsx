@@ -3,7 +3,6 @@
 import { Input, Label } from "@/components/common/Input";
 import { Select } from "@/components/common/Select";
 import {
-  Toggle,
   GranularColorPickerButton,
   FONT_FAMILIES,
   Module
@@ -83,15 +82,6 @@ export default function ParagraphModule({ module, onChange }: ParagraphModulePro
             value={props.fontFamily}
             onChange={(v: string) => handleChange('fontFamily', v)}
           />
-        </div>
-      </div>
-
-      <div className="grid grid-cols-1 gap-4">
-        <div className="flex flex-col justify-end">
-          <div className="flex items-center justify-between p-4 bg-black/2 dark:bg-white/2 rounded-2xl border-2 border-black/5 dark:border-white/5 min-h-[66px]">
-            <Label className="mb-0">Scroll Reveal</Label>
-            <Toggle checked={props.scrollReveal} onChange={(v: boolean) => handleChange('scrollReveal', v)} />
-          </div>
         </div>
       </div>
     </div>

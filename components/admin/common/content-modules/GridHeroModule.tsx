@@ -63,7 +63,7 @@ export default function GridHeroModule({ module, onChange }: GridHeroModuleProps
       {/* Phase 2: Top Container (Children Part 1) */}
       <div className="space-y-4 p-4 rounded-2xl bg-black/2 dark:bg-white/2 border border-black/5 dark:border-white/5 mb-16">
         <div className="mb-4">
-          <h5 className="text-sm font-bold uppercase tracking-widest text-center text-black/60 dark:text-white/40">Top Section</h5>
+          <h5 className="text-[10px] font-bold uppercase tracking-widest text-black/60 dark:text-white/60">Top Section</h5>
         </div>
 
         <div className="space-y-4 mb-16">
@@ -123,7 +123,7 @@ export default function GridHeroModule({ module, onChange }: GridHeroModuleProps
       {/* Phase 3: Bottom Container (Children Part 2) */}
       <div className="space-y-4 p-4 rounded-2xl bg-black/2 dark:bg-white/2 border border-black/5 dark:border-white/5">
         <div className="mb-4">
-          <h5 className="text-sm font-bold uppercase tracking-widest text-center text-black/60 dark:text-white/40">Bottom Section</h5>
+          <h5 className="text-[10px] font-bold uppercase tracking-widest text-black/60 dark:text-white/60">Bottom Section</h5>
         </div>
 
         <div className="space-y-4 mb-16">

@@ -75,12 +75,12 @@ export default async function AdminLayout({
             <div className="absolute inset-0 z-0 bg-[radial-gradient(circle_at_50%_0%,color-mix(in_srgb,var(--color-blue),transparent_60%),transparent)] dark:bg-[radial-gradient(circle_at_50%_0%,color-mix(in_srgb,var(--color-red),var(--color-black)_90%),transparent)] pointer-events-none" />
 
             <AdminSidebar session={session} />
-            <div className="flex-1 flex flex-col relative z-10">
+            <div className="flex-1 min-w-0 flex flex-col relative z-10">
               <div className="ps-6">
 
                 <AdminHeader session={session} dbSource={dbSource} />
               </div>
-              <main className="flex-1 p-6 pb-4 overflow-y-auto relative z-10">
+              <main className="flex-1 min-w-0 p-6 pb-4 overflow-y-auto overflow-x-hidden relative z-10">
                 {children}
               </main>
             </div>

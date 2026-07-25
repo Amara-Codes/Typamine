@@ -83,8 +83,11 @@ const ParagraphWithImage = ({
     const movement = parallaxSpeed * 40; 
     const bgMovement = parallaxSpeed * 60;
 
-    const y = useTransform(smoothProgress, [0, 1], [`-${movement}%`, `${movement}%`]);
-    const bgY = useTransform(smoothProgress, [0, 1], [`-${bgMovement}%`, `${bgMovement}%`]);
+    // Scrollando verso il basso (progress 0 -> 1) l'immagine deve partire
+    // bassa e finire alta — lag classico da parallax (lo sfondo si muove
+    // "in ritardo" rispetto al contenuto che scorre più veloce).
+    const y = useTransform(smoothProgress, [0, 1], [`${movement}%`, `-${movement}%`]);
+    const bgY = useTransform(smoothProgress, [0, 1], [`${bgMovement}%`, `-${bgMovement}%`]);
 
     const aspectMap = {
         square: 'aspect-square',
@@ -144,7 +147,7 @@ const ParagraphWithImage = ({
                             src={imageSrc}
                             alt={imageAlt}
                             fill
-                            className="object-cover"
+                            className={isBackground ? "object-cover" : "object-contain"}
                             sizes={isBackground ? "100vw" : "(max-width: 1024px) 100vw, 50vw"}
                             priority={isBackground}
                         />
@@ -169,7 +172,6 @@ const ParagraphWithImage = ({
                     align={isBackground ? 'center' : align}
                     className={className}
                     colorClassName={colorClassName}
-                    scrollReveal={false}
                 >
                     {children}
                 </Paragraph>

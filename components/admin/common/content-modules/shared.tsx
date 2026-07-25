@@ -1,14 +1,21 @@
 "use client";
 
 import { useState, useRef, useEffect, memo } from "react";
-import Image from "next/image";
-import { Upload, Trash2, Loader2 } from "lucide-react";
 import imageCompression from "browser-image-compression";
+import { Palette } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Select } from "@/components/common/Select";
 import BaseModal from "@/components/common/BaseModal";
 import { Label } from "@/components/common/Input";
 import { Button } from "@/components/common/Button";
+import ImageDropInput from "@/components/admin/common/ImageDropInput";
+import HexColorPickerPopover from "@/components/common/HexColorPickerPopover";
+import { extractColorToken } from "@/lib/dynamicStyle";
+
+// Un colore "custom" (scelto via react-colorful invece che dalla palette
+// SITE_COLORS) viene tenuto in stato/props come hex letterale ("#ff3131")
+// invece che come id — si riconosce così, senza bisogno di un flag separato.
+const isCustomColor = (id: string) => id.startsWith("#");
 
 // Infrastruttura generica per i "content module" (blocchi editoriali
 // riordinabili: hero, paragrafo, quote, cta, ecc.) — condivisa da qualunque
@@ -103,105 +110,49 @@ export function ImageUpload({ name, preview, onPreviewChange }: { name: string, 
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (file) {
-      try {
-        setIsCompressing(true);
+    if (!file) return;
+    try {
+      setIsCompressing(true);
 
-        // Compression Options
-        const options = {
-          maxSizeMB: 2, // Max 2MB
-          maxWidthOrHeight: 1920,
-          useWebWorker: true,
-        };
+      const options = {
+        maxSizeMB: 2,
+        maxWidthOrHeight: 1920,
+        useWebWorker: true,
+      };
 
-        const compressedFile = await imageCompression(file, options);
+      const compressedFile = await imageCompression(file, options);
 
-        // Transparently replace the file in the input using DataTransfer
-        const dataTransfer = new DataTransfer();
-        dataTransfer.items.add(new File([compressedFile], file.name, { type: file.type }));
-        if (fileInputRef.current) {
-          fileInputRef.current.files = dataTransfer.files;
-        }
-
-        // Preview
-        const reader = new FileReader();
-        reader.onloadend = () => {
-          onPreviewChange(reader.result as string);
-          setIsCompressing(false);
-        };
-        reader.readAsDataURL(compressedFile);
-      } catch (error) {
-        console.error("Image compression failed:", error);
-        setIsCompressing(false);
+      // Transparently replace the file in the input using DataTransfer
+      const dataTransfer = new DataTransfer();
+      dataTransfer.items.add(new File([compressedFile], file.name, { type: file.type }));
+      if (fileInputRef.current) {
+        fileInputRef.current.files = dataTransfer.files;
       }
+
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        onPreviewChange(reader.result as string);
+        setIsCompressing(false);
+      };
+      reader.readAsDataURL(compressedFile);
+    } catch (error) {
+      console.error("Image compression failed:", error);
+      setIsCompressing(false);
     }
   };
 
   return (
-    <div
-      className={cn(
-        "relative group flex flex-col items-center justify-center border-2 border-dashed border-black/10 dark:border-white/10 rounded-2xl transition-all duration-500 hover:border-black/30 dark:hover:border-white/30 overflow-hidden",
-        preview ? "aspect-video" : "py-12"
-      )}
-    >
-      {isCompressing ? (
-        <div className="flex flex-col items-center gap-4 animate-in fade-in zoom-in duration-300">
-          <div className="relative">
-            <div className="h-20 w-20 rounded-2xl bg-black/5 dark:bg-white/10 flex items-center justify-center">
-              <Loader2 className="h-10 w-10 text-red-500 animate-spin" />
-            </div>
-            <div className="absolute -top-1 -right-1 h-4 w-4 rounded-full bg-red-500 animate-ping" />
-          </div>
-          <div className="text-center">
-            <p className="text-[10px] font-black uppercase tracking-[0.2em] text-red-500">Optimizing</p>
-            <p className="text-[8px] font-bold text-black/40 dark:text-white/20 uppercase tracking-tighter mt-1">Shrinking file under the hood</p>
-          </div>
-        </div>
-      ) : preview ? (
-        <>
-          <Image src={preview} alt="Preview" fill className="object-cover" unoptimized />
-          <div className="absolute inset-0 bg-black/40 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-4 z-10">
-            <button
-              type="button"
-              onClick={() => fileInputRef.current?.click()}
-              className="p-3 bg-white text-black rounded-2xl shadow-xl hover:scale-110 transition-transform"
-            >
-              <Upload className="h-5 w-5" />
-            </button>
-            <button
-              type="button"
-              onClick={() => onPreviewChange(null)}
-              className="p-3 bg-red-500 text-white rounded-2xl shadow-xl hover:scale-110 transition-transform"
-            >
-              <Trash2 className="h-5 w-5" />
-            </button>
-          </div>
-        </>
-      ) : (
-        <button
-          type="button"
-          onClick={() => fileInputRef.current?.click()}
-          className="flex flex-col items-center gap-6 group relative w-full h-full py-16"
-        >
-          <div className="absolute inset-0 bg-linear-to-br from-white/10 via-black/5 to-red-500/5 opacity-50 group-hover:opacity-80 transition-opacity" />
-          <div className="relative h-20 w-20 rounded-2xl bg-white/40 dark:bg-white/5 flex items-center justify-center text-black/20 dark:text-white/20 group-hover:scale-110 group-hover:bg-white/60 dark:group-hover:bg-white/10 transition-all duration-500 shadow-xl border border-white/20">
-            <Upload className="h-8 w-8 text-black dark:text-white opacity-40 group-hover:opacity-100 transition-opacity" />
-          </div>
-          <div className="relative text-center">
-            <p className="text-[10px] font-black uppercase tracking-[0.3em] text-black/60 dark:text-white/60">Upload Thumbnail</p>
-            <p className="text-[8px] font-bold text-black/30 dark:text-white/20 uppercase tracking-tighter mt-2">Recommended: 1920x1080</p>
-          </div>
-        </button>
-      )}
-      <input
-        ref={fileInputRef}
-        type="file"
-        name={name}
-        className="hidden"
-        accept="image/*"
-        onChange={handleFileChange}
-      />
-    </div>
+    <ImageDropInput
+      name={name}
+      inputRef={fileInputRef}
+      previewUrl={preview}
+      isCompressing={isCompressing}
+      onSelect={handleFileChange}
+      onRemove={() => onPreviewChange(null)}
+      containerClassName={cn("rounded-2xl w-full", preview ? "aspect-video" : "")}
+      label="Upload Thumbnail"
+      helperText="Recommended: 1920x1080"
+    />
   );
 }
 
@@ -486,39 +437,39 @@ export function GranularColorPickerButton({ label, value = "", onChange, mode = 
 
   const lightToken = tokens.find(t => t.startsWith(prefix));
   if (lightToken) {
-    const regex = new RegExp(`${prefix}([a-zA-Z0-9\\-]+)(?:\\/(\\d+))?`);
-    const match = lightToken.match(regex);
-    if (match) {
-      const parsedColor = reverseColorMap[match[1]] || match[1];
-      if (SITE_COLORS.some(c => c.id === parsedColor)) {
-        lightColor = parsedColor;
+    const extracted = extractColorToken(lightToken, prefix);
+    if (extracted) {
+      if (extracted.raw.startsWith("#")) {
+        lightColor = extracted.raw;
+      } else {
+        const parsedColor = reverseColorMap[extracted.raw] || extracted.raw;
+        if (SITE_COLORS.some(c => c.id === parsedColor)) lightColor = parsedColor;
       }
-      if (match[2]) {
-        lightOpacity = parseInt(match[2], 10);
-      }
+      lightOpacity = extracted.opacity;
     }
   }
 
   const darkToken = tokens.find(t => t.startsWith(darkPrefix));
   if (darkToken) {
-    const regex = new RegExp(`${darkPrefix}([a-zA-Z0-9\\-]+)(?:\\/(\\d+))?`);
-    const match = darkToken.match(regex);
-    if (match) {
-      const parsedColor = reverseColorMap[match[1]] || match[1];
-      if (SITE_COLORS.some(c => c.id === parsedColor)) {
-        darkColor = parsedColor;
+    const extracted = extractColorToken(darkToken, darkPrefix);
+    if (extracted) {
+      if (extracted.raw.startsWith("#")) {
+        darkColor = extracted.raw;
+      } else {
+        const parsedColor = reverseColorMap[extracted.raw] || extracted.raw;
+        if (SITE_COLORS.some(c => c.id === parsedColor)) darkColor = parsedColor;
       }
-      if (match[2]) {
-        darkOpacity = parseInt(match[2], 10);
-      }
+      darkOpacity = extracted.opacity;
     }
   }
 
+  // Un colore custom è già l'hex letterale — Tailwind lo vede come valore
+  // arbitrario ("text-[#ff3131]"), niente lookup in colorMap.
+  const colorToken = (id: string) => (isCustomColor(id) ? `[${id}]` : (colorMap[id] || id));
+
   const updateColor = (lc: string, lo: number, dc: string, do_: number) => {
-    const lightTailwindColor = colorMap[lc] || lc;
-    const darkTailwindColor = colorMap[dc] || dc;
-    const lightClass = `${prefix}${lightTailwindColor}/${lo}`;
-    const darkClass = `${darkPrefix}${darkTailwindColor}/${do_}`;
+    const lightClass = `${prefix}${colorToken(lc)}/${lo}`;
+    const darkClass = `${darkPrefix}${colorToken(dc)}/${do_}`;
     onChange(`${lightClass} ${darkClass}`);
   };
 
@@ -543,8 +494,14 @@ export function GranularColorPickerButton({ label, value = "", onChange, mode = 
         >
           <div className="flex items-center gap-3">
             <div className="flex -space-x-2">
-              <div className={cn("w-5 h-5 rounded-full shadow-sm ring-2 ring-black dark:ring-white", getBgClass(lightColor))} style={{ opacity: lightOpacity / 100 }} />
-              <div className={cn("w-5 h-5 rounded-full shadow-sm ring-2 ring-black dark:ring-white", getBgClass(darkColor))} style={{ opacity: darkOpacity / 100 }} />
+              <div
+                className={cn("w-5 h-5 rounded-full shadow-sm ring-2 ring-black dark:ring-white", !isCustomColor(lightColor) && getBgClass(lightColor))}
+                style={{ opacity: lightOpacity / 100, ...(isCustomColor(lightColor) ? { backgroundColor: lightColor } : {}) }}
+              />
+              <div
+                className={cn("w-5 h-5 rounded-full shadow-sm ring-2 ring-black dark:ring-white", !isCustomColor(darkColor) && getBgClass(darkColor))}
+                style={{ opacity: darkOpacity / 100, ...(isCustomColor(darkColor) ? { backgroundColor: darkColor } : {}) }}
+              />
             </div>
             <span>Choose Color</span>
           </div>
@@ -578,6 +535,21 @@ export function GranularColorPickerButton({ label, value = "", onChange, mode = 
                     )}
                   />
                 ))}
+                <HexColorPickerPopover
+                  color={isCustomColor(lightColor) ? lightColor : "#000000"}
+                  onChange={(hex) => updateColor(hex, lightOpacity, darkColor, darkOpacity)}
+                  title="Custom color"
+                >
+                  <div
+                    className={cn(
+                      "w-10 h-10 rounded-full shadow-md transition-all hover:scale-110 flex items-center justify-center border-2 border-dashed border-black/20 dark:border-white/20",
+                      isCustomColor(lightColor) && "ring-4 ring-offset-2 ring-black dark:ring-white scale-110 border-solid"
+                    )}
+                    style={isCustomColor(lightColor) ? { backgroundColor: lightColor } : undefined}
+                  >
+                    <Palette className="h-4 w-4 text-black/50 dark:text-white/50" />
+                  </div>
+                </HexColorPickerPopover>
               </div>
               <OpacityRangeSelector
                 label="Opacity"
@@ -607,6 +579,21 @@ export function GranularColorPickerButton({ label, value = "", onChange, mode = 
                     )}
                   />
                 ))}
+                <HexColorPickerPopover
+                  color={isCustomColor(darkColor) ? darkColor : "#000000"}
+                  onChange={(hex) => updateColor(lightColor, lightOpacity, hex, darkOpacity)}
+                  title="Custom color"
+                >
+                  <div
+                    className={cn(
+                      "w-10 h-10 rounded-full shadow-md transition-all hover:scale-110 flex items-center justify-center border-2 border-dashed border-black/20 dark:border-white/20",
+                      isCustomColor(darkColor) && "ring-4 ring-offset-2 ring-black dark:ring-white scale-110 border-solid"
+                    )}
+                    style={isCustomColor(darkColor) ? { backgroundColor: darkColor } : undefined}
+                  >
+                    <Palette className="h-4 w-4 text-black/50 dark:text-white/50" />
+                  </div>
+                </HexColorPickerPopover>
               </div>
               <OpacityRangeSelector
                 label="Opacity"
@@ -652,6 +639,21 @@ const ColorGrid = memo(({ title, color, opacity, onColorChange, onOpChange }: an
             )}
           />
         ))}
+        <HexColorPickerPopover
+          color={isCustomColor(color) ? color : "#000000"}
+          onChange={(hex) => onColorChange(hex)}
+          title="Custom color"
+        >
+          <div
+            className={cn(
+              "w-8 h-8 rounded-full shadow-sm transition-all hover:scale-110 flex items-center justify-center border-2 border-dashed border-black/20 dark:border-white/20",
+              isCustomColor(color) && "ring-2 ring-offset-2 ring-black dark:ring-white scale-110 border-solid"
+            )}
+            style={isCustomColor(color) ? { backgroundColor: color } : undefined}
+          >
+            <Palette className="h-3.5 w-3.5 text-black/50 dark:text-white/50" />
+          </div>
+        </HexColorPickerPopover>
       </div>
       <OpacityRangeSelector label="Opacity" value={opacity} onChange={onOpChange} />
     </div>
@@ -708,16 +710,17 @@ export function GranularBGColorPickerButton({ label, value = "", onChange, theme
     if (hasGradient) {
       const dirToken = ourTokens.find(t => t.startsWith('bg-linear-to-') || t.startsWith('bg-gradient-to-'));
       const fromToken = ourTokens.find(t => t.startsWith('from-'));
-      const viaToken = ourTokens.find(t => t.startsWith('via-') && !t.includes('%') && !t.includes('['));
-      const viaPosToken = ourTokens.find(t => t.startsWith('via-') && (t.includes('%') || t.includes('[')));
+      // Stessa disambiguazione di lib/dynamicStyle.ts: "via-[30%]" (posizione)
+      // vs "via-blue-500/80" o "via-[#ff3131]/80" (colore, anche custom).
+      const viaPosToken = ourTokens.find(t => t.startsWith('via-') && /^via-\[?\d+%\]?$/.test(t));
+      const viaToken = ourTokens.find(t => t.startsWith('via-') && t !== viaPosToken);
       const toToken = ourTokens.find(t => t.startsWith('to-'));
 
       const extract = (token: string, type: 'from' | 'via' | 'to') => {
-        const match = token.match(new RegExp(`^${type}-([a-zA-Z0-9\\-]+)(?:\\/(\\d+))?$`));
-        if (match) {
-          const c = reverseColorMap[match[1]] || match[1];
-          const o = match[2] ? parseInt(match[2], 10) : 100;
-          return { color: c, opacity: o };
+        const extracted = extractColorToken(token, `${type}-`);
+        if (extracted) {
+          const c = extracted.raw.startsWith('#') ? extracted.raw : (reverseColorMap[extracted.raw] || extracted.raw);
+          return { color: c, opacity: extracted.opacity };
         }
         return null;
       };
@@ -744,10 +747,10 @@ export function GranularBGColorPickerButton({ label, value = "", onChange, theme
     } else {
       const token = ourTokens.find(t => t.startsWith('bg-') && !t.includes('linear-to') && !t.includes('gradient-to'));
       if (token) {
-        const match = token.match(/^bg-([a-zA-Z0-9\-]+)(?:\/(\d+))?$/);
-        if (match) {
-          setSolidColor(reverseColorMap[match[1]] || match[1]);
-          setSolidOpacity(match[2] ? parseInt(match[2], 10) : 100);
+        const extracted = extractColorToken(token, 'bg-');
+        if (extracted) {
+          setSolidColor(extracted.raw.startsWith('#') ? extracted.raw : (reverseColorMap[extracted.raw] || extracted.raw));
+          setSolidOpacity(extracted.opacity);
         }
       }
     }
@@ -761,12 +764,14 @@ export function GranularBGColorPickerButton({ label, value = "", onChange, theme
     uV: boolean, gV: string, gVO: number, gVP: number,
     gT: string, gTO: number
   ) => {
+    // Colore custom (hex letterale, scelto via react-colorful) -> valore
+    // Tailwind arbitrario "[#hex]", colore della palette -> token normale.
+    const getC = (c: string) => (isCustomColor(c) ? `[${c}]` : (colorMap[c] || c));
+
     let generatedClasses = [];
     if (tab === 'solid') {
-      const lc = colorMap[sC] || sC;
-      generatedClasses = [`bg-${lc}/${sO}`];
+      generatedClasses = [`bg-${getC(sC)}/${sO}`];
     } else {
-      const getC = (c: string) => colorMap[c] || c;
       generatedClasses = [
         `bg-linear-to-${gDir}`,
         `from-${getC(gF)}/${gFO}`,
@@ -812,7 +817,7 @@ export function GranularBGColorPickerButton({ label, value = "", onChange, theme
   };
 
   const getRgba = (color: string, opacity: number) => {
-    const hex = hexMap[color] || '#ffffff';
+    const hex = isCustomColor(color) ? color : (hexMap[color] || '#ffffff');
     const r = parseInt(hex.slice(1, 3), 16) || 0;
     const g = parseInt(hex.slice(3, 5), 16) || 0;
     const b = parseInt(hex.slice(5, 7), 16) || 0;
@@ -855,9 +860,13 @@ export function GranularBGColorPickerButton({ label, value = "", onChange, theme
             <div
               className={cn(
                 "w-5 h-5 rounded-full shadow-sm ring-2 ring-black dark:ring-white",
-                activeTab === 'solid' ? getBgClass(solidColor) : ""
+                activeTab === 'solid' && !isCustomColor(solidColor) ? getBgClass(solidColor) : ""
               )}
-              style={activeTab === 'gradient' ? getGradientStyle(gradDir, gradFrom, gradFromOp, useVia, gradVia, gradViaOp, gradViaPos, gradTo, gradToOp) : undefined}
+              style={
+                activeTab === 'gradient'
+                  ? getGradientStyle(gradDir, gradFrom, gradFromOp, useVia, gradVia, gradViaOp, gradViaPos, gradTo, gradToOp)
+                  : (isCustomColor(solidColor) ? { backgroundColor: solidColor } : undefined)
+              }
             />
             <span>Choose Background</span>
           </div>

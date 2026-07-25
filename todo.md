@@ -20,16 +20,25 @@ ________________________________
 [[aggiungere a pairing una sezione che permette di scrivere un po di piu. idelamente papragraph e paragraph + image module]] -> DONE
 
 [[cerca di creare compneti playground similki tra loro da usare tra admin, font e pairing. ]] -> DONE 
-__________________________________
 
-uniformare ux/ui colri di admin, margini, padding... colori
-la strategia sara creare classi tipo p-small che saranno uguali a p-2  e poi sostiuire cle classi in massa 
+[[aggiungere il addtagpopup simile a quello dei font nel form di pairing ]] -> DONE
 
-aggiungere il addtagpopup simile a quello dei font nel form di pairing 
+[[Fai Archive]] --> DONE
+ __________________________________
+
+uniformare ux/ui colri di admin, margini, padding... colori [20%]
 
 
 
 
-fai archive e blog
+
+
+fai  blog
 
 in fints e pairings rimanda a labs con query oparma per generare i font face, le classi di tailwind, css standard etc 
+
+
+fai bulk import da locale. carico tanti una zip unica. con all'interno tante cartelle con all'interno i file che possono sessere, ttf, otf o qualsiasi font file. lui procede come un bul import trtadizionale 
+
+dafont - cartoon. sono arirvato alla pagina 45, 
+fai lo stesso per tutte le altre categoie e pian piano popoliamo il databse 

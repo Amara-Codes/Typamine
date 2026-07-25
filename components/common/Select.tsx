@@ -92,7 +92,7 @@ export const Select: React.FC<SelectProps> = ({
 className={`
     flex items-center justify-between w-full
     bg-zinc-900/40 dark:bg-zinc-900/60
-    border rounded-lg px-3 py-2 transition-all duration-200
+    border rounded-md px-3 py-2 transition-all duration-200
     cursor-pointer
     /* Gestione dinamica dei bordi */
     ${isOpen

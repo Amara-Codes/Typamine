@@ -34,7 +34,7 @@ const menuItems: { name: string; href: string; icon: any; resource?: Resource }[
   { name: "Pairings", href: "/admin/pairings", icon: Blend },
   { name: "Collections", href: "/admin/collections", icon: FolderClosed },
   { name: "Archive", href: "/admin/archive", icon: LibraryBig },
-  { name: "Articles", href: "/admin/articles", icon: Feather },
+  { name: "Blog", href: "/admin/blog", icon: Feather },
   { name: "Users", href: "/admin/users", icon: UserCog, resource: 'user' },
   { name: "User Roles", href: "/admin/roles", icon: Shield, resource: 'role' },
   { name: "Settings", href: "/admin/settings", icon: Settings, resource: 'user' },

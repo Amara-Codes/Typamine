@@ -1,10 +1,12 @@
 "use client";
 
-import React, { useActionState, useState, useEffect } from "react";
+import React, { useActionState, useState, useEffect, useRef } from "react";
+import { useRouter } from "next/navigation";
 import { saveFont } from "@/lib/actions/font";
-import { Plus, Trash2, Sliders, Type, AlertCircle, Loader2, Tag as TagIcon, Check } from "lucide-react";
+import { Plus, Trash2, Sliders, Type, AlertCircle, Loader2 } from "lucide-react";
 import { Select } from "@/components/common/Select";
 import { Input, Label } from "@/components/common/Input";
+import TagPicker from "@/components/common/TagPicker";
 import FormActions from "@/components/admin/common/FormActions";
 import LivePreview from "@/components/common/LivePreview";
 import BaseModal from "../../common/BaseModal";
@@ -32,8 +34,9 @@ const CATEGORY_OPTIONS = [
 ];
 
 export default function FontForm({ font, tags = [] }: { font?: any; tags?: any[] }) {
+  const router = useRouter();
   const saveAction = (prevState: any, formData: FormData) => saveFont(prevState, formData, font?.id);
-  const [errorMessage, dispatch] = useActionState(saveAction, undefined);
+  const [errorMessage, dispatch, isSaving] = useActionState(saveAction, undefined);
   const [showErrorModal, setShowErrorModal] = useState(false);
 
   const [name, setName] = useState(font?.name || "");
@@ -44,11 +47,6 @@ export default function FontForm({ font, tags = [] }: { font?: any; tags?: any[]
     (font?.tags || []).map((t: any) => t.id)
   );
 
-  const handleTagToggle = (tagId: string) => {
-    setSelectedTagIds((prev) =>
-      prev.includes(tagId) ? prev.filter((id) => id !== tagId) : [...prev, tagId]
-    );
-  };
   const [isConverting, setIsConverting] = useState<boolean>(false);
   const [conversionMessage, setConversionMessage] = useState<string>("");
   const [isDetectingCategory, setIsDetectingCategory] = useState<boolean>(false);
@@ -195,6 +193,20 @@ export default function FontForm({ font, tags = [] }: { font?: any; tags?: any[]
     }
   }, [errorMessage]);
 
+  // useActionState non ha un evento "success" dedicato: rileviamo il
+  // completamento di un submit riuscito guardando la transizione
+  // isSaving true -> false senza errorMessage. router.back() torna
+  // esattamente alla lista con pagina/ricerca/ordinamento con cui l'utente
+  // era arrivato al form, invece del redirect server-side fisso di prima
+  // (sempre /admin/fonts pagina 1).
+  const wasSaving = useRef(false);
+  useEffect(() => {
+    if (wasSaving.current && !isSaving && !errorMessage) {
+      router.back();
+    }
+    wasSaving.current = isSaving;
+  }, [isSaving, errorMessage, router]);
+
   const [variants, setVariants] = useState<VariantItem[]>(
     font?.variants || [
       { id: "v-initial", label: "Regular", weight: 400, style: "normal", woff2Url: "", isNew: true }
@@ -333,6 +345,7 @@ export default function FontForm({ font, tags = [] }: { font?: any; tags?: any[]
                   <div className="flex items-center justify-between mb-6">
                     <h3 className="text-[10px] font-bold uppercase tracking-widest text-bluegray-800 dark:text-redgray-200">Variant Styles & Font Files</h3>
                     <Button
+                      type="button"
                       onClick={addVariant}
                       variant="outline"
                       size="sm"
@@ -514,32 +527,13 @@ export default function FontForm({ font, tags = [] }: { font?: any; tags?: any[]
                 />
 
                 <div>
-                  <Label icon={TagIcon}>Tags</Label>
-                  <div className="flex flex-wrap gap-2 p-3 border border-black/10 dark:border-white/10 rounded-lg bg-white/50 dark:bg-zinc-900/50 max-h-36 overflow-y-auto">
-                    {tags.map((t) => {
-                      const isSelected = selectedTagIds.includes(t.id);
-                      return (
-                        <button
-                          key={t.id}
-                          type="button"
-                          onClick={() => handleTagToggle(t.id)}
-                          className={`px-3 py-1 rounded-full text-xs font-bold transition-all flex items-center gap-1.5 border ${
-                            isSelected
-                              ? "bg-black text-white dark:bg-white dark:text-black border-transparent"
-                              : "bg-transparent text-zinc-600 dark:text-zinc-400 border-black/10 dark:border-white/10 hover:border-black/30 dark:hover:border-white/30"
-                          }`}
-                        >
-                          {isSelected && <Check className="w-3 h-3" />}
-                          {t.name}
-                        </button>
-                      );
-                    })}
-                    {tags.length === 0 && (
-                      <span className="text-xs text-zinc-400 italic">
-                        No tags available. You can create tags in /admin/tags.
-                      </span>
-                    )}
-                  </div>
+                  <TagPicker
+                    label="Tags"
+                    tags={tags}
+                    value={selectedTagIds}
+                    onChange={setSelectedTagIds}
+                    emptyLabel="No tags available. You can create tags in /admin/tags."
+                  />
                   {selectedTagIds.map((tagId) => (
                     <input key={tagId} type="hidden" name="tagIds" value={tagId} />
                   ))}

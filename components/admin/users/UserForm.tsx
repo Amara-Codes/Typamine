@@ -2,7 +2,7 @@
 
 import { useActionState, useState, useRef, useEffect } from "react";
 import { saveUser } from "@/lib/actions/user";
-import { Loader2, Camera, User, Mail, Lock, Shield, Eye, EyeOff, Upload, Trash2 } from "lucide-react";
+import { Mail, Lock, Shield, Eye, EyeOff } from "lucide-react";
 import { cn } from "@/lib/utils";
 import imageCompression from 'browser-image-compression';
 import FormActions from "@/components/admin/common/FormActions";
@@ -11,6 +11,7 @@ import BaseModal from "../../common/BaseModal";
 import { AlertCircle } from "lucide-react";
 import { Input } from "@/components/common/Input";
 import SavingOverlay from "@/components/admin/common/SavingOverlay";
+import ImageDropInput from "@/components/admin/common/ImageDropInput";
 
 export default function UserForm({ user, roles }: { user?: any, roles: any[] }) {
   const saveAction = (prevState: any, formData: FormData) => saveUser(prevState, formData, user?.id);
@@ -34,9 +35,6 @@ export default function UserForm({ user, roles }: { user?: any, roles: any[] }) 
   const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
 
   const [selectedRoleId, setSelectedRoleId] = useState(user?.roles?.[0]?.id || "");
-  
-  // Resolve avatar URL from either imageUrl or serialized binary image
-  const displayImage = imagePreview || user?.imageUrl || user?.image || null;
 
   return (
     <form action={dispatch} className="max-w-6xl ml-auto space-y-8 pb-20 transition-colors duration-300">
@@ -164,79 +162,42 @@ export default function UserForm({ user, roles }: { user?: any, roles: any[] }) 
             <div>
               <h3 className="text-[10px] font-bold text-center uppercase tracking-widest text-bluegray-800 dark:text-redgray-200 mb-4">Avatar Photo</h3>
               <div className="flex flex-col items-center gap-4">
-                <div className="h-52 w-52 rounded-xl bg-white/50 dark:bg-white/5 border-2 border-dashed border-zinc-900/10 dark:border-cyan-500/30 flex flex-col items-center justify-center gap-2 relative group cursor-pointer overflow-hidden text-zinc-500 dark:text-zinc-400 hover:bg-white dark:hover:bg-white/10 hover:border-zinc-900/30 dark:hover:border-cyan-500/60 transition-all shadow-inner">
-                  {isCompressing ? (
-                    <div className="flex flex-col items-center gap-4 animate-in fade-in zoom-in duration-300">
-                      <Loader2 className="h-10 w-10 text-red-500 animate-spin" />
-                    </div>
-                  ) : !removeImage && displayImage ? (
-                    <>
-                      <img src={displayImage} className="h-full w-full object-cover" alt="User" />
-                      {/* Hover Overlay */}
-                      <div className="absolute inset-0 bg-zinc-900/60 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-center justify-center gap-4 z-10">
-                        <button
-                          type="button"
-                          onClick={() => fileInputRef.current?.click()}
-                          className="p-3 bg-white text-zinc-900 rounded-lg shadow-xl hover:scale-110 active:scale-95 transition-all duration-200"
-                          title="Change photo"
-                        >
-                          <Upload className="h-5 w-5" />
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => {
-                            setImagePreview(null);
-                            setRemoveImage(true);
-                            if (fileInputRef.current) fileInputRef.current.value = "";
-                          }}
-                          className="p-3 bg-red-500 text-white rounded-lg shadow-xl hover:scale-110 active:scale-95 transition-all duration-200"
-                          title="Remove photo"
-                        >
-                          <Trash2 className="h-5 w-5" />
-                        </button>
-                      </div>
-                    </>
-                  ) : (
-                    <button
-                      type="button"
-                      onClick={() => fileInputRef.current?.click()}
-                      className="w-full h-full bg-linear-to-br from-cyan-500/10 via-zinc-900/5 to-red-500/5 flex flex-col items-center justify-center gap-2 group-hover:scale-110 transition-transform duration-500"
-                    >
-                      <Camera className="h-8 w-8 opacity-30 group-hover:opacity-100 transition-opacity" />
-                      <span className="text-[10px] font-bold uppercase opacity-30 group-hover:opacity-100">Upload Avatar</span>
-                    </button>
-                  )}
-                  <input 
-                    ref={fileInputRef}
-                    type="file" 
-                    name="image" 
-                    className="hidden" 
-                    accept="image/*" 
-                    onChange={async (e) => {
-                      const file = e.target.files?.[0];
-                      if (file) {
-                        try {
-                          setIsCompressing(true);
-                          setRemoveImage(false);
-                          const options = { maxSizeMB: 0.5, maxWidthOrHeight: 512, useWebWorker: true };
-                          const compressedFile = await imageCompression(file, options);
-                          const dataTransfer = new DataTransfer();
-                          dataTransfer.items.add(new File([compressedFile], file.name, { type: file.type }));
-                          if (fileInputRef.current) fileInputRef.current.files = dataTransfer.files;
-                          const reader = new FileReader();
-                          reader.onloadend = () => {
-                            setImagePreview(reader.result as string);
-                            setIsCompressing(false);
-                          };
-                          reader.readAsDataURL(compressedFile);
-                        } catch (error) {
-                          console.error("Compression failed:", error);
-                          setIsCompressing(false);
-                        }
-                      }
-                    }}
-                  />
-                </div>
+                <ImageDropInput
+                  name="image"
+                  inputRef={fileInputRef}
+                  previewUrl={imagePreview}
+                  currentUrl={removeImage ? null : (user?.imageUrl || user?.image || null)}
+                  isCompressing={isCompressing}
+                  onSelect={async (e) => {
+                    const file = e.target.files?.[0];
+                    if (!file) return;
+                    try {
+                      setIsCompressing(true);
+                      setRemoveImage(false);
+                      const options = { maxSizeMB: 0.5, maxWidthOrHeight: 512, useWebWorker: true };
+                      const compressedFile = await imageCompression(file, options);
+                      const dataTransfer = new DataTransfer();
+                      dataTransfer.items.add(new File([compressedFile], file.name, { type: file.type }));
+                      if (fileInputRef.current) fileInputRef.current.files = dataTransfer.files;
+                      const reader = new FileReader();
+                      reader.onloadend = () => {
+                        setImagePreview(reader.result as string);
+                        setIsCompressing(false);
+                      };
+                      reader.readAsDataURL(compressedFile);
+                    } catch (error) {
+                      console.error("Compression failed:", error);
+                      setIsCompressing(false);
+                    }
+                  }}
+                  onRemove={() => {
+                    setImagePreview(null);
+                    setRemoveImage(true);
+                    if (fileInputRef.current) fileInputRef.current.value = "";
+                  }}
+                  containerClassName="h-52 w-52 rounded-xl"
+                  label="Upload Avatar"
+                />
                 <input type="hidden" name="removeImage" value={String(removeImage)} />
                 <p className="text-[10px] text-zinc-500 dark:text-zinc-400 uppercase tracking-tighter font-bold">Square profile image.</p>
               </div>

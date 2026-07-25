@@ -10,18 +10,18 @@ datasource db {
 }
 
 model User {
-  id        String     @id @default(uuid())
+  id        String   @id @default(uuid())
   name      String?
-  email     String     @unique
+  email     String   @unique
   password  String
-  createdAt DateTime   @default(now())
-  updatedAt DateTime   @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
   image     Bytes?
   imageUrl  String?
   surname   String?
   biography String?
-  posts     BlogPost[]
-  roles     Role[]     @relation("UserRoles")
+  posts     Post[]
+  roles     Role[]   @relation("UserRoles")
 }
 
 model Role {
@@ -41,14 +41,32 @@ model Permission {
   roles     Role[]   @relation("RolePermissions")
 }
 
-model BlogPost {
-  id        String   @id @default(uuid())
-  title     String
-  content   String
-  authorId  String
-  author    User     @relation(fields: [authorId], references: [id])
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+// Entità SEO condivisa: un unico set di meta-tag riusabile da qualunque
+// contenuto pubblico (archive, blog article, prescription, ...) invece di
+// duplicare gli stessi campi su ogni modello. Relazione 1-a-1 opzionale:
+// il contenuto tiene la FK (seoId), qui sotto solo i campi back-relation
+// richiesti da Prisma per dichiarare l'altro lato della relazione.
+model SeoModule {
+  id                 String   @id @default(uuid())
+  metaTitle          String?
+  metaDescription    String?
+  keywords           String?
+  ogTitle            String?
+  ogDescription      String?
+  ogImageUrl         String?
+  ogImageAlt         String?
+  twitterCard        String   @default("summary_large_image")
+  twitterTitle       String?
+  twitterDescription String?
+  twitterImageUrl    String?
+  twitterImageAlt    String?
+  canonicalUrl       String?
+  noIndex            Boolean  @default(false)
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @default(now()) @updatedAt
+
+  post         Post?
+  prescription Prescription?
 }
 
 model FontVariant {
@@ -79,6 +97,7 @@ model Ingredient {
   primaryPrescriptions   Prescription[] @relation("PrimaryFont")
   secondaryPrescriptions Prescription[] @relation("SecondaryFont")
   tags                   Tag[]          @relation("IngredientTags")
+  posts                  Post[]         @relation("PostFonts")
 }
 
 model Formula {
@@ -99,6 +118,7 @@ model Prescription {
   slug            String     @unique
   description     String?
   imageUrl        String?
+  insight         String?
   published       Boolean    @default(false)
   createdAt       DateTime   @default(now())
   updatedAt       DateTime   @default(now()) @updatedAt
@@ -107,6 +127,8 @@ model Prescription {
   secondaryFontId String
   secondaryFont   Ingredient @relation("SecondaryFont", fields: [secondaryFontId], references: [id], onDelete: Cascade)
   tags            Tag[]      @relation("PrescriptionTags")
+  seoId           String?    @unique
+  seo             SeoModule? @relation(fields: [seoId], references: [id])
 }
 
 model Tag {
@@ -118,4 +140,30 @@ model Tag {
   prescriptions Prescription[] @relation("PrescriptionTags")
   ingredients   Ingredient[]   @relation("IngredientTags")
   formulas      Formula[]      @relation("FormulaTags")
+  posts         Post[]         @relation("PostTags")
+}
+
+// Entità generica di contenuto editoriale: serve sia /archive (postType
+// "ARCHIVE") che /blog (postType "BLOG") — stessi campi, stesso editor di
+// content-module, l'unica differenza è la varietà di moduli offerta in admin.
+model Post {
+  id           String       @id @default(uuid())
+  postType     String       @default("ARCHIVE")
+  title        String
+  slug         String       @unique
+  caption      String?
+  description  String?
+  thumbnailUrl String?
+  imageUrl     String?
+  imageAlt     String?
+  insight      String?
+  published    Boolean      @default(false)
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @default(now()) @updatedAt
+  authorId     String
+  author       User         @relation(fields: [authorId], references: [id])
+  tags         Tag[]        @relation("PostTags")
+  fonts        Ingredient[] @relation("PostFonts")
+  seoId        String?      @unique
+  seo          SeoModule?   @relation(fields: [seoId], references: [id])
 }

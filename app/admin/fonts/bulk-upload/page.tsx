@@ -21,10 +21,10 @@ import {
   X
 } from "lucide-react";
 import { Button } from "@/components/common/Button";
-import Badge from "@/components/common/Badge";
+
 import { Input } from "@/components/common/Input";
 import { Select } from "@/components/common/Select";
-import MinimalLink from "@/components/common/MinimalLink";
+
 import  BaseModal  from "@/components/common/BaseModal";
 import { ProviderFontItem } from "@/types";
 import { fetchFontshareFonts, FontshareCategory, FontsharePersonality } from "@/lib/fontshare";

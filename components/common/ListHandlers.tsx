@@ -87,7 +87,7 @@ export function ListHeaderHandlers({
   }, [searchValue]);
 
   return (
-    <div className="flex flex-col xl:flex-row xl:items-center justify-between gap-4 bg-zinc-100/40 dark:bg-zinc-900/40 border border-zinc-900/10 dark:border-white/10 p-6 rounded-2xl backdrop-blur-xl testo">
+    <div className="flex flex-col xl:flex-row xl:items-center justify-between gap-4">
 
       {/* Left: Search input */}
       <div className="w-full xl:max-w-xs 2xl:max-w-md shrink-0">
@@ -104,7 +104,10 @@ export function ListHeaderHandlers({
 
         {/* Mass Actions (Visibili solo in selection mode) */}
         {isSelectionMode ? (
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-4">
+                         <span className="text-blue dark:text-red  text-sm font-bold whitespace-nowrap">
+                  {selectedCount} Selected
+                </span>
             {massActions.map((action, idx) => (
               <Button
                 key={idx}
@@ -154,10 +157,6 @@ export function ListHeaderHandlers({
           </div>
         )}
 
-        {/* Divisore verticale opzionale per separare le select dal bottone di azione */}
-        {canMassAction && (
-          <div className="hidden sm:block w-px h-8 bg-zinc-900/10 dark:bg-white/10 mx-1" />
-        )}
 
         {/* Selection toggle or Cancel */}
         {canMassAction && (
@@ -173,9 +172,7 @@ export function ListHeaderHandlers({
               </Button>
             ) : (
               <div className="flex items-center gap-4">
-                <span className="text-blue dark:text-red  text-sm font-bold whitespace-nowrap">
-                  {selectedCount} Selected
-                </span>
+   
                 <Button
                   onClick={onToggleSelectionMode}
                   variant="outline"
@@ -220,7 +217,9 @@ export function ListPagination({
     router.push(`${pathname}?${params.toString()}`);
   };
 
-  if (totalCount === 0) return null;
+  // Niente controlli pagina se c'è una sola pagina (o zero risultati) — non
+  // c'è nulla tra cui navigare, mostrarla comunque è solo rumore visivo.
+  if (totalCount === 0 || totalPages <= 1) return null;
 
   return (
     <div className="flex flex-col sm:flex-row items-center justify-between px-8 py-5 border-t  bg-bluegray-200/50 dark:bg-redgray-900/50  border-black/5 dark:border-white/5 gap-4">

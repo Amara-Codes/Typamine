@@ -9,6 +9,8 @@ interface MinimalLinkProps {
     iconPosition?: 'left' | 'right';
     label?: string;
     href: string;
+    /** Se passato, intercetta il click sinistro (preventDefault) al posto della navigazione a `href` — `href` resta comunque il fallback per apertura in nuova scheda / hover / SEO. */
+    onClick?: (e: React.MouseEvent<HTMLAnchorElement>) => void;
 }
 
 export const MinimalLink: React.FC<MinimalLinkProps> = ({
@@ -18,6 +20,7 @@ export const MinimalLink: React.FC<MinimalLinkProps> = ({
     iconPosition = 'right',
     label,
     href,
+    onClick,
 }) => {
     const defaultIcon = <MoveRight size={14} className="icon-altalenante inline-block" />;
 
@@ -30,6 +33,7 @@ export const MinimalLink: React.FC<MinimalLinkProps> = ({
     return (
         <Link
             href={href}
+            onClick={onClick}
             className={`group inline-flex flex-row items-center gap-1.5 font-haas text-xs font-bold uppercase tracking-wider transition-colors ${className}`}
         >
             {iconPosition === 'left' && displayIcon}

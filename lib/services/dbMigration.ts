@@ -126,6 +126,90 @@ export async function ensureD1SchemaUpdated(force = false) {
       `);
     } catch {}
 
+    // 8. Post table (generalizzato da ArchivePost, serve sia /archive che
+    // /blog via la colonna postType) + le sue join table many-to-many.
+    // Su ambienti dove la tabella esisteva ancora col vecchio nome, la
+    // rinominiamo sul posto (rename atomico, nessuna copia/perdita dati) —
+    // no-op silenzioso se ArchivePost non esiste più (già migrato) o non è
+    // mai esistita (D1 nuovo, coperto dalla CREATE TABLE IF NOT EXISTS sotto).
+    try {
+      await prisma.$executeRawUnsafe(`ALTER TABLE ArchivePost RENAME TO Post`);
+    } catch {}
+    try {
+      await prisma.$executeRawUnsafe(`ALTER TABLE _ArchivePostTags RENAME TO _PostTags`);
+    } catch {}
+    try {
+      await prisma.$executeRawUnsafe(`ALTER TABLE _ArchivePostFonts RENAME TO _PostFonts`);
+    } catch {}
+    try {
+      await prisma.$executeRawUnsafe(`
+        CREATE TABLE IF NOT EXISTS Post (
+          id TEXT PRIMARY KEY NOT NULL,
+          postType TEXT DEFAULT 'ARCHIVE',
+          title TEXT NOT NULL,
+          slug TEXT NOT NULL UNIQUE,
+          caption TEXT,
+          description TEXT,
+          thumbnailUrl TEXT,
+          imageUrl TEXT,
+          imageAlt TEXT,
+          insight TEXT,
+          published BOOLEAN DEFAULT 0,
+          createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+          updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+          authorId TEXT NOT NULL
+        )
+      `);
+    } catch {}
+    try {
+      await prisma.$executeRawUnsafe(`
+        CREATE TABLE IF NOT EXISTS _PostTags (
+          A TEXT NOT NULL,
+          B TEXT NOT NULL
+        )
+      `);
+    } catch {}
+    try {
+      await prisma.$executeRawUnsafe(`
+        CREATE TABLE IF NOT EXISTS _PostFonts (
+          A TEXT NOT NULL,
+          B TEXT NOT NULL
+        )
+      `);
+    } catch {}
+    await addCol("Post", "postType", "TEXT");
+    try {
+      await prisma.$executeRawUnsafe(`UPDATE Post SET postType = 'ARCHIVE' WHERE postType IS NULL`);
+    } catch {}
+
+    // 9. SeoModule — entità condivisa (archive/blog/prescription), relazione
+    // 1-a-1 opzionale via colonna seoId sul contenuto.
+    try {
+      await prisma.$executeRawUnsafe(`
+        CREATE TABLE IF NOT EXISTS SeoModule (
+          id TEXT PRIMARY KEY NOT NULL,
+          metaTitle TEXT,
+          metaDescription TEXT,
+          keywords TEXT,
+          ogTitle TEXT,
+          ogDescription TEXT,
+          ogImageUrl TEXT,
+          ogImageAlt TEXT,
+          twitterCard TEXT DEFAULT 'summary_large_image',
+          twitterTitle TEXT,
+          twitterDescription TEXT,
+          twitterImageUrl TEXT,
+          twitterImageAlt TEXT,
+          canonicalUrl TEXT,
+          noIndex BOOLEAN DEFAULT 0,
+          createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+          updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP
+        )
+      `);
+    } catch {}
+    await addCol("Post", "seoId", "TEXT");
+    await addCol("Prescription", "seoId", "TEXT");
+
     isMigrated = true;
   } catch (err) {
     console.error("[DbMigration] Error migrating D1 schema:", err);

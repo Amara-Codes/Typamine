@@ -21,23 +21,29 @@ interface PrescriptionsPageProps {
 
 function ResultsSkeleton() {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 relative z-0">
-      {Array.from({ length: PER_PAGE }).map((_, idx) => (
-        <PrescriptionCardSkeleton key={idx} />
-      ))}
-    </div>
+    <>
+      <div className="h-3 w-44 rounded bg-zinc-200 dark:bg-zinc-800 animate-pulse" />
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 relative z-0">
+        {Array.from({ length: PER_PAGE }).map((_, idx) => (
+          <PrescriptionCardSkeleton key={idx} />
+        ))}
+      </div>
+    </>
   );
 }
 
 export default async function PrescriptionsPage({ searchParams }: PrescriptionsPageProps) {
   const resolved = await searchParams;
   const page = parseInt(resolved.page || "1", 10);
-  const tagIds = (resolved.tags || "").split(",").filter(Boolean);
+  const tagNames = (resolved.tags || "").split(",").filter(Boolean);
   const search = resolved.search || "";
   const sort = (resolved.sort || "recent") as PairingSort;
   const fontName = resolved.font || "";
 
   const tags = await getTags();
+  // L'URL usa il nome del tag (human-readable) — conversione a id qui,
+  // senza query aggiuntiva dato che `tags` è già caricato sopra.
+  const tagIds = tags.filter((t) => tagNames.includes(t.name)).map((t) => t.id);
 
   return (
     <PrescriptionsClient tags={tags}>

@@ -9,6 +9,7 @@ interface FontCardProps {
     idx: number;
     linklabel?: string;
     fontSize?: number;
+    className?: string;
 }
 
 // Funzioni di supporto per identificare vocali e consonanti
@@ -72,11 +73,11 @@ export const GetSymbol = ({ fontName }: { fontName: string }): string => {
     return rawSymbol.charAt(0).toUpperCase() + rawSymbol.charAt(1).toLowerCase();
 };
 
-export const IngredientCard: React.FC<FontCardProps> = ({ font, idx, linklabel = "Test Now", fontSize }) => {
+export const IngredientCard: React.FC<FontCardProps> = ({ font, idx, linklabel = "Test Now", fontSize, className="" }) => {
     return (
         <Link
             href={"/ingredients/" + font.slug}
-            className="border border-zinc-200 dark:border-zinc-800 bg-white/50 dark:bg-zinc-900/20 hover:border-zinc-400 dark:hover:border-zinc-700 hover:bg-zinc-50 dark:hover:bg-zinc-900/40 rounded-lg p-2 transition-all flex flex-col justify-between group relative overflow-hidden"
+            className={"border border-zinc-200 dark:border-zinc-800 bg-white/50 dark:bg-zinc-900/20 hover:border-zinc-400 dark:hover:border-zinc-700 hover:bg-zinc-50 dark:hover:bg-zinc-900/40 rounded-lg p-2 transition-all flex flex-col justify-between group relative overflow-hidden " + className }
         >
             {/* Corner tag index */}
             <div className="absolute top-2 right-2 font-haas text-[10px] text-zinc-500 dark:text-zinc-400">
@@ -119,7 +120,7 @@ export const IngredientCard: React.FC<FontCardProps> = ({ font, idx, linklabel =
 
             <div className="pt-2 pe-2 mx-2 flex justify-between items-center border-t border-zinc-200 dark:border-zinc-800">
                 <span className="font-haas text-[10px] text-zinc-500 dark:text-zinc-400">OUR SCORE: <span className="text-blue font-bold">{font.rating}</span></span>
-                <span className="flex flex-row items-center gap-2 font-haas text-[10px] text-red hover:underline transition-colors pe-4">
+                <span className="flex flex-row items-center gap-2 font-haas text-sm text-red hover:underline transition-colors pe-4">
                     {linklabel}
                     <MoveRight size={12} className="icon-altalenante" />
                 </span>

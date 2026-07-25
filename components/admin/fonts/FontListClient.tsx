@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { Edit, Layers, X, Check, AlertTriangle } from "lucide-react";
+import { Edit, Layers, Tag, X, Check, AlertTriangle } from "lucide-react";
 import ContentTable from "@/components/common/ContentTable";
 import DeleteButton from "@/components/common/DeleteButton";
 import { deleteFont } from "@/lib/actions/font";
@@ -100,17 +100,17 @@ export default function FontListClient({ fonts, totalCount, canUpdate, canDelete
             {
               key: "name",
               header: "Font",
-              className: "flex-[2] md:flex-[3] min-w-0",
+              className: "w-1/2 min-w-0",
               render: (font: any) => (
                 <div className="flex items-center gap-4 min-w-0 py-1">
-                  <div className="w-12 h-12 border border-black/5 dark:border-white/5 rounded bg-bluegray-100 dark:bg-redgray-900 flex items-center justify-center font-haas font-bold text-lg text-blue-800 dark:text-red-400 transition-all shrink-0">
+                  <div className="w-12 h-12 border border-blue-800 dark:border-red-200 rounded bg-bluegray-100 dark:bg-redgray-900 flex items-center justify-center font-haas font-bold text-lg text-blue-600 dark:text-red-400 transition-all shrink-0">
                     {font.symbol || GetSymbol({ fontName: font.name })}
                   </div>
                   <div className="min-w-0">
                     <p className="font-star text-2xl text-black dark:text-white leading-tight truncate">
                       {font.name}
                     </p>
-                    <p className="text-[10px] text-blue-800 dark:text-red-400 font-bold uppercase tracking-widest mt-1 truncate">
+                    <p className="text-[10px] text-blue-400 dark:text-red-400 font-bold uppercase tracking-widest mt-1 truncate">
                       {font.category}
                     </p>
                   </div>
@@ -120,7 +120,7 @@ export default function FontListClient({ fonts, totalCount, canUpdate, canDelete
             {
               key: "isVariable",
               header: "Is Variable",
-              className: "flex-1 hidden sm:block",
+              className: "w-1/8 hidden sm:block",
               render: (font: any) => (
                 <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest mt-1 truncate">
 
@@ -144,7 +144,7 @@ export default function FontListClient({ fonts, totalCount, canUpdate, canDelete
             {
               key: "variants",
               header: "Variants",
-              className: "flex-1 hidden md:block",
+              className: "w-1/8 hidden md:block",
               render: (font: any) => (
                 <div className={`px-3 py-1.5 rounded-md flex items-center gap-2 border shadow-sm text-xs max-w-fit mt-1 ${
                     font?.variants?.length
@@ -159,12 +159,21 @@ export default function FontListClient({ fonts, totalCount, canUpdate, canDelete
               ),
             },
             {
-              key: "creator",
-              header: "Source",
-              className: "flex-1 hidden lg:block",
+              key: "tags",
+              header: "Tags",
+              className: "w-1/8 hidden lg:block",
               render: (font: any) => (
-                <div className="text-sm font-bold text-black dark:text-white capitalize mt-1.5 truncate">
-                  {font.creator || "N/A"}
+                <div
+                  className={`px-3 py-1.5 rounded-md flex items-center gap-2 border shadow-sm text-xs max-w-fit mt-1 ${
+                    font.tags?.length
+                      ? "bg-white text-blue-800 dark:bg-redgray-800 dark:text-red-200 border-blue-800 dark:border-red-200"
+                      : "bg-zinc-400 dark:bg-zinc-900 border-zinc-900 dark:border-zinc-900 text-zinc-900 dark:text-zinc-400"
+                  }`}
+                >
+                  <Tag className="h-3.5 w-3.5 shrink-0" />
+                  <span className="text-[10px] font-black uppercase tracking-tighter">
+                    {font.tags?.length || 0} {font.tags?.length === 1 ? "Tag" : "Tags"}
+                  </span>
                 </div>
               ),
             },

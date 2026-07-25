@@ -57,7 +57,7 @@ export default function ContentTable<T>({
       <div className={cn(
         // Impostiamo un'altezza minima abbondante (76px) per assorbire l'ingombro del Badge
         // mantenendo py-4. items-center centrerà il contenuto in entrambi gli stati.
-        "flex items-center py-4 min-h-[76px] px-8 border-b bg-bluegray-200/50 dark:bg-redgray-900/50  border-black/5 dark:border-white/5"
+        "flex justify-between items-center py-4 min-h-[76px] px-8 border-b bg-bluegray-200/50 dark:bg-redgray-900/50  border-black/5 dark:border-white/5"
       )}>
         {columns.map((column, idx) => (
           <div
@@ -75,12 +75,12 @@ export default function ContentTable<T>({
               >
                 {isAllSelected ? (
                   <div className="flex items-center gap-2 p-1 rounded-sm">
-                    <Badge icon={<SquareCheckBig />} className="text-black dark:text-red fill-blue/10 dark:fill-red/20 !w-32 justify-center">{selectedIds.length} Selected</Badge>
+                    <Badge icon={<SquareCheckBig />} variant="monochrome">{selectedIds.length} Selected</Badge>
                   </div>
                 ) : (
                   <div className="flex items-center gap-2 p-1 rounded-sm">
                     {/* Corretto l'icona qui in Square */}
-                    <Badge icon={<Square />} className="text-black dark:text-red fill-blue/10 dark:fill-red/20 !w-32 justify-center !bg-zinc-200 !dark:bg-zink-800">Select All</Badge>
+                    <Badge icon={<Square />} variant="monochrome">Select All</Badge>
                   </div>
                 )}
               </div>
@@ -93,7 +93,7 @@ export default function ContentTable<T>({
 
         {/* Actions */}
         {rowActions && (
-          <div className="flex-1 text-[10px] font-bold uppercase tracking-widest text-bluegray-800 dark:text-redgray-200 text-right">
+          <div className=" text-[10px] font-bold uppercase tracking-widest text-bluegray-800 dark:text-redgray-200 text-right">
             Actions
           </div>
         )}
@@ -110,7 +110,7 @@ export default function ContentTable<T>({
               key={itemId}
               onClick={() => isSelectionMode && handleSelectRow(itemId)}
               className={cn(
-                "flex items-center px-8 py-6 transition-all duration-300 group",
+                "flex justify-between items-center px-8 py-6 transition-all duration-300 group",
                 isSelectionMode
                   ? "cursor-pointer hover:bg-zinc-900/5 dark:hover:bg-white/5"
                   : "hover:bg-zinc-900/5 dark:hover:bg-white/5",
@@ -137,7 +137,7 @@ export default function ContentTable<T>({
                     </div>
                   )}
 
-                  <div className="truncate">
+                  <div className="truncate w-full min-w-0">
                     {column.render
                       ? column.render(item)
                       : (item as any)[column.key] !== undefined
@@ -149,7 +149,7 @@ export default function ContentTable<T>({
 
               {/* Row Actions */}
               {rowActions && (
-                <div className="flex-1 flex items-center justify-end gap-3">
+                <div className="flex items-center justify-end gap-3">
                   <div className="flex items-center gap-2 opacity-100 lg:opacity-0 lg:group-hover:opacity-100 transition-all duration-300 transform lg:translate-x-4 lg:group-hover:translate-x-0">
                     {rowActions(item)}
                   </div>

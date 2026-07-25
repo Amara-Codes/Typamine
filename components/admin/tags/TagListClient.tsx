@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useTransition } from "react";
-import { Edit, Plus, Tag as TagIcon, AlertTriangle } from "lucide-react";
+import { Edit, Tag as TagIcon, AlertTriangle } from "lucide-react";
 import ContentTable from "@/components/common/ContentTable";
 import DeleteButton from "@/components/common/DeleteButton";
 import { saveTag, deleteTag } from "@/lib/actions/tag";
@@ -10,18 +10,17 @@ import BaseModal from "@/components/common/BaseModal";
 import { Button } from "@/components/common/Button";
 import { useRouter } from "next/navigation";
 
-import TabHeading from "@/components/admin/common/TabHeading";
+
 import SavingOverlay from "@/components/admin/common/SavingOverlay";
 
 interface TagListClientProps {
   tags: any[];
   totalCount: number;
-  canCreate: boolean;
   canUpdate: boolean;
   canDelete: boolean;
 }
 
-export default function TagListClient({ tags, totalCount, canCreate, canUpdate, canDelete }: TagListClientProps) {
+export default function TagListClient({ tags, totalCount, canUpdate, canDelete }: TagListClientProps) {
   const [isSelectionMode, setIsSelectionMode] = useState(false);
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -54,14 +53,6 @@ export default function TagListClient({ tags, totalCount, canCreate, canUpdate, 
     } else {
       setSelectedIds(tags.map((t) => t.id));
     }
-  };
-
-  const handleOpenCreate = () => {
-    setEditingTag(null);
-    setName("");
-    setDescription("");
-    setErrorMessage(null);
-    setIsFormModalOpen(true);
   };
 
   const handleOpenEdit = (tag: any) => {
@@ -108,25 +99,7 @@ export default function TagListClient({ tags, totalCount, canCreate, canUpdate, 
 
   return (
     <div className="space-y-6">
-      <TabHeading
-        title="Tag Management"
-        subtitle="Manage and organize tags for font pairings"
-        showButton={false}
-        extraButtons={
-          canCreate && (
-            <Button
-              onClick={handleOpenCreate}
-              variant="primary"
-              size="lg"
-              roundness="md"
-              className="flex items-center gap-2"
-            >
-              <Plus className="h-5 w-5" />
-              Create Tag
-            </Button>
-          )
-        }
-      />
+     
 
       <ListHeaderHandlers
         isSelectionMode={isSelectionMode}
@@ -166,11 +139,8 @@ export default function TagListClient({ tags, totalCount, canCreate, canUpdate, 
               className: "flex-[2] min-w-0",
               render: (tag: any) => (
                 <div className="flex items-center gap-3 py-1">
-                  <div className="p-2 border border-black/5 dark:border-white/5 rounded-lg bg-bluegray-100 dark:bg-redgray-900 text-black dark:text-white">
-                    <TagIcon className="w-4 h-4" />
-                  </div>
                   <div>
-                    <p className="font-star text-xl font-bold text-black dark:text-white leading-tight">
+                    <p className="font-star text-2xl font-bold text-black dark:text-white leading-tight">
                       {tag.name}
                     </p>
                     {tag.description && (
@@ -181,17 +151,7 @@ export default function TagListClient({ tags, totalCount, canCreate, canUpdate, 
                   </div>
                 </div>
               ),
-            },
-            {
-              key: "prescriptions",
-              header: "Pairings Count",
-              className: "flex-1 hidden sm:block",
-              render: (tag: any) => (
-                <div className="text-xs font-bold text-black dark:text-white mt-1">
-                  {tag._count?.prescriptions ?? tag.prescriptions?.length ?? 0} Pairings
-                </div>
-              ),
-            },
+            }
           ]}
           rowActions={(tag: any) => (
             <>

@@ -1,6 +1,6 @@
 "use client";
 
-import { Quote as QuoteIcon } from "lucide-react";
+import Image from "next/image";
 import { ReactNode } from "react";
 import Paragraph from "@/components/common/Paragraph";
 import { cn } from "@/lib/utils";
@@ -46,27 +46,31 @@ export default function Quote({
       }}
     >
       <div className="max-w-5xl mx-auto flex flex-col items-center w-full">
-      <QuoteIcon
-        size={80}
-        strokeWidth={0.5}
-        className="text-current/20 self-start transition-transform duration-700 group-hover:translate-x-4"
-      />
+        <Image
+          src="/images/icons/quotation-open.png"
+          alt="Quotation open"
+          width={80}
+          height={80}
+          className="w-24 h-24 dark:invert object-contain opacity-40 dark:invert self-start transition-transform duration-700 group-hover:translate-x-4"
+        />
 
-      <Paragraph
-        as="p"
-        size="4xl"
-        weight="bold"
-        align="center"
-        className="text-current/90 leading-relaxed italic lg:px-8"
-      >
-        {children}
-      </Paragraph>
+        <Paragraph
+          as="p"
+          size="4xl"
+          weight="bold"
+          align="center"
+          className="text-current/90 leading-relaxed italic lg:px-8"
+        >
+          {children}
+        </Paragraph>
 
-      <QuoteIcon
-        size={80}
-        strokeWidth={0.5}
-        className="text-current/20 self-end rotate-180 transition-transform duration-700 group-hover:-translate-x-4"
-      />
+        <Image
+          src="/images/icons/quotation-closed.png"
+          alt="Quotation closed"
+          width={80}
+          height={80}
+          className="w-24 h-24 dark:invert object-contain opacity-40 dark:invert self-end transition-transform duration-700 group-hover:-translate-x-4"
+        />
 
       {(author || authorDates || authorInfo) && (
         <div className="mt-16 lg:mt-8 flex flex-col items-center text-center">

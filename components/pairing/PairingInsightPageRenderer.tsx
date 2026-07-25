@@ -9,7 +9,7 @@ import { COLOR_PAIRS, FONT_FAMILIES } from '@/components/admin/common/content-mo
 
 import { cn } from "@/lib/utils";
 
-// Stesso renderer di BlogPageRenderer.tsx, ma limitato ai 3 tipi di modulo
+// Stesso renderer di components/post/PostInsightPageRenderer.tsx, ma limitato ai 3 tipi di modulo
 // che PairingForm permette di creare per l'"insight" di una pairing
 // (paragraph, paragraphWithImage, quote — niente hero/cta/slider/spacer).
 const COLOR_PAIRS_MAP: Record<string, string> = Object.fromEntries(
@@ -58,7 +58,6 @@ export default function PairingInsightPageRenderer({ content }: { content: strin
                   as={props.as}
                   size={props.size}
                   align={props.align}
-                  scrollReveal={props.scrollReveal}
                   weight={props.weight}
                   colorClassName={props.colorClassName}
                   className={cn(

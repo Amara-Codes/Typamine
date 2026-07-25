@@ -70,7 +70,10 @@ export function SearchSortFilter({
   const currentSort = searchParams.get(sortParamKey) || sortOptions[0]?.value || "";
   const currentCategory = searchParams.get(categoryParamKey) || categoryOptions[0]?.value || "ALL";
   const currentRating = searchParams.get(ratingParamKey) || ratingOptions[0]?.value || "ALL";
-  const currentTagIds = (searchParams.get(tagsParamKey) || "").split(",").filter(Boolean);
+  // Il param URL usa il NOME del tag (human-readable, es. ?tags=Serif)
+  // invece dell'id — le pagine che consumano questo param convertono a id
+  // internamente prima di interrogare il DB (vedi lib/services/tag.ts).
+  const currentTagNames = (searchParams.get(tagsParamKey) || "").split(",").filter(Boolean);
   const currentToggles: Record<string, boolean> = {};
   toggleOptions.forEach((opt) => {
     currentToggles[opt.paramKey] = searchParams.get(opt.paramKey) === "true";
@@ -116,20 +119,20 @@ export function SearchSortFilter({
   const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
   const [draftCategory, setDraftCategory] = useState(currentCategory);
   const [draftRating, setDraftRating] = useState(currentRating);
-  const [draftTagIds, setDraftTagIds] = useState<string[]>(currentTagIds);
+  const [draftTagNames, setDraftTagNames] = useState<string[]>(currentTagNames);
   const [draftToggles, setDraftToggles] = useState<Record<string, boolean>>(currentToggles);
 
   const openFilterModal = () => {
     setDraftCategory(currentCategory);
     setDraftRating(currentRating);
-    setDraftTagIds(currentTagIds);
+    setDraftTagNames(currentTagNames);
     setDraftToggles(currentToggles);
     setIsFilterModalOpen(true);
   };
 
-  const toggleDraftTag = (tagId: string) => {
-    setDraftTagIds((prev) =>
-      prev.includes(tagId) ? prev.filter((id) => id !== tagId) : [...prev, tagId]
+  const toggleDraftTag = (tagName: string) => {
+    setDraftTagNames((prev) =>
+      prev.includes(tagName) ? prev.filter((name) => name !== tagName) : [...prev, tagName]
     );
   };
 
@@ -145,7 +148,7 @@ export function SearchSortFilter({
     updateParams({
       [categoryParamKey]: categoryOptions.length > 0 ? draftCategory : null,
       [ratingParamKey]: ratingOptions.length > 0 ? draftRating : null,
-      [tagsParamKey]: draftTagIds.length > 0 ? draftTagIds.join(",") : null,
+      [tagsParamKey]: draftTagNames.length > 0 ? draftTagNames.join(",") : null,
       ...toggleUpdates,
     });
     setIsFilterModalOpen(false);
@@ -154,7 +157,7 @@ export function SearchSortFilter({
   const clearFilters = () => {
     setDraftCategory(categoryOptions[0]?.value || "ALL");
     setDraftRating(ratingOptions[0]?.value || "ALL");
-    setDraftTagIds([]);
+    setDraftTagNames([]);
     setDraftToggles({});
     const toggleUpdates: Record<string, string | null> = {};
     toggleOptions.forEach((opt) => {
@@ -172,7 +175,7 @@ export function SearchSortFilter({
   const activeFilterCount =
     (categoryOptions.length > 0 && currentCategory !== (categoryOptions[0]?.value || "ALL") ? 1 : 0) +
     (ratingOptions.length > 0 && currentRating !== (ratingOptions[0]?.value || "ALL") ? 1 : 0) +
-    currentTagIds.length +
+    currentTagNames.length +
     toggleOptions.filter((opt) => currentToggles[opt.paramKey]).length;
 
   return (
@@ -240,12 +243,12 @@ export function SearchSortFilter({
                   <Label>Tags — select multiple, results include any match</Label>
                   <div className="flex flex-wrap gap-2 p-3 border border-black/10 dark:border-white/10 rounded-lg bg-white/50 dark:bg-zinc-900/50 max-h-48 overflow-y-auto">
                     {tags.map((t) => {
-                      const isSelected = draftTagIds.includes(t.id);
+                      const isSelected = draftTagNames.includes(t.name);
                       return (
                         <button
                           key={t.id}
                           type="button"
-                          onClick={() => toggleDraftTag(t.id)}
+                          onClick={() => toggleDraftTag(t.name)}
                           className={`px-3 py-1 rounded-full text-xs font-bold transition-all flex items-center gap-1.5 border ${
                             isSelected
                               ? "bg-black text-white dark:bg-white dark:text-black border-transparent"

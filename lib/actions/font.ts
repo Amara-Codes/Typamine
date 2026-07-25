@@ -3,7 +3,6 @@
 import prisma from "@/lib/prisma";
 import { getServerAuthSession } from "@/lib/session";
 import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
 import { uploadToR2, deleteFromR2 } from "@/lib/r2";
 import { withCreatedAtBackfill } from "@/lib/services/font";
 import { generateFontRatingWithGemini } from "@/lib/ai/fontRating";
@@ -102,25 +101,37 @@ export async function hasFontsNeedingAIRating() {
 export async function rateFontWithAI(fontId: string) {
   await checkPermission("font:update");
 
-  const font = await prisma.ingredient.findUnique({
-    where: { id: fontId },
-    select: { id: true, name: true },
-  });
+  const [font, allTags] = await Promise.all([
+    prisma.ingredient.findUnique({ where: { id: fontId }, select: { id: true, name: true } }),
+    prisma.tag.findMany({ select: { id: true, name: true } }),
+  ]);
   if (!font) throw new Error("Font not found");
 
-  const result = await generateFontRatingWithGemini(font.name);
+  const result = await generateFontRatingWithGemini(font.name, allTags.map((t) => t.name));
+
+  // Gemini sceglie tra i tag già esistenti (enum nello schema, vedi
+  // lib/ai/fontRating.ts) — qui basta mappare nome -> id. connect() invece di
+  // set(): non tocca eventuali tag già assegnati manualmente al font.
+  const matchedTagIds = allTags.filter((t) => result.tagNames.includes(t.name)).map((t) => ({ id: t.id }));
 
   await prisma.ingredient.update({
     where: { id: fontId },
     data: {
       creator: result.author,
       rating: result.rating.toFixed(1),
+      ...(matchedTagIds.length > 0 ? { tags: { connect: matchedTagIds } } : {}),
     },
   });
 
   revalidatePath("/admin/fonts");
 
-  return { id: font.id, family: font.name, author: result.author, rating: result.rating };
+  return {
+    id: font.id,
+    family: font.name,
+    author: result.author,
+    rating: result.rating,
+    tagNames: result.tagNames,
+  };
 }
 
 export async function saveFont(prevState: any, formData: FormData, id?: string) {
@@ -329,11 +340,16 @@ export async function saveFont(prevState: any, formData: FormData, id?: string) 
     }
   } catch (error: unknown) {
     const errorMessage = error instanceof Error ? error.message : String(error);
-    if (errorMessage === "NEXT_REDIRECT") throw error;
     console.error("[Font Action] Error saving font:", error);
     return errorMessage || "Failed to save font.";
   }
 
+  // Niente redirect() qui: un redirect server-side riporta sempre a
+  // "/admin/fonts" pagina 1, perdendo pagina/ricerca/ordinamento con cui
+  // l'utente era arrivato al form (e anche il tasto Back del browser non
+  // recupera quello stato, perché quella pagina "fresca" diventa una nuova
+  // voce nella history). Il chiamante (FontForm) fa router.back() lato
+  // client dopo un salvataggio riuscito, tornando esattamente alla lista
+  // con lo stato con cui l'utente l'aveva lasciata.
   revalidatePath("/admin/fonts");
-  redirect("/admin/fonts");
 }

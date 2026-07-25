@@ -115,8 +115,8 @@ export default function PrescriptionDetailClient({ prescription }: PrescriptionD
                     <h3 className="font-star text-2xl text-black dark:text-white">Tags</h3>
                     <div className="flex flex-wrap gap-2">
                       {tags.map((tag) => (
-                        <Link key={tag.id} href={`/prescriptions?tags=${encodeURIComponent(tag.id)}`}>
-                          <Badge className="hover:scale-105 transition-transform">{tag.name}</Badge>
+                        <Link key={tag.id} href={`/prescriptions?tags=${encodeURIComponent(tag.name)}`}>
+                          <Badge hoverZoom>{tag.name}</Badge>
                         </Link>
                       ))}
                     </div>
