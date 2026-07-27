@@ -58,7 +58,7 @@ export default function ArchivePostDetailClient({ post }: ArchivePostDetailClien
     <div className="relative w-full mx-auto">
       {/* Back button — stessa posizione (max-w-7xl, pt-24) delle altre pagine di dettaglio, posizionato sopra a DoubleHero con z-30 */}
       <div className="absolute top-0 inset-x-0 z-30 pointer-events-none">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 mb-4 pointer-events-auto">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-28 mb-4 pointer-events-auto">
           <MinimalLink
             href="/archive"
             label="Back to the Archive"
@@ -174,7 +174,7 @@ export default function ArchivePostDetailClient({ post }: ArchivePostDetailClien
       </DoubleHero>
       {hasInsight && (
         <div className="mx-auto w-full px-8 mt-8 ">
-          <div className="w-full mx-auto flex flex-col bg-ocragray-200/50 dark:bg-ocragray-900/50 p-4">
+          <div className="w-full mx-auto flex flex-col bg-ocragray-200/50 dark:bg-ocragray-900/50 p-4 pt-12">
             <section className="space-y-4">
               <PostInsightPageRenderer content={post.insight as string} section="archive" />
             </section>

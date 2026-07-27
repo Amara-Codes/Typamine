@@ -61,7 +61,7 @@ export default function PairingInsightPageRenderer({ content }: { content: strin
                   weight={props.weight}
                   colorClassName={props.colorClassName}
                   className={cn(
-                    "px-0 md:px-16  py-8 rounded-xl bg-white/50 dark:bg-ocragray-800",
+                    "py-8 px-6 rounded-xl bg-white/50 dark:bg-ocragray-800",
                     COLOR_PAIRS_MAP[props.colors],
                     FONT_FAMILIES_MAP[props.fontFamily]
                   )}
@@ -115,7 +115,6 @@ export default function PairingInsightPageRenderer({ content }: { content: strin
                   colorClassName={props.colorClassName}
                   bgColorClassName={props.bgColorClassName}
                   className={cn(
-                    "rounded-xl p-8 sm:p-12 md:p-16 backdrop-blur-md",
                     fallbackBgClass,
                     FONT_FAMILIES_MAP[props.fontFamily]
                   )}

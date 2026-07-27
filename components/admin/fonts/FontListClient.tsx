@@ -87,7 +87,7 @@ export default function FontListClient({ fonts, totalCount, canUpdate, canDelete
         searchPlaceholder="Search fonts by name, category, formula or creator..."
       />
 
-      <div className="border border-black/5 dark:border-white/5 rounded-2xl overflow-hidden shadow-2xl backdrop-blur-xl">
+      <div className="border border-black/5 dark:border-white/5 rounded-2xl overflow-hidden shadow-2xl backdrop-blur-xs">
         <ContentTable
           data={fonts}
           keyExtractor={(font: any) => font.id}

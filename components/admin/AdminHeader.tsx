@@ -6,8 +6,8 @@ import { Button } from "@/components/common/Button";
 
 export default function AdminHeader({ session, dbSource }: { session: any; dbSource?: string }) {
   return (
-    <div className="pt-6 pr-6 pl-6 lg:pl-0 sticky top-0 z-20">
-      <header className="h-20 rounded-lg border  bg-bluegray-200/50 dark:bg-redgray-900/50  border-black/5 dark:border-white/5 backdrop-blur-xl flex items-center justify-between px-2 transition-colors duration-300 shadow-xl">
+    <div className="pt-4 px-6 lg:pl-0 sticky top-0 z-20">
+      <header className="h-20 rounded-lg border  bg-bluegray-100 dark:bg-redgray-900/50  border-black/5 dark:border-white/5 backdrop-blur-xl flex items-center justify-between px-2 transition-colors duration-300 shadow-xl">
 
       <div className="flex w-full justify-between items-center gap-4">
         <div className="flex items-center gap-3">

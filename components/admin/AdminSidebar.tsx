@@ -59,7 +59,7 @@ export default function AdminSidebar({ session }: { session: any }) {
       <aside className="w-full h-full rounded-2xl border border-black/5 dark:border-white/5 backdrop-blur-xl shadow-2xl flex flex-col overflow-hidden transition-all duration-500">
 
         <div className={cn(
-          "flex items-center justify-center shrink-0 transition-all duration-500 bg-bluegray-200/50 dark:bg-redgray-900/50",
+          "flex items-center justify-center shrink-0 transition-all duration-500 bg-bluegray-100 dark:bg-redgray-900/50",
           collapsed ? "h-16" : "h-22 pb-1"
         )}>
           <DynamicLogo
@@ -86,8 +86,8 @@ export default function AdminSidebar({ session }: { session: any }) {
                   "flex items-center px-4 py-2.5 rounded-md transition-all duration-300 group",
                   collapsed ? "justify-center" : "justify-start gap-3",
                   isActive
-                    ? "bg-bluegray-200 dark:bg-redgray-800 text-black dark:text-white shadow-sm"
-                    : "text-black/60 dark:text-white/60 hover:text-black/80 dark:hover:text-white/80 hover:bg-bluegray-200/60 dark:hover:bg-redgray-800/60"
+                    ? "bg-bluegray-100 dark:bg-redgray-800 text-black dark:text-white shadow-sm"
+                    : "text-black/60 dark:text-white/60 hover:text-black/80 dark:hover:text-white/80 hover:bg-bluegray-100/60 dark:hover:bg-redgray-800/60"
                 )}
                 title={collapsed ? item.name : undefined}
               >
@@ -104,7 +104,7 @@ export default function AdminSidebar({ session }: { session: any }) {
         </nav>
 
         <div className={cn(
-          "border-t  bg-bluegray-200/50 dark:bg-redgray-900/50  border-black/5 dark:border-white/5 transition-all duration-500 shrink-0",
+          "border-t  bg-bluegray-100 dark:bg-redgray-900/50  border-black/5 dark:border-white/5 transition-all duration-500 shrink-0",
           collapsed ? "h-16 flex items-center justify-center p-0" : "p-3"
         )}>
           <SeventiesThemeToggle size={collapsed ? 26 : 32} variant={collapsed ? "mini" : "full"} />

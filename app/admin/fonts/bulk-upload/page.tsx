@@ -48,7 +48,8 @@ const SORT_OPTIONS = [
 
 const SOURCE_OPTIONS = [
   { label: "GOOGLE FONTS", value: "google" },
-  { label: "FONTSHARE", value: "fontshare" }
+  { label: "FONTSHARE", value: "fontshare" },
+  { label: "LOCAL ZIP", value: "local" }
 ];
 
 const FONTSHARE_CATEGORY_OPTIONS = [
@@ -71,7 +72,11 @@ export default function BulkUploadPage() {
   const router = useRouter();
 
   // Search & Filters state
-  const [source, setSource] = useState<"google" | "fontshare">("google");
+  const [source, setSource] = useState<"google" | "fontshare" | "local">("google");
+
+  // Local ZIP import state
+  const [localFile, setLocalFile] = useState<File | null>(null);
+  const localFileInputRef = useRef<HTMLInputElement>(null);
   const [personality, setPersonality] = useState("ALL");
   const [category, setCategory] = useState("ALL");
   const [sortBy, setSortBy] = useState("popularity");
@@ -83,6 +88,12 @@ export default function BulkUploadPage() {
     setCategory("ALL");
     setSortBy("popularity");
     setPersonality("ALL");
+    // Local ZIP has no "Apply & Fetch" step (fetchFonts short-circuits for it),
+    // so the modal must close itself here — otherwise it stays open on an
+    // empty panel and the upload dropzone underneath never becomes visible.
+    if (source === "local") {
+      setIsFilterModalOpen(false);
+    }
   }, [source]);
 
   // Font data state
@@ -121,6 +132,10 @@ export default function BulkUploadPage() {
 
   // Fetch fonts listing from API
   const fetchFonts = async () => {
+    if (source === "local") {
+      setIsFilterModalOpen(false);
+      return;
+    }
     setIsLoading(true);
     setError(null);
     setIsFilterModalOpen(false); // auto-close modal on search
@@ -168,9 +183,10 @@ export default function BulkUploadPage() {
     }
   };
 
-  // Run search on mount
+  // First visit: no source picked yet, so open the filter modal instead of
+  // firing an unwanted Google Fonts fetch on mount.
   useEffect(() => {
-    fetchFonts();
+    setIsFilterModalOpen(true);
   }, []);
 
   // Filter fonts by search query
@@ -355,6 +371,88 @@ export default function BulkUploadPage() {
     }
   };
 
+  // Perform local ZIP bulk import POST call — one folder in the zip = one
+  // Ingredient, font files inside it = its FontVariants, handled server-side
+  // in a single request instead of the per-family loop used for providers.
+  const handleLocalImport = async () => {
+    if (!localFile) return;
+
+    setIsImporting(true);
+    setImportTotal(0);
+    setImportProgress(0);
+    setImportLogs([`Uploading ${localFile.name}...`, "Extracting archive and scanning folders..."]);
+    setImportResults(null);
+
+    try {
+      const formData = new FormData();
+      formData.append("file", localFile);
+
+      const res = await fetch("/api/admin/fonts/bulk-import-zip", {
+        method: "POST",
+        body: formData
+      });
+
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error(data.error || `Server returned status ${res.status}`);
+      }
+      if (!res.body) {
+        throw new Error("No response stream received from server.");
+      }
+
+      // Il server risponde in NDJSON (una riga = un evento JSON) invece di un
+      // singolo blob a fine elaborazione, cosi' il terminale mostra ogni
+      // cartella (skip per doppione incluso) non appena viene processata,
+      // invece di restare fermo su "Extracting..." per tutta la durata dello zip.
+      const reader = res.body.getReader();
+      const decoder = new TextDecoder();
+      let buffer = "";
+      let finalImported: string[] = [];
+      let finalFailed: Array<{ family: string; error: string }> = [];
+
+      while (true) {
+        const { value, done } = await reader.read();
+        if (done) break;
+        buffer += decoder.decode(value, { stream: true });
+
+        const lines = buffer.split("\n");
+        buffer = lines.pop() || "";
+
+        for (const line of lines) {
+          if (!line.trim()) continue;
+          const event = JSON.parse(line);
+
+          if (event.type === "total") {
+            setImportTotal(event.total);
+          } else if (event.type === "log") {
+            setImportLogs(prev => [...prev, event.message].slice(-40));
+          } else if (event.type === "progress") {
+            setImportProgress(event.current);
+          } else if (event.type === "done") {
+            finalImported = event.imported || [];
+            finalFailed = event.failed || [];
+          } else if (event.type === "error") {
+            throw new Error(event.message);
+          }
+        }
+      }
+
+      const skippedNames = finalFailed.filter(f => f.error?.includes("already exists")).map(f => f.family);
+      const failedData = finalFailed.filter(f => !f.error?.includes("already exists"));
+
+      setImportLogs(prev => [...prev,
+        `-------------------------`,
+        `Batch Completed: Imported ${finalImported.length}, Skipped ${skippedNames.length}, Failed ${failedData.length}.`
+      ].slice(-40));
+
+      setImportResults({ imported: finalImported, skipped: skippedNames, failed: failedData });
+    } catch (err: any) {
+      console.error(err);
+      setImportLogs(prev => [...prev, `[CRITICAL ERROR] ${err.message}`]);
+      setImportResults({ imported: [], skipped: [], failed: [{ family: localFile.name, error: err.message }] });
+    }
+  };
+
   const handleCloseImportModal = () => {
     setIsImporting(false);
     setImportResults(null);
@@ -388,32 +486,36 @@ export default function BulkUploadPage() {
               Filter &amp; Search
             </Button>
 
-            <Button
-              variant="secondary"
-              size="md"
-              roundness="md"
-              disabled={filteredFonts.length === 0}
-              onClick={togglePageSelection}
-              className="font-bold text-[10px]"
-            >
-              {filteredFonts.length === 0
-                ? "Select entire page"
-                : visibleFonts.every(font => selectedFamilies.has(font.family))
-                  ? "Deselect page"
-                  : "Select entire page"
-              }
-            </Button>
+            {source !== "local" && (
+              <Button
+                variant="secondary"
+                size="md"
+                roundness="md"
+                disabled={filteredFonts.length === 0}
+                onClick={togglePageSelection}
+                className="font-bold text-[10px]"
+              >
+                {filteredFonts.length === 0
+                  ? "Select entire page"
+                  : visibleFonts.every(font => selectedFamilies.has(font.family))
+                    ? "Deselect page"
+                    : "Select entire page"
+                }
+              </Button>
+            )}
 
             <Button
               variant="primary"
               size="md"
               roundness="md"
-              disabled={selectedFamilies.size === 0}
-              onClick={handleImport}
+              disabled={source === "local" ? !localFile : selectedFamilies.size === 0}
+              onClick={source === "local" ? handleLocalImport : handleImport}
               className="flex items-center gap-1.5 whitespace-nowrap text-[10px]"
             >
               <FolderDown className="h-3.5 w-3.5" />
-              Import{selectedFamilies.size > 0 ? ` (${selectedFamilies.size})` : ""}
+              {source === "local"
+                ? "Import ZIP"
+                : `Import${selectedFamilies.size > 0 ? ` (${selectedFamilies.size})` : ""}`}
             </Button>
           </FormActions>
         </div>
@@ -430,7 +532,37 @@ export default function BulkUploadPage() {
         )}
 
         {/* ─── Central Dynamic Content Area ─── */}
-        {isLoading ? (
+        {source === "local" ? (
+          <div className="flex flex-col items-center justify-center py-24 gap-4 rounded-2xl border-2 border-dashed border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900/20">
+            <input
+              ref={localFileInputRef}
+              type="file"
+              accept=".zip"
+              className="hidden"
+              onChange={(e) => setLocalFile(e.target.files?.[0] || null)}
+            />
+            <div className="h-11 w-11 rounded-2xl bg-zinc-100 dark:bg-zinc-900 flex items-center justify-center">
+              <FolderDown className="h-5 w-5 text-zinc-500 dark:text-zinc-400" />
+            </div>
+            <div className="text-center px-6">
+              <p className="text-sm font-bold text-black dark:text-white">
+                {localFile ? localFile.name : "No archive selected"}
+              </p>
+              <p className="text-[10px] text-zinc-500 dark:text-zinc-400 mt-1 font-semibold uppercase tracking-wider max-w-sm mx-auto">
+                One .zip, one folder per font family, .ttf/.otf/.woff/.woff2 files inside each folder
+              </p>
+            </div>
+            <Button
+              variant="outline"
+              size="md"
+              roundness="md"
+              onClick={() => localFileInputRef.current?.click()}
+              className="font-bold text-[10px]"
+            >
+              {localFile ? "Change file" : "Choose ZIP file"}
+            </Button>
+          </div>
+        ) : isLoading ? (
           <div className="flex flex-col items-center justify-center py-24 gap-4 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900/20">
             <Loader2 className="h-8 w-8 text-cyan-500 animate-spin" />
             <div className="text-center space-y-1">
@@ -634,88 +766,98 @@ export default function BulkUploadPage() {
                 <Select options={SOURCE_OPTIONS} value={source} onChange={(v) => setSource(v as any)} />
               </div>
               
-              <div>
-                <label className="text-[10px] text-bluegray-800 dark:text-redgray-200 uppercase tracking-widest block mb-1.5 font-black">
-                  Family Name Lookup
-                </label>
-                <div className="relative">
-                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-zinc-400 pointer-events-none" />
-                  <Input
-                    id="modal-search"
-                    name="search"
-                    placeholder="Search by names (e.g. Inter, Space...)"
-                    value={searchQuery}
-                    onChange={setSearchQuery}
-                    autoComplete="off"
-                    className="pl-9"
-                  />
-                </div>
-              </div>
-
-              <div>
-                <label className="text-[10px] text-bluegray-800 dark:text-redgray-200 uppercase tracking-widest block mb-1.5 font-black">
-                  Category Architecture
-                </label>
-                <Select options={source === "google" ? CATEGORY_OPTIONS : FONTSHARE_CATEGORY_OPTIONS} value={category} onChange={setCategory} />
-              </div>
-
-              <div>
-                <label className="text-[10px] text-bluegray-800 dark:text-redgray-200 uppercase tracking-widest block mb-1.5 font-black">
-                  Sorting Criterion
-                </label>
-                <Select options={source === "google" ? SORT_OPTIONS : FONTSHARE_SORT_OPTIONS} value={sortBy} onChange={setSortBy} />
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-5 pt-2">
-              {source === "fontshare" ? (
+              {source !== "local" && (
                 <div>
                   <label className="text-[10px] text-bluegray-800 dark:text-redgray-200 uppercase tracking-widest block mb-1.5 font-black">
-                    Design Personality
+                    Family Name Lookup
                   </label>
-                  <Select options={FONTSHARE_PERSONALITY_OPTIONS} value={personality} onChange={setPersonality} />
+                  <div className="relative">
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-zinc-400 pointer-events-none" />
+                    <Input
+                      id="modal-search"
+                      name="search"
+                      placeholder="Search by names (e.g. Inter, Space...)"
+                      value={searchQuery}
+                      onChange={setSearchQuery}
+                      autoComplete="off"
+                      className="pl-9"
+                    />
+                  </div>
                 </div>
-              ) : (
-                <div className="hidden md:block" />
               )}
 
-              <div>
-                <label className="text-[10px] text-bluegray-800 dark:text-redgray-200 uppercase tracking-widest block mb-1.5 font-black">
-                  Technology Specification
-                </label>
-                <button
-                  type="button"
-                  role="switch"
-                  aria-checked={vfOnly}
-                  onClick={() => setVfOnly(v => !v)}
-                  className={`flex items-center gap-3 w-full h-[42px] rounded-xl border px-4 transition-all text-left ${vfOnly
-                    ? "border-cyan-500/60 bg-cyan-50 dark:bg-cyan-500/10"
-                    : "border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900/60"
-                    }`}
-                >
-                  <span className={`relative inline-flex h-5 w-9 shrink-0 rounded-full border-2 transition-colors ${vfOnly ? "border-cyan-500 bg-cyan-500" : "border-zinc-200 dark:border-zinc-800 bg-zinc-200 dark:bg-zinc-800"}`}>
-                    <span className={`inline-block h-3.5 w-3.5 rounded-full bg-white shadow-sm transition-transform mt-px ${vfOnly ? "translate-x-3.5" : "translate-x-px"}`} />
-                  </span>
-                  <span className={`text-[10px] font-black uppercase tracking-wider whitespace-nowrap ${vfOnly ? "text-cyan-700 dark:text-cyan-400" : "text-zinc-500 dark:text-zinc-400"}`}>
-                    {vfOnly ? "Variable Layouts Only" : "All Typography Types"}
-                  </span>
-                </button>
-              </div>
+              {source !== "local" && (
+                <div>
+                  <label className="text-[10px] text-bluegray-800 dark:text-redgray-200 uppercase tracking-widest block mb-1.5 font-black">
+                    Category Architecture
+                  </label>
+                  <Select options={source === "google" ? CATEGORY_OPTIONS : FONTSHARE_CATEGORY_OPTIONS} value={category} onChange={setCategory} />
+                </div>
+              )}
+
+              {source !== "local" && (
+                <div>
+                  <label className="text-[10px] text-bluegray-800 dark:text-redgray-200 uppercase tracking-widest block mb-1.5 font-black">
+                    Sorting Criterion
+                  </label>
+                  <Select options={source === "google" ? SORT_OPTIONS : FONTSHARE_SORT_OPTIONS} value={sortBy} onChange={setSortBy} />
+                </div>
+              )}
             </div>
 
-            <div className="space-y-1.5">
-              <label className="text-[10px] text-bluegray-800 dark:text-redgray-200 uppercase tracking-widest block font-black">
-                Interactive Preview Content
-              </label>
-              <Input
-                id="modal-preview"
-                name="preview"
-                placeholder="Type sample text to preview rendering structures..."
-                value={previewText}
-                onChange={setPreviewText}
-                autoComplete="off"
-              />
-            </div>
+            {source !== "local" && (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-5 pt-2">
+                {source === "fontshare" ? (
+                  <div>
+                    <label className="text-[10px] text-bluegray-800 dark:text-redgray-200 uppercase tracking-widest block mb-1.5 font-black">
+                      Design Personality
+                    </label>
+                    <Select options={FONTSHARE_PERSONALITY_OPTIONS} value={personality} onChange={setPersonality} />
+                  </div>
+                ) : (
+                  <div className="hidden md:block" />
+                )}
+
+                <div>
+                  <label className="text-[10px] text-bluegray-800 dark:text-redgray-200 uppercase tracking-widest block mb-1.5 font-black">
+                    Technology Specification
+                  </label>
+                  <button
+                    type="button"
+                    role="switch"
+                    aria-checked={vfOnly}
+                    onClick={() => setVfOnly(v => !v)}
+                    className={`flex items-center gap-3 w-full h-[42px] rounded-xl border px-4 transition-all text-left ${vfOnly
+                      ? "border-cyan-500/60 bg-cyan-50 dark:bg-cyan-500/10"
+                      : "border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900/60"
+                      }`}
+                  >
+                    <span className={`relative inline-flex h-5 w-9 shrink-0 rounded-full border-2 transition-colors ${vfOnly ? "border-cyan-500 bg-cyan-500" : "border-zinc-200 dark:border-zinc-800 bg-zinc-200 dark:bg-zinc-800"}`}>
+                      <span className={`inline-block h-3.5 w-3.5 rounded-full bg-white shadow-sm transition-transform mt-px ${vfOnly ? "translate-x-3.5" : "translate-x-px"}`} />
+                    </span>
+                    <span className={`text-[10px] font-black uppercase tracking-wider whitespace-nowrap ${vfOnly ? "text-cyan-700 dark:text-cyan-400" : "text-zinc-500 dark:text-zinc-400"}`}>
+                      {vfOnly ? "Variable Layouts Only" : "All Typography Types"}
+                    </span>
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {source !== "local" && (
+              <div className="space-y-1.5">
+                <label className="text-[10px] text-bluegray-800 dark:text-redgray-200 uppercase tracking-widest block font-black">
+                  Interactive Preview Content
+                </label>
+                <Input
+                  id="modal-preview"
+                  name="preview"
+                  placeholder="Type sample text to preview rendering structures..."
+                  value={previewText}
+                  onChange={setPreviewText}
+                  autoComplete="off"
+                />
+              </div>
+            )}
 
             <div className="flex items-center justify-between pt-4 border-t border-zinc-200 dark:border-zinc-800">
               <Button
@@ -728,17 +870,19 @@ export default function BulkUploadPage() {
                 Cancel
               </Button>
 
-              <Button
-                variant="primary"
-                size="md"
-                roundness="md"
-                onClick={fetchFonts}
-                disabled={isLoading}
-                className="flex items-center gap-2 font-bold text-[10px]"
-              >
-                {isLoading ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Search className="h-3.5 w-3.5" />}
-                {isLoading ? "Querying..." : "Apply & Fetch Fonts"}
-              </Button>
+              {source !== "local" && (
+                <Button
+                  variant="primary"
+                  size="md"
+                  roundness="md"
+                  onClick={fetchFonts}
+                  disabled={isLoading}
+                  className="flex items-center gap-2 font-bold text-[10px]"
+                >
+                  {isLoading ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Search className="h-3.5 w-3.5" />}
+                  {isLoading ? "Querying..." : "Apply & Fetch Fonts"}
+                </Button>
+              )}
             </div>
           </div>
         </BaseModal>

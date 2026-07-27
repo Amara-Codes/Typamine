@@ -91,24 +91,24 @@ export const Select: React.FC<SelectProps> = ({
         <div
 className={`
     flex items-center justify-between w-full
-    bg-zinc-900/40 dark:bg-zinc-900/60
+    bg-bluegray-100 dark:bg-redgray-900/50
     border rounded-md px-3 py-2 transition-all duration-200
     cursor-pointer
     /* Gestione dinamica dei bordi */
     ${isOpen
       ? "border-blue dark:border-red"
-      : "border-bluegray-300 dark:border-redgray-700 hover:border-bluegray-400 dark:hover:border-redgray-600"
+      : "border-bluegray-200 dark:border-redgray-800 hover:border-bluegray-400 dark:hover:border-redgray-600"
     }
   `}
           onClick={() => setIsOpen(!isOpen)}
         >
           <button
             type="button"
-            className="flex items-center justify-between w-full bg-transparent text-bluegray-800 dark:text-redgray-200 outline-none cursor-pointer"
+            className="flex items-center justify-between w-full bg-transparent text-bluegray-900 dark:text-redgray-200 outline-none cursor-pointer"
           >
             <span className="truncate">{selectedOption ? selectedOption.label : placeholder}</span>
             <svg
-              className={`w-3 h-3 ml-2 transition-transform duration-200 ${isOpen ? "rotate-180 text-blue dark:text-red" : "text-zinc-500"}`}
+              className={`w-3 h-3 ml-2 transition-transform duration-200 ${isOpen ? "rotate-180 text-blue dark:text-red" : "text-bluegray-900 dark:text-redgray-200"}`}
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -123,7 +123,7 @@ className={`
         <ul
           ref={listRef}
           style={{ position: "fixed", top: position.top, left: position.left, width: position.width }}
-          className="z-[9999] bg-bluegray-100 dark:bg-redgray-900 border border-bluegray-200 dark:border-redgray-800 rounded-lg shadow-xl overflow-hidden py-1 animate-in fade-in zoom-in-95 duration-100"
+          className="z-[9999] bg-bluegray-100 dark:bg-redgray-900 border border-bluegray-200 dark:border-redgray-800 rounded-lg shadow-xl overflow-hidden animate-in fade-in zoom-in-95 duration-100"
         >
           {options.map((option) => (
             <li key={option.value}>
@@ -131,8 +131,8 @@ className={`
                 type="button"
                 className={`w-full text-left px-4 py-2.5 text-xs font-haas transition-colors flex items-center justify-between ${
                   value === option.value
-                    ? "bg-blue/10 dark:bg-red/10 text-black dark:text-red font-bold"
-                    : "text-bluegray-800 dark:text-redgray-200 hover:bg-zinc-100 dark:hover:bg-zinc-900 hover:text-black dark:hover:text-white"
+                    ? "bg-blue/20 dark:bg-red/10 text-black dark:text-red font-bold"
+                    : "text-bluegray-800 dark:text-redgray-200 hover:bg-blue/10 dark:hover:bg-red/5 hover:text-black dark:hover:text-white"
                 }`}
                 onClick={() => {
                   onChange(option.value);

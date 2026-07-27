@@ -32,6 +32,7 @@
     "browser-image-compression": "^2.0.2",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "fflate": "^0.8.3",
     "fontverter": "^2.0.0",
     "framer-motion": "^12.42.2",
     "lucide-react": "^1.24.0",

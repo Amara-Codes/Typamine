@@ -31,6 +31,7 @@ import {
   getModuleIcon,
   ModuleEditorForm,
 } from "@/components/admin/common/content-modules/moduleRegistry";
+import { isAnyModuleImageCompressing } from "@/components/admin/common/content-modules/shared";
 
 interface PostFormProps {
   postType: PostType;
@@ -215,7 +216,11 @@ export default function PostForm({ postType, initialData, fonts, tags }: PostFor
     // Evita di sottomettere prima che la compressione (async) abbia finito
     // di sostituire il file nell'<input>/nello stato — altrimenti si
     // rischia di inviare ancora il file originale non compresso.
-    if (isAnyImageCompressing) {
+    // isAnyImageCompressing è calcolato a render-time e copre solo i 4 campi
+    // immagine "top level" del post; le ImageUpload dei moduli insight hanno
+    // uno stato di compressione locale che non fa mai ri-renderizzare
+    // PostForm, quindi vanno controllate qui con una lettura live.
+    if (isAnyImageCompressing || isAnyModuleImageCompressing()) {
       setErrorMessage("Please wait for image compression to finish before saving.");
       return;
     }
@@ -225,6 +230,21 @@ export default function PostForm({ postType, initialData, fonts, tags }: PostFor
     selectedTagIds.forEach((tId) => formData.append("tagIds", tId));
     selectedFontIds.forEach((fId) => formData.append("fontIds", fId));
     formData.set("published", String(published));
+
+    // Campi del tab Content appesi esplicitamente da stato React: i loro
+    // input nativi vivono dentro `{activeFormTab === "content" && (...)}` e
+    // vengono smontati quando si salva da tab SEO, quindi new FormData(form)
+    // li perdeva del tutto — title/slug mancanti facevano fallire la validazione
+    // server ("Title and Slug are required.") anche se compilati, e gli altri
+    // campi (caption/description/imageAlt/immagini) sarebbero stati silenziosamente
+    // svuotati. Stesso pattern già usato qui sotto per i campi SEO.
+    formData.set("title", title);
+    formData.set("slug", slug);
+    formData.set("caption", caption);
+    formData.set("description", description);
+    formData.set("imageAlt", imageAlt);
+    if (thumbnailPreview.file) formData.set("thumbnail", thumbnailPreview.file);
+    if (heroImagePreview.file) formData.set("image", heroImagePreview.file);
 
     if (removeThumbnail) formData.set("removeThumbnail", "true");
     if (removeImage) formData.set("removeImage", "true");

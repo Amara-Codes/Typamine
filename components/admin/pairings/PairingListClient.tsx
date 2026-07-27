@@ -113,10 +113,10 @@ export default function PairingListClient({ pairings, totalCount, canUpdate, can
           { label: "Name (A-Z)", value: "name_asc" },
           { label: "Name (Z-A)", value: "name_desc" },
         ]}
-        searchPlaceholder="Search pairings by name, slug or description..."
+        showSearchBar={false}
       />
 
-      <div className="border border-black/5 dark:border-white/5 rounded-2xl overflow-hidden shadow-2xl backdrop-blur-xl">
+      <div className="border border-black/5 dark:border-white/5 rounded-2xl overflow-hidden shadow-2xl backdrop-blur-xs">
         <ContentTable
           data={pairings}
           keyExtractor={(p: any) => p.id}

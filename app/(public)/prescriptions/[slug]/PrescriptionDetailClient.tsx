@@ -45,7 +45,7 @@ export default function PrescriptionDetailClient({ prescription }: PrescriptionD
   return (
     <div className="relative w-full mx-auto pb-8 space-y-10">
       {/* Back button — stessa posizione (max-w-7xl, in flusso, pt-24) delle altre pagine di dettaglio */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 mb-4">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-28 mb-4">
         <MinimalLink
           href="/prescriptions"
           label="Back to Prescriptions"

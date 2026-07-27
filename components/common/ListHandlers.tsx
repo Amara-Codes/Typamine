@@ -23,6 +23,7 @@ export interface ListHeaderHandlersProps {
 
   // Search option
   searchPlaceholder?: string;
+  showSearchBar?: boolean;
 
   buttonLabel?: string; // e.g. "Select Fonts"
 }
@@ -35,6 +36,7 @@ export function ListHeaderHandlers({
   massActions = [],
   sortOptions = [],
   searchPlaceholder = "Search...",
+  showSearchBar = true,
   buttonLabel = "Select Items",
 }: ListHeaderHandlersProps) {
   const router = useRouter();
@@ -90,14 +92,16 @@ export function ListHeaderHandlers({
     <div className="flex flex-col xl:flex-row xl:items-center justify-between gap-4">
 
       {/* Left: Search input */}
-      <div className="w-full xl:max-w-xs 2xl:max-w-md shrink-0">
-        <Input
-          id="list-search"
-          placeholder={searchPlaceholder}
-          value={searchValue}
-          onChange={setSearchValue}
-        />
-      </div>
+      {showSearchBar && (
+        <div className="w-full xl:max-w-xs 2xl:max-w-md shrink-0">
+          <Input
+            id="list-search"
+            placeholder={searchPlaceholder}
+            value={searchValue}
+            onChange={setSearchValue}
+          />
+        </div>
+      )}
 
       {/* Right: Actions, Sort, Pagination, and Toggle */}
       <div className="flex flex-wrap items-center gap-4 xl:justify-end w-full">
@@ -105,7 +109,7 @@ export function ListHeaderHandlers({
         {/* Mass Actions (Visibili solo in selection mode) */}
         {isSelectionMode ? (
           <div className="flex items-center gap-4">
-                         <span className="text-blue dark:text-red  text-sm font-bold whitespace-nowrap">
+                         <span className="text-bluegray-900 dark:text-redgray-200  text-sm font-bold whitespace-nowrap">
                   {selectedCount} Selected
                 </span>
             {massActions.map((action, idx) => (
@@ -126,9 +130,6 @@ export function ListHeaderHandlers({
         {/* Sort by (Nascosto in selection mode) */}
         {!isSelectionMode && sortOptions.length > 0 && (
           <div className="flex items-center gap-2">
-            <span className="text-[10px] font-bold uppercase tracking-widest text-zinc-500 dark:text-zinc-400 whitespace-nowrap">
-              Sort by
-            </span>
             <Select
               options={sortOptions}
               value={currentSort}
@@ -141,9 +142,6 @@ export function ListHeaderHandlers({
         {/* Show per page (Nascosto in selection mode) */}
         {!isSelectionMode && (
           <div className="flex items-center gap-2">
-            <span className="text-[10px] font-bold uppercase tracking-widest text-zinc-500 dark:text-zinc-400 whitespace-nowrap">
-              Show
-            </span>
             <Select
               options={[
                 { label: "10", value: "10" },
@@ -222,7 +220,7 @@ export function ListPagination({
   if (totalCount === 0 || totalPages <= 1) return null;
 
   return (
-    <div className="flex flex-col sm:flex-row items-center justify-between px-8 py-5 border-t  bg-bluegray-200/50 dark:bg-redgray-900/50  border-black/5 dark:border-white/5 gap-4">
+    <div className="flex flex-col sm:flex-row items-center justify-between px-8 py-5 border-t  bg-bluegray-100 dark:bg-redgray-900/50  border-black/5 dark:border-white/5 gap-4">
       <div className="text-xs text-zinc-500 dark:text-zinc-400">
         Showing{" "}
         <span className="font-bold text-black dark:text-white">

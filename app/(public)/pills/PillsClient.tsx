@@ -3,6 +3,7 @@
 import React from "react";
 import { DoubleHero } from "@/components/common/DoubleHero";
 import { SearchSortFilter } from "@/components/common/SearchSortFilter";
+import { useThemeStore } from "@/store/themeStore";
 
 const SORT_OPTIONS = [
   { label: "NEWEST FIRST", value: "recent" },
@@ -22,6 +23,8 @@ interface PillsClientProps {
 // differenza della pagina di dettaglio, dove i post costruiscono già la
 // propria hero coi moduli simpleHero/gridHero).
 export default function PillsClient({ tags, children }: PillsClientProps) {
+    const { theme } = useThemeStore();
+    const dynamicArchiveBgImageUrl = theme === "dark" ? "/images/pills/double-hero/hero-bg-dark.png" : "/images/pills/double-hero/hero-bg-light.png";
   return (
     <DoubleHero
       title={
@@ -30,6 +33,7 @@ export default function PillsClient({ tags, children }: PillsClientProps) {
       layout="contentCenter"
       description="Bite-sized essays, deep dives and behind-the-scenes notes on typography, type design, and everything we build here at Typamine."
       vLayout="contentBottom"
+      bgImage={dynamicArchiveBgImageUrl}
       fullWidth
     >
       <div className="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 space-y-8">

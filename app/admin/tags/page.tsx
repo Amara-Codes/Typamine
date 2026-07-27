@@ -79,13 +79,12 @@ export default async function TagListPage(props: TagListPageProps) {
     <div className="space-y-10">
        <TabHeading
         title="Tags"
-        buttonHref="/admin/tags/new"
-        buttonLabel="Add Tag"
-        showButton={canCreate}
+        showButton={false}
       />
       <TagListClient
         tags={tags}
         totalCount={totalCount}
+        canCreate={canCreate}
         canUpdate={canUpdate}
         canDelete={canDelete}
       />

@@ -3,6 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 import fontverter from "fontverter";
 import prisma from "@/lib/prisma";
 import { uploadToR2 } from "@/lib/r2";
+import { getVariantLabel } from "@/lib/fontMeta";
 import crypto from "crypto";
 
 interface ProviderFontImportItem {
@@ -121,7 +122,7 @@ export async function POST(request: NextRequest) {
 
           // Parse metadata for DB
           let weight = 400;
-          let style = "normal";
+          let style: "normal" | "italic" = "normal";
           let label = "Regular";
 
           if (isVariable) {
@@ -139,20 +140,7 @@ export async function POST(request: NextRequest) {
             } else {
               style = key.includes("italic") ? "italic" : "normal";
               weight = parseInt(key.replace("italic", ""), 10) || 400;
-              
-              const weightNames: Record<number, string> = {
-                100: "Thin",
-                200: "Extra Light",
-                300: "Light",
-                400: "Regular",
-                500: "Medium",
-                600: "Semi Bold",
-                700: "Bold",
-                800: "Extra Bold",
-                900: "Black"
-              };
-              const base = weightNames[weight] || `Weight ${weight}`;
-              label = style === "italic" ? `${base} Italic` : base;
+              label = getVariantLabel(weight, style);
             }
           }
 

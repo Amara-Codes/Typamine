@@ -24,21 +24,18 @@ ________________________________
 [[aggiungere il addtagpopup simile a quello dei font nel form di pairing ]] -> DONE
 
 [[Fai Archive]] --> DONE
+
+[[fai  blog]] --> DONE
  __________________________________
 
-uniformare ux/ui colri di admin, margini, padding... colori [20%]
+uniformare ux/ui colri di admin, margini, padding... colori [60%]
 
 
-
-
-
-
-fai  blog
 
 in fints e pairings rimanda a labs con query oparma per generare i font face, le classi di tailwind, css standard etc 
 
 
-fai bulk import da locale. carico tanti una zip unica. con all'interno tante cartelle con all'interno i file che possono sessere, ttf, otf o qualsiasi font file. lui procede come un bul import trtadizionale 
+fai bulk import da locale. carico tanti font in un zip unico. con all'interno tante cartelle con all'interno i file che possono sessere, ttf, otf o qualsiasi font file. lui procede come un bulk import tradizionale 
 
 dafont - cartoon. sono arirvato alla pagina 45, 
 fai lo stesso per tutte le altre categoie e pian piano popoliamo il databse 

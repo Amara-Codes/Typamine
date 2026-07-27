@@ -67,12 +67,12 @@ export default async function AdminLayout({
       <html lang="en" className={cn("h-full antialiased", "font-sans", inter.variable)} suppressHydrationWarning>
         <body className="min-h-full bg-background text-foreground">
           <ThemeSync />
-          <div className="flex h-[100dvh] transition-colors duration-300 overflow-hidden relative"
-            style={{ backgroundImage: "url('/images/admin/admin-bg.png')" }}
+          <div className="flex h-[100dvh] transition-colors duration-300 overflow-hidden relative bg-cover bg-no-repeat"
+            style={{ backgroundImage: "url('/images/admin-bg/bg-admin-11.png')" }}
           >
             {/* Background elements moved to top and z-index fixed */}
-            <div className="absolute inset-0 z-0 bg-linear-to-br from-blue/40 via-blue/20 to-red/20 dark:from-red/40 dark:via-blue/40 dark:to-black/40 pointer-events-none" />
-            <div className="absolute inset-0 z-0 bg-[radial-gradient(circle_at_50%_0%,color-mix(in_srgb,var(--color-blue),transparent_60%),transparent)] dark:bg-[radial-gradient(circle_at_50%_0%,color-mix(in_srgb,var(--color-red),var(--color-black)_90%),transparent)] pointer-events-none" />
+            <div className="absolute inset-0 z-0 bg-linear-to-br from-blue-100/20 via-blue-200/40 to-bluegray-200/20 dark:from-ocragray-800/40 dark:via-redgray-400/40 dark:to-black/80 pointer-events-none" />
+            <div className="absolute inset-0 z-0 bg-[radial-gradient(circle_at_50%_0%,color-mix(in_srgb,var(--color-white),transparent_60%),transparent)] dark:bg-[radial-gradient(circle_at_50%_0%,color-mix(in_srgb,var(--color-red),var(--color-black)_90%),transparent)] pointer-events-none" />
 
             <AdminSidebar session={session} />
             <div className="flex-1 min-w-0 flex flex-col relative z-10">

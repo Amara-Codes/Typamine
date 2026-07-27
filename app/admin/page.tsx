@@ -1,8 +1,39 @@
 // src/app/[locale]/admin/page.tsx
+import Link from "next/link";
+import { LibraryBig, Blend, Tag as TagIcon, Feather, FolderClosed } from "lucide-react";
 import { getServerAuthSession } from "@/lib/session";
 import { hasPermission } from "@/lib/rbac";
 import { hasFontsNeedingAIRating } from "@/lib/actions/font";
 import AIFontRatingButton from "@/components/admin/AIFontRatingButton";
+import { Card } from "@/components/common/Card";
+
+interface QuickAction {
+  href: string;
+  label: string;
+  description: string;
+  icon: React.ReactNode;
+  colorClass: string;
+}
+
+function QuickActionCard({ action }: { action: QuickAction }) {
+  return (
+    <Link href={action.href}>
+      <Card roundness="lg" visualHover className="!h-fit cursor-pointer">
+        <div className="p-2 flex items-center gap-4">
+          <div className={`h-8 w-8 shrink-0 rounded-2xl border flex items-center justify-center ${action.colorClass}`}>
+            {action.icon}
+          </div>
+          <div className="min-w-0">
+            <p className="text-sm font-bold text-black dark:text-white truncate">{action.label}</p>
+            <p className="text-[10px] uppercase tracking-widest font-bold text-zinc-500 dark:text-zinc-400 truncate">
+              {action.description}
+            </p>
+          </div>
+        </div>
+      </Card>
+    </Link>
+  );
+}
 
 export default async function AdminDashboard() {
   console.log('[AdminDashboard] Getting session with getServerSession...');
@@ -21,17 +52,67 @@ export default async function AdminDashboard() {
   const canReadFonts = hasPermission(session, "font", "read");
   const showAIRating = canReadFonts && (await hasFontsNeedingAIRating());
 
+  // Archive/blog/pairings/collections condividono il permesso "font" per la
+  // create, stessa convenzione già usata nelle rispettive list page.
+  const canCreateContent = hasPermission(session, "font", "create");
+  const canCreateTag = hasPermission(session, "tag", "create");
+
+  const quickActions: QuickAction[] = [
+    ...(canCreateContent ? [{
+      href: "/admin/archive/new",
+      label: "Create Archive",
+      description: "New archive post",
+      icon: <LibraryBig className="h-5 w-5 text-blue" />,
+      colorClass: "bg-blue/10 border-blue/20",
+    }] : []),
+    ...(canCreateContent ? [{
+      href: "/admin/blog/new",
+      label: "Create Blog Post",
+      description: "New blog entry",
+      icon: <Feather className="h-5 w-5 text-red" />,
+      colorClass: "bg-red/10 border-red/20",
+    }] : []),
+    ...(canCreateTag ? [{
+      href: "/admin/tags",
+      label: "Add Tag",
+      description: "New content tag",
+      icon: <TagIcon className="h-5 w-5 text-cyan-500" />,
+      colorClass: "bg-cyan-500/10 border-cyan-500/20",
+    }] : []),
+    ...(canCreateContent ? [{
+      href: "/admin/pairings/new",
+      label: "Add Pairing",
+      description: "New font pairing",
+      icon: <Blend className="h-5 w-5 text-emerald-500" />,
+      colorClass: "bg-emerald-500/10 border-emerald-500/20",
+    }] : []),
+    ...(canCreateContent ? [{
+      href: "/admin/collections/new",
+      label: "Add Collection",
+      description: "New font collection",
+      icon: <FolderClosed className="h-5 w-5 text-amber-500" />,
+      colorClass: "bg-amber-500/10 border-amber-500/20",
+    }] : []),
+  ];
+
+  const hasQuickActions = showAIRating || quickActions.length > 0;
+
   return (
-    <div className="space-y-10">
+    <div className="flex justify-end space-y-10">
 
-      <div className="flex items-center justify-between">
-
-      
-      </div>
-
-      <div className="grid grid-cols-2 xl:grid-cols-3 gap-6">
-        { showAIRating && <AIFontRatingButton />}
-      </div>
+      {hasQuickActions && (
+        <div className="space-y-3 w-1/4">
+          <h2 className="text-4xl font-star font-black uppercase tracking-widest text-center text-white dark:text-red-200">
+            Quick Actions
+          </h2>
+          <div className="grid grid-cols-1 gap-4">
+            {showAIRating && <AIFontRatingButton />}
+            {quickActions.map(action => (
+              <QuickActionCard key={action.href + action.label} action={action} />
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

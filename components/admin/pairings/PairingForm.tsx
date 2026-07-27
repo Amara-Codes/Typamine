@@ -31,6 +31,9 @@ import SavingOverlay from "@/components/admin/common/SavingOverlay";
 import { useFilePreview } from "@/components/admin/common/useFilePreview";
 import ImageDropInput from "@/components/admin/common/ImageDropInput";
 import HexColorPickerPopover from "@/components/common/HexColorPickerPopover";
+import { Select } from "@/components/common/Select";
+import { Input } from "@/components/common/Input";
+import { CustomRange } from "@/components/common/CustomRange";
 
 import ParagraphModule from "@/components/admin/common/content-modules/ParagraphModule";
 import ParagraphWithImageModule from "@/components/admin/common/content-modules/ParagraphWithImageModule";
@@ -108,6 +111,18 @@ const insightModuleOptions = [
   { type: "paragraphWithImage", label: "Text + Image", icon: <Columns className="h-5 w-5" /> },
   { type: "quote", label: "Quote", icon: <QuoteIcon className="h-5 w-5" /> },
 ] as const;
+
+const LAYOUT_PRESET_OPTIONS = [
+  { label: "Stacked", value: "stacked" },
+  { label: "Centered", value: "centered" },
+  { label: "Side by Side", value: "sideBySide" },
+];
+
+const TEXT_ALIGN_OPTIONS = [
+  { label: "Left", value: "left" },
+  { label: "Center", value: "center" },
+  { label: "Right", value: "right" },
+];
 
 function InsightModuleForm({
   module,
@@ -333,11 +348,6 @@ export default function PairingForm({ initialData, fonts, tags }: PairingFormPro
       ctx.stroke();
     }
 
-    // Border line inside canvas
-    ctx.strokeStyle = "rgba(255, 255, 255, 0.1)";
-    ctx.lineWidth = 2;
-    ctx.strokeRect(30, 30, width - 60, height - 60);
-
     // Decorative Watermark / Tag
     ctx.fillStyle = primaryColor;
     ctx.font = "bold 14px sans-serif";
@@ -426,10 +436,6 @@ export default function PairingForm({ initialData, fonts, tags }: PairingFormPro
       }
       ctx.fillText(line, rightX, yPos);
     }
-
-    // Export Data URL
-    const dataUrl = canvas.toDataURL("image/png");
-    setCanvasDataUrl(dataUrl);
   };
 
   // Re-draw when config parameters change, forcing font load
@@ -467,6 +473,42 @@ export default function PairingForm({ initialData, fonts, tags }: PairingFormPro
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
+    primaryText,
+    secondaryText,
+    bgColor,
+    primaryColor,
+    secondaryColor,
+    layoutPreset,
+    primaryFontSize,
+    secondaryFontSize,
+    primaryFontId,
+    secondaryFontId,
+    primaryFamilyName,
+    secondaryFamilyName,
+    primaryY,
+    secondaryY,
+    paddingX,
+    textAlign,
+    swapFonts
+  ]);
+
+  // Export dell'anteprima PNG (usata solo dal thumbnail fuori dal modale e
+  // dal submit) disaccoppiato dal redraw: toDataURL() su un canvas 1200x630
+  // e' pesante, e chiamarlo ad ogni tick di drag sui range di posizione
+  // (un mousemove = uno state update = un draw) e' quello che causava il lag.
+  // Debounce breve: il canvas resta fluido durante il drag, l'export riparte
+  // solo quando l'utente si ferma.
+  useEffect(() => {
+    if (!isCanvasModalOpen) return;
+    const timeout = setTimeout(() => {
+      const canvas = canvasRef.current;
+      if (canvas) {
+        setCanvasDataUrl(canvas.toDataURL("image/png"));
+      }
+    }, 200);
+    return () => clearTimeout(timeout);
+  }, [
+    isCanvasModalOpen,
     primaryText,
     secondaryText,
     bgColor,
@@ -811,121 +853,73 @@ export default function PairingForm({ initialData, fonts, tags }: PairingFormPro
               <h3 className="text-2xl font-star text-black dark:text-white leading-tight">Canvas Generator</h3>
             </BaseModal.Header>
             <BaseModal.Body className="overflow-visible max-h-none">
-              <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr_280px] gap-5 items-start">
-                {/* Left: text content & layout */}
+              <div className="grid grid-cols-1 lg:grid-cols-[300px_1fr_300px] gap-6 items-start">
+                {/* Left: text content */}
                 <div className="space-y-4 text-xs">
-                  <div className="space-y-3 p-3 rounded-xl border border-black/5 dark:border-white/5 bg-white/50 dark:bg-zinc-900/50">
-                    <h4 className="font-bold text-[10px] uppercase tracking-wider text-zinc-400 mb-1">Text Content & Sizing</h4>
-                    <div className="space-y-3">
-                      <div>
-                        <div className="flex justify-between items-center mb-1">
-                          <label className="font-bold text-black dark:text-white">Primary Title</label>
-                          <span className="text-[10px] text-zinc-500 font-mono">{primaryFontSize}px</span>
-                        </div>
-                        <input
-                          type="text"
+                  <div className="space-y-3 p-4 rounded-xl border border-black/5 dark:border-white/5 bg-white/50 dark:bg-zinc-900/50">
+                    <h4 className="flex items-center gap-2 font-black text-[10px] uppercase tracking-widest text-black dark:text-white">
+                      Text Content &amp; Sizing
+                    </h4>
+                    <div className="space-y-8">
+                      <div className="space-y-2">
+                        <Input
+                          label="Primary Title"
                           value={primaryText}
-                          onChange={(e) => setPrimaryText(e.target.value)}
-                          className="w-full px-3 py-1.5 rounded border border-black/10 dark:border-white/10 bg-white dark:bg-zinc-900 text-black dark:text-white mb-1.5"
+                          onChange={setPrimaryText}
                         />
-                        <input
-                          type="range"
-                          min="24"
-                          max="120"
+                        <CustomRange
+                          label="Font Size"
+                          min={24}
+                          max={120}
                           value={primaryFontSize}
-                          onChange={(e) => setPrimaryFontSize(Number(e.target.value))}
-                          className="w-full accent-black dark:accent-white"
+                          onChange={setPrimaryFontSize}
                         />
                       </div>
 
-                      <div>
-                        <div className="flex justify-between items-center mb-1">
-                          <label className="font-bold text-black dark:text-white">Secondary Body</label>
-                          <span className="text-[10px] text-zinc-500 font-mono">{secondaryFontSize}px</span>
-                        </div>
-                        <input
-                          type="text"
+                      <div className="space-y-2">
+                        <Input
+                          label="Secondary Body"
                           value={secondaryText}
-                          onChange={(e) => setSecondaryText(e.target.value)}
-                          className="w-full px-3 py-1.5 rounded border border-black/10 dark:border-white/10 bg-white dark:bg-zinc-900 text-black dark:text-white mb-1.5"
+                          onChange={setSecondaryText}
                         />
-                        <input
-                          type="range"
-                          min="12"
-                          max="64"
+                        <CustomRange
+                          label="Font Size"
+                          min={12}
+                          max={64}
                           value={secondaryFontSize}
-                          onChange={(e) => setSecondaryFontSize(Number(e.target.value))}
-                          className="w-full accent-black dark:accent-white"
+                          onChange={setSecondaryFontSize}
                         />
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="p-3 rounded-xl border border-black/5 dark:border-white/5 bg-white/50 dark:bg-zinc-900/50 space-y-3">
-                    <h4 className="font-bold text-[10px] uppercase tracking-wider text-zinc-400 mb-1">Layout & Styles</h4>
-                    <div className="space-y-3">
-                      <div>
-                        <label className="block font-bold mb-1 text-black dark:text-white">Layout Preset</label>
-                        <select
-                          value={layoutPreset}
-                          onChange={(e) => setLayoutPreset(e.target.value as any)}
-                          className="w-full px-2 py-1.5 rounded border border-black/10 dark:border-white/10 bg-white dark:bg-zinc-900 text-black dark:text-white"
-                        >
-                          <option value="stacked">Stacked</option>
-                          <option value="centered">Centered</option>
-                          <option value="sideBySide">Side by Side</option>
-                        </select>
-                      </div>
-
-                      <div>
-                        <label className="block font-bold mb-1 text-black dark:text-white">Text Alignment</label>
-                        <select
-                          value={textAlign}
-                          onChange={(e) => setTextAlign(e.target.value as any)}
-                          className="w-full px-2 py-1.5 rounded border border-black/10 dark:border-white/10 bg-white dark:bg-zinc-900 text-black dark:text-white"
-                        >
-                          <option value="left">Left</option>
-                          <option value="center">Center</option>
-                          <option value="right">Right</option>
-                        </select>
-                      </div>
-
-                      <div className="flex items-center gap-2 pt-1">
-                        <input
-                          type="checkbox"
-                          id="swapFontsCheckbox"
-                          checked={swapFonts}
-                          onChange={(e) => setSwapFonts(e.target.checked)}
-                          className="rounded border-black/10 dark:border-white/10 focus:ring-black dark:focus:ring-white"
-                        />
-                        <label htmlFor="swapFontsCheckbox" className="font-bold text-black dark:text-white cursor-pointer select-none">
-                          Swap Fonts
-                        </label>
                       </div>
                     </div>
                   </div>
                 </div>
 
-                {/* Center: live canvas preview, redraw pinned over the drawing itself */}
-                <div className="relative border border-black/10 dark:border-white/10 rounded-xl overflow-hidden shadow-inner bg-black aspect-[1.91/1] flex items-center justify-center">
-                  <canvas
-                    ref={canvasRef}
-                    className="w-full h-full object-contain"
-                  />
-                  <button
-                    type="button"
-                    onClick={drawCanvas}
-                    title="Redraw Canvas"
-                    className="absolute top-3 right-3 z-10 flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-black/70 dark:bg-white/80 text-white dark:text-black backdrop-blur-md shadow-lg hover:opacity-90 font-bold text-xs transition-opacity"
-                  >
-                    <RefreshCw className="w-3 h-3" /> Redraw
-                  </button>
-                </div>
+                {/* Center: live canvas preview + palette below it */}
+                <div className="space-y-4">
+                  <div className="space-y-2">
+                    <div className="relative border border-black/10 dark:border-white/10 rounded-xl overflow-hidden shadow-inner bg-black aspect-[1.91/1] flex items-center justify-center">
+                      <canvas
+                        ref={canvasRef}
+                        className="w-full h-full object-contain"
+                      />
+                      <button
+                        type="button"
+                        onClick={drawCanvas}
+                        title="Redraw Canvas"
+                        className="absolute top-3 right-3 z-10 flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-black/70 dark:bg-white/80 text-white dark:text-black backdrop-blur-md shadow-lg hover:opacity-90 font-bold text-xs transition-opacity"
+                      >
+                        <RefreshCw className="w-3 h-3" /> Redraw
+                      </button>
+                    </div>
+                    <p className="text-center text-[10px] font-bold uppercase tracking-widest text-zinc-500 dark:text-zinc-400">
+                      1200 &times; 630
+                    </p>
+                  </div>
 
-                {/* Right: colors & positioning */}
-                <div className="space-y-4 text-xs">
-                  <div className="p-3 rounded-xl border border-black/5 dark:border-white/5 bg-white/50 dark:bg-zinc-900/50 space-y-3">
-                    <h4 className="font-bold text-[10px] uppercase tracking-wider text-zinc-400 mb-1">Color Palette</h4>
+                  <div className="p-4 rounded-xl border border-black/5 dark:border-white/5 bg-white/50 dark:bg-zinc-900/50 space-y-3 text-xs">
+                    <h4 className="flex items-center gap-2 font-black text-[10px] uppercase tracking-widest text-black dark:text-white">
+                      Color Palette
+                    </h4>
                     <div className="grid grid-cols-3 gap-2">
                       <div className="p-2 rounded border border-black/5 dark:border-white/5 bg-black/5 dark:bg-white/5 flex flex-col items-center gap-1">
                         <span className="block font-bold text-black dark:text-white text-center">Bg</span>
@@ -947,52 +941,77 @@ export default function PairingForm({ initialData, fonts, tags }: PairingFormPro
                       </div>
                     </div>
                   </div>
+                </div>
 
-                  <div className="p-3 rounded-xl border border-black/5 dark:border-white/5 bg-white/50 dark:bg-zinc-900/50 space-y-3">
-                    <h4 className="font-bold text-[10px] uppercase tracking-wider text-zinc-400 mb-1">Positioning & Spacing</h4>
+                {/* Right: layout, styles & positioning */}
+                <div className="flex flex-col gap-4 text-xs">
+                  <div className="p-4 rounded-xl border border-black/5 dark:border-white/5 bg-white/50 dark:bg-zinc-900/50 space-y-3">
+                    <h4 className="flex items-center gap-2 font-black text-[10px] uppercase tracking-widest text-black dark:text-white">
+                      Layout &amp; Styles
+                    </h4>
                     <div className="space-y-3">
                       <div>
-                        <div className="flex justify-between font-bold mb-1 text-black dark:text-white">
-                          <span>Primary Y-Pos</span>
-                          <span>{primaryY}px</span>
-                        </div>
-                        <input
-                          type="range"
-                          min="50"
-                          max="580"
-                          value={primaryY}
-                          onChange={(e) => setPrimaryY(Number(e.target.value))}
-                          className="w-full accent-black dark:accent-white"
+                        <label className="block font-bold mb-1 text-black dark:text-white">Layout Preset</label>
+                        <Select
+                          options={LAYOUT_PRESET_OPTIONS}
+                          value={layoutPreset}
+                          onChange={(v) => setLayoutPreset(v as any)}
                         />
                       </div>
+
                       <div>
-                        <div className="flex justify-between font-bold mb-1 text-black dark:text-white">
-                          <span>Secondary Y-Pos</span>
-                          <span>{secondaryY}px</span>
-                        </div>
-                        <input
-                          type="range"
-                          min="50"
-                          max="580"
-                          value={secondaryY}
-                          onChange={(e) => setSecondaryY(Number(e.target.value))}
-                          className="w-full accent-black dark:accent-white"
+                        <label className="block font-bold mb-1 text-black dark:text-white">Text Alignment</label>
+                        <Select
+                          options={TEXT_ALIGN_OPTIONS}
+                          value={textAlign}
+                          onChange={(v) => setTextAlign(v as any)}
                         />
                       </div>
-                      <div>
-                        <div className="flex justify-between font-bold mb-1 text-black dark:text-white">
-                          <span>Horizontal Padding</span>
-                          <span>{paddingX}px</span>
-                        </div>
-                        <input
-                          type="range"
-                          min="20"
-                          max="300"
-                          value={paddingX}
-                          onChange={(e) => setPaddingX(Number(e.target.value))}
-                          className="w-full accent-black dark:accent-white"
-                        />
+
+                      <div className="flex items-center justify-between pt-1">
+                        <label htmlFor="swapFontsCheckbox" className="font-bold text-black dark:text-white cursor-pointer select-none">
+                          Swap Fonts
+                        </label>
+                        <label className="relative inline-flex items-center cursor-pointer">
+                          <input
+                            type="checkbox"
+                            id="swapFontsCheckbox"
+                            checked={swapFonts}
+                            onChange={(e) => setSwapFonts(e.target.checked)}
+                            className="sr-only peer"
+                          />
+                          <div className="w-9 h-5 bg-zinc-300 peer-focus:outline-none rounded-full peer dark:bg-zinc-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-zinc-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:peer-checked:after:border-zinc-800 peer-checked:bg-cyan-500" />
+                        </label>
                       </div>
+                    </div>
+                  </div>
+
+                  <div className="p-4 rounded-xl border border-black/5 dark:border-white/5 bg-white/50 dark:bg-zinc-900/50 space-y-3">
+                    <h4 className="flex items-center gap-2 font-black text-[10px] uppercase tracking-widest text-black dark:text-white">
+                      Positioning &amp; Spacing
+                    </h4>
+                    <div className="space-y-3">
+                      <CustomRange
+                        label="Primary Y-Pos"
+                        min={50}
+                        max={580}
+                        value={primaryY}
+                        onChange={setPrimaryY}
+                      />
+                      <CustomRange
+                        label="Secondary Y-Pos"
+                        min={50}
+                        max={580}
+                        value={secondaryY}
+                        onChange={setSecondaryY}
+                      />
+                      <CustomRange
+                        label="Horizontal Padding"
+                        min={20}
+                        max={300}
+                        value={paddingX}
+                        onChange={setPaddingX}
+                      />
                     </div>
                   </div>
                 </div>

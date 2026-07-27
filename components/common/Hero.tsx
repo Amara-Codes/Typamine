@@ -2,8 +2,8 @@ import React from "react";
 import { Button } from "./Button";
 import { Badge } from "./Badge";
 import Link from "next/link";
-import Image from "next/image";
- 
+import { MediaBackground, LoopSettings } from "./MediaBackground";
+
 interface HeroProps {
   badgeText?: string;
   title: React.ReactNode;
@@ -14,11 +14,12 @@ interface HeroProps {
   secondaryCtaHref?: string;
   bgImage?: string;
   bgOpacity?:number;
+  loopSettings?: LoopSettings;
   layout?: "contentCenter" | "contentLeft" | "contentRight";
   fullWidth?: boolean;
   clearView?: boolean;
 }
- 
+
 export const Hero: React.FC<HeroProps> = ({
   badgeText,
   title,
@@ -29,6 +30,7 @@ export const Hero: React.FC<HeroProps> = ({
   secondaryCtaHref,
   bgImage,
   bgOpacity = 0.8,
+  loopSettings,
   layout = "contentCenter",
   fullWidth = false,
   clearView = false,
@@ -48,15 +50,14 @@ export const Hero: React.FC<HeroProps> = ({
  
   return (
     <section className={containerStyles}>
-      {/* Optional Background Image */}
+      {/* Optional Background Media (image, gif or video) */}
       {bgImage && (
-        <Image
+        <MediaBackground
           src={bgImage}
           alt="Hero Background"
-          fill
-          priority
+          opacity={clearView ? 1 : bgOpacity}
+          loopSettings={loopSettings}
           className="absolute inset-0 object-cover w-full h-full -z-20 pointer-events-none select-none"
-          style={{ opacity: clearView ? 1 : bgOpacity }}
         />
       )}
       

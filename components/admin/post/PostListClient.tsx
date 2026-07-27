@@ -120,7 +120,7 @@ export default function PostListClient({ postType, posts, totalCount, canUpdate,
         searchPlaceholder="Search posts by title, caption or description..."
       />
 
-      <div className="border border-black/5 dark:border-white/5 rounded-2xl overflow-hidden shadow-2xl backdrop-blur-xl">
+      <div className="border border-black/5 dark:border-white/5 rounded-2xl overflow-hidden shadow-2xl backdrop-blur-xs">
         <ContentTable
           data={posts}
           keyExtractor={(p: any) => p.id}

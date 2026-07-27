@@ -42,7 +42,7 @@ export const PrescriptionCard: React.FC<PrescriptionCardProps> = ({ prescription
       <div className="relative z-10 flex flex-col h-full space-y-4">
         <div>
           <div className="flex justify-end flex-wrap gap-2 mb-3">
-            {(prescription.tags || []).map((tag, idx) => {
+            {(prescription.tags || []).slice(0, 2).map((tag, idx) => {
               const tagName = typeof tag === "string" ? tag : tag.name;
               const tagKey = typeof tag === "string" ? tag : (tag.id || idx);
               return (
@@ -51,6 +51,11 @@ export const PrescriptionCard: React.FC<PrescriptionCardProps> = ({ prescription
                 </Badge>
               );
             })}
+            {(prescription.tags || []).length > 2 && (
+              <Badge variant="standard">
+                +{prescription.tags!.length - 2} {prescription.tags!.length - 2 === 1 ? "Tag" : "Tags"}
+              </Badge>
+            )}
           </div>
           <h3 className="font-haas text-2xl font-bold text-foreground leading-tight">{prescription.name}</h3>
           <p className="font-haas text-lg mt-1">{fontNames}</p>

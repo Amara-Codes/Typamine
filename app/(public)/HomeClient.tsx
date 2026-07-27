@@ -39,9 +39,9 @@ export default function HomeClient({ recentIngredients = [], recentPairings = []
         }
         layout="contentRight"
         description="Browse a vast catalog of fonts, find expert pairings, generate custom assets on the fly, and read our latest typographic prescriptions. Built for modern creators and developers."
-        ctaText="[THE ARCHIVE]"
+        ctaText="Fonts Catalog"
         ctaHref="/ingredients"
-        secondaryCtaText="[OUR SUGGESTIONS]"
+        secondaryCtaText="Our Suggestions"
         secondaryCtaHref="/prescriptions"
         bgImage={dynamicHeroBgImageUrl}
         fullWidth
@@ -60,7 +60,7 @@ export default function HomeClient({ recentIngredients = [], recentPairings = []
             {/* Font tiles catalog grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               {safeIngredients.length === 0
-                ? Array.from({ length: 4 }).map((_, idx) => (
+                ? Array.from({ length: 8 }).map((_, idx) => (
                     <IngredientCardSkeleton key={idx} />
                   ))
                 : safeIngredients.map((font, idx) => (

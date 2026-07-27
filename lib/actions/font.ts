@@ -80,6 +80,7 @@ const AI_RATING_CANDIDATE_WHERE = {
   OR: [
     { creator: "Google Fonts" },
     { creator: "Typamine Import" },
+      { creator: "Local Import" },
   ],
 };
 

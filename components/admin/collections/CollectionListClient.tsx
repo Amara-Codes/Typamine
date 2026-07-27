@@ -83,7 +83,7 @@ export default function CollectionListClient({ formulas, totalCount, canUpdate, 
         searchPlaceholder="Search collections by name, slug or description..."
       />
 
-      <div className="border border-black/5 dark:border-white/5 rounded-2xl overflow-hidden shadow-2xl backdrop-blur-xl">
+      <div className="border border-black/5 dark:border-white/5 rounded-2xl overflow-hidden shadow-2xl backdrop-blur-xs">
         <ContentTable
           data={formulas}
           keyExtractor={(f: any) => f.id}

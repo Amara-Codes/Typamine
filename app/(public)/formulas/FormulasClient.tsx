@@ -15,7 +15,7 @@ const SORT_OPTIONS = [
 ];
 
 const CATEGORY_OPTIONS = [
-  { label: "ALL_CATEGORIES", value: "ALL" },
+  { label: "ALL CATEGORIES", value: "ALL" },
   { label: "MONOSPACE", value: "Monospace" },
   { label: "SANS-SERIF", value: "Sans-Serif" },
   { label: "NEO-GROTESQUE", value: "Neo-Grotesque" },
@@ -38,10 +38,10 @@ export default function FormulasClient({ tags, children }: FormulasClientProps) 
   const { theme } = useThemeStore();
 
   return (
-    <div className="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-8 space-y-8">
+    <div className="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 pt-28 pb-8 space-y-8">
       {/* Route Header */}
       <PageHeading
-        title="CURATED_FORMULAS // Our Collections"
+        title="CURATED FORMULAS // Our Collections"
         subtitle="Hand-picked bundles and programmatic collections, generated straight from our archive"
         useGrainient
         grainientOptions={{

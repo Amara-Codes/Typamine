@@ -9,7 +9,7 @@ import { Button } from "@/components/common/Button";
 import { SearchSortFilter } from "@/components/common/SearchSortFilter";
 
 const CATEGORY_OPTIONS = [
-  { label: "ALL_COMPOUNDS", value: "ALL" },
+  { label: "ALL FONT CATEGORIES", value: "ALL" },
   { label: "MONOSPACE", value: "Monospace" },
   { label: "SANS-SERIF", value: "Sans-Serif" },
   { label: "NEO-GROTESQUE", value: "Neo-Grotesque" },
@@ -19,7 +19,7 @@ const CATEGORY_OPTIONS = [
 ];
 
 const RATING_OPTIONS = [
-  { label: "ANY_RATING", value: "ALL" },
+  { label: "ANY RATING", value: "ALL" },
   { label: "9+ EXCEPTIONAL", value: "9.0" },
   { label: "8+ EXCELLENT", value: "8.0" },
   { label: "7+ GOOD", value: "7.0" },
@@ -46,10 +46,10 @@ export default function IngredientsClient({ tags, children }: IngredientsClientP
   const { theme } = useThemeStore();
 
   return (
-    <div className="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-8 space-y-8">
+    <div className="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 pt-28 pb-8 space-y-8">
       {/* Route Header */}
       <PageHeading
-        title="INGREDIENTS_ARCHIVE // All Our Fonts"
+        title="INGREDIENTS ARCHIVE // All Our Fonts"
         subtitle="Browse the full typographic catalogue"
         useGrainient
         grainientOptions={{
@@ -85,7 +85,7 @@ export default function IngredientsClient({ tags, children }: IngredientsClientP
         }}
       >
         <Link href="/formulas" className="inline-block">
-          <Button variant="primary">EXPLORE_COLLECTIONS</Button>
+          <Button variant="primary">EXPLORE COLLECTIONS</Button>
         </Link>
       </Cta>
     </div>

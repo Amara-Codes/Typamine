@@ -72,7 +72,7 @@ const Paragraph = ({
     const Component = as;
 
     return (
-        <div className={twMerge("relative w-full", className)}>
+        <div className={twMerge("relative w-full")}>
             <Component
                 style={dynamicTextStyle(colorClassName)}
                 className={twMerge(baseStyles, hasDynamicColor && "dyn-text", className)}

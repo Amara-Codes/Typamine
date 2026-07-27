@@ -57,7 +57,7 @@ export default function ContentTable<T>({
       <div className={cn(
         // Impostiamo un'altezza minima abbondante (76px) per assorbire l'ingombro del Badge
         // mantenendo py-4. items-center centrerà il contenuto in entrambi gli stati.
-        "flex justify-between items-center py-4 min-h-[76px] px-8 border-b bg-bluegray-200/50 dark:bg-redgray-900/50  border-black/5 dark:border-white/5"
+        "flex justify-between items-center py-4 min-h-[76px] px-8 border-b bg-bluegray-100 dark:bg-redgray-900/50  border-black/5 dark:border-white/5"
       )}>
         {columns.map((column, idx) => (
           <div

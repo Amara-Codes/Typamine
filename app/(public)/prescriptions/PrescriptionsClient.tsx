@@ -27,7 +27,7 @@ export default function PrescriptionsClient({ tags, children }: PrescriptionsCli
   const { theme } = useThemeStore();
 
   return (
-    <div className="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-8 space-y-8">
+    <div className="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 pt-28 pb-8 space-y-8">
       {/* Route Header */}
       <PageHeading
         title="PRESCRIPTIONS // Font Pairing Examples"

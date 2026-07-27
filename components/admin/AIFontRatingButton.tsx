@@ -3,6 +3,7 @@
 import { useRef, useState, useEffect } from "react";
 import { Sparkles, Loader2, CheckCircle2, AlertCircle, X } from "lucide-react";
 import { Button } from "@/components/common/Button";
+import { Card } from "@/components/common/Card";
 import BaseModal from "@/components/common/BaseModal";
 import { getFontsNeedingAIRating, rateFontWithAI } from "@/lib/actions/font";
 
@@ -113,11 +114,19 @@ export default function AIFontRatingButton() {
 
   return (
     <>
-    <Button className="!text-2xl !normal-case" variant="primary" shadowed fullWidth  onClick={openModal}>
-      Review Fonts with AI
-    </Button>
-
-
+    <Card roundness="lg" visualHover className="!h-fit cursor-pointer" onClick={openModal}>
+      <div className="p-2 flex items-center gap-4">
+        <div className="h-8 w-8 shrink-0 rounded-sm border flex items-center justify-center bg-purple-500/10 border-purple-500/20">
+          <Sparkles className="h-4 w-4 text-purple-800" />
+        </div>
+        <div className="min-w-0">
+          <p className="text-sm font-bold text-black dark:text-white truncate">Review Fonts with AI</p>
+          <p className="text-[10px] uppercase tracking-widest font-bold text-zinc-500 dark:text-zinc-400 truncate">
+            Author &amp; rating lookup
+          </p>
+        </div>
+      </div>
+    </Card>
 
       {isOpen && (
         <BaseModal isOpen={isOpen} onClose={() => (phase !== "running" ? close() : undefined)} size="lg">

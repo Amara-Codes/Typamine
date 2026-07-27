@@ -80,7 +80,7 @@ export const IngredientCard: React.FC<FontCardProps> = ({ font, idx, linklabel =
             className={"border border-zinc-200 dark:border-zinc-800 bg-white/50 dark:bg-zinc-900/20 hover:border-zinc-400 dark:hover:border-zinc-700 hover:bg-zinc-50 dark:hover:bg-zinc-900/40 rounded-lg p-2 transition-all flex flex-col justify-between group relative overflow-hidden " + className }
         >
             {/* Corner tag index */}
-            <div className="absolute top-2 right-2 font-haas text-[10px] text-zinc-500 dark:text-zinc-400">
+            <div className="absolute top-2 right-2 pe-2 font-haas text-[10px] text-zinc-500 dark:text-zinc-400">
                 REF-0{idx + 1}
             </div>
 
@@ -90,7 +90,7 @@ export const IngredientCard: React.FC<FontCardProps> = ({ font, idx, linklabel =
                     <div className="w-12 h-12 ml-2 border border-blue/30 rounded bg-zinc-100 dark:bg-zinc-950 flex items-center justify-center font-haas font-bold text-lg text-blue group-hover:border-blue group-hover:glow-cyan transition-all">
                         {GetSymbol({ fontName: font.name })}
                     </div>
-                    <div className="text-right font-haas">
+                    <div className="text-right font-haas pe-2">
                         <span className="text-[10px] text-zinc-500 dark:text-zinc-400 uppercase block">{font.category}</span>
                         <span className="text-xs text-zinc-500 dark:text-zinc-400 font-bold block">
                             {font.formula || getDeterministicFormula(font.name)}
@@ -118,7 +118,7 @@ export const IngredientCard: React.FC<FontCardProps> = ({ font, idx, linklabel =
                 className="my-4"
             />
 
-            <div className="pt-2 pe-2 mx-2 flex justify-between items-center border-t border-zinc-200 dark:border-zinc-800">
+            <div className="pt-2 pe-2 mx-2 flex justify-between items-center border-t border-zinc-400/50">
                 <span className="font-haas text-[10px] text-zinc-500 dark:text-zinc-400">OUR SCORE: <span className="text-blue font-bold">{font.rating}</span></span>
                 <span className="flex flex-row items-center gap-2 font-haas text-sm text-red hover:underline transition-colors pe-4">
                     {linklabel}

@@ -104,6 +104,15 @@ export const resolveMediaUrl = (url: string | null | undefined): string | null =
   return url;
 };
 
+// Contatore globale (non React state) delle ImageUpload dei moduli insight
+// attualmente in compressione. PostForm non ha visibilità sullo stato locale
+// di ogni singola istanza, ma deve poter bloccare il Save finché una di
+// queste non ha finito — altrimenti il file compresso non è ancora nel
+// campo nascosto e l'unico dato che parte è il base64 di anteprima, che il
+// server rifiuta scrivendo un imageSrc vuoto invece di fallire il salvataggio.
+let compressingModuleImageCount = 0;
+export const isAnyModuleImageCompressing = () => compressingModuleImageCount > 0;
+
 export function ImageUpload({ name, preview, onPreviewChange }: { name: string, preview: string | null, onPreviewChange: (v: string | null) => void }) {
   const [isCompressing, setIsCompressing] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -113,6 +122,7 @@ export function ImageUpload({ name, preview, onPreviewChange }: { name: string, 
     if (!file) return;
     try {
       setIsCompressing(true);
+      compressingModuleImageCount++;
 
       const options = {
         maxSizeMB: 2,
@@ -133,11 +143,13 @@ export function ImageUpload({ name, preview, onPreviewChange }: { name: string, 
       reader.onloadend = () => {
         onPreviewChange(reader.result as string);
         setIsCompressing(false);
+        compressingModuleImageCount--;
       };
       reader.readAsDataURL(compressedFile);
     } catch (error) {
       console.error("Image compression failed:", error);
       setIsCompressing(false);
+      compressingModuleImageCount--;
     }
   };
 

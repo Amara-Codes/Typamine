@@ -84,7 +84,7 @@ export default function PillDetailClient({ post }: PillDetailClientProps) {
         <>
           {/* Back button overlaid sopra la hero a piena pagina, stessa posizione/z-index di /archive/[slug] */}
           <div className="absolute top-0 inset-x-0 z-30 pointer-events-none">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 mb-4 pointer-events-auto">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-28 mb-4 pointer-events-auto">
               {backLink}
             </div>
           </div>
@@ -92,7 +92,7 @@ export default function PillDetailClient({ post }: PillDetailClientProps) {
         </>
       ) : null}
 
-      <div className="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-8 space-y-8">
+      <div className="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 pt-28 pb-8 space-y-8">
         {!heroModule && backLink}
 
         {tags.length > 0 && (

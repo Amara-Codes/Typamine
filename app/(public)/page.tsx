@@ -29,7 +29,7 @@ function pickRandom<T>(items: T[], count: number): T[] {
 
 export default async function Home() {
   const [recentIngredients, dbPairings, realFormulas, virtualFormulas] = await Promise.all([
-    getRecentIngredients(4),
+    getRecentIngredients(8),
     getRecentPairings(4),
     getAllFormulas(),
     getVirtualFormulas(),
@@ -41,7 +41,7 @@ export default async function Home() {
     ...realFormulas.map((formula) => ({ formula, isCurated: true })),
     ...virtualFormulas.map((formula) => ({ formula, isCurated: false })),
   ];
-  const featuredFormulas = pickRandom(formulaPool, 4);
+  const featuredFormulas = pickRandom(formulaPool, 8);
 
   return (
     <HomeClient

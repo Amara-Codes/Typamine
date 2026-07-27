@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useTransition } from "react";
-import { Edit, Tag as TagIcon, AlertTriangle } from "lucide-react";
+import { Edit, Tag as TagIcon, AlertTriangle, Plus } from "lucide-react";
 import ContentTable from "@/components/common/ContentTable";
 import DeleteButton from "@/components/common/DeleteButton";
 import { saveTag, deleteTag } from "@/lib/actions/tag";
@@ -16,11 +16,12 @@ import SavingOverlay from "@/components/admin/common/SavingOverlay";
 interface TagListClientProps {
   tags: any[];
   totalCount: number;
+  canCreate: boolean;
   canUpdate: boolean;
   canDelete: boolean;
 }
 
-export default function TagListClient({ tags, totalCount, canUpdate, canDelete }: TagListClientProps) {
+export default function TagListClient({ tags, totalCount, canCreate, canUpdate, canDelete }: TagListClientProps) {
   const [isSelectionMode, setIsSelectionMode] = useState(false);
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -63,6 +64,16 @@ export default function TagListClient({ tags, totalCount, canUpdate, canDelete }
     setIsFormModalOpen(true);
   };
 
+  // Le tag non hanno una route /new dedicata: si creano nello stesso modale
+  // usato per l'edit, solo senza un editingTag di partenza.
+  const handleOpenCreate = () => {
+    setEditingTag(null);
+    setName("");
+    setDescription("");
+    setErrorMessage(null);
+    setIsFormModalOpen(true);
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMessage(null);
@@ -99,7 +110,21 @@ export default function TagListClient({ tags, totalCount, canUpdate, canDelete }
 
   return (
     <div className="space-y-6">
-     
+
+      {canCreate && (
+        <div className="flex justify-end">
+          <Button
+            onClick={handleOpenCreate}
+            variant="primary"
+            size="md"
+            roundness="md"
+            className="flex items-center gap-2"
+          >
+            <Plus className="h-4 w-4" />
+            Add Tag
+          </Button>
+        </div>
+      )}
 
       <ListHeaderHandlers
         isSelectionMode={isSelectionMode}
@@ -123,7 +148,7 @@ export default function TagListClient({ tags, totalCount, canUpdate, canDelete }
         searchPlaceholder="Search tags by name or description..."
       />
 
-      <div className="border border-black/5 dark:border-white/5 rounded-2xl overflow-hidden shadow-2xl backdrop-blur-xl">
+      <div className="border border-black/5 dark:border-white/5 rounded-2xl overflow-hidden shadow-2xl backdrop-blur-xs">
         <ContentTable
           data={tags}
           keyExtractor={(tag: any) => tag.id}

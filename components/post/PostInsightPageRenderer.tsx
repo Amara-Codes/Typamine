@@ -43,7 +43,7 @@ const resolveMediaUrl = (url: string | undefined): string | undefined => {
   return url;
 };
 
-export type InsightSection = "pairing" | "archive" | "blog";
+export type InsightSection = "archive" | "blog";
 
 export interface PostInsightPageRendererProps {
   content: string;
@@ -52,32 +52,26 @@ export interface PostInsightPageRendererProps {
 
 const ARCHIVE_BORDER = "border border-ocragray-500/80 dark:border-ocragray-200/50";
 
-const pairingParagraphClassNames = "";
-const archiveParagraphClassNames = ARCHIVE_BORDER;
+const archiveParagraphClassNames = "mx-8 " + ARCHIVE_BORDER;
 const blogParagraphClassNames = "";
 
 const PARAGRAPH_SECTION_CLASSNAMES: Record<InsightSection, string> = {
-  pairing: pairingParagraphClassNames,
   archive: archiveParagraphClassNames,
   blog: blogParagraphClassNames,
 };
 
-const pairingParagraphWithImageClassNames = "";
-const archiveParagraphWithImageClassNames = ARCHIVE_BORDER;
+const archiveParagraphWithImageClassNames = "";
 const blogParagraphWithImageClassNames = "";
 
 const PARAGRAPH_WITH_IMAGE_SECTION_CLASSNAMES: Record<InsightSection, string> = {
-  pairing: pairingParagraphWithImageClassNames,
   archive: archiveParagraphWithImageClassNames,
   blog: blogParagraphWithImageClassNames,
 };
 
-const pairingQuoteClassNames = "";
 const archiveQuoteClassNames = ARCHIVE_BORDER;
-const blogQuoteClassNames = "rounded-tl-4xl rounded-br-4xl";
+const blogQuoteClassNames = "rounded-tl-[6rem] rounded-br-[6rem]";
 
 const QUOTE_SECTION_CLASSNAMES: Record<InsightSection, string> = {
-  pairing: pairingQuoteClassNames,
   archive: archiveQuoteClassNames,
   blog: blogQuoteClassNames,
 };
