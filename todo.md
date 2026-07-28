@@ -1,11 +1,11 @@
 ############ HARD TASKS ################
 
 
-scraper di da font selettivo che ciclicamente cerca riusorse sulle pagine di categoria e scarica font
+scraper di da-font selettivo che ciclicamente cerca risorse sulle pagine di categoria e scarica font [CANCELLED - CORS ISSUES]
 
-tool ai che genera i pairign basandosi sui fonr aggionrati e viene triggerato se lo scraper ha trovato nuovi font 
+tool ai che genera i pairign basandosi sui fonT aggionrati e viene triggerato se lo scraper ha trovato nuovi font [fattibile, bisogna aggiornare il data model con colori etc]
 
-tool che suggerisce il delate di risorse quando nota che sono poco visitate
+tool che suggerisce il delate di risorse quando nota che sono poco visitate [fattibile, serve integrare google analytics]
 ________________________________
 
 
@@ -26,16 +26,13 @@ ________________________________
 [[Fai Archive]] --> DONE
 
 [[fai  blog]] --> DONE
+
+[[fai bulk import da locale. carico tanti font in un zip unico. con all'interno tante cartelle con all'interno i file che possono essere, ttf, otf o qualsiasi font file extension. lui procede come un bulk import tradizionale ]] --> DONE
+
+[[in fonts e pairings rimanda a labs con query oparma per generare i font face, le classi di tailwind, css standard etc ]] --> DONE
  __________________________________
 
 uniformare ux/ui colri di admin, margini, padding... colori [60%]
-
-
-
-in fints e pairings rimanda a labs con query oparma per generare i font face, le classi di tailwind, css standard etc 
-
-
-fai bulk import da locale. carico tanti font in un zip unico. con all'interno tante cartelle con all'interno i file che possono sessere, ttf, otf o qualsiasi font file. lui procede come un bulk import tradizionale 
 
 dafont - cartoon. sono arirvato alla pagina 45, 
 fai lo stesso per tutte le altre categoie e pian piano popoliamo il databse 
