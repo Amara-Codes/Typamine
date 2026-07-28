@@ -2,7 +2,8 @@
 
 import prisma from "@/lib/prisma";
 import { getServerAuthSession } from "@/lib/session";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
+import { CACHE_TAGS } from "@/lib/cacheTags";
 import crypto from "crypto";
 
 async function checkPermission(permission: string) {
@@ -81,6 +82,7 @@ export async function saveTag(prevState: any, formData: FormData, id?: string) {
 
   revalidatePath("/admin/tags");
   revalidatePath("/admin/pairings");
+  revalidateTag(CACHE_TAGS.tags, "max");
   return null;
 }
 
@@ -89,4 +91,5 @@ export async function deleteTag(id: string) {
   await prisma.tag.delete({ where: { id } });
   revalidatePath("/admin/tags");
   revalidatePath("/admin/pairings");
+  revalidateTag(CACHE_TAGS.tags, "max");
 }

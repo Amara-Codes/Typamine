@@ -4,6 +4,8 @@ import fontverter from "fontverter";
 import prisma from "@/lib/prisma";
 import { uploadToR2 } from "@/lib/r2";
 import { getVariantLabel } from "@/lib/fontMeta";
+import { revalidateTag } from "next/cache";
+import { CACHE_TAGS } from "@/lib/cacheTags";
 import crypto from "crypto";
 
 interface ProviderFontImportItem {
@@ -178,6 +180,7 @@ export async function POST(request: NextRequest) {
       }
     }
 
+    if (imported.length > 0) revalidateTag(CACHE_TAGS.ingredients, "max");
     return NextResponse.json({ success: true, imported, failed });
   } catch (error: any) {
     console.error("[Bulk Import Route] Global Error:", error);

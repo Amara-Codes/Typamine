@@ -2,10 +2,11 @@
 
 import prisma from "@/lib/prisma";
 import { getServerAuthSession } from "@/lib/session";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { uploadToR2, deleteFromR2 } from "@/lib/r2";
 import { withSafeDbQuery } from "@/lib/services/dbMigration";
 import { parseSeoFormFields, upsertSeoModule } from "@/lib/services/seo";
+import { CACHE_TAGS } from "@/lib/cacheTags";
 import { PostType } from "@/types";
 import crypto from "crypto";
 
@@ -49,6 +50,7 @@ function r2InsightImagesFolder(postType: PostType) {
 function revalidatePostPaths(postType: PostType) {
   revalidatePath(`/admin/${adminRouteBase(postType)}`);
   revalidatePath(`/${publicRouteBase(postType)}`);
+  revalidateTag(CACHE_TAGS.posts, "max");
 }
 
 export async function getAdminPosts(postType: PostType) {

@@ -1,6 +1,8 @@
+import { unstable_cache } from "next/cache";
 import prisma from "@/lib/prisma";
 import { Prescription, Ingredient, FontVariant } from "@/types";
 import { withSafeDbQuery } from "./dbMigration";
+import { CACHE_TAGS } from "@/lib/cacheTags";
 
 function mapIngredient(rec: any): Ingredient {
   return {
@@ -64,25 +66,29 @@ export interface PairingsPageResult {
   perPage: number;
 }
 
-export async function getRecentPairings(limit = 4): Promise<Prescription[]> {
-  const records = await withSafeDbQuery(() =>
-    prisma.prescription.findMany({
-      where: { published: true },
-      include: {
-        primaryFont: { include: { variants: true } },
-        secondaryFont: { include: { variants: true } },
-        tags: true,
-      },
-      orderBy: { createdAt: "desc" },
-      take: limit,
-    })
-  );
-  return records.map(toPrescription);
-}
+export const getRecentPairings = unstable_cache(
+  async (limit = 4): Promise<Prescription[]> => {
+    const records = await withSafeDbQuery(() =>
+      prisma.prescription.findMany({
+        where: { published: true },
+        include: {
+          primaryFont: { include: { variants: true } },
+          secondaryFont: { include: { variants: true } },
+          tags: true,
+        },
+        orderBy: { createdAt: "desc" },
+        take: limit,
+      })
+    );
+    return records.map(toPrescription);
+  },
+  ["pairings-recent"],
+  { revalidate: 300, tags: [CACHE_TAGS.pairings] }
+);
 
 export type PairingSort = "recent" | "name_asc" | "name_desc";
 
-export async function getPairingsPage(options?: {
+export interface GetPairingsPageOptions {
   page?: number;
   perPage?: number;
   publishedOnly?: boolean;
@@ -92,7 +98,10 @@ export async function getPairingsPage(options?: {
   /** Pairing che usano questo font come primario o secondario. */
   fontName?: string;
   sort?: PairingSort;
-}): Promise<PairingsPageResult> {
+}
+
+export const getPairingsPage = unstable_cache(
+  async (options?: GetPairingsPageOptions): Promise<PairingsPageResult> => {
   const page = options?.page ?? 1;
   const perPage = options?.perPage ?? 12;
 
@@ -151,38 +160,49 @@ export async function getPairingsPage(options?: {
     page,
     perPage,
   };
-}
+  },
+  ["pairings-page"],
+  { revalidate: 60, tags: [CACHE_TAGS.pairings] }
+);
 
 // Usato dalla pagina di dettaglio font pubblica per decidere se mostrare il
 // rimando alle prescriptions che usano quel font (come primario o secondario).
-export async function getPairingsCountForFont(fontId: string): Promise<number> {
-  return withSafeDbQuery(() =>
-    prisma.prescription.count({
-      where: {
-        published: true,
-        OR: [{ primaryFontId: fontId }, { secondaryFontId: fontId }],
-      },
-    })
-  );
-}
+export const getPairingsCountForFont = unstable_cache(
+  async (fontId: string): Promise<number> => {
+    return withSafeDbQuery(() =>
+      prisma.prescription.count({
+        where: {
+          published: true,
+          OR: [{ primaryFontId: fontId }, { secondaryFontId: fontId }],
+        },
+      })
+    );
+  },
+  ["pairings-count-for-font"],
+  { revalidate: 300, tags: [CACHE_TAGS.pairings] }
+);
 
-export async function getPairings(options?: { publishedOnly?: boolean }): Promise<Prescription[]> {
-  const where = options?.publishedOnly ? { published: true } : {};
+export const getPairings = unstable_cache(
+  async (options?: { publishedOnly?: boolean }): Promise<Prescription[]> => {
+    const where = options?.publishedOnly ? { published: true } : {};
 
-  const records = await withSafeDbQuery(() =>
-    prisma.prescription.findMany({
-      where,
-      include: {
-        primaryFont: { include: { variants: true } },
-        secondaryFont: { include: { variants: true } },
-        tags: true,
-      },
-      orderBy: { createdAt: "desc" },
-    })
-  );
+    const records = await withSafeDbQuery(() =>
+      prisma.prescription.findMany({
+        where,
+        include: {
+          primaryFont: { include: { variants: true } },
+          secondaryFont: { include: { variants: true } },
+          tags: true,
+        },
+        orderBy: { createdAt: "desc" },
+      })
+    );
 
-  return records.map(toPrescription);
-}
+    return records.map(toPrescription);
+  },
+  ["pairings-all"],
+  { revalidate: 60, tags: [CACHE_TAGS.pairings] }
+);
 
 export async function getPairingById(id: string): Promise<Prescription | null> {
   const record = await withSafeDbQuery(() =>
@@ -199,17 +219,21 @@ export async function getPairingById(id: string): Promise<Prescription | null> {
   return record ? toPrescription(record) : null;
 }
 
-export async function getPairingBySlug(slug: string): Promise<Prescription | null> {
-  const record = await withSafeDbQuery(() =>
-    prisma.prescription.findUnique({
-      where: { slug },
-      include: {
-        primaryFont: { include: { variants: true } },
-        secondaryFont: { include: { variants: true } },
-        tags: true,
-      },
-    })
-  );
+export const getPairingBySlug = unstable_cache(
+  async (slug: string): Promise<Prescription | null> => {
+    const record = await withSafeDbQuery(() =>
+      prisma.prescription.findUnique({
+        where: { slug },
+        include: {
+          primaryFont: { include: { variants: true } },
+          secondaryFont: { include: { variants: true } },
+          tags: true,
+        },
+      })
+    );
 
-  return record ? toPrescription(record) : null;
-}
+    return record ? toPrescription(record) : null;
+  },
+  ["pairing-by-slug"],
+  { revalidate: 300, tags: [CACHE_TAGS.pairings] }
+);

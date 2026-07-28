@@ -1,10 +1,9 @@
 "use client"
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import LivePreview from "@/components/common/LivePreview";
 import { PlaygroundFont } from "@/types";
 import { cn } from "@/lib/utils";
-import { useThemeStore } from "@/store/themeStore";
-import LedBar from "@/components/cherry/LedBar";
+
 interface DynamicPlaygroundProps {
   font?: PlaygroundFont;
   hideFontSelector?: boolean;
@@ -17,24 +16,10 @@ export const DynamicPlayground: React.FC<DynamicPlaygroundProps> = ({
   const [activeFont, setActiveFont] = useState<PlaygroundFont>(
     font || { name: "Alte Haas Grotesk", fontFamily: "var(--font-haas)" }
   );
-  const [isContainerHovered, setIsContainerHovered] = useState(false);
-  const [mounted, setMounted] = useState(false);
-  const theme = useThemeStore((state) => state.theme);
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-  // Definisci i due colori (modificali a tuo piacimento)
-  const darkColor = "#936A65"; // Arancione stile K.I.T.T.
-  const lightColor = "#CFD3CB"; // Ciano hi-tech per il light mode
-
-  // Seleziona il colore dinamico
-  const activeLedColor = theme === "dark" ? darkColor : lightColor;
 
   return (
     <section 
       className="group border border-zinc-200 dark:border-zinc-800 bg-ocragray-100 dark:bg-ocragray-900 rounded-lg overflow-hidden transition-colors duration-300"
-      onMouseEnter={() => setIsContainerHovered(true)}
-      onMouseLeave={() => setIsContainerHovered(false)}
     >
 
       {/* Header of the Sandbox Panel */}
@@ -44,20 +29,6 @@ export const DynamicPlayground: React.FC<DynamicPlaygroundProps> = ({
           Live Test
         </h2>
 
-        <LedBar
-          orientation="horizontal"
-          direction="normal"
-          height="10px"
-          width="300px"
-          ledCount={16}
-          trailSize="5%"
-          speed={4000}
-          // Passiamo il colore dinamico solo dopo il mount (fallback al darkColor lato server)
-          color={mounted ? activeLedColor : darkColor}
-          isHovered={isContainerHovered}
-          hoverMode="frenzy"
-          pausedByDefault={false}
-        />
 
       </div>
 

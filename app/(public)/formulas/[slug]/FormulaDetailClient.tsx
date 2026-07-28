@@ -19,21 +19,11 @@ interface FormulaDetailClientProps {
 export default function FormulaDetailClient({ formula, isCurated }: FormulaDetailClientProps) {
   const { theme } = useThemeStore();
 
-  // Deterministically select hero background variant (1..4) based on formula slug or id
-  let heroIndex = 1;
-  if (formula.slug || formula.id) {
-    const key = formula.slug || formula.id;
-    let sum = 0;
-    for (let i = 0; i < key.length; i++) {
-      sum += key.charCodeAt(i);
-    }
-    heroIndex = (sum % 4) + 1;
-  }
 
   const bgImage =
     theme === "dark"
-      ? `/images/double-heroes/hero-${heroIndex}-dark.png`
-      : `/images/double-heroes/hero-${heroIndex}-light.png`;
+      ? `/images/formula/double-hero/hero-bg-dark.png`
+      : `/images/formula/double-hero/hero-bg-light.png`;
 
   return (
     <div className="relative w-full mx-auto">

@@ -1,7 +1,9 @@
+import { unstable_cache } from "next/cache";
 import prisma from "@/lib/prisma";
 import { Post, PostType, Ingredient, FontVariant } from "@/types";
 import { withSafeDbQuery } from "./dbMigration";
 import { toSeoModule } from "./seo";
+import { CACHE_TAGS } from "@/lib/cacheTags";
 
 function mapIngredient(rec: any): Ingredient {
   return {
@@ -79,26 +81,30 @@ export interface PostsPageResult {
   perPage: number;
 }
 
-export async function getRecentPosts(postType: PostType, limit = 4): Promise<Post[]> {
-  const records = await withSafeDbQuery(() =>
-    prisma.post.findMany({
-      where: { published: true, postType },
-      include: {
-        author: AUTHOR_SELECT,
-        tags: true,
-        fonts: { include: { variants: true } },
-        seo: true,
-      },
-      orderBy: { createdAt: "desc" },
-      take: limit,
-    })
-  );
-  return records.map(toPost);
-}
+export const getRecentPosts = unstable_cache(
+  async (postType: PostType, limit = 4): Promise<Post[]> => {
+    const records = await withSafeDbQuery(() =>
+      prisma.post.findMany({
+        where: { published: true, postType },
+        include: {
+          author: AUTHOR_SELECT,
+          tags: true,
+          fonts: { include: { variants: true } },
+          seo: true,
+        },
+        orderBy: { createdAt: "desc" },
+        take: limit,
+      })
+    );
+    return records.map(toPost);
+  },
+  ["posts-recent"],
+  { revalidate: 300, tags: [CACHE_TAGS.posts] }
+);
 
 export type PostSort = "recent" | "name_asc" | "name_desc";
 
-export async function getPostsPage(options: {
+export interface GetPostsPageOptions {
   postType: PostType;
   page?: number;
   perPage?: number;
@@ -107,7 +113,10 @@ export async function getPostsPage(options: {
   tagIds?: string[];
   search?: string;
   sort?: PostSort;
-}): Promise<PostsPageResult> {
+}
+
+export const getPostsPage = unstable_cache(
+  async (options: GetPostsPageOptions): Promise<PostsPageResult> => {
   const page = options.page ?? 1;
   const perPage = options.perPage ?? 12;
 
@@ -156,26 +165,33 @@ export async function getPostsPage(options: {
     page,
     perPage,
   };
-}
+  },
+  ["posts-page"],
+  { revalidate: 60, tags: [CACHE_TAGS.posts] }
+);
 
-export async function getPosts(options: { postType: PostType; publishedOnly?: boolean }): Promise<Post[]> {
-  const where: any = { postType: options.postType, ...(options.publishedOnly ? { published: true } : {}) };
+export const getPosts = unstable_cache(
+  async (options: { postType: PostType; publishedOnly?: boolean }): Promise<Post[]> => {
+    const where: any = { postType: options.postType, ...(options.publishedOnly ? { published: true } : {}) };
 
-  const records = await withSafeDbQuery(() =>
-    prisma.post.findMany({
-      where,
-      include: {
-        author: AUTHOR_SELECT,
-        tags: true,
-        fonts: { include: { variants: true } },
-        seo: true,
-      },
-      orderBy: { createdAt: "desc" },
-    })
-  );
+    const records = await withSafeDbQuery(() =>
+      prisma.post.findMany({
+        where,
+        include: {
+          author: AUTHOR_SELECT,
+          tags: true,
+          fonts: { include: { variants: true } },
+          seo: true,
+        },
+        orderBy: { createdAt: "desc" },
+      })
+    );
 
-  return records.map(toPost);
-}
+    return records.map(toPost);
+  },
+  ["posts-all"],
+  { revalidate: 60, tags: [CACHE_TAGS.posts] }
+);
 
 export async function getPostById(id: string): Promise<Post | null> {
   const record = await withSafeDbQuery(() =>
@@ -193,18 +209,22 @@ export async function getPostById(id: string): Promise<Post | null> {
   return record ? toPost(record) : null;
 }
 
-export async function getPostBySlug(slug: string): Promise<Post | null> {
-  const record = await withSafeDbQuery(() =>
-    prisma.post.findUnique({
-      where: { slug },
-      include: {
-        author: AUTHOR_SELECT,
-        tags: true,
-        fonts: { include: { variants: true } },
-        seo: true,
-      },
-    })
-  );
+export const getPostBySlug = unstable_cache(
+  async (slug: string): Promise<Post | null> => {
+    const record = await withSafeDbQuery(() =>
+      prisma.post.findUnique({
+        where: { slug },
+        include: {
+          author: AUTHOR_SELECT,
+          tags: true,
+          fonts: { include: { variants: true } },
+          seo: true,
+        },
+      })
+    );
 
-  return record ? toPost(record) : null;
-}
+    return record ? toPost(record) : null;
+  },
+  ["post-by-slug"],
+  { revalidate: 300, tags: [CACHE_TAGS.posts] }
+);

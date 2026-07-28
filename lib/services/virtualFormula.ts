@@ -1,6 +1,8 @@
+import { unstable_cache } from "next/cache";
 import prisma from "@/lib/prisma";
 import { Formula, Ingredient, FontVariant, Tag } from "@/types";
 import { withSafeDbQuery } from "./dbMigration";
+import { CACHE_TAGS } from "@/lib/cacheTags";
 
 // Formule "programmatiche": non sono righe nel DB, sono calcolate al volo da
 // regole applicate ai dati reali di Ingredient/Tag/Prescription. Crescono da
@@ -90,7 +92,8 @@ function seedToFormula(seed: VirtualFormulaSeed): Formula {
  * reali. Fa un'unica fetch di ingredients/tags/prescriptions e deriva tutto
  * in memoria, invece di N query per tag/categoria/creator.
  */
-export async function getVirtualFormulas(): Promise<Formula[]> {
+export const getVirtualFormulas = unstable_cache(
+  async (): Promise<Formula[]> => {
   const [rawIngredients, tags, prescriptions] = await withSafeDbQuery(() =>
     Promise.all([
       prisma.ingredient.findMany({ include: { tags: true, variants: true } }),
@@ -251,7 +254,10 @@ export async function getVirtualFormulas(): Promise<Formula[]> {
   }
 
   return seeds.map(seedToFormula);
-}
+  },
+  ["virtual-formulas"],
+  { revalidate: 600, tags: [CACHE_TAGS.virtualFormulas, CACHE_TAGS.ingredients, CACHE_TAGS.tags, CACHE_TAGS.pairings] }
+);
 
 export async function getVirtualFormulaBySlug(slug: string): Promise<Formula | null> {
   const all = await getVirtualFormulas();

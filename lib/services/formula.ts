@@ -1,6 +1,8 @@
+import { unstable_cache } from "next/cache";
 import prisma from "@/lib/prisma";
 import { Formula, Ingredient, FontVariant, Tag } from "@/types";
 import { withSafeDbQuery } from "./dbMigration";
+import { CACHE_TAGS } from "@/lib/cacheTags";
 
 function mapIngredient(rec: any): Ingredient {
   return {
@@ -54,38 +56,39 @@ export interface FormulasPageResult {
 
 export type FormulaSort = "recent" | "name_asc" | "name_desc";
 
-export async function getRecentFormulas(limit = 4): Promise<Formula[]> {
-  const records = await withSafeDbQuery(() =>
-    prisma.formula.findMany({
-      include: { fonts: { include: { variants: true } }, tags: true },
-      orderBy: { createdAt: "desc" },
-      take: limit,
-    })
-  );
-  return records.map(toFormula);
-}
+export const getRecentFormulas = unstable_cache(
+  async (limit = 4): Promise<Formula[]> => {
+    const records = await withSafeDbQuery(() =>
+      prisma.formula.findMany({
+        include: { fonts: { include: { variants: true } }, tags: true },
+        orderBy: { createdAt: "desc" },
+        take: limit,
+      })
+    );
+    return records.map(toFormula);
+  },
+  ["formulas-recent"],
+  { revalidate: 300, tags: [CACHE_TAGS.formulas] }
+);
 
 // Le collezioni curate a mano in admin sono in numero contenuto (a differenza
 // di fonts/pairings), quindi qui non serve paginazione: si mostrano sempre
 // tutte insieme alle formule programmatiche in /formulas.
-export async function getAllFormulas(): Promise<Formula[]> {
-  const records = await withSafeDbQuery(() =>
-    prisma.formula.findMany({
-      include: { fonts: { include: { variants: true } }, tags: true },
-      orderBy: { createdAt: "desc" },
-    })
-  );
-  return records.map(toFormula);
-}
+export const getAllFormulas = unstable_cache(
+  async (): Promise<Formula[]> => {
+    const records = await withSafeDbQuery(() =>
+      prisma.formula.findMany({
+        include: { fonts: { include: { variants: true } }, tags: true },
+        orderBy: { createdAt: "desc" },
+      })
+    );
+    return records.map(toFormula);
+  },
+  ["formulas-all"],
+  { revalidate: 60, tags: [CACHE_TAGS.formulas] }
+);
 
-export async function getFormulasPage({
-  page = 1,
-  perPage = 12,
-  category,
-  tagIds,
-  search,
-  sort = "recent",
-}: {
+export interface GetFormulasPageOptions {
   page?: number;
   perPage?: number;
   category?: string;
@@ -93,7 +96,17 @@ export async function getFormulasPage({
   tagIds?: string[];
   search?: string;
   sort?: FormulaSort;
-}): Promise<FormulasPageResult> {
+}
+
+export const getFormulasPage = unstable_cache(
+  async ({
+    page = 1,
+    perPage = 12,
+    category,
+    tagIds,
+    search,
+    sort = "recent",
+  }: GetFormulasPageOptions = {}): Promise<FormulasPageResult> => {
   const and: any[] = [];
   if (category && category !== "ALL") and.push({ fontCategory: category });
   if (tagIds && tagIds.length > 0) and.push({ tags: { some: { id: { in: tagIds } } } });
@@ -132,14 +145,21 @@ export async function getFormulasPage({
     perPage,
     totalPages: Math.max(1, Math.ceil(total / perPage)),
   };
-}
+  },
+  ["formulas-page"],
+  { revalidate: 60, tags: [CACHE_TAGS.formulas] }
+);
 
-export async function getFormulaBySlug(slug: string): Promise<Formula | null> {
-  const record = await withSafeDbQuery(() =>
-    prisma.formula.findUnique({
-      where: { slug },
-      include: { fonts: { include: { variants: true } }, tags: true },
-    })
-  );
-  return record ? toFormula(record) : null;
-}
+export const getFormulaBySlug = unstable_cache(
+  async (slug: string): Promise<Formula | null> => {
+    const record = await withSafeDbQuery(() =>
+      prisma.formula.findUnique({
+        where: { slug },
+        include: { fonts: { include: { variants: true } }, tags: true },
+      })
+    );
+    return record ? toFormula(record) : null;
+  },
+  ["formula-by-slug"],
+  { revalidate: 300, tags: [CACHE_TAGS.formulas] }
+);

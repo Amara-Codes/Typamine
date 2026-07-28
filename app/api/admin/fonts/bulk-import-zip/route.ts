@@ -5,6 +5,8 @@ import fontverter from "fontverter";
 import prisma from "@/lib/prisma";
 import { uploadToR2 } from "@/lib/r2";
 import { isVariableFont, getFontWeightAndStyle, getVariantLabel } from "@/lib/fontMeta";
+import { revalidateTag } from "next/cache";
+import { CACHE_TAGS } from "@/lib/cacheTags";
 import crypto from "crypto";
 
 const FONT_EXTENSIONS = new Set(["ttf", "otf", "woff", "woff2"]);
@@ -208,6 +210,7 @@ export async function POST(request: NextRequest) {
           send({ type: "progress", current: index, total });
         }
 
+        if (imported.length > 0) revalidateTag(CACHE_TAGS.ingredients, "max");
         send({ type: "done", imported, failed });
         controller.close();
       },

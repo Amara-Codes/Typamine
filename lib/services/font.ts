@@ -1,6 +1,8 @@
+import { unstable_cache } from "next/cache";
 import prisma from "@/lib/prisma";
 import { Prisma } from "../../prisma/generated-client";
 import { Ingredient, FontVariant, Tag } from "@/types";
+import { CACHE_TAGS } from "@/lib/cacheTags";
 
 type IngredientRecord = Prisma.IngredientGetPayload<{ include: { variants: true; tags: true } }>;
 
@@ -47,16 +49,20 @@ function toIngredient(record: IngredientRecord): Ingredient {
   };
 }
 
-export async function getRecentIngredients(limit = 4): Promise<Ingredient[]> {
-  const records = await withCreatedAtBackfill(() =>
-    prisma.ingredient.findMany({
-      include: { variants: true, tags: true },
-      orderBy: { createdAt: "desc" },
-      take: limit,
-    })
-  );
-  return records.map(toIngredient);
-}
+export const getRecentIngredients = unstable_cache(
+  async (limit = 4): Promise<Ingredient[]> => {
+    const records = await withCreatedAtBackfill(() =>
+      prisma.ingredient.findMany({
+        include: { variants: true, tags: true },
+        orderBy: { createdAt: "desc" },
+        take: limit,
+      })
+    );
+    return records.map(toIngredient);
+  },
+  ["ingredients-recent"],
+  { revalidate: 300, tags: [CACHE_TAGS.ingredients] }
+);
 
 export interface IngredientsPageResult {
   items: Ingredient[];
@@ -68,15 +74,7 @@ export interface IngredientsPageResult {
 
 export type IngredientSort = "recent" | "name_asc" | "name_desc" | "rating_desc";
 
-export async function getIngredientsPage({
-  page = 1,
-  perPage = 12,
-  category,
-  rating,
-  tagIds,
-  search,
-  sort = "recent",
-}: {
+export interface GetIngredientsPageOptions {
   page?: number;
   perPage?: number;
   category?: string;
@@ -86,7 +84,18 @@ export async function getIngredientsPage({
   tagIds?: string[];
   search?: string;
   sort?: IngredientSort;
-}): Promise<IngredientsPageResult> {
+}
+
+export const getIngredientsPage = unstable_cache(
+  async ({
+    page = 1,
+    perPage = 12,
+    category,
+    rating,
+    tagIds,
+    search,
+    sort = "recent",
+  }: GetIngredientsPageOptions = {}): Promise<IngredientsPageResult> => {
   const where: Prisma.IngredientWhereInput = {};
   if (category && category !== "ALL") where.category = category;
   if (rating && rating !== "ALL") where.rating = { gte: rating };
@@ -125,14 +134,21 @@ export async function getIngredientsPage({
     perPage,
     totalPages: Math.max(1, Math.ceil(total / perPage)),
   };
-}
+  },
+  ["ingredients-page"],
+  { revalidate: 60, tags: [CACHE_TAGS.ingredients] }
+);
 
-export async function getIngredientBySlug(slug: string): Promise<Ingredient | null> {
-  const record = await withCreatedAtBackfill(() =>
-    prisma.ingredient.findUnique({
-      where: { slug },
-      include: { variants: true, tags: true },
-    })
-  );
-  return record ? toIngredient(record) : null;
-}
+export const getIngredientBySlug = unstable_cache(
+  async (slug: string): Promise<Ingredient | null> => {
+    const record = await withCreatedAtBackfill(() =>
+      prisma.ingredient.findUnique({
+        where: { slug },
+        include: { variants: true, tags: true },
+      })
+    );
+    return record ? toIngredient(record) : null;
+  },
+  ["ingredient-by-slug"],
+  { revalidate: 300, tags: [CACHE_TAGS.ingredients] }
+);

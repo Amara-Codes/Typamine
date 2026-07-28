@@ -2,9 +2,10 @@
 
 import prisma from "@/lib/prisma";
 import { getServerAuthSession } from "@/lib/session";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { uploadToR2, deleteFromR2 } from "@/lib/r2";
 import { parseSeoFormFields, upsertSeoModule } from "@/lib/services/seo";
+import { CACHE_TAGS } from "@/lib/cacheTags";
 import crypto from "crypto";
 
 async function checkPermission(permission: string) {
@@ -68,6 +69,7 @@ export async function deletePairing(id: string) {
   await prisma.prescription.delete({ where: { id } });
   revalidatePath("/admin/pairings");
   revalidatePath("/prescriptions");
+  revalidateTag(CACHE_TAGS.pairings, "max");
 }
 
 async function setPairingPublished(id: string, published: boolean) {
@@ -75,6 +77,7 @@ async function setPairingPublished(id: string, published: boolean) {
   await prisma.prescription.update({ where: { id }, data: { published } });
   revalidatePath("/admin/pairings");
   revalidatePath("/prescriptions");
+  revalidateTag(CACHE_TAGS.pairings, "max");
 }
 
 export async function publishPairing(id: string) {
@@ -374,4 +377,5 @@ export async function savePairing(prevState: any, formData: FormData, id?: strin
   // router.back() lato client dopo un salvataggio riuscito.
   revalidatePath("/admin/pairings");
   revalidatePath("/prescriptions");
+  revalidateTag(CACHE_TAGS.pairings, "max");
 }

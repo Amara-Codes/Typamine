@@ -205,7 +205,7 @@ export default function IngredientDetailClient({ ingredient, hasPairings = false
         bgImage="/images/ingredient/cta-bg.png"
 
       >
-        <Link href="/labs" className="inline-block">
+        <Link href={`/labs?ingredient=${ingredient.slug}`} className="inline-block">
           <Button variant="secondary" >ENTER_THE_LABS</Button>
         </Link>
       </Cta>

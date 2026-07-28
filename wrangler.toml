@@ -31,3 +31,9 @@ remote = true
 binding = "TYPAMINE_ASSETS"
 bucket_name = "typamine-assets"
 remote = true
+
+# Cloudflare R2 Object Storage for Next.js Server Components cache
+[[r2_buckets]]
+binding = "NEXT_INC_CACHE_R2_BUCKET"
+bucket_name = "typamine-next-cache"
+remote = true

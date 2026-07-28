@@ -2,10 +2,11 @@
 
 import prisma from "@/lib/prisma";
 import { getServerAuthSession } from "@/lib/session";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { uploadToR2, deleteFromR2 } from "@/lib/r2";
 import { withCreatedAtBackfill } from "@/lib/services/font";
 import { generateFontRatingWithGemini } from "@/lib/ai/fontRating";
+import { CACHE_TAGS } from "@/lib/cacheTags";
 import crypto from "crypto";
 
 async function checkPermission(permission: string) {
@@ -71,6 +72,7 @@ export async function deleteFont(id: string) {
 
   await prisma.ingredient.delete({ where: { id } });
   revalidatePath("/admin/fonts");
+  revalidateTag(CACHE_TAGS.ingredients, "max");
 }
 
 // Fonts importati in bulk (Google Fonts / Fontshare) o creati senza dati
@@ -125,6 +127,7 @@ export async function rateFontWithAI(fontId: string) {
   });
 
   revalidatePath("/admin/fonts");
+  revalidateTag(CACHE_TAGS.ingredients, "max");
 
   return {
     id: font.id,
@@ -353,4 +356,5 @@ export async function saveFont(prevState: any, formData: FormData, id?: string) 
   // client dopo un salvataggio riuscito, tornando esattamente alla lista
   // con lo stato con cui l'utente l'aveva lasciata.
   revalidatePath("/admin/fonts");
+  revalidateTag(CACHE_TAGS.ingredients, "max");
 }

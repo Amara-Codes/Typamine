@@ -2,8 +2,9 @@
 
 import prisma from "@/lib/prisma";
 import { getServerAuthSession } from "@/lib/session";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { withSafeDbQuery } from "@/lib/services/dbMigration";
+import { CACHE_TAGS } from "@/lib/cacheTags";
 import crypto from "crypto";
 
 async function checkPermission(permission: string) {
@@ -49,6 +50,7 @@ export async function deleteFormula(id: string) {
   await prisma.formula.delete({ where: { id } });
   revalidatePath("/admin/collections");
   revalidatePath("/formulas");
+  revalidateTag(CACHE_TAGS.formulas, "max");
 }
 
 export async function saveFormula(prevState: any, formData: FormData, id?: string) {
@@ -148,4 +150,5 @@ export async function saveFormula(prevState: any, formData: FormData, id?: strin
   // router.back() lato client dopo un salvataggio riuscito.
   revalidatePath("/admin/collections");
   revalidatePath("/formulas");
+  revalidateTag(CACHE_TAGS.formulas, "max");
 }
