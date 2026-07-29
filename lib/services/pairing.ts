@@ -14,7 +14,15 @@ function mapIngredient(rec: any): Ingredient {
     rating: rec.rating,
     symbol: rec.symbol ?? undefined,
     formula: rec.formula ?? undefined,
+    importedFrom: rec.importedFrom ?? undefined,
+    licenseType: rec.licenseType ?? undefined,
     isVariable: rec.isVariable,
+    userRating: rec.userRating ?? 0,
+    userRatingsCount: rec.userRatingsCount ?? 0,
+    authorId: rec.authorId ?? undefined,
+    author: rec.author
+      ? { id: rec.author.id, name: rec.author.name, slug: rec.author.slug, avatarUrl: rec.author.avatarUrl ?? undefined, isVerified: rec.author.isVerified }
+      : undefined,
     createdAt: rec.createdAt?.toISOString(),
     updatedAt: rec.updatedAt?.toISOString(),
     variants: (rec.variants || []).map((v: any): FontVariant => ({
@@ -72,8 +80,8 @@ export const getRecentPairings = unstable_cache(
       prisma.prescription.findMany({
         where: { published: true },
         include: {
-          primaryFont: { include: { variants: true } },
-          secondaryFont: { include: { variants: true } },
+          primaryFont: { include: { variants: true, author: true } },
+          secondaryFont: { include: { variants: true, author: true } },
           tags: true,
         },
         orderBy: { createdAt: "desc" },
@@ -144,8 +152,8 @@ export const getPairingsPage = unstable_cache(
     prisma.prescription.findMany({
       where,
       include: {
-        primaryFont: { include: { variants: true } },
-        secondaryFont: { include: { variants: true } },
+        primaryFont: { include: { variants: true, author: true } },
+        secondaryFont: { include: { variants: true, author: true } },
         tags: true,
       },
       orderBy,
@@ -190,8 +198,8 @@ export const getPairings = unstable_cache(
       prisma.prescription.findMany({
         where,
         include: {
-          primaryFont: { include: { variants: true } },
-          secondaryFont: { include: { variants: true } },
+          primaryFont: { include: { variants: true, author: true } },
+          secondaryFont: { include: { variants: true, author: true } },
           tags: true,
         },
         orderBy: { createdAt: "desc" },
@@ -209,8 +217,8 @@ export async function getPairingById(id: string): Promise<Prescription | null> {
     prisma.prescription.findUnique({
       where: { id },
       include: {
-        primaryFont: { include: { variants: true } },
-        secondaryFont: { include: { variants: true } },
+        primaryFont: { include: { variants: true, author: true } },
+        secondaryFont: { include: { variants: true, author: true } },
         tags: true,
       },
     })
@@ -225,8 +233,8 @@ export const getPairingBySlug = unstable_cache(
       prisma.prescription.findUnique({
         where: { slug },
         include: {
-          primaryFont: { include: { variants: true } },
-          secondaryFont: { include: { variants: true } },
+          primaryFont: { include: { variants: true, author: true } },
+          secondaryFont: { include: { variants: true, author: true } },
           tags: true,
         },
       })

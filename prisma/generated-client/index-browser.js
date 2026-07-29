@@ -145,6 +145,30 @@ exports.Prisma.PermissionScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.FontAuthorScalarFieldEnum = {
+  id: 'id',
+  slug: 'slug',
+  name: 'name',
+  type: 'type',
+  email: 'email',
+  supportEmail: 'supportEmail',
+  avatarUrl: 'avatarUrl',
+  bannerUrl: 'bannerUrl',
+  bio: 'bio',
+  website: 'website',
+  donation: 'donation',
+  nationality: 'nationality',
+  languagesSpoken: 'languagesSpoken',
+  isVerified: 'isVerified',
+  socialLinks: 'socialLinks',
+  metrics: 'metrics',
+  businessInfo: 'businessInfo',
+  specialties: 'specialties',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SeoModuleScalarFieldEnum = {
   id: 'id',
   metaTitle: 'metaTitle',
@@ -184,7 +208,12 @@ exports.Prisma.IngredientScalarFieldEnum = {
   rating: 'rating',
   symbol: 'symbol',
   formula: 'formula',
+  importedFrom: 'importedFrom',
+  licenseType: 'licenseType',
   isVariable: 'isVariable',
+  userRating: 'userRating',
+  userRatingsCount: 'userRatingsCount',
+  authorId: 'authorId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -255,6 +284,7 @@ exports.Prisma.ModelName = {
   User: 'User',
   Role: 'Role',
   Permission: 'Permission',
+  FontAuthor: 'FontAuthor',
   SeoModule: 'SeoModule',
   FontVariant: 'FontVariant',
   Ingredient: 'Ingredient',

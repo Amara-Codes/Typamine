@@ -29,6 +29,11 @@ export type Role = $Result.DefaultSelection<Prisma.$RolePayload>
  */
 export type Permission = $Result.DefaultSelection<Prisma.$PermissionPayload>
 /**
+ * Model FontAuthor
+ * 
+ */
+export type FontAuthor = $Result.DefaultSelection<Prisma.$FontAuthorPayload>
+/**
  * Model SeoModule
  * 
  */
@@ -211,6 +216,16 @@ export class PrismaClient<
     * ```
     */
   get permission(): Prisma.PermissionDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.fontAuthor`: Exposes CRUD operations for the **FontAuthor** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more FontAuthors
+    * const fontAuthors = await prisma.fontAuthor.findMany()
+    * ```
+    */
+  get fontAuthor(): Prisma.FontAuthorDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.seoModule`: Exposes CRUD operations for the **SeoModule** model.
@@ -725,6 +740,7 @@ export namespace Prisma {
     User: 'User',
     Role: 'Role',
     Permission: 'Permission',
+    FontAuthor: 'FontAuthor',
     SeoModule: 'SeoModule',
     FontVariant: 'FontVariant',
     Ingredient: 'Ingredient',
@@ -750,7 +766,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "role" | "permission" | "seoModule" | "fontVariant" | "ingredient" | "formula" | "prescription" | "tag" | "post"
+      modelProps: "user" | "role" | "permission" | "fontAuthor" | "seoModule" | "fontVariant" | "ingredient" | "formula" | "prescription" | "tag" | "post"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -973,6 +989,80 @@ export namespace Prisma {
           count: {
             args: Prisma.PermissionCountArgs<ExtArgs>
             result: $Utils.Optional<PermissionCountAggregateOutputType> | number
+          }
+        }
+      }
+      FontAuthor: {
+        payload: Prisma.$FontAuthorPayload<ExtArgs>
+        fields: Prisma.FontAuthorFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.FontAuthorFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FontAuthorPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.FontAuthorFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FontAuthorPayload>
+          }
+          findFirst: {
+            args: Prisma.FontAuthorFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FontAuthorPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.FontAuthorFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FontAuthorPayload>
+          }
+          findMany: {
+            args: Prisma.FontAuthorFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FontAuthorPayload>[]
+          }
+          create: {
+            args: Prisma.FontAuthorCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FontAuthorPayload>
+          }
+          createMany: {
+            args: Prisma.FontAuthorCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.FontAuthorCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FontAuthorPayload>[]
+          }
+          delete: {
+            args: Prisma.FontAuthorDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FontAuthorPayload>
+          }
+          update: {
+            args: Prisma.FontAuthorUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FontAuthorPayload>
+          }
+          deleteMany: {
+            args: Prisma.FontAuthorDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.FontAuthorUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.FontAuthorUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FontAuthorPayload>[]
+          }
+          upsert: {
+            args: Prisma.FontAuthorUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FontAuthorPayload>
+          }
+          aggregate: {
+            args: Prisma.FontAuthorAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateFontAuthor>
+          }
+          groupBy: {
+            args: Prisma.FontAuthorGroupByArgs<ExtArgs>
+            result: $Utils.Optional<FontAuthorGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.FontAuthorCountArgs<ExtArgs>
+            result: $Utils.Optional<FontAuthorCountAggregateOutputType> | number
           }
         }
       }
@@ -1593,6 +1683,7 @@ export namespace Prisma {
     user?: UserOmit
     role?: RoleOmit
     permission?: PermissionOmit
+    fontAuthor?: FontAuthorOmit
     seoModule?: SeoModuleOmit
     fontVariant?: FontVariantOmit
     ingredient?: IngredientOmit
@@ -1783,6 +1874,37 @@ export namespace Prisma {
    */
   export type PermissionCountOutputTypeCountRolesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: RoleWhereInput
+  }
+
+
+  /**
+   * Count Type FontAuthorCountOutputType
+   */
+
+  export type FontAuthorCountOutputType = {
+    fonts: number
+  }
+
+  export type FontAuthorCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    fonts?: boolean | FontAuthorCountOutputTypeCountFontsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * FontAuthorCountOutputType without action
+   */
+  export type FontAuthorCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FontAuthorCountOutputType
+     */
+    select?: FontAuthorCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * FontAuthorCountOutputType without action
+   */
+  export type FontAuthorCountOutputTypeCountFontsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: IngredientWhereInput
   }
 
 
@@ -5335,6 +5457,1282 @@ export namespace Prisma {
 
 
   /**
+   * Model FontAuthor
+   */
+
+  export type AggregateFontAuthor = {
+    _count: FontAuthorCountAggregateOutputType | null
+    _min: FontAuthorMinAggregateOutputType | null
+    _max: FontAuthorMaxAggregateOutputType | null
+  }
+
+  export type FontAuthorMinAggregateOutputType = {
+    id: string | null
+    slug: string | null
+    name: string | null
+    type: string | null
+    email: string | null
+    supportEmail: string | null
+    avatarUrl: string | null
+    bannerUrl: string | null
+    bio: string | null
+    website: string | null
+    donation: string | null
+    nationality: string | null
+    languagesSpoken: string | null
+    isVerified: boolean | null
+    socialLinks: string | null
+    metrics: string | null
+    businessInfo: string | null
+    specialties: string | null
+    status: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type FontAuthorMaxAggregateOutputType = {
+    id: string | null
+    slug: string | null
+    name: string | null
+    type: string | null
+    email: string | null
+    supportEmail: string | null
+    avatarUrl: string | null
+    bannerUrl: string | null
+    bio: string | null
+    website: string | null
+    donation: string | null
+    nationality: string | null
+    languagesSpoken: string | null
+    isVerified: boolean | null
+    socialLinks: string | null
+    metrics: string | null
+    businessInfo: string | null
+    specialties: string | null
+    status: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type FontAuthorCountAggregateOutputType = {
+    id: number
+    slug: number
+    name: number
+    type: number
+    email: number
+    supportEmail: number
+    avatarUrl: number
+    bannerUrl: number
+    bio: number
+    website: number
+    donation: number
+    nationality: number
+    languagesSpoken: number
+    isVerified: number
+    socialLinks: number
+    metrics: number
+    businessInfo: number
+    specialties: number
+    status: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type FontAuthorMinAggregateInputType = {
+    id?: true
+    slug?: true
+    name?: true
+    type?: true
+    email?: true
+    supportEmail?: true
+    avatarUrl?: true
+    bannerUrl?: true
+    bio?: true
+    website?: true
+    donation?: true
+    nationality?: true
+    languagesSpoken?: true
+    isVerified?: true
+    socialLinks?: true
+    metrics?: true
+    businessInfo?: true
+    specialties?: true
+    status?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type FontAuthorMaxAggregateInputType = {
+    id?: true
+    slug?: true
+    name?: true
+    type?: true
+    email?: true
+    supportEmail?: true
+    avatarUrl?: true
+    bannerUrl?: true
+    bio?: true
+    website?: true
+    donation?: true
+    nationality?: true
+    languagesSpoken?: true
+    isVerified?: true
+    socialLinks?: true
+    metrics?: true
+    businessInfo?: true
+    specialties?: true
+    status?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type FontAuthorCountAggregateInputType = {
+    id?: true
+    slug?: true
+    name?: true
+    type?: true
+    email?: true
+    supportEmail?: true
+    avatarUrl?: true
+    bannerUrl?: true
+    bio?: true
+    website?: true
+    donation?: true
+    nationality?: true
+    languagesSpoken?: true
+    isVerified?: true
+    socialLinks?: true
+    metrics?: true
+    businessInfo?: true
+    specialties?: true
+    status?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type FontAuthorAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which FontAuthor to aggregate.
+     */
+    where?: FontAuthorWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FontAuthors to fetch.
+     */
+    orderBy?: FontAuthorOrderByWithRelationInput | FontAuthorOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: FontAuthorWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FontAuthors from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FontAuthors.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned FontAuthors
+    **/
+    _count?: true | FontAuthorCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: FontAuthorMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: FontAuthorMaxAggregateInputType
+  }
+
+  export type GetFontAuthorAggregateType<T extends FontAuthorAggregateArgs> = {
+        [P in keyof T & keyof AggregateFontAuthor]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateFontAuthor[P]>
+      : GetScalarType<T[P], AggregateFontAuthor[P]>
+  }
+
+
+
+
+  export type FontAuthorGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: FontAuthorWhereInput
+    orderBy?: FontAuthorOrderByWithAggregationInput | FontAuthorOrderByWithAggregationInput[]
+    by: FontAuthorScalarFieldEnum[] | FontAuthorScalarFieldEnum
+    having?: FontAuthorScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: FontAuthorCountAggregateInputType | true
+    _min?: FontAuthorMinAggregateInputType
+    _max?: FontAuthorMaxAggregateInputType
+  }
+
+  export type FontAuthorGroupByOutputType = {
+    id: string
+    slug: string
+    name: string
+    type: string
+    email: string
+    supportEmail: string | null
+    avatarUrl: string | null
+    bannerUrl: string | null
+    bio: string | null
+    website: string | null
+    donation: string | null
+    nationality: string | null
+    languagesSpoken: string | null
+    isVerified: boolean
+    socialLinks: string | null
+    metrics: string | null
+    businessInfo: string | null
+    specialties: string | null
+    status: string
+    createdAt: Date
+    updatedAt: Date
+    _count: FontAuthorCountAggregateOutputType | null
+    _min: FontAuthorMinAggregateOutputType | null
+    _max: FontAuthorMaxAggregateOutputType | null
+  }
+
+  type GetFontAuthorGroupByPayload<T extends FontAuthorGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<FontAuthorGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof FontAuthorGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], FontAuthorGroupByOutputType[P]>
+            : GetScalarType<T[P], FontAuthorGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type FontAuthorSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    slug?: boolean
+    name?: boolean
+    type?: boolean
+    email?: boolean
+    supportEmail?: boolean
+    avatarUrl?: boolean
+    bannerUrl?: boolean
+    bio?: boolean
+    website?: boolean
+    donation?: boolean
+    nationality?: boolean
+    languagesSpoken?: boolean
+    isVerified?: boolean
+    socialLinks?: boolean
+    metrics?: boolean
+    businessInfo?: boolean
+    specialties?: boolean
+    status?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    fonts?: boolean | FontAuthor$fontsArgs<ExtArgs>
+    _count?: boolean | FontAuthorCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["fontAuthor"]>
+
+  export type FontAuthorSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    slug?: boolean
+    name?: boolean
+    type?: boolean
+    email?: boolean
+    supportEmail?: boolean
+    avatarUrl?: boolean
+    bannerUrl?: boolean
+    bio?: boolean
+    website?: boolean
+    donation?: boolean
+    nationality?: boolean
+    languagesSpoken?: boolean
+    isVerified?: boolean
+    socialLinks?: boolean
+    metrics?: boolean
+    businessInfo?: boolean
+    specialties?: boolean
+    status?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["fontAuthor"]>
+
+  export type FontAuthorSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    slug?: boolean
+    name?: boolean
+    type?: boolean
+    email?: boolean
+    supportEmail?: boolean
+    avatarUrl?: boolean
+    bannerUrl?: boolean
+    bio?: boolean
+    website?: boolean
+    donation?: boolean
+    nationality?: boolean
+    languagesSpoken?: boolean
+    isVerified?: boolean
+    socialLinks?: boolean
+    metrics?: boolean
+    businessInfo?: boolean
+    specialties?: boolean
+    status?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["fontAuthor"]>
+
+  export type FontAuthorSelectScalar = {
+    id?: boolean
+    slug?: boolean
+    name?: boolean
+    type?: boolean
+    email?: boolean
+    supportEmail?: boolean
+    avatarUrl?: boolean
+    bannerUrl?: boolean
+    bio?: boolean
+    website?: boolean
+    donation?: boolean
+    nationality?: boolean
+    languagesSpoken?: boolean
+    isVerified?: boolean
+    socialLinks?: boolean
+    metrics?: boolean
+    businessInfo?: boolean
+    specialties?: boolean
+    status?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type FontAuthorOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "slug" | "name" | "type" | "email" | "supportEmail" | "avatarUrl" | "bannerUrl" | "bio" | "website" | "donation" | "nationality" | "languagesSpoken" | "isVerified" | "socialLinks" | "metrics" | "businessInfo" | "specialties" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["fontAuthor"]>
+  export type FontAuthorInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    fonts?: boolean | FontAuthor$fontsArgs<ExtArgs>
+    _count?: boolean | FontAuthorCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type FontAuthorIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+  export type FontAuthorIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+
+  export type $FontAuthorPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "FontAuthor"
+    objects: {
+      fonts: Prisma.$IngredientPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      slug: string
+      name: string
+      type: string
+      email: string
+      supportEmail: string | null
+      avatarUrl: string | null
+      bannerUrl: string | null
+      bio: string | null
+      website: string | null
+      donation: string | null
+      nationality: string | null
+      languagesSpoken: string | null
+      isVerified: boolean
+      socialLinks: string | null
+      metrics: string | null
+      businessInfo: string | null
+      specialties: string | null
+      status: string
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["fontAuthor"]>
+    composites: {}
+  }
+
+  type FontAuthorGetPayload<S extends boolean | null | undefined | FontAuthorDefaultArgs> = $Result.GetResult<Prisma.$FontAuthorPayload, S>
+
+  type FontAuthorCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<FontAuthorFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: FontAuthorCountAggregateInputType | true
+    }
+
+  export interface FontAuthorDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['FontAuthor'], meta: { name: 'FontAuthor' } }
+    /**
+     * Find zero or one FontAuthor that matches the filter.
+     * @param {FontAuthorFindUniqueArgs} args - Arguments to find a FontAuthor
+     * @example
+     * // Get one FontAuthor
+     * const fontAuthor = await prisma.fontAuthor.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends FontAuthorFindUniqueArgs>(args: SelectSubset<T, FontAuthorFindUniqueArgs<ExtArgs>>): Prisma__FontAuthorClient<$Result.GetResult<Prisma.$FontAuthorPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one FontAuthor that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {FontAuthorFindUniqueOrThrowArgs} args - Arguments to find a FontAuthor
+     * @example
+     * // Get one FontAuthor
+     * const fontAuthor = await prisma.fontAuthor.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends FontAuthorFindUniqueOrThrowArgs>(args: SelectSubset<T, FontAuthorFindUniqueOrThrowArgs<ExtArgs>>): Prisma__FontAuthorClient<$Result.GetResult<Prisma.$FontAuthorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first FontAuthor that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FontAuthorFindFirstArgs} args - Arguments to find a FontAuthor
+     * @example
+     * // Get one FontAuthor
+     * const fontAuthor = await prisma.fontAuthor.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends FontAuthorFindFirstArgs>(args?: SelectSubset<T, FontAuthorFindFirstArgs<ExtArgs>>): Prisma__FontAuthorClient<$Result.GetResult<Prisma.$FontAuthorPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first FontAuthor that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FontAuthorFindFirstOrThrowArgs} args - Arguments to find a FontAuthor
+     * @example
+     * // Get one FontAuthor
+     * const fontAuthor = await prisma.fontAuthor.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends FontAuthorFindFirstOrThrowArgs>(args?: SelectSubset<T, FontAuthorFindFirstOrThrowArgs<ExtArgs>>): Prisma__FontAuthorClient<$Result.GetResult<Prisma.$FontAuthorPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more FontAuthors that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FontAuthorFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all FontAuthors
+     * const fontAuthors = await prisma.fontAuthor.findMany()
+     * 
+     * // Get first 10 FontAuthors
+     * const fontAuthors = await prisma.fontAuthor.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const fontAuthorWithIdOnly = await prisma.fontAuthor.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends FontAuthorFindManyArgs>(args?: SelectSubset<T, FontAuthorFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FontAuthorPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a FontAuthor.
+     * @param {FontAuthorCreateArgs} args - Arguments to create a FontAuthor.
+     * @example
+     * // Create one FontAuthor
+     * const FontAuthor = await prisma.fontAuthor.create({
+     *   data: {
+     *     // ... data to create a FontAuthor
+     *   }
+     * })
+     * 
+     */
+    create<T extends FontAuthorCreateArgs>(args: SelectSubset<T, FontAuthorCreateArgs<ExtArgs>>): Prisma__FontAuthorClient<$Result.GetResult<Prisma.$FontAuthorPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many FontAuthors.
+     * @param {FontAuthorCreateManyArgs} args - Arguments to create many FontAuthors.
+     * @example
+     * // Create many FontAuthors
+     * const fontAuthor = await prisma.fontAuthor.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends FontAuthorCreateManyArgs>(args?: SelectSubset<T, FontAuthorCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many FontAuthors and returns the data saved in the database.
+     * @param {FontAuthorCreateManyAndReturnArgs} args - Arguments to create many FontAuthors.
+     * @example
+     * // Create many FontAuthors
+     * const fontAuthor = await prisma.fontAuthor.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many FontAuthors and only return the `id`
+     * const fontAuthorWithIdOnly = await prisma.fontAuthor.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends FontAuthorCreateManyAndReturnArgs>(args?: SelectSubset<T, FontAuthorCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FontAuthorPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a FontAuthor.
+     * @param {FontAuthorDeleteArgs} args - Arguments to delete one FontAuthor.
+     * @example
+     * // Delete one FontAuthor
+     * const FontAuthor = await prisma.fontAuthor.delete({
+     *   where: {
+     *     // ... filter to delete one FontAuthor
+     *   }
+     * })
+     * 
+     */
+    delete<T extends FontAuthorDeleteArgs>(args: SelectSubset<T, FontAuthorDeleteArgs<ExtArgs>>): Prisma__FontAuthorClient<$Result.GetResult<Prisma.$FontAuthorPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one FontAuthor.
+     * @param {FontAuthorUpdateArgs} args - Arguments to update one FontAuthor.
+     * @example
+     * // Update one FontAuthor
+     * const fontAuthor = await prisma.fontAuthor.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends FontAuthorUpdateArgs>(args: SelectSubset<T, FontAuthorUpdateArgs<ExtArgs>>): Prisma__FontAuthorClient<$Result.GetResult<Prisma.$FontAuthorPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more FontAuthors.
+     * @param {FontAuthorDeleteManyArgs} args - Arguments to filter FontAuthors to delete.
+     * @example
+     * // Delete a few FontAuthors
+     * const { count } = await prisma.fontAuthor.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends FontAuthorDeleteManyArgs>(args?: SelectSubset<T, FontAuthorDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more FontAuthors.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FontAuthorUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many FontAuthors
+     * const fontAuthor = await prisma.fontAuthor.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends FontAuthorUpdateManyArgs>(args: SelectSubset<T, FontAuthorUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more FontAuthors and returns the data updated in the database.
+     * @param {FontAuthorUpdateManyAndReturnArgs} args - Arguments to update many FontAuthors.
+     * @example
+     * // Update many FontAuthors
+     * const fontAuthor = await prisma.fontAuthor.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more FontAuthors and only return the `id`
+     * const fontAuthorWithIdOnly = await prisma.fontAuthor.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends FontAuthorUpdateManyAndReturnArgs>(args: SelectSubset<T, FontAuthorUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FontAuthorPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one FontAuthor.
+     * @param {FontAuthorUpsertArgs} args - Arguments to update or create a FontAuthor.
+     * @example
+     * // Update or create a FontAuthor
+     * const fontAuthor = await prisma.fontAuthor.upsert({
+     *   create: {
+     *     // ... data to create a FontAuthor
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the FontAuthor we want to update
+     *   }
+     * })
+     */
+    upsert<T extends FontAuthorUpsertArgs>(args: SelectSubset<T, FontAuthorUpsertArgs<ExtArgs>>): Prisma__FontAuthorClient<$Result.GetResult<Prisma.$FontAuthorPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of FontAuthors.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FontAuthorCountArgs} args - Arguments to filter FontAuthors to count.
+     * @example
+     * // Count the number of FontAuthors
+     * const count = await prisma.fontAuthor.count({
+     *   where: {
+     *     // ... the filter for the FontAuthors we want to count
+     *   }
+     * })
+    **/
+    count<T extends FontAuthorCountArgs>(
+      args?: Subset<T, FontAuthorCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], FontAuthorCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a FontAuthor.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FontAuthorAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends FontAuthorAggregateArgs>(args: Subset<T, FontAuthorAggregateArgs>): Prisma.PrismaPromise<GetFontAuthorAggregateType<T>>
+
+    /**
+     * Group by FontAuthor.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FontAuthorGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends FontAuthorGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: FontAuthorGroupByArgs['orderBy'] }
+        : { orderBy?: FontAuthorGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, FontAuthorGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetFontAuthorGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the FontAuthor model
+   */
+  readonly fields: FontAuthorFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for FontAuthor.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__FontAuthorClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    fonts<T extends FontAuthor$fontsArgs<ExtArgs> = {}>(args?: Subset<T, FontAuthor$fontsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$IngredientPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the FontAuthor model
+   */
+  interface FontAuthorFieldRefs {
+    readonly id: FieldRef<"FontAuthor", 'String'>
+    readonly slug: FieldRef<"FontAuthor", 'String'>
+    readonly name: FieldRef<"FontAuthor", 'String'>
+    readonly type: FieldRef<"FontAuthor", 'String'>
+    readonly email: FieldRef<"FontAuthor", 'String'>
+    readonly supportEmail: FieldRef<"FontAuthor", 'String'>
+    readonly avatarUrl: FieldRef<"FontAuthor", 'String'>
+    readonly bannerUrl: FieldRef<"FontAuthor", 'String'>
+    readonly bio: FieldRef<"FontAuthor", 'String'>
+    readonly website: FieldRef<"FontAuthor", 'String'>
+    readonly donation: FieldRef<"FontAuthor", 'String'>
+    readonly nationality: FieldRef<"FontAuthor", 'String'>
+    readonly languagesSpoken: FieldRef<"FontAuthor", 'String'>
+    readonly isVerified: FieldRef<"FontAuthor", 'Boolean'>
+    readonly socialLinks: FieldRef<"FontAuthor", 'String'>
+    readonly metrics: FieldRef<"FontAuthor", 'String'>
+    readonly businessInfo: FieldRef<"FontAuthor", 'String'>
+    readonly specialties: FieldRef<"FontAuthor", 'String'>
+    readonly status: FieldRef<"FontAuthor", 'String'>
+    readonly createdAt: FieldRef<"FontAuthor", 'DateTime'>
+    readonly updatedAt: FieldRef<"FontAuthor", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * FontAuthor findUnique
+   */
+  export type FontAuthorFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FontAuthor
+     */
+    select?: FontAuthorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FontAuthor
+     */
+    omit?: FontAuthorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FontAuthorInclude<ExtArgs> | null
+    /**
+     * Filter, which FontAuthor to fetch.
+     */
+    where: FontAuthorWhereUniqueInput
+  }
+
+  /**
+   * FontAuthor findUniqueOrThrow
+   */
+  export type FontAuthorFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FontAuthor
+     */
+    select?: FontAuthorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FontAuthor
+     */
+    omit?: FontAuthorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FontAuthorInclude<ExtArgs> | null
+    /**
+     * Filter, which FontAuthor to fetch.
+     */
+    where: FontAuthorWhereUniqueInput
+  }
+
+  /**
+   * FontAuthor findFirst
+   */
+  export type FontAuthorFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FontAuthor
+     */
+    select?: FontAuthorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FontAuthor
+     */
+    omit?: FontAuthorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FontAuthorInclude<ExtArgs> | null
+    /**
+     * Filter, which FontAuthor to fetch.
+     */
+    where?: FontAuthorWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FontAuthors to fetch.
+     */
+    orderBy?: FontAuthorOrderByWithRelationInput | FontAuthorOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for FontAuthors.
+     */
+    cursor?: FontAuthorWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FontAuthors from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FontAuthors.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of FontAuthors.
+     */
+    distinct?: FontAuthorScalarFieldEnum | FontAuthorScalarFieldEnum[]
+  }
+
+  /**
+   * FontAuthor findFirstOrThrow
+   */
+  export type FontAuthorFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FontAuthor
+     */
+    select?: FontAuthorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FontAuthor
+     */
+    omit?: FontAuthorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FontAuthorInclude<ExtArgs> | null
+    /**
+     * Filter, which FontAuthor to fetch.
+     */
+    where?: FontAuthorWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FontAuthors to fetch.
+     */
+    orderBy?: FontAuthorOrderByWithRelationInput | FontAuthorOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for FontAuthors.
+     */
+    cursor?: FontAuthorWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FontAuthors from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FontAuthors.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of FontAuthors.
+     */
+    distinct?: FontAuthorScalarFieldEnum | FontAuthorScalarFieldEnum[]
+  }
+
+  /**
+   * FontAuthor findMany
+   */
+  export type FontAuthorFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FontAuthor
+     */
+    select?: FontAuthorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FontAuthor
+     */
+    omit?: FontAuthorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FontAuthorInclude<ExtArgs> | null
+    /**
+     * Filter, which FontAuthors to fetch.
+     */
+    where?: FontAuthorWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FontAuthors to fetch.
+     */
+    orderBy?: FontAuthorOrderByWithRelationInput | FontAuthorOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing FontAuthors.
+     */
+    cursor?: FontAuthorWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FontAuthors from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FontAuthors.
+     */
+    skip?: number
+    distinct?: FontAuthorScalarFieldEnum | FontAuthorScalarFieldEnum[]
+  }
+
+  /**
+   * FontAuthor create
+   */
+  export type FontAuthorCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FontAuthor
+     */
+    select?: FontAuthorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FontAuthor
+     */
+    omit?: FontAuthorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FontAuthorInclude<ExtArgs> | null
+    /**
+     * The data needed to create a FontAuthor.
+     */
+    data: XOR<FontAuthorCreateInput, FontAuthorUncheckedCreateInput>
+  }
+
+  /**
+   * FontAuthor createMany
+   */
+  export type FontAuthorCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many FontAuthors.
+     */
+    data: FontAuthorCreateManyInput | FontAuthorCreateManyInput[]
+  }
+
+  /**
+   * FontAuthor createManyAndReturn
+   */
+  export type FontAuthorCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FontAuthor
+     */
+    select?: FontAuthorSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the FontAuthor
+     */
+    omit?: FontAuthorOmit<ExtArgs> | null
+    /**
+     * The data used to create many FontAuthors.
+     */
+    data: FontAuthorCreateManyInput | FontAuthorCreateManyInput[]
+  }
+
+  /**
+   * FontAuthor update
+   */
+  export type FontAuthorUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FontAuthor
+     */
+    select?: FontAuthorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FontAuthor
+     */
+    omit?: FontAuthorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FontAuthorInclude<ExtArgs> | null
+    /**
+     * The data needed to update a FontAuthor.
+     */
+    data: XOR<FontAuthorUpdateInput, FontAuthorUncheckedUpdateInput>
+    /**
+     * Choose, which FontAuthor to update.
+     */
+    where: FontAuthorWhereUniqueInput
+  }
+
+  /**
+   * FontAuthor updateMany
+   */
+  export type FontAuthorUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update FontAuthors.
+     */
+    data: XOR<FontAuthorUpdateManyMutationInput, FontAuthorUncheckedUpdateManyInput>
+    /**
+     * Filter which FontAuthors to update
+     */
+    where?: FontAuthorWhereInput
+    /**
+     * Limit how many FontAuthors to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * FontAuthor updateManyAndReturn
+   */
+  export type FontAuthorUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FontAuthor
+     */
+    select?: FontAuthorSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the FontAuthor
+     */
+    omit?: FontAuthorOmit<ExtArgs> | null
+    /**
+     * The data used to update FontAuthors.
+     */
+    data: XOR<FontAuthorUpdateManyMutationInput, FontAuthorUncheckedUpdateManyInput>
+    /**
+     * Filter which FontAuthors to update
+     */
+    where?: FontAuthorWhereInput
+    /**
+     * Limit how many FontAuthors to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * FontAuthor upsert
+   */
+  export type FontAuthorUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FontAuthor
+     */
+    select?: FontAuthorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FontAuthor
+     */
+    omit?: FontAuthorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FontAuthorInclude<ExtArgs> | null
+    /**
+     * The filter to search for the FontAuthor to update in case it exists.
+     */
+    where: FontAuthorWhereUniqueInput
+    /**
+     * In case the FontAuthor found by the `where` argument doesn't exist, create a new FontAuthor with this data.
+     */
+    create: XOR<FontAuthorCreateInput, FontAuthorUncheckedCreateInput>
+    /**
+     * In case the FontAuthor was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<FontAuthorUpdateInput, FontAuthorUncheckedUpdateInput>
+  }
+
+  /**
+   * FontAuthor delete
+   */
+  export type FontAuthorDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FontAuthor
+     */
+    select?: FontAuthorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FontAuthor
+     */
+    omit?: FontAuthorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FontAuthorInclude<ExtArgs> | null
+    /**
+     * Filter which FontAuthor to delete.
+     */
+    where: FontAuthorWhereUniqueInput
+  }
+
+  /**
+   * FontAuthor deleteMany
+   */
+  export type FontAuthorDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which FontAuthors to delete
+     */
+    where?: FontAuthorWhereInput
+    /**
+     * Limit how many FontAuthors to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * FontAuthor.fonts
+   */
+  export type FontAuthor$fontsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Ingredient
+     */
+    select?: IngredientSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Ingredient
+     */
+    omit?: IngredientOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: IngredientInclude<ExtArgs> | null
+    where?: IngredientWhereInput
+    orderBy?: IngredientOrderByWithRelationInput | IngredientOrderByWithRelationInput[]
+    cursor?: IngredientWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: IngredientScalarFieldEnum | IngredientScalarFieldEnum[]
+  }
+
+  /**
+   * FontAuthor without action
+   */
+  export type FontAuthorDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FontAuthor
+     */
+    select?: FontAuthorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FontAuthor
+     */
+    omit?: FontAuthorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FontAuthorInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Model SeoModule
    */
 
@@ -7696,8 +9094,20 @@ export namespace Prisma {
 
   export type AggregateIngredient = {
     _count: IngredientCountAggregateOutputType | null
+    _avg: IngredientAvgAggregateOutputType | null
+    _sum: IngredientSumAggregateOutputType | null
     _min: IngredientMinAggregateOutputType | null
     _max: IngredientMaxAggregateOutputType | null
+  }
+
+  export type IngredientAvgAggregateOutputType = {
+    userRating: number | null
+    userRatingsCount: number | null
+  }
+
+  export type IngredientSumAggregateOutputType = {
+    userRating: number | null
+    userRatingsCount: number | null
   }
 
   export type IngredientMinAggregateOutputType = {
@@ -7709,7 +9119,12 @@ export namespace Prisma {
     rating: string | null
     symbol: string | null
     formula: string | null
+    importedFrom: string | null
+    licenseType: string | null
     isVariable: boolean | null
+    userRating: number | null
+    userRatingsCount: number | null
+    authorId: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -7723,7 +9138,12 @@ export namespace Prisma {
     rating: string | null
     symbol: string | null
     formula: string | null
+    importedFrom: string | null
+    licenseType: string | null
     isVariable: boolean | null
+    userRating: number | null
+    userRatingsCount: number | null
+    authorId: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -7737,12 +9157,27 @@ export namespace Prisma {
     rating: number
     symbol: number
     formula: number
+    importedFrom: number
+    licenseType: number
     isVariable: number
+    userRating: number
+    userRatingsCount: number
+    authorId: number
     createdAt: number
     updatedAt: number
     _all: number
   }
 
+
+  export type IngredientAvgAggregateInputType = {
+    userRating?: true
+    userRatingsCount?: true
+  }
+
+  export type IngredientSumAggregateInputType = {
+    userRating?: true
+    userRatingsCount?: true
+  }
 
   export type IngredientMinAggregateInputType = {
     id?: true
@@ -7753,7 +9188,12 @@ export namespace Prisma {
     rating?: true
     symbol?: true
     formula?: true
+    importedFrom?: true
+    licenseType?: true
     isVariable?: true
+    userRating?: true
+    userRatingsCount?: true
+    authorId?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -7767,7 +9207,12 @@ export namespace Prisma {
     rating?: true
     symbol?: true
     formula?: true
+    importedFrom?: true
+    licenseType?: true
     isVariable?: true
+    userRating?: true
+    userRatingsCount?: true
+    authorId?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -7781,7 +9226,12 @@ export namespace Prisma {
     rating?: true
     symbol?: true
     formula?: true
+    importedFrom?: true
+    licenseType?: true
     isVariable?: true
+    userRating?: true
+    userRatingsCount?: true
+    authorId?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -7825,6 +9275,18 @@ export namespace Prisma {
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
+     * Select which fields to average
+    **/
+    _avg?: IngredientAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: IngredientSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: IngredientMinAggregateInputType
@@ -7855,6 +9317,8 @@ export namespace Prisma {
     take?: number
     skip?: number
     _count?: IngredientCountAggregateInputType | true
+    _avg?: IngredientAvgAggregateInputType
+    _sum?: IngredientSumAggregateInputType
     _min?: IngredientMinAggregateInputType
     _max?: IngredientMaxAggregateInputType
   }
@@ -7868,10 +9332,17 @@ export namespace Prisma {
     rating: string
     symbol: string | null
     formula: string | null
+    importedFrom: string | null
+    licenseType: string | null
     isVariable: boolean
+    userRating: number | null
+    userRatingsCount: number | null
+    authorId: string | null
     createdAt: Date
     updatedAt: Date
     _count: IngredientCountAggregateOutputType | null
+    _avg: IngredientAvgAggregateOutputType | null
+    _sum: IngredientSumAggregateOutputType | null
     _min: IngredientMinAggregateOutputType | null
     _max: IngredientMaxAggregateOutputType | null
   }
@@ -7899,9 +9370,15 @@ export namespace Prisma {
     rating?: boolean
     symbol?: boolean
     formula?: boolean
+    importedFrom?: boolean
+    licenseType?: boolean
     isVariable?: boolean
+    userRating?: boolean
+    userRatingsCount?: boolean
+    authorId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    author?: boolean | Ingredient$authorArgs<ExtArgs>
     variants?: boolean | Ingredient$variantsArgs<ExtArgs>
     formulas?: boolean | Ingredient$formulasArgs<ExtArgs>
     primaryPrescriptions?: boolean | Ingredient$primaryPrescriptionsArgs<ExtArgs>
@@ -7920,9 +9397,15 @@ export namespace Prisma {
     rating?: boolean
     symbol?: boolean
     formula?: boolean
+    importedFrom?: boolean
+    licenseType?: boolean
     isVariable?: boolean
+    userRating?: boolean
+    userRatingsCount?: boolean
+    authorId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    author?: boolean | Ingredient$authorArgs<ExtArgs>
   }, ExtArgs["result"]["ingredient"]>
 
   export type IngredientSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -7934,9 +9417,15 @@ export namespace Prisma {
     rating?: boolean
     symbol?: boolean
     formula?: boolean
+    importedFrom?: boolean
+    licenseType?: boolean
     isVariable?: boolean
+    userRating?: boolean
+    userRatingsCount?: boolean
+    authorId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    author?: boolean | Ingredient$authorArgs<ExtArgs>
   }, ExtArgs["result"]["ingredient"]>
 
   export type IngredientSelectScalar = {
@@ -7948,13 +9437,19 @@ export namespace Prisma {
     rating?: boolean
     symbol?: boolean
     formula?: boolean
+    importedFrom?: boolean
+    licenseType?: boolean
     isVariable?: boolean
+    userRating?: boolean
+    userRatingsCount?: boolean
+    authorId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type IngredientOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "slug" | "category" | "creator" | "rating" | "symbol" | "formula" | "isVariable" | "createdAt" | "updatedAt", ExtArgs["result"]["ingredient"]>
+  export type IngredientOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "slug" | "category" | "creator" | "rating" | "symbol" | "formula" | "importedFrom" | "licenseType" | "isVariable" | "userRating" | "userRatingsCount" | "authorId" | "createdAt" | "updatedAt", ExtArgs["result"]["ingredient"]>
   export type IngredientInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    author?: boolean | Ingredient$authorArgs<ExtArgs>
     variants?: boolean | Ingredient$variantsArgs<ExtArgs>
     formulas?: boolean | Ingredient$formulasArgs<ExtArgs>
     primaryPrescriptions?: boolean | Ingredient$primaryPrescriptionsArgs<ExtArgs>
@@ -7963,12 +9458,17 @@ export namespace Prisma {
     posts?: boolean | Ingredient$postsArgs<ExtArgs>
     _count?: boolean | IngredientCountOutputTypeDefaultArgs<ExtArgs>
   }
-  export type IngredientIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
-  export type IngredientIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+  export type IngredientIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    author?: boolean | Ingredient$authorArgs<ExtArgs>
+  }
+  export type IngredientIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    author?: boolean | Ingredient$authorArgs<ExtArgs>
+  }
 
   export type $IngredientPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Ingredient"
     objects: {
+      author: Prisma.$FontAuthorPayload<ExtArgs> | null
       variants: Prisma.$FontVariantPayload<ExtArgs>[]
       formulas: Prisma.$FormulaPayload<ExtArgs>[]
       primaryPrescriptions: Prisma.$PrescriptionPayload<ExtArgs>[]
@@ -7985,7 +9485,12 @@ export namespace Prisma {
       rating: string
       symbol: string | null
       formula: string | null
+      importedFrom: string | null
+      licenseType: string | null
       isVariable: boolean
+      userRating: number | null
+      userRatingsCount: number | null
+      authorId: string | null
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["ingredient"]>
@@ -8382,6 +9887,7 @@ export namespace Prisma {
    */
   export interface Prisma__IngredientClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    author<T extends Ingredient$authorArgs<ExtArgs> = {}>(args?: Subset<T, Ingredient$authorArgs<ExtArgs>>): Prisma__FontAuthorClient<$Result.GetResult<Prisma.$FontAuthorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     variants<T extends Ingredient$variantsArgs<ExtArgs> = {}>(args?: Subset<T, Ingredient$variantsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FontVariantPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     formulas<T extends Ingredient$formulasArgs<ExtArgs> = {}>(args?: Subset<T, Ingredient$formulasArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FormulaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     primaryPrescriptions<T extends Ingredient$primaryPrescriptionsArgs<ExtArgs> = {}>(args?: Subset<T, Ingredient$primaryPrescriptionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PrescriptionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -8425,7 +9931,12 @@ export namespace Prisma {
     readonly rating: FieldRef<"Ingredient", 'String'>
     readonly symbol: FieldRef<"Ingredient", 'String'>
     readonly formula: FieldRef<"Ingredient", 'String'>
+    readonly importedFrom: FieldRef<"Ingredient", 'String'>
+    readonly licenseType: FieldRef<"Ingredient", 'String'>
     readonly isVariable: FieldRef<"Ingredient", 'Boolean'>
+    readonly userRating: FieldRef<"Ingredient", 'Float'>
+    readonly userRatingsCount: FieldRef<"Ingredient", 'Int'>
+    readonly authorId: FieldRef<"Ingredient", 'String'>
     readonly createdAt: FieldRef<"Ingredient", 'DateTime'>
     readonly updatedAt: FieldRef<"Ingredient", 'DateTime'>
   }
@@ -8675,6 +10186,10 @@ export namespace Prisma {
      * The data used to create many Ingredients.
      */
     data: IngredientCreateManyInput | IngredientCreateManyInput[]
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: IngredientIncludeCreateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -8745,6 +10260,10 @@ export namespace Prisma {
      * Limit how many Ingredients to update.
      */
     limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: IngredientIncludeUpdateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -8811,6 +10330,25 @@ export namespace Prisma {
      * Limit how many Ingredients to delete.
      */
     limit?: number
+  }
+
+  /**
+   * Ingredient.author
+   */
+  export type Ingredient$authorArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FontAuthor
+     */
+    select?: FontAuthorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FontAuthor
+     */
+    omit?: FontAuthorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FontAuthorInclude<ExtArgs> | null
+    where?: FontAuthorWhereInput
   }
 
   /**
@@ -13780,6 +15318,33 @@ export namespace Prisma {
   export type PermissionScalarFieldEnum = (typeof PermissionScalarFieldEnum)[keyof typeof PermissionScalarFieldEnum]
 
 
+  export const FontAuthorScalarFieldEnum: {
+    id: 'id',
+    slug: 'slug',
+    name: 'name',
+    type: 'type',
+    email: 'email',
+    supportEmail: 'supportEmail',
+    avatarUrl: 'avatarUrl',
+    bannerUrl: 'bannerUrl',
+    bio: 'bio',
+    website: 'website',
+    donation: 'donation',
+    nationality: 'nationality',
+    languagesSpoken: 'languagesSpoken',
+    isVerified: 'isVerified',
+    socialLinks: 'socialLinks',
+    metrics: 'metrics',
+    businessInfo: 'businessInfo',
+    specialties: 'specialties',
+    status: 'status',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type FontAuthorScalarFieldEnum = (typeof FontAuthorScalarFieldEnum)[keyof typeof FontAuthorScalarFieldEnum]
+
+
   export const SeoModuleScalarFieldEnum: {
     id: 'id',
     metaTitle: 'metaTitle',
@@ -13825,7 +15390,12 @@ export namespace Prisma {
     rating: 'rating',
     symbol: 'symbol',
     formula: 'formula',
+    importedFrom: 'importedFrom',
+    licenseType: 'licenseType',
     isVariable: 'isVariable',
+    userRating: 'userRating',
+    userRatingsCount: 'userRatingsCount',
+    authorId: 'authorId',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -14148,6 +15718,141 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"Permission"> | Date | string
   }
 
+  export type FontAuthorWhereInput = {
+    AND?: FontAuthorWhereInput | FontAuthorWhereInput[]
+    OR?: FontAuthorWhereInput[]
+    NOT?: FontAuthorWhereInput | FontAuthorWhereInput[]
+    id?: StringFilter<"FontAuthor"> | string
+    slug?: StringFilter<"FontAuthor"> | string
+    name?: StringFilter<"FontAuthor"> | string
+    type?: StringFilter<"FontAuthor"> | string
+    email?: StringFilter<"FontAuthor"> | string
+    supportEmail?: StringNullableFilter<"FontAuthor"> | string | null
+    avatarUrl?: StringNullableFilter<"FontAuthor"> | string | null
+    bannerUrl?: StringNullableFilter<"FontAuthor"> | string | null
+    bio?: StringNullableFilter<"FontAuthor"> | string | null
+    website?: StringNullableFilter<"FontAuthor"> | string | null
+    donation?: StringNullableFilter<"FontAuthor"> | string | null
+    nationality?: StringNullableFilter<"FontAuthor"> | string | null
+    languagesSpoken?: StringNullableFilter<"FontAuthor"> | string | null
+    isVerified?: BoolFilter<"FontAuthor"> | boolean
+    socialLinks?: StringNullableFilter<"FontAuthor"> | string | null
+    metrics?: StringNullableFilter<"FontAuthor"> | string | null
+    businessInfo?: StringNullableFilter<"FontAuthor"> | string | null
+    specialties?: StringNullableFilter<"FontAuthor"> | string | null
+    status?: StringFilter<"FontAuthor"> | string
+    createdAt?: DateTimeFilter<"FontAuthor"> | Date | string
+    updatedAt?: DateTimeFilter<"FontAuthor"> | Date | string
+    fonts?: IngredientListRelationFilter
+  }
+
+  export type FontAuthorOrderByWithRelationInput = {
+    id?: SortOrder
+    slug?: SortOrder
+    name?: SortOrder
+    type?: SortOrder
+    email?: SortOrder
+    supportEmail?: SortOrderInput | SortOrder
+    avatarUrl?: SortOrderInput | SortOrder
+    bannerUrl?: SortOrderInput | SortOrder
+    bio?: SortOrderInput | SortOrder
+    website?: SortOrderInput | SortOrder
+    donation?: SortOrderInput | SortOrder
+    nationality?: SortOrderInput | SortOrder
+    languagesSpoken?: SortOrderInput | SortOrder
+    isVerified?: SortOrder
+    socialLinks?: SortOrderInput | SortOrder
+    metrics?: SortOrderInput | SortOrder
+    businessInfo?: SortOrderInput | SortOrder
+    specialties?: SortOrderInput | SortOrder
+    status?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    fonts?: IngredientOrderByRelationAggregateInput
+  }
+
+  export type FontAuthorWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    slug?: string
+    AND?: FontAuthorWhereInput | FontAuthorWhereInput[]
+    OR?: FontAuthorWhereInput[]
+    NOT?: FontAuthorWhereInput | FontAuthorWhereInput[]
+    name?: StringFilter<"FontAuthor"> | string
+    type?: StringFilter<"FontAuthor"> | string
+    email?: StringFilter<"FontAuthor"> | string
+    supportEmail?: StringNullableFilter<"FontAuthor"> | string | null
+    avatarUrl?: StringNullableFilter<"FontAuthor"> | string | null
+    bannerUrl?: StringNullableFilter<"FontAuthor"> | string | null
+    bio?: StringNullableFilter<"FontAuthor"> | string | null
+    website?: StringNullableFilter<"FontAuthor"> | string | null
+    donation?: StringNullableFilter<"FontAuthor"> | string | null
+    nationality?: StringNullableFilter<"FontAuthor"> | string | null
+    languagesSpoken?: StringNullableFilter<"FontAuthor"> | string | null
+    isVerified?: BoolFilter<"FontAuthor"> | boolean
+    socialLinks?: StringNullableFilter<"FontAuthor"> | string | null
+    metrics?: StringNullableFilter<"FontAuthor"> | string | null
+    businessInfo?: StringNullableFilter<"FontAuthor"> | string | null
+    specialties?: StringNullableFilter<"FontAuthor"> | string | null
+    status?: StringFilter<"FontAuthor"> | string
+    createdAt?: DateTimeFilter<"FontAuthor"> | Date | string
+    updatedAt?: DateTimeFilter<"FontAuthor"> | Date | string
+    fonts?: IngredientListRelationFilter
+  }, "id" | "slug">
+
+  export type FontAuthorOrderByWithAggregationInput = {
+    id?: SortOrder
+    slug?: SortOrder
+    name?: SortOrder
+    type?: SortOrder
+    email?: SortOrder
+    supportEmail?: SortOrderInput | SortOrder
+    avatarUrl?: SortOrderInput | SortOrder
+    bannerUrl?: SortOrderInput | SortOrder
+    bio?: SortOrderInput | SortOrder
+    website?: SortOrderInput | SortOrder
+    donation?: SortOrderInput | SortOrder
+    nationality?: SortOrderInput | SortOrder
+    languagesSpoken?: SortOrderInput | SortOrder
+    isVerified?: SortOrder
+    socialLinks?: SortOrderInput | SortOrder
+    metrics?: SortOrderInput | SortOrder
+    businessInfo?: SortOrderInput | SortOrder
+    specialties?: SortOrderInput | SortOrder
+    status?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: FontAuthorCountOrderByAggregateInput
+    _max?: FontAuthorMaxOrderByAggregateInput
+    _min?: FontAuthorMinOrderByAggregateInput
+  }
+
+  export type FontAuthorScalarWhereWithAggregatesInput = {
+    AND?: FontAuthorScalarWhereWithAggregatesInput | FontAuthorScalarWhereWithAggregatesInput[]
+    OR?: FontAuthorScalarWhereWithAggregatesInput[]
+    NOT?: FontAuthorScalarWhereWithAggregatesInput | FontAuthorScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"FontAuthor"> | string
+    slug?: StringWithAggregatesFilter<"FontAuthor"> | string
+    name?: StringWithAggregatesFilter<"FontAuthor"> | string
+    type?: StringWithAggregatesFilter<"FontAuthor"> | string
+    email?: StringWithAggregatesFilter<"FontAuthor"> | string
+    supportEmail?: StringNullableWithAggregatesFilter<"FontAuthor"> | string | null
+    avatarUrl?: StringNullableWithAggregatesFilter<"FontAuthor"> | string | null
+    bannerUrl?: StringNullableWithAggregatesFilter<"FontAuthor"> | string | null
+    bio?: StringNullableWithAggregatesFilter<"FontAuthor"> | string | null
+    website?: StringNullableWithAggregatesFilter<"FontAuthor"> | string | null
+    donation?: StringNullableWithAggregatesFilter<"FontAuthor"> | string | null
+    nationality?: StringNullableWithAggregatesFilter<"FontAuthor"> | string | null
+    languagesSpoken?: StringNullableWithAggregatesFilter<"FontAuthor"> | string | null
+    isVerified?: BoolWithAggregatesFilter<"FontAuthor"> | boolean
+    socialLinks?: StringNullableWithAggregatesFilter<"FontAuthor"> | string | null
+    metrics?: StringNullableWithAggregatesFilter<"FontAuthor"> | string | null
+    businessInfo?: StringNullableWithAggregatesFilter<"FontAuthor"> | string | null
+    specialties?: StringNullableWithAggregatesFilter<"FontAuthor"> | string | null
+    status?: StringWithAggregatesFilter<"FontAuthor"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"FontAuthor"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"FontAuthor"> | Date | string
+  }
+
   export type SeoModuleWhereInput = {
     AND?: SeoModuleWhereInput | SeoModuleWhereInput[]
     OR?: SeoModuleWhereInput[]
@@ -14345,9 +16050,15 @@ export namespace Prisma {
     rating?: StringFilter<"Ingredient"> | string
     symbol?: StringNullableFilter<"Ingredient"> | string | null
     formula?: StringNullableFilter<"Ingredient"> | string | null
+    importedFrom?: StringNullableFilter<"Ingredient"> | string | null
+    licenseType?: StringNullableFilter<"Ingredient"> | string | null
     isVariable?: BoolFilter<"Ingredient"> | boolean
+    userRating?: FloatNullableFilter<"Ingredient"> | number | null
+    userRatingsCount?: IntNullableFilter<"Ingredient"> | number | null
+    authorId?: StringNullableFilter<"Ingredient"> | string | null
     createdAt?: DateTimeFilter<"Ingredient"> | Date | string
     updatedAt?: DateTimeFilter<"Ingredient"> | Date | string
+    author?: XOR<FontAuthorNullableScalarRelationFilter, FontAuthorWhereInput> | null
     variants?: FontVariantListRelationFilter
     formulas?: FormulaListRelationFilter
     primaryPrescriptions?: PrescriptionListRelationFilter
@@ -14365,9 +16076,15 @@ export namespace Prisma {
     rating?: SortOrder
     symbol?: SortOrderInput | SortOrder
     formula?: SortOrderInput | SortOrder
+    importedFrom?: SortOrderInput | SortOrder
+    licenseType?: SortOrderInput | SortOrder
     isVariable?: SortOrder
+    userRating?: SortOrderInput | SortOrder
+    userRatingsCount?: SortOrderInput | SortOrder
+    authorId?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    author?: FontAuthorOrderByWithRelationInput
     variants?: FontVariantOrderByRelationAggregateInput
     formulas?: FormulaOrderByRelationAggregateInput
     primaryPrescriptions?: PrescriptionOrderByRelationAggregateInput
@@ -14388,9 +16105,15 @@ export namespace Prisma {
     rating?: StringFilter<"Ingredient"> | string
     symbol?: StringNullableFilter<"Ingredient"> | string | null
     formula?: StringNullableFilter<"Ingredient"> | string | null
+    importedFrom?: StringNullableFilter<"Ingredient"> | string | null
+    licenseType?: StringNullableFilter<"Ingredient"> | string | null
     isVariable?: BoolFilter<"Ingredient"> | boolean
+    userRating?: FloatNullableFilter<"Ingredient"> | number | null
+    userRatingsCount?: IntNullableFilter<"Ingredient"> | number | null
+    authorId?: StringNullableFilter<"Ingredient"> | string | null
     createdAt?: DateTimeFilter<"Ingredient"> | Date | string
     updatedAt?: DateTimeFilter<"Ingredient"> | Date | string
+    author?: XOR<FontAuthorNullableScalarRelationFilter, FontAuthorWhereInput> | null
     variants?: FontVariantListRelationFilter
     formulas?: FormulaListRelationFilter
     primaryPrescriptions?: PrescriptionListRelationFilter
@@ -14408,12 +16131,19 @@ export namespace Prisma {
     rating?: SortOrder
     symbol?: SortOrderInput | SortOrder
     formula?: SortOrderInput | SortOrder
+    importedFrom?: SortOrderInput | SortOrder
+    licenseType?: SortOrderInput | SortOrder
     isVariable?: SortOrder
+    userRating?: SortOrderInput | SortOrder
+    userRatingsCount?: SortOrderInput | SortOrder
+    authorId?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: IngredientCountOrderByAggregateInput
+    _avg?: IngredientAvgOrderByAggregateInput
     _max?: IngredientMaxOrderByAggregateInput
     _min?: IngredientMinOrderByAggregateInput
+    _sum?: IngredientSumOrderByAggregateInput
   }
 
   export type IngredientScalarWhereWithAggregatesInput = {
@@ -14428,7 +16158,12 @@ export namespace Prisma {
     rating?: StringWithAggregatesFilter<"Ingredient"> | string
     symbol?: StringNullableWithAggregatesFilter<"Ingredient"> | string | null
     formula?: StringNullableWithAggregatesFilter<"Ingredient"> | string | null
+    importedFrom?: StringNullableWithAggregatesFilter<"Ingredient"> | string | null
+    licenseType?: StringNullableWithAggregatesFilter<"Ingredient"> | string | null
     isVariable?: BoolWithAggregatesFilter<"Ingredient"> | boolean
+    userRating?: FloatNullableWithAggregatesFilter<"Ingredient"> | number | null
+    userRatingsCount?: IntNullableWithAggregatesFilter<"Ingredient"> | number | null
+    authorId?: StringNullableWithAggregatesFilter<"Ingredient"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Ingredient"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Ingredient"> | Date | string
   }
@@ -14987,6 +16722,178 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type FontAuthorCreateInput = {
+    id?: string
+    slug: string
+    name: string
+    type?: string
+    email: string
+    supportEmail?: string | null
+    avatarUrl?: string | null
+    bannerUrl?: string | null
+    bio?: string | null
+    website?: string | null
+    donation?: string | null
+    nationality?: string | null
+    languagesSpoken?: string | null
+    isVerified?: boolean
+    socialLinks?: string | null
+    metrics?: string | null
+    businessInfo?: string | null
+    specialties?: string | null
+    status?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    fonts?: IngredientCreateNestedManyWithoutAuthorInput
+  }
+
+  export type FontAuthorUncheckedCreateInput = {
+    id?: string
+    slug: string
+    name: string
+    type?: string
+    email: string
+    supportEmail?: string | null
+    avatarUrl?: string | null
+    bannerUrl?: string | null
+    bio?: string | null
+    website?: string | null
+    donation?: string | null
+    nationality?: string | null
+    languagesSpoken?: string | null
+    isVerified?: boolean
+    socialLinks?: string | null
+    metrics?: string | null
+    businessInfo?: string | null
+    specialties?: string | null
+    status?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    fonts?: IngredientUncheckedCreateNestedManyWithoutAuthorInput
+  }
+
+  export type FontAuthorUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    supportEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    bannerUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
+    website?: NullableStringFieldUpdateOperationsInput | string | null
+    donation?: NullableStringFieldUpdateOperationsInput | string | null
+    nationality?: NullableStringFieldUpdateOperationsInput | string | null
+    languagesSpoken?: NullableStringFieldUpdateOperationsInput | string | null
+    isVerified?: BoolFieldUpdateOperationsInput | boolean
+    socialLinks?: NullableStringFieldUpdateOperationsInput | string | null
+    metrics?: NullableStringFieldUpdateOperationsInput | string | null
+    businessInfo?: NullableStringFieldUpdateOperationsInput | string | null
+    specialties?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    fonts?: IngredientUpdateManyWithoutAuthorNestedInput
+  }
+
+  export type FontAuthorUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    supportEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    bannerUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
+    website?: NullableStringFieldUpdateOperationsInput | string | null
+    donation?: NullableStringFieldUpdateOperationsInput | string | null
+    nationality?: NullableStringFieldUpdateOperationsInput | string | null
+    languagesSpoken?: NullableStringFieldUpdateOperationsInput | string | null
+    isVerified?: BoolFieldUpdateOperationsInput | boolean
+    socialLinks?: NullableStringFieldUpdateOperationsInput | string | null
+    metrics?: NullableStringFieldUpdateOperationsInput | string | null
+    businessInfo?: NullableStringFieldUpdateOperationsInput | string | null
+    specialties?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    fonts?: IngredientUncheckedUpdateManyWithoutAuthorNestedInput
+  }
+
+  export type FontAuthorCreateManyInput = {
+    id?: string
+    slug: string
+    name: string
+    type?: string
+    email: string
+    supportEmail?: string | null
+    avatarUrl?: string | null
+    bannerUrl?: string | null
+    bio?: string | null
+    website?: string | null
+    donation?: string | null
+    nationality?: string | null
+    languagesSpoken?: string | null
+    isVerified?: boolean
+    socialLinks?: string | null
+    metrics?: string | null
+    businessInfo?: string | null
+    specialties?: string | null
+    status?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type FontAuthorUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    supportEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    bannerUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
+    website?: NullableStringFieldUpdateOperationsInput | string | null
+    donation?: NullableStringFieldUpdateOperationsInput | string | null
+    nationality?: NullableStringFieldUpdateOperationsInput | string | null
+    languagesSpoken?: NullableStringFieldUpdateOperationsInput | string | null
+    isVerified?: BoolFieldUpdateOperationsInput | boolean
+    socialLinks?: NullableStringFieldUpdateOperationsInput | string | null
+    metrics?: NullableStringFieldUpdateOperationsInput | string | null
+    businessInfo?: NullableStringFieldUpdateOperationsInput | string | null
+    specialties?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FontAuthorUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    supportEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    bannerUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
+    website?: NullableStringFieldUpdateOperationsInput | string | null
+    donation?: NullableStringFieldUpdateOperationsInput | string | null
+    nationality?: NullableStringFieldUpdateOperationsInput | string | null
+    languagesSpoken?: NullableStringFieldUpdateOperationsInput | string | null
+    isVerified?: BoolFieldUpdateOperationsInput | boolean
+    socialLinks?: NullableStringFieldUpdateOperationsInput | string | null
+    metrics?: NullableStringFieldUpdateOperationsInput | string | null
+    businessInfo?: NullableStringFieldUpdateOperationsInput | string | null
+    specialties?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type SeoModuleCreateInput = {
     id?: string
     metaTitle?: string | null
@@ -15213,9 +17120,14 @@ export namespace Prisma {
     rating: string
     symbol?: string | null
     formula?: string | null
+    importedFrom?: string | null
+    licenseType?: string | null
     isVariable?: boolean
+    userRating?: number | null
+    userRatingsCount?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    author?: FontAuthorCreateNestedOneWithoutFontsInput
     variants?: FontVariantCreateNestedManyWithoutIngredientInput
     formulas?: FormulaCreateNestedManyWithoutFontsInput
     primaryPrescriptions?: PrescriptionCreateNestedManyWithoutPrimaryFontInput
@@ -15233,7 +17145,12 @@ export namespace Prisma {
     rating: string
     symbol?: string | null
     formula?: string | null
+    importedFrom?: string | null
+    licenseType?: string | null
     isVariable?: boolean
+    userRating?: number | null
+    userRatingsCount?: number | null
+    authorId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     variants?: FontVariantUncheckedCreateNestedManyWithoutIngredientInput
@@ -15253,9 +17170,14 @@ export namespace Prisma {
     rating?: StringFieldUpdateOperationsInput | string
     symbol?: NullableStringFieldUpdateOperationsInput | string | null
     formula?: NullableStringFieldUpdateOperationsInput | string | null
+    importedFrom?: NullableStringFieldUpdateOperationsInput | string | null
+    licenseType?: NullableStringFieldUpdateOperationsInput | string | null
     isVariable?: BoolFieldUpdateOperationsInput | boolean
+    userRating?: NullableFloatFieldUpdateOperationsInput | number | null
+    userRatingsCount?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    author?: FontAuthorUpdateOneWithoutFontsNestedInput
     variants?: FontVariantUpdateManyWithoutIngredientNestedInput
     formulas?: FormulaUpdateManyWithoutFontsNestedInput
     primaryPrescriptions?: PrescriptionUpdateManyWithoutPrimaryFontNestedInput
@@ -15273,7 +17195,12 @@ export namespace Prisma {
     rating?: StringFieldUpdateOperationsInput | string
     symbol?: NullableStringFieldUpdateOperationsInput | string | null
     formula?: NullableStringFieldUpdateOperationsInput | string | null
+    importedFrom?: NullableStringFieldUpdateOperationsInput | string | null
+    licenseType?: NullableStringFieldUpdateOperationsInput | string | null
     isVariable?: BoolFieldUpdateOperationsInput | boolean
+    userRating?: NullableFloatFieldUpdateOperationsInput | number | null
+    userRatingsCount?: NullableIntFieldUpdateOperationsInput | number | null
+    authorId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     variants?: FontVariantUncheckedUpdateManyWithoutIngredientNestedInput
@@ -15293,7 +17220,12 @@ export namespace Prisma {
     rating: string
     symbol?: string | null
     formula?: string | null
+    importedFrom?: string | null
+    licenseType?: string | null
     isVariable?: boolean
+    userRating?: number | null
+    userRatingsCount?: number | null
+    authorId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -15307,7 +17239,11 @@ export namespace Prisma {
     rating?: StringFieldUpdateOperationsInput | string
     symbol?: NullableStringFieldUpdateOperationsInput | string | null
     formula?: NullableStringFieldUpdateOperationsInput | string | null
+    importedFrom?: NullableStringFieldUpdateOperationsInput | string | null
+    licenseType?: NullableStringFieldUpdateOperationsInput | string | null
     isVariable?: BoolFieldUpdateOperationsInput | boolean
+    userRating?: NullableFloatFieldUpdateOperationsInput | number | null
+    userRatingsCount?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -15321,7 +17257,12 @@ export namespace Prisma {
     rating?: StringFieldUpdateOperationsInput | string
     symbol?: NullableStringFieldUpdateOperationsInput | string | null
     formula?: NullableStringFieldUpdateOperationsInput | string | null
+    importedFrom?: NullableStringFieldUpdateOperationsInput | string | null
+    licenseType?: NullableStringFieldUpdateOperationsInput | string | null
     isVariable?: BoolFieldUpdateOperationsInput | boolean
+    userRating?: NullableFloatFieldUpdateOperationsInput | number | null
+    userRatingsCount?: NullableIntFieldUpdateOperationsInput | number | null
+    authorId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -15949,6 +17890,96 @@ export namespace Prisma {
     not?: NestedBoolFilter<$PrismaModel> | boolean
   }
 
+  export type IngredientListRelationFilter = {
+    every?: IngredientWhereInput
+    some?: IngredientWhereInput
+    none?: IngredientWhereInput
+  }
+
+  export type IngredientOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type FontAuthorCountOrderByAggregateInput = {
+    id?: SortOrder
+    slug?: SortOrder
+    name?: SortOrder
+    type?: SortOrder
+    email?: SortOrder
+    supportEmail?: SortOrder
+    avatarUrl?: SortOrder
+    bannerUrl?: SortOrder
+    bio?: SortOrder
+    website?: SortOrder
+    donation?: SortOrder
+    nationality?: SortOrder
+    languagesSpoken?: SortOrder
+    isVerified?: SortOrder
+    socialLinks?: SortOrder
+    metrics?: SortOrder
+    businessInfo?: SortOrder
+    specialties?: SortOrder
+    status?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type FontAuthorMaxOrderByAggregateInput = {
+    id?: SortOrder
+    slug?: SortOrder
+    name?: SortOrder
+    type?: SortOrder
+    email?: SortOrder
+    supportEmail?: SortOrder
+    avatarUrl?: SortOrder
+    bannerUrl?: SortOrder
+    bio?: SortOrder
+    website?: SortOrder
+    donation?: SortOrder
+    nationality?: SortOrder
+    languagesSpoken?: SortOrder
+    isVerified?: SortOrder
+    socialLinks?: SortOrder
+    metrics?: SortOrder
+    businessInfo?: SortOrder
+    specialties?: SortOrder
+    status?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type FontAuthorMinOrderByAggregateInput = {
+    id?: SortOrder
+    slug?: SortOrder
+    name?: SortOrder
+    type?: SortOrder
+    email?: SortOrder
+    supportEmail?: SortOrder
+    avatarUrl?: SortOrder
+    bannerUrl?: SortOrder
+    bio?: SortOrder
+    website?: SortOrder
+    donation?: SortOrder
+    nationality?: SortOrder
+    languagesSpoken?: SortOrder
+    isVerified?: SortOrder
+    socialLinks?: SortOrder
+    metrics?: SortOrder
+    businessInfo?: SortOrder
+    specialties?: SortOrder
+    status?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type BoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
+  }
+
   export type PostNullableScalarRelationFilter = {
     is?: PostWhereInput | null
     isNot?: PostWhereInput | null
@@ -16017,14 +18048,6 @@ export namespace Prisma {
     noIndex?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-  }
-
-  export type BoolWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedBoolFilter<$PrismaModel>
-    _max?: NestedBoolFilter<$PrismaModel>
   }
 
   export type IntFilter<$PrismaModel = never> = {
@@ -16097,6 +18120,33 @@ export namespace Prisma {
     _max?: NestedIntFilter<$PrismaModel>
   }
 
+  export type FloatNullableFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | null
+    notIn?: number[] | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableFilter<$PrismaModel> | number | null
+  }
+
+  export type IntNullableFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | null
+    notIn?: number[] | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableFilter<$PrismaModel> | number | null
+  }
+
+  export type FontAuthorNullableScalarRelationFilter = {
+    is?: FontAuthorWhereInput | null
+    isNot?: FontAuthorWhereInput | null
+  }
+
   export type FontVariantListRelationFilter = {
     every?: FontVariantWhereInput
     some?: FontVariantWhereInput
@@ -16146,9 +18196,19 @@ export namespace Prisma {
     rating?: SortOrder
     symbol?: SortOrder
     formula?: SortOrder
+    importedFrom?: SortOrder
+    licenseType?: SortOrder
     isVariable?: SortOrder
+    userRating?: SortOrder
+    userRatingsCount?: SortOrder
+    authorId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+  }
+
+  export type IngredientAvgOrderByAggregateInput = {
+    userRating?: SortOrder
+    userRatingsCount?: SortOrder
   }
 
   export type IngredientMaxOrderByAggregateInput = {
@@ -16160,7 +18220,12 @@ export namespace Prisma {
     rating?: SortOrder
     symbol?: SortOrder
     formula?: SortOrder
+    importedFrom?: SortOrder
+    licenseType?: SortOrder
     isVariable?: SortOrder
+    userRating?: SortOrder
+    userRatingsCount?: SortOrder
+    authorId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -16174,19 +18239,51 @@ export namespace Prisma {
     rating?: SortOrder
     symbol?: SortOrder
     formula?: SortOrder
+    importedFrom?: SortOrder
+    licenseType?: SortOrder
     isVariable?: SortOrder
+    userRating?: SortOrder
+    userRatingsCount?: SortOrder
+    authorId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
 
-  export type IngredientListRelationFilter = {
-    every?: IngredientWhereInput
-    some?: IngredientWhereInput
-    none?: IngredientWhereInput
+  export type IngredientSumOrderByAggregateInput = {
+    userRating?: SortOrder
+    userRatingsCount?: SortOrder
   }
 
-  export type IngredientOrderByRelationAggregateInput = {
-    _count?: SortOrder
+  export type FloatNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | null
+    notIn?: number[] | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedFloatNullableFilter<$PrismaModel>
+    _min?: NestedFloatNullableFilter<$PrismaModel>
+    _max?: NestedFloatNullableFilter<$PrismaModel>
+  }
+
+  export type IntNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | null
+    notIn?: number[] | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedIntNullableFilter<$PrismaModel>
+    _max?: NestedIntNullableFilter<$PrismaModel>
   }
 
   export type FormulaCountOrderByAggregateInput = {
@@ -16562,6 +18659,52 @@ export namespace Prisma {
     deleteMany?: RoleScalarWhereInput | RoleScalarWhereInput[]
   }
 
+  export type IngredientCreateNestedManyWithoutAuthorInput = {
+    create?: XOR<IngredientCreateWithoutAuthorInput, IngredientUncheckedCreateWithoutAuthorInput> | IngredientCreateWithoutAuthorInput[] | IngredientUncheckedCreateWithoutAuthorInput[]
+    connectOrCreate?: IngredientCreateOrConnectWithoutAuthorInput | IngredientCreateOrConnectWithoutAuthorInput[]
+    createMany?: IngredientCreateManyAuthorInputEnvelope
+    connect?: IngredientWhereUniqueInput | IngredientWhereUniqueInput[]
+  }
+
+  export type IngredientUncheckedCreateNestedManyWithoutAuthorInput = {
+    create?: XOR<IngredientCreateWithoutAuthorInput, IngredientUncheckedCreateWithoutAuthorInput> | IngredientCreateWithoutAuthorInput[] | IngredientUncheckedCreateWithoutAuthorInput[]
+    connectOrCreate?: IngredientCreateOrConnectWithoutAuthorInput | IngredientCreateOrConnectWithoutAuthorInput[]
+    createMany?: IngredientCreateManyAuthorInputEnvelope
+    connect?: IngredientWhereUniqueInput | IngredientWhereUniqueInput[]
+  }
+
+  export type BoolFieldUpdateOperationsInput = {
+    set?: boolean
+  }
+
+  export type IngredientUpdateManyWithoutAuthorNestedInput = {
+    create?: XOR<IngredientCreateWithoutAuthorInput, IngredientUncheckedCreateWithoutAuthorInput> | IngredientCreateWithoutAuthorInput[] | IngredientUncheckedCreateWithoutAuthorInput[]
+    connectOrCreate?: IngredientCreateOrConnectWithoutAuthorInput | IngredientCreateOrConnectWithoutAuthorInput[]
+    upsert?: IngredientUpsertWithWhereUniqueWithoutAuthorInput | IngredientUpsertWithWhereUniqueWithoutAuthorInput[]
+    createMany?: IngredientCreateManyAuthorInputEnvelope
+    set?: IngredientWhereUniqueInput | IngredientWhereUniqueInput[]
+    disconnect?: IngredientWhereUniqueInput | IngredientWhereUniqueInput[]
+    delete?: IngredientWhereUniqueInput | IngredientWhereUniqueInput[]
+    connect?: IngredientWhereUniqueInput | IngredientWhereUniqueInput[]
+    update?: IngredientUpdateWithWhereUniqueWithoutAuthorInput | IngredientUpdateWithWhereUniqueWithoutAuthorInput[]
+    updateMany?: IngredientUpdateManyWithWhereWithoutAuthorInput | IngredientUpdateManyWithWhereWithoutAuthorInput[]
+    deleteMany?: IngredientScalarWhereInput | IngredientScalarWhereInput[]
+  }
+
+  export type IngredientUncheckedUpdateManyWithoutAuthorNestedInput = {
+    create?: XOR<IngredientCreateWithoutAuthorInput, IngredientUncheckedCreateWithoutAuthorInput> | IngredientCreateWithoutAuthorInput[] | IngredientUncheckedCreateWithoutAuthorInput[]
+    connectOrCreate?: IngredientCreateOrConnectWithoutAuthorInput | IngredientCreateOrConnectWithoutAuthorInput[]
+    upsert?: IngredientUpsertWithWhereUniqueWithoutAuthorInput | IngredientUpsertWithWhereUniqueWithoutAuthorInput[]
+    createMany?: IngredientCreateManyAuthorInputEnvelope
+    set?: IngredientWhereUniqueInput | IngredientWhereUniqueInput[]
+    disconnect?: IngredientWhereUniqueInput | IngredientWhereUniqueInput[]
+    delete?: IngredientWhereUniqueInput | IngredientWhereUniqueInput[]
+    connect?: IngredientWhereUniqueInput | IngredientWhereUniqueInput[]
+    update?: IngredientUpdateWithWhereUniqueWithoutAuthorInput | IngredientUpdateWithWhereUniqueWithoutAuthorInput[]
+    updateMany?: IngredientUpdateManyWithWhereWithoutAuthorInput | IngredientUpdateManyWithWhereWithoutAuthorInput[]
+    deleteMany?: IngredientScalarWhereInput | IngredientScalarWhereInput[]
+  }
+
   export type PostCreateNestedOneWithoutSeoInput = {
     create?: XOR<PostCreateWithoutSeoInput, PostUncheckedCreateWithoutSeoInput>
     connectOrCreate?: PostCreateOrConnectWithoutSeoInput
@@ -16584,10 +18727,6 @@ export namespace Prisma {
     create?: XOR<PrescriptionCreateWithoutSeoInput, PrescriptionUncheckedCreateWithoutSeoInput>
     connectOrCreate?: PrescriptionCreateOrConnectWithoutSeoInput
     connect?: PrescriptionWhereUniqueInput
-  }
-
-  export type BoolFieldUpdateOperationsInput = {
-    set?: boolean
   }
 
   export type PostUpdateOneWithoutSeoNestedInput = {
@@ -16650,6 +18789,12 @@ export namespace Prisma {
     upsert?: IngredientUpsertWithoutVariantsInput
     connect?: IngredientWhereUniqueInput
     update?: XOR<XOR<IngredientUpdateToOneWithWhereWithoutVariantsInput, IngredientUpdateWithoutVariantsInput>, IngredientUncheckedUpdateWithoutVariantsInput>
+  }
+
+  export type FontAuthorCreateNestedOneWithoutFontsInput = {
+    create?: XOR<FontAuthorCreateWithoutFontsInput, FontAuthorUncheckedCreateWithoutFontsInput>
+    connectOrCreate?: FontAuthorCreateOrConnectWithoutFontsInput
+    connect?: FontAuthorWhereUniqueInput
   }
 
   export type FontVariantCreateNestedManyWithoutIngredientInput = {
@@ -16728,6 +18873,32 @@ export namespace Prisma {
     create?: XOR<PostCreateWithoutFontsInput, PostUncheckedCreateWithoutFontsInput> | PostCreateWithoutFontsInput[] | PostUncheckedCreateWithoutFontsInput[]
     connectOrCreate?: PostCreateOrConnectWithoutFontsInput | PostCreateOrConnectWithoutFontsInput[]
     connect?: PostWhereUniqueInput | PostWhereUniqueInput[]
+  }
+
+  export type NullableFloatFieldUpdateOperationsInput = {
+    set?: number | null
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
+  }
+
+  export type NullableIntFieldUpdateOperationsInput = {
+    set?: number | null
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
+  }
+
+  export type FontAuthorUpdateOneWithoutFontsNestedInput = {
+    create?: XOR<FontAuthorCreateWithoutFontsInput, FontAuthorUncheckedCreateWithoutFontsInput>
+    connectOrCreate?: FontAuthorCreateOrConnectWithoutFontsInput
+    upsert?: FontAuthorUpsertWithoutFontsInput
+    disconnect?: FontAuthorWhereInput | boolean
+    delete?: FontAuthorWhereInput | boolean
+    connect?: FontAuthorWhereUniqueInput
+    update?: XOR<XOR<FontAuthorUpdateToOneWithWhereWithoutFontsInput, FontAuthorUpdateWithoutFontsInput>, FontAuthorUncheckedUpdateWithoutFontsInput>
   }
 
   export type FontVariantUpdateManyWithoutIngredientNestedInput = {
@@ -17474,6 +19645,49 @@ export namespace Prisma {
     not?: NestedFloatFilter<$PrismaModel> | number
   }
 
+  export type NestedFloatNullableFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | null
+    notIn?: number[] | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableFilter<$PrismaModel> | number | null
+  }
+
+  export type NestedFloatNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | null
+    notIn?: number[] | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedFloatNullableFilter<$PrismaModel>
+    _min?: NestedFloatNullableFilter<$PrismaModel>
+    _max?: NestedFloatNullableFilter<$PrismaModel>
+  }
+
+  export type NestedIntNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | null
+    notIn?: number[] | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedIntNullableFilter<$PrismaModel>
+    _max?: NestedIntNullableFilter<$PrismaModel>
+  }
+
   export type PostCreateWithoutAuthorInput = {
     id?: string
     postType?: string
@@ -17752,6 +19966,101 @@ export namespace Prisma {
     data: XOR<RoleUpdateManyMutationInput, RoleUncheckedUpdateManyWithoutPermissionsInput>
   }
 
+  export type IngredientCreateWithoutAuthorInput = {
+    id?: string
+    name: string
+    slug: string
+    category: string
+    creator?: string | null
+    rating: string
+    symbol?: string | null
+    formula?: string | null
+    importedFrom?: string | null
+    licenseType?: string | null
+    isVariable?: boolean
+    userRating?: number | null
+    userRatingsCount?: number | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    variants?: FontVariantCreateNestedManyWithoutIngredientInput
+    formulas?: FormulaCreateNestedManyWithoutFontsInput
+    primaryPrescriptions?: PrescriptionCreateNestedManyWithoutPrimaryFontInput
+    secondaryPrescriptions?: PrescriptionCreateNestedManyWithoutSecondaryFontInput
+    tags?: TagCreateNestedManyWithoutIngredientsInput
+    posts?: PostCreateNestedManyWithoutFontsInput
+  }
+
+  export type IngredientUncheckedCreateWithoutAuthorInput = {
+    id?: string
+    name: string
+    slug: string
+    category: string
+    creator?: string | null
+    rating: string
+    symbol?: string | null
+    formula?: string | null
+    importedFrom?: string | null
+    licenseType?: string | null
+    isVariable?: boolean
+    userRating?: number | null
+    userRatingsCount?: number | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    variants?: FontVariantUncheckedCreateNestedManyWithoutIngredientInput
+    formulas?: FormulaUncheckedCreateNestedManyWithoutFontsInput
+    primaryPrescriptions?: PrescriptionUncheckedCreateNestedManyWithoutPrimaryFontInput
+    secondaryPrescriptions?: PrescriptionUncheckedCreateNestedManyWithoutSecondaryFontInput
+    tags?: TagUncheckedCreateNestedManyWithoutIngredientsInput
+    posts?: PostUncheckedCreateNestedManyWithoutFontsInput
+  }
+
+  export type IngredientCreateOrConnectWithoutAuthorInput = {
+    where: IngredientWhereUniqueInput
+    create: XOR<IngredientCreateWithoutAuthorInput, IngredientUncheckedCreateWithoutAuthorInput>
+  }
+
+  export type IngredientCreateManyAuthorInputEnvelope = {
+    data: IngredientCreateManyAuthorInput | IngredientCreateManyAuthorInput[]
+  }
+
+  export type IngredientUpsertWithWhereUniqueWithoutAuthorInput = {
+    where: IngredientWhereUniqueInput
+    update: XOR<IngredientUpdateWithoutAuthorInput, IngredientUncheckedUpdateWithoutAuthorInput>
+    create: XOR<IngredientCreateWithoutAuthorInput, IngredientUncheckedCreateWithoutAuthorInput>
+  }
+
+  export type IngredientUpdateWithWhereUniqueWithoutAuthorInput = {
+    where: IngredientWhereUniqueInput
+    data: XOR<IngredientUpdateWithoutAuthorInput, IngredientUncheckedUpdateWithoutAuthorInput>
+  }
+
+  export type IngredientUpdateManyWithWhereWithoutAuthorInput = {
+    where: IngredientScalarWhereInput
+    data: XOR<IngredientUpdateManyMutationInput, IngredientUncheckedUpdateManyWithoutAuthorInput>
+  }
+
+  export type IngredientScalarWhereInput = {
+    AND?: IngredientScalarWhereInput | IngredientScalarWhereInput[]
+    OR?: IngredientScalarWhereInput[]
+    NOT?: IngredientScalarWhereInput | IngredientScalarWhereInput[]
+    id?: StringFilter<"Ingredient"> | string
+    name?: StringFilter<"Ingredient"> | string
+    slug?: StringFilter<"Ingredient"> | string
+    category?: StringFilter<"Ingredient"> | string
+    creator?: StringNullableFilter<"Ingredient"> | string | null
+    rating?: StringFilter<"Ingredient"> | string
+    symbol?: StringNullableFilter<"Ingredient"> | string | null
+    formula?: StringNullableFilter<"Ingredient"> | string | null
+    importedFrom?: StringNullableFilter<"Ingredient"> | string | null
+    licenseType?: StringNullableFilter<"Ingredient"> | string | null
+    isVariable?: BoolFilter<"Ingredient"> | boolean
+    userRating?: FloatNullableFilter<"Ingredient"> | number | null
+    userRatingsCount?: IntNullableFilter<"Ingredient"> | number | null
+    authorId?: StringNullableFilter<"Ingredient"> | string | null
+    createdAt?: DateTimeFilter<"Ingredient"> | Date | string
+    updatedAt?: DateTimeFilter<"Ingredient"> | Date | string
+  }
+
   export type PostCreateWithoutSeoInput = {
     id?: string
     postType?: string
@@ -17929,9 +20238,14 @@ export namespace Prisma {
     rating: string
     symbol?: string | null
     formula?: string | null
+    importedFrom?: string | null
+    licenseType?: string | null
     isVariable?: boolean
+    userRating?: number | null
+    userRatingsCount?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    author?: FontAuthorCreateNestedOneWithoutFontsInput
     formulas?: FormulaCreateNestedManyWithoutFontsInput
     primaryPrescriptions?: PrescriptionCreateNestedManyWithoutPrimaryFontInput
     secondaryPrescriptions?: PrescriptionCreateNestedManyWithoutSecondaryFontInput
@@ -17948,7 +20262,12 @@ export namespace Prisma {
     rating: string
     symbol?: string | null
     formula?: string | null
+    importedFrom?: string | null
+    licenseType?: string | null
     isVariable?: boolean
+    userRating?: number | null
+    userRatingsCount?: number | null
+    authorId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     formulas?: FormulaUncheckedCreateNestedManyWithoutFontsInput
@@ -17983,9 +20302,14 @@ export namespace Prisma {
     rating?: StringFieldUpdateOperationsInput | string
     symbol?: NullableStringFieldUpdateOperationsInput | string | null
     formula?: NullableStringFieldUpdateOperationsInput | string | null
+    importedFrom?: NullableStringFieldUpdateOperationsInput | string | null
+    licenseType?: NullableStringFieldUpdateOperationsInput | string | null
     isVariable?: BoolFieldUpdateOperationsInput | boolean
+    userRating?: NullableFloatFieldUpdateOperationsInput | number | null
+    userRatingsCount?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    author?: FontAuthorUpdateOneWithoutFontsNestedInput
     formulas?: FormulaUpdateManyWithoutFontsNestedInput
     primaryPrescriptions?: PrescriptionUpdateManyWithoutPrimaryFontNestedInput
     secondaryPrescriptions?: PrescriptionUpdateManyWithoutSecondaryFontNestedInput
@@ -18002,7 +20326,12 @@ export namespace Prisma {
     rating?: StringFieldUpdateOperationsInput | string
     symbol?: NullableStringFieldUpdateOperationsInput | string | null
     formula?: NullableStringFieldUpdateOperationsInput | string | null
+    importedFrom?: NullableStringFieldUpdateOperationsInput | string | null
+    licenseType?: NullableStringFieldUpdateOperationsInput | string | null
     isVariable?: BoolFieldUpdateOperationsInput | boolean
+    userRating?: NullableFloatFieldUpdateOperationsInput | number | null
+    userRatingsCount?: NullableIntFieldUpdateOperationsInput | number | null
+    authorId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     formulas?: FormulaUncheckedUpdateManyWithoutFontsNestedInput
@@ -18010,6 +20339,59 @@ export namespace Prisma {
     secondaryPrescriptions?: PrescriptionUncheckedUpdateManyWithoutSecondaryFontNestedInput
     tags?: TagUncheckedUpdateManyWithoutIngredientsNestedInput
     posts?: PostUncheckedUpdateManyWithoutFontsNestedInput
+  }
+
+  export type FontAuthorCreateWithoutFontsInput = {
+    id?: string
+    slug: string
+    name: string
+    type?: string
+    email: string
+    supportEmail?: string | null
+    avatarUrl?: string | null
+    bannerUrl?: string | null
+    bio?: string | null
+    website?: string | null
+    donation?: string | null
+    nationality?: string | null
+    languagesSpoken?: string | null
+    isVerified?: boolean
+    socialLinks?: string | null
+    metrics?: string | null
+    businessInfo?: string | null
+    specialties?: string | null
+    status?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type FontAuthorUncheckedCreateWithoutFontsInput = {
+    id?: string
+    slug: string
+    name: string
+    type?: string
+    email: string
+    supportEmail?: string | null
+    avatarUrl?: string | null
+    bannerUrl?: string | null
+    bio?: string | null
+    website?: string | null
+    donation?: string | null
+    nationality?: string | null
+    languagesSpoken?: string | null
+    isVerified?: boolean
+    socialLinks?: string | null
+    metrics?: string | null
+    businessInfo?: string | null
+    specialties?: string | null
+    status?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type FontAuthorCreateOrConnectWithoutFontsInput = {
+    where: FontAuthorWhereUniqueInput
+    create: XOR<FontAuthorCreateWithoutFontsInput, FontAuthorUncheckedCreateWithoutFontsInput>
   }
 
   export type FontVariantCreateWithoutIngredientInput = {
@@ -18214,6 +20596,65 @@ export namespace Prisma {
     create: XOR<PostCreateWithoutFontsInput, PostUncheckedCreateWithoutFontsInput>
   }
 
+  export type FontAuthorUpsertWithoutFontsInput = {
+    update: XOR<FontAuthorUpdateWithoutFontsInput, FontAuthorUncheckedUpdateWithoutFontsInput>
+    create: XOR<FontAuthorCreateWithoutFontsInput, FontAuthorUncheckedCreateWithoutFontsInput>
+    where?: FontAuthorWhereInput
+  }
+
+  export type FontAuthorUpdateToOneWithWhereWithoutFontsInput = {
+    where?: FontAuthorWhereInput
+    data: XOR<FontAuthorUpdateWithoutFontsInput, FontAuthorUncheckedUpdateWithoutFontsInput>
+  }
+
+  export type FontAuthorUpdateWithoutFontsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    supportEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    bannerUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
+    website?: NullableStringFieldUpdateOperationsInput | string | null
+    donation?: NullableStringFieldUpdateOperationsInput | string | null
+    nationality?: NullableStringFieldUpdateOperationsInput | string | null
+    languagesSpoken?: NullableStringFieldUpdateOperationsInput | string | null
+    isVerified?: BoolFieldUpdateOperationsInput | boolean
+    socialLinks?: NullableStringFieldUpdateOperationsInput | string | null
+    metrics?: NullableStringFieldUpdateOperationsInput | string | null
+    businessInfo?: NullableStringFieldUpdateOperationsInput | string | null
+    specialties?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FontAuthorUncheckedUpdateWithoutFontsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    supportEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    bannerUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
+    website?: NullableStringFieldUpdateOperationsInput | string | null
+    donation?: NullableStringFieldUpdateOperationsInput | string | null
+    nationality?: NullableStringFieldUpdateOperationsInput | string | null
+    languagesSpoken?: NullableStringFieldUpdateOperationsInput | string | null
+    isVerified?: BoolFieldUpdateOperationsInput | boolean
+    socialLinks?: NullableStringFieldUpdateOperationsInput | string | null
+    metrics?: NullableStringFieldUpdateOperationsInput | string | null
+    businessInfo?: NullableStringFieldUpdateOperationsInput | string | null
+    specialties?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type FontVariantUpsertWithWhereUniqueWithoutIngredientInput = {
     where: FontVariantWhereUniqueInput
     update: XOR<FontVariantUpdateWithoutIngredientInput, FontVariantUncheckedUpdateWithoutIngredientInput>
@@ -18374,9 +20815,14 @@ export namespace Prisma {
     rating: string
     symbol?: string | null
     formula?: string | null
+    importedFrom?: string | null
+    licenseType?: string | null
     isVariable?: boolean
+    userRating?: number | null
+    userRatingsCount?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    author?: FontAuthorCreateNestedOneWithoutFontsInput
     variants?: FontVariantCreateNestedManyWithoutIngredientInput
     primaryPrescriptions?: PrescriptionCreateNestedManyWithoutPrimaryFontInput
     secondaryPrescriptions?: PrescriptionCreateNestedManyWithoutSecondaryFontInput
@@ -18393,7 +20839,12 @@ export namespace Prisma {
     rating: string
     symbol?: string | null
     formula?: string | null
+    importedFrom?: string | null
+    licenseType?: string | null
     isVariable?: boolean
+    userRating?: number | null
+    userRatingsCount?: number | null
+    authorId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     variants?: FontVariantUncheckedCreateNestedManyWithoutIngredientInput
@@ -18451,23 +20902,6 @@ export namespace Prisma {
     data: XOR<IngredientUpdateManyMutationInput, IngredientUncheckedUpdateManyWithoutFormulasInput>
   }
 
-  export type IngredientScalarWhereInput = {
-    AND?: IngredientScalarWhereInput | IngredientScalarWhereInput[]
-    OR?: IngredientScalarWhereInput[]
-    NOT?: IngredientScalarWhereInput | IngredientScalarWhereInput[]
-    id?: StringFilter<"Ingredient"> | string
-    name?: StringFilter<"Ingredient"> | string
-    slug?: StringFilter<"Ingredient"> | string
-    category?: StringFilter<"Ingredient"> | string
-    creator?: StringNullableFilter<"Ingredient"> | string | null
-    rating?: StringFilter<"Ingredient"> | string
-    symbol?: StringNullableFilter<"Ingredient"> | string | null
-    formula?: StringNullableFilter<"Ingredient"> | string | null
-    isVariable?: BoolFilter<"Ingredient"> | boolean
-    createdAt?: DateTimeFilter<"Ingredient"> | Date | string
-    updatedAt?: DateTimeFilter<"Ingredient"> | Date | string
-  }
-
   export type TagUpsertWithWhereUniqueWithoutFormulasInput = {
     where: TagWhereUniqueInput
     update: XOR<TagUpdateWithoutFormulasInput, TagUncheckedUpdateWithoutFormulasInput>
@@ -18493,9 +20927,14 @@ export namespace Prisma {
     rating: string
     symbol?: string | null
     formula?: string | null
+    importedFrom?: string | null
+    licenseType?: string | null
     isVariable?: boolean
+    userRating?: number | null
+    userRatingsCount?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    author?: FontAuthorCreateNestedOneWithoutFontsInput
     variants?: FontVariantCreateNestedManyWithoutIngredientInput
     formulas?: FormulaCreateNestedManyWithoutFontsInput
     secondaryPrescriptions?: PrescriptionCreateNestedManyWithoutSecondaryFontInput
@@ -18512,7 +20951,12 @@ export namespace Prisma {
     rating: string
     symbol?: string | null
     formula?: string | null
+    importedFrom?: string | null
+    licenseType?: string | null
     isVariable?: boolean
+    userRating?: number | null
+    userRatingsCount?: number | null
+    authorId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     variants?: FontVariantUncheckedCreateNestedManyWithoutIngredientInput
@@ -18536,9 +20980,14 @@ export namespace Prisma {
     rating: string
     symbol?: string | null
     formula?: string | null
+    importedFrom?: string | null
+    licenseType?: string | null
     isVariable?: boolean
+    userRating?: number | null
+    userRatingsCount?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    author?: FontAuthorCreateNestedOneWithoutFontsInput
     variants?: FontVariantCreateNestedManyWithoutIngredientInput
     formulas?: FormulaCreateNestedManyWithoutFontsInput
     primaryPrescriptions?: PrescriptionCreateNestedManyWithoutPrimaryFontInput
@@ -18555,7 +21004,12 @@ export namespace Prisma {
     rating: string
     symbol?: string | null
     formula?: string | null
+    importedFrom?: string | null
+    licenseType?: string | null
     isVariable?: boolean
+    userRating?: number | null
+    userRatingsCount?: number | null
+    authorId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     variants?: FontVariantUncheckedCreateNestedManyWithoutIngredientInput
@@ -18664,9 +21118,14 @@ export namespace Prisma {
     rating?: StringFieldUpdateOperationsInput | string
     symbol?: NullableStringFieldUpdateOperationsInput | string | null
     formula?: NullableStringFieldUpdateOperationsInput | string | null
+    importedFrom?: NullableStringFieldUpdateOperationsInput | string | null
+    licenseType?: NullableStringFieldUpdateOperationsInput | string | null
     isVariable?: BoolFieldUpdateOperationsInput | boolean
+    userRating?: NullableFloatFieldUpdateOperationsInput | number | null
+    userRatingsCount?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    author?: FontAuthorUpdateOneWithoutFontsNestedInput
     variants?: FontVariantUpdateManyWithoutIngredientNestedInput
     formulas?: FormulaUpdateManyWithoutFontsNestedInput
     secondaryPrescriptions?: PrescriptionUpdateManyWithoutSecondaryFontNestedInput
@@ -18683,7 +21142,12 @@ export namespace Prisma {
     rating?: StringFieldUpdateOperationsInput | string
     symbol?: NullableStringFieldUpdateOperationsInput | string | null
     formula?: NullableStringFieldUpdateOperationsInput | string | null
+    importedFrom?: NullableStringFieldUpdateOperationsInput | string | null
+    licenseType?: NullableStringFieldUpdateOperationsInput | string | null
     isVariable?: BoolFieldUpdateOperationsInput | boolean
+    userRating?: NullableFloatFieldUpdateOperationsInput | number | null
+    userRatingsCount?: NullableIntFieldUpdateOperationsInput | number | null
+    authorId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     variants?: FontVariantUncheckedUpdateManyWithoutIngredientNestedInput
@@ -18713,9 +21177,14 @@ export namespace Prisma {
     rating?: StringFieldUpdateOperationsInput | string
     symbol?: NullableStringFieldUpdateOperationsInput | string | null
     formula?: NullableStringFieldUpdateOperationsInput | string | null
+    importedFrom?: NullableStringFieldUpdateOperationsInput | string | null
+    licenseType?: NullableStringFieldUpdateOperationsInput | string | null
     isVariable?: BoolFieldUpdateOperationsInput | boolean
+    userRating?: NullableFloatFieldUpdateOperationsInput | number | null
+    userRatingsCount?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    author?: FontAuthorUpdateOneWithoutFontsNestedInput
     variants?: FontVariantUpdateManyWithoutIngredientNestedInput
     formulas?: FormulaUpdateManyWithoutFontsNestedInput
     primaryPrescriptions?: PrescriptionUpdateManyWithoutPrimaryFontNestedInput
@@ -18732,7 +21201,12 @@ export namespace Prisma {
     rating?: StringFieldUpdateOperationsInput | string
     symbol?: NullableStringFieldUpdateOperationsInput | string | null
     formula?: NullableStringFieldUpdateOperationsInput | string | null
+    importedFrom?: NullableStringFieldUpdateOperationsInput | string | null
+    licenseType?: NullableStringFieldUpdateOperationsInput | string | null
     isVariable?: BoolFieldUpdateOperationsInput | boolean
+    userRating?: NullableFloatFieldUpdateOperationsInput | number | null
+    userRatingsCount?: NullableIntFieldUpdateOperationsInput | number | null
+    authorId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     variants?: FontVariantUncheckedUpdateManyWithoutIngredientNestedInput
@@ -18855,9 +21329,14 @@ export namespace Prisma {
     rating: string
     symbol?: string | null
     formula?: string | null
+    importedFrom?: string | null
+    licenseType?: string | null
     isVariable?: boolean
+    userRating?: number | null
+    userRatingsCount?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    author?: FontAuthorCreateNestedOneWithoutFontsInput
     variants?: FontVariantCreateNestedManyWithoutIngredientInput
     formulas?: FormulaCreateNestedManyWithoutFontsInput
     primaryPrescriptions?: PrescriptionCreateNestedManyWithoutPrimaryFontInput
@@ -18874,7 +21353,12 @@ export namespace Prisma {
     rating: string
     symbol?: string | null
     formula?: string | null
+    importedFrom?: string | null
+    licenseType?: string | null
     isVariable?: boolean
+    userRating?: number | null
+    userRatingsCount?: number | null
+    authorId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     variants?: FontVariantUncheckedCreateNestedManyWithoutIngredientInput
@@ -19092,9 +21576,14 @@ export namespace Prisma {
     rating: string
     symbol?: string | null
     formula?: string | null
+    importedFrom?: string | null
+    licenseType?: string | null
     isVariable?: boolean
+    userRating?: number | null
+    userRatingsCount?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    author?: FontAuthorCreateNestedOneWithoutFontsInput
     variants?: FontVariantCreateNestedManyWithoutIngredientInput
     formulas?: FormulaCreateNestedManyWithoutFontsInput
     primaryPrescriptions?: PrescriptionCreateNestedManyWithoutPrimaryFontInput
@@ -19111,7 +21600,12 @@ export namespace Prisma {
     rating: string
     symbol?: string | null
     formula?: string | null
+    importedFrom?: string | null
+    licenseType?: string | null
     isVariable?: boolean
+    userRating?: number | null
+    userRatingsCount?: number | null
+    authorId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     variants?: FontVariantUncheckedCreateNestedManyWithoutIngredientInput
@@ -19477,6 +21971,90 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type IngredientCreateManyAuthorInput = {
+    id?: string
+    name: string
+    slug: string
+    category: string
+    creator?: string | null
+    rating: string
+    symbol?: string | null
+    formula?: string | null
+    importedFrom?: string | null
+    licenseType?: string | null
+    isVariable?: boolean
+    userRating?: number | null
+    userRatingsCount?: number | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type IngredientUpdateWithoutAuthorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    category?: StringFieldUpdateOperationsInput | string
+    creator?: NullableStringFieldUpdateOperationsInput | string | null
+    rating?: StringFieldUpdateOperationsInput | string
+    symbol?: NullableStringFieldUpdateOperationsInput | string | null
+    formula?: NullableStringFieldUpdateOperationsInput | string | null
+    importedFrom?: NullableStringFieldUpdateOperationsInput | string | null
+    licenseType?: NullableStringFieldUpdateOperationsInput | string | null
+    isVariable?: BoolFieldUpdateOperationsInput | boolean
+    userRating?: NullableFloatFieldUpdateOperationsInput | number | null
+    userRatingsCount?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    variants?: FontVariantUpdateManyWithoutIngredientNestedInput
+    formulas?: FormulaUpdateManyWithoutFontsNestedInput
+    primaryPrescriptions?: PrescriptionUpdateManyWithoutPrimaryFontNestedInput
+    secondaryPrescriptions?: PrescriptionUpdateManyWithoutSecondaryFontNestedInput
+    tags?: TagUpdateManyWithoutIngredientsNestedInput
+    posts?: PostUpdateManyWithoutFontsNestedInput
+  }
+
+  export type IngredientUncheckedUpdateWithoutAuthorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    category?: StringFieldUpdateOperationsInput | string
+    creator?: NullableStringFieldUpdateOperationsInput | string | null
+    rating?: StringFieldUpdateOperationsInput | string
+    symbol?: NullableStringFieldUpdateOperationsInput | string | null
+    formula?: NullableStringFieldUpdateOperationsInput | string | null
+    importedFrom?: NullableStringFieldUpdateOperationsInput | string | null
+    licenseType?: NullableStringFieldUpdateOperationsInput | string | null
+    isVariable?: BoolFieldUpdateOperationsInput | boolean
+    userRating?: NullableFloatFieldUpdateOperationsInput | number | null
+    userRatingsCount?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    variants?: FontVariantUncheckedUpdateManyWithoutIngredientNestedInput
+    formulas?: FormulaUncheckedUpdateManyWithoutFontsNestedInput
+    primaryPrescriptions?: PrescriptionUncheckedUpdateManyWithoutPrimaryFontNestedInput
+    secondaryPrescriptions?: PrescriptionUncheckedUpdateManyWithoutSecondaryFontNestedInput
+    tags?: TagUncheckedUpdateManyWithoutIngredientsNestedInput
+    posts?: PostUncheckedUpdateManyWithoutFontsNestedInput
+  }
+
+  export type IngredientUncheckedUpdateManyWithoutAuthorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    category?: StringFieldUpdateOperationsInput | string
+    creator?: NullableStringFieldUpdateOperationsInput | string | null
+    rating?: StringFieldUpdateOperationsInput | string
+    symbol?: NullableStringFieldUpdateOperationsInput | string | null
+    formula?: NullableStringFieldUpdateOperationsInput | string | null
+    importedFrom?: NullableStringFieldUpdateOperationsInput | string | null
+    licenseType?: NullableStringFieldUpdateOperationsInput | string | null
+    isVariable?: BoolFieldUpdateOperationsInput | boolean
+    userRating?: NullableFloatFieldUpdateOperationsInput | number | null
+    userRatingsCount?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type FontVariantCreateManyIngredientInput = {
     id?: string
     fontFamilyName: string
@@ -19756,9 +22334,14 @@ export namespace Prisma {
     rating?: StringFieldUpdateOperationsInput | string
     symbol?: NullableStringFieldUpdateOperationsInput | string | null
     formula?: NullableStringFieldUpdateOperationsInput | string | null
+    importedFrom?: NullableStringFieldUpdateOperationsInput | string | null
+    licenseType?: NullableStringFieldUpdateOperationsInput | string | null
     isVariable?: BoolFieldUpdateOperationsInput | boolean
+    userRating?: NullableFloatFieldUpdateOperationsInput | number | null
+    userRatingsCount?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    author?: FontAuthorUpdateOneWithoutFontsNestedInput
     variants?: FontVariantUpdateManyWithoutIngredientNestedInput
     primaryPrescriptions?: PrescriptionUpdateManyWithoutPrimaryFontNestedInput
     secondaryPrescriptions?: PrescriptionUpdateManyWithoutSecondaryFontNestedInput
@@ -19775,7 +22358,12 @@ export namespace Prisma {
     rating?: StringFieldUpdateOperationsInput | string
     symbol?: NullableStringFieldUpdateOperationsInput | string | null
     formula?: NullableStringFieldUpdateOperationsInput | string | null
+    importedFrom?: NullableStringFieldUpdateOperationsInput | string | null
+    licenseType?: NullableStringFieldUpdateOperationsInput | string | null
     isVariable?: BoolFieldUpdateOperationsInput | boolean
+    userRating?: NullableFloatFieldUpdateOperationsInput | number | null
+    userRatingsCount?: NullableIntFieldUpdateOperationsInput | number | null
+    authorId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     variants?: FontVariantUncheckedUpdateManyWithoutIngredientNestedInput
@@ -19794,7 +22382,12 @@ export namespace Prisma {
     rating?: StringFieldUpdateOperationsInput | string
     symbol?: NullableStringFieldUpdateOperationsInput | string | null
     formula?: NullableStringFieldUpdateOperationsInput | string | null
+    importedFrom?: NullableStringFieldUpdateOperationsInput | string | null
+    licenseType?: NullableStringFieldUpdateOperationsInput | string | null
     isVariable?: BoolFieldUpdateOperationsInput | boolean
+    userRating?: NullableFloatFieldUpdateOperationsInput | number | null
+    userRatingsCount?: NullableIntFieldUpdateOperationsInput | number | null
+    authorId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -19913,9 +22506,14 @@ export namespace Prisma {
     rating?: StringFieldUpdateOperationsInput | string
     symbol?: NullableStringFieldUpdateOperationsInput | string | null
     formula?: NullableStringFieldUpdateOperationsInput | string | null
+    importedFrom?: NullableStringFieldUpdateOperationsInput | string | null
+    licenseType?: NullableStringFieldUpdateOperationsInput | string | null
     isVariable?: BoolFieldUpdateOperationsInput | boolean
+    userRating?: NullableFloatFieldUpdateOperationsInput | number | null
+    userRatingsCount?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    author?: FontAuthorUpdateOneWithoutFontsNestedInput
     variants?: FontVariantUpdateManyWithoutIngredientNestedInput
     formulas?: FormulaUpdateManyWithoutFontsNestedInput
     primaryPrescriptions?: PrescriptionUpdateManyWithoutPrimaryFontNestedInput
@@ -19932,7 +22530,12 @@ export namespace Prisma {
     rating?: StringFieldUpdateOperationsInput | string
     symbol?: NullableStringFieldUpdateOperationsInput | string | null
     formula?: NullableStringFieldUpdateOperationsInput | string | null
+    importedFrom?: NullableStringFieldUpdateOperationsInput | string | null
+    licenseType?: NullableStringFieldUpdateOperationsInput | string | null
     isVariable?: BoolFieldUpdateOperationsInput | boolean
+    userRating?: NullableFloatFieldUpdateOperationsInput | number | null
+    userRatingsCount?: NullableIntFieldUpdateOperationsInput | number | null
+    authorId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     variants?: FontVariantUncheckedUpdateManyWithoutIngredientNestedInput
@@ -19951,7 +22554,12 @@ export namespace Prisma {
     rating?: StringFieldUpdateOperationsInput | string
     symbol?: NullableStringFieldUpdateOperationsInput | string | null
     formula?: NullableStringFieldUpdateOperationsInput | string | null
+    importedFrom?: NullableStringFieldUpdateOperationsInput | string | null
+    licenseType?: NullableStringFieldUpdateOperationsInput | string | null
     isVariable?: BoolFieldUpdateOperationsInput | boolean
+    userRating?: NullableFloatFieldUpdateOperationsInput | number | null
+    userRatingsCount?: NullableIntFieldUpdateOperationsInput | number | null
+    authorId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -20083,9 +22691,14 @@ export namespace Prisma {
     rating?: StringFieldUpdateOperationsInput | string
     symbol?: NullableStringFieldUpdateOperationsInput | string | null
     formula?: NullableStringFieldUpdateOperationsInput | string | null
+    importedFrom?: NullableStringFieldUpdateOperationsInput | string | null
+    licenseType?: NullableStringFieldUpdateOperationsInput | string | null
     isVariable?: BoolFieldUpdateOperationsInput | boolean
+    userRating?: NullableFloatFieldUpdateOperationsInput | number | null
+    userRatingsCount?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    author?: FontAuthorUpdateOneWithoutFontsNestedInput
     variants?: FontVariantUpdateManyWithoutIngredientNestedInput
     formulas?: FormulaUpdateManyWithoutFontsNestedInput
     primaryPrescriptions?: PrescriptionUpdateManyWithoutPrimaryFontNestedInput
@@ -20102,7 +22715,12 @@ export namespace Prisma {
     rating?: StringFieldUpdateOperationsInput | string
     symbol?: NullableStringFieldUpdateOperationsInput | string | null
     formula?: NullableStringFieldUpdateOperationsInput | string | null
+    importedFrom?: NullableStringFieldUpdateOperationsInput | string | null
+    licenseType?: NullableStringFieldUpdateOperationsInput | string | null
     isVariable?: BoolFieldUpdateOperationsInput | boolean
+    userRating?: NullableFloatFieldUpdateOperationsInput | number | null
+    userRatingsCount?: NullableIntFieldUpdateOperationsInput | number | null
+    authorId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     variants?: FontVariantUncheckedUpdateManyWithoutIngredientNestedInput
@@ -20121,7 +22739,12 @@ export namespace Prisma {
     rating?: StringFieldUpdateOperationsInput | string
     symbol?: NullableStringFieldUpdateOperationsInput | string | null
     formula?: NullableStringFieldUpdateOperationsInput | string | null
+    importedFrom?: NullableStringFieldUpdateOperationsInput | string | null
+    licenseType?: NullableStringFieldUpdateOperationsInput | string | null
     isVariable?: BoolFieldUpdateOperationsInput | boolean
+    userRating?: NullableFloatFieldUpdateOperationsInput | number | null
+    userRatingsCount?: NullableIntFieldUpdateOperationsInput | number | null
+    authorId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }

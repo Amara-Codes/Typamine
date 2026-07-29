@@ -15,7 +15,15 @@ function mapIngredient(rec: any): Ingredient {
     rating: rec.rating,
     symbol: rec.symbol ?? undefined,
     formula: rec.formula ?? undefined,
+    importedFrom: rec.importedFrom ?? undefined,
+    licenseType: rec.licenseType ?? undefined,
     isVariable: rec.isVariable,
+    userRating: rec.userRating ?? 0,
+    userRatingsCount: rec.userRatingsCount ?? 0,
+    authorId: rec.authorId ?? undefined,
+    author: rec.author
+      ? { id: rec.author.id, name: rec.author.name, slug: rec.author.slug, avatarUrl: rec.author.avatarUrl ?? undefined, isVerified: rec.author.isVerified }
+      : undefined,
     createdAt: rec.createdAt?.toISOString(),
     updatedAt: rec.updatedAt?.toISOString(),
     variants: (rec.variants || []).map((v: any): FontVariant => ({
@@ -89,7 +97,7 @@ export const getRecentPosts = unstable_cache(
         include: {
           author: AUTHOR_SELECT,
           tags: true,
-          fonts: { include: { variants: true } },
+          fonts: { include: { variants: true, author: true } },
           seo: true,
         },
         orderBy: { createdAt: "desc" },
@@ -150,7 +158,7 @@ export const getPostsPage = unstable_cache(
       include: {
         author: AUTHOR_SELECT,
         tags: true,
-        fonts: { include: { variants: true } },
+        fonts: { include: { variants: true, author: true } },
         seo: true,
       },
       orderBy,
@@ -180,7 +188,7 @@ export const getPosts = unstable_cache(
         include: {
           author: AUTHOR_SELECT,
           tags: true,
-          fonts: { include: { variants: true } },
+          fonts: { include: { variants: true, author: true } },
           seo: true,
         },
         orderBy: { createdAt: "desc" },
@@ -200,7 +208,7 @@ export async function getPostById(id: string): Promise<Post | null> {
       include: {
         author: AUTHOR_SELECT,
         tags: true,
-        fonts: { include: { variants: true } },
+        fonts: { include: { variants: true, author: true } },
         seo: true,
       },
     })
@@ -217,7 +225,7 @@ export const getPostBySlug = unstable_cache(
         include: {
           author: AUTHOR_SELECT,
           tags: true,
-          fonts: { include: { variants: true } },
+          fonts: { include: { variants: true, author: true } },
           seo: true,
         },
       })

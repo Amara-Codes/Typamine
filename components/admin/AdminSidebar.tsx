@@ -10,10 +10,11 @@ import {
   UserCog,
   Type,
   Tag,
-  Blend, 
-  FolderClosed, 
-  LibraryBig, 
-  Feather
+  Blend,
+  FolderClosed,
+  LibraryBig,
+  Feather,
+  IdCard
 } from "lucide-react";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
@@ -30,7 +31,8 @@ import { canAccessResource, Resource } from "@/lib/rbac";
 const menuItems: { name: string; href: string; icon: any; resource?: Resource }[] = [
   { name: "Dashboard", href: "/admin", icon: Tent },
   { name: "Fonts", href: "/admin/fonts", icon: Type },
-    { name: "Tags", href: "/admin/tags", icon: Tag },
+  { name: "Font Authors", href: "/admin/font-authors", icon: IdCard },
+  { name: "Tags", href: "/admin/tags", icon: Tag },
   { name: "Pairings", href: "/admin/pairings", icon: Blend },
   { name: "Collections", href: "/admin/collections", icon: FolderClosed },
   { name: "Archive", href: "/admin/archive", icon: LibraryBig },

@@ -36,7 +36,15 @@ function mapIngredient(rec: any): Ingredient {
     rating: rec.rating,
     symbol: rec.symbol ?? undefined,
     formula: rec.formula ?? undefined,
+    importedFrom: rec.importedFrom ?? undefined,
+    licenseType: rec.licenseType ?? undefined,
     isVariable: rec.isVariable,
+    userRating: rec.userRating ?? 0,
+    userRatingsCount: rec.userRatingsCount ?? 0,
+    authorId: rec.authorId ?? undefined,
+    author: rec.author
+      ? { id: rec.author.id, name: rec.author.name, slug: rec.author.slug, avatarUrl: rec.author.avatarUrl ?? undefined, isVerified: rec.author.isVerified }
+      : undefined,
     createdAt: rec.createdAt?.toISOString?.() ?? rec.createdAt,
     updatedAt: rec.updatedAt?.toISOString?.() ?? rec.updatedAt,
     tags: (rec.tags || []).map((t: any): Tag => ({
@@ -96,7 +104,7 @@ export const getVirtualFormulas = unstable_cache(
   async (): Promise<Formula[]> => {
   const [rawIngredients, tags, prescriptions] = await withSafeDbQuery(() =>
     Promise.all([
-      prisma.ingredient.findMany({ include: { tags: true, variants: true } }),
+      prisma.ingredient.findMany({ include: { tags: true, variants: true, author: true } }),
       prisma.tag.findMany(),
       prisma.prescription.findMany({
         where: { published: true },

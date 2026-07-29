@@ -4,6 +4,16 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { SeventiesThemeToggle } from "@/components/common/SeventiesThemeToggle";
 import { DynamicLogo } from "@/components/layout/DynamicLogo";
+import { StaggeredMenu, StaggeredMenuItem } from "@/components/cherry/StaggeredMenu";
+
+const NAV_ITEMS: StaggeredMenuItem[] = [
+  { label: "Ingredients", ariaLabel: "Go to Ingredients", link: "/ingredients" },
+  { label: "Formulas", ariaLabel: "Go to Formulas", link: "/formulas" },
+  { label: "Labs", ariaLabel: "Go to Labs", link: "/labs" },
+  { label: "Prescriptions", ariaLabel: "Go to Prescriptions", link: "/prescriptions" },
+  { label: "Archive", ariaLabel: "Go to Archive", link: "/archive" },
+  { label: "Pills", ariaLabel: "Go to Pills", link: "/pills" }
+];
 
 export const Header: React.FC = () => {
 
@@ -38,14 +48,16 @@ export const Header: React.FC = () => {
   }, [lastScrollY]);
 
   return (
+    <>
+    {/* Desktop: header con hide-on-scroll, logo, nav e theme toggle inline. */}
     <header
-      className={`fixed top-0 left-0 right-0 z-50 w-full bg-transparent backdrop-blur-sm transition-transform duration-300 ease-in-out ${
+      className={`hidden md:block fixed top-0 left-0 right-0 z-50 w-full bg-transparent backdrop-blur-sm transition-transform duration-300 ease-in-out ${
         isVisible ? "translate-y-0" : "-translate-y-full"
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-24">
-          
+
           {/* Logo / Brand */}
           <div className="flex items-center space-x-3">
             <Link href="/" className="flex items-center space-x-2 text-foreground hover:opacity-90 transition-opacity">
@@ -54,7 +66,7 @@ export const Header: React.FC = () => {
           </div>
 
           {/* Navigation Menu */}
-          <nav className="hidden md:flex relative space-x-5 font-positivesys text-lg rounded-sm transition-colors duration-300">
+          <nav className="flex relative space-x-5 font-positivesys text-lg rounded-sm transition-colors duration-300">
             {/* Sfondo del track "tagliato" 3px sopra e sotto: non un box-shadow
                 disegnato sopra lo sfondo, ma uno strato retrostante rientrato
                 che lascia una fascia trasparente reale — si vede cosa c'è
@@ -154,6 +166,34 @@ export const Header: React.FC = () => {
         </div>
       </div>
     </header>
+
+    {/* Mobile: niente nav orizzontale (non ci sta), il componente
+        StaggeredMenu (components/cherry) fa da header intero — logo, toggle
+        del tema e pannello a scomparsa coi link. Montato come sibling fuori
+        dall'header desktop: quest'ultimo ha `transform` (per l'hide-on-scroll)
+        che creerebbe un containing block sbagliato per il `position: fixed`
+        interno del menu se annidato dentro. */}
+    <div className="md:hidden">
+      <StaggeredMenu
+        isFixed
+        headerHidden={!isVisible}
+        position="right"
+        items={NAV_ITEMS}
+        displaySocials={false}
+        displayItemNumbering
+        colors={["#ff3131", "#00cece"]}
+        accentColor="#ff3131"
+        menuButtonColor="#ffffff"
+        openMenuButtonColor="#000000"
+        logoSlot={
+          <Link href="/" className="flex items-center pointer-events-auto">
+            <DynamicLogo height={80} squareGlow />
+          </Link>
+        }
+        headerExtra={<SeventiesThemeToggle variant="mini" size={36} />}
+      />
+    </div>
+    </>
   );
 };
 export default Header;

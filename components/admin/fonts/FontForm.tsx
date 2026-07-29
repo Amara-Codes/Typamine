@@ -3,7 +3,8 @@
 import React, { useActionState, useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { saveFont } from "@/lib/actions/font";
-import { Plus, Trash2, Sliders, Type, AlertCircle, Loader2 } from "lucide-react";
+import { quickCreateFontAuthor } from "@/lib/actions/fontAuthor";
+import { Plus, Trash2, Sliders, Type, AlertCircle, Loader2, UserPlus } from "lucide-react";
 import { Select } from "@/components/common/Select";
 import { Input, Label } from "@/components/common/Input";
 import TagPicker from "@/components/common/TagPicker";
@@ -33,7 +34,33 @@ const CATEGORY_OPTIONS = [
   { label: "DECORATIVE", value: "Decorative" },
 ];
 
-export default function FontForm({ font, tags = [] }: { font?: any; tags?: any[] }) {
+const IMPORTED_FROM_OPTIONS = [
+  { label: "— Not set —", value: "" },
+  { label: "Google Fonts", value: "Google Fonts" },
+  { label: "Fontshare", value: "Fontshare" },
+  { label: "Local Single Upload", value: "Local Single Upload" },
+  { label: "Local Bulk Upload", value: "Local Bulk Upload" },
+];
+
+const LICENSE_TYPE_OPTIONS = [
+  { label: "— Not set —", value: "" },
+  { label: "Free", value: "Free" },
+  { label: "Free for Personal Use", value: "Free for Personal Use" },
+  { label: "Demo", value: "Demo" },
+  { label: "Donationware", value: "Donationware" },
+  { label: "Public Domain", value: "Public Domain" },
+  { label: "Open Source (SIL OFL)", value: "Open Source (SIL OFL)" },
+  { label: "Commercial", value: "Commercial" },
+];
+
+const AUTHOR_TYPE_OPTIONS = [
+  { label: "Individual", value: "INDIVIDUAL" },
+  { label: "Foundry", value: "FOUNDRY" },
+  { label: "Collective", value: "COLLECTIVE" },
+  { label: "Unknown", value: "UNKNOWN" },
+];
+
+export default function FontForm({ font, tags = [], authors = [] }: { font?: any; tags?: any[]; authors?: any[] }) {
   const router = useRouter();
   const saveAction = (prevState: any, formData: FormData) => saveFont(prevState, formData, font?.id);
   const [errorMessage, dispatch, isSaving] = useActionState(saveAction, undefined);
@@ -42,10 +69,54 @@ export default function FontForm({ font, tags = [] }: { font?: any; tags?: any[]
   const [name, setName] = useState(font?.name || "");
   const [slug, setSlug] = useState(font?.slug || "");
   const [category, setCategory] = useState(font?.category || "Sans-Serif");
+  // Font creati da questo form (upload manuale singolo) sono per definizione
+  // "Local Single Upload" — preselezionato solo in creazione (non sovrascrive
+  // font esistenti che potrebbero avere una fonte diversa già impostata).
+  const [importedFrom, setImportedFrom] = useState(font?.importedFrom || (font ? "" : "Local Single Upload"));
+  const [licenseType, setLicenseType] = useState(font?.licenseType || "");
   const [isVariable, setIsVariable] = useState<boolean>(font?.isVariable || false);
   const [selectedTagIds, setSelectedTagIds] = useState<string[]>(
     (font?.tags || []).map((t: any) => t.id)
   );
+
+  const [authorsList, setAuthorsList] = useState<any[]>(authors);
+  const [authorId, setAuthorId] = useState<string>(font?.authorId || "");
+  const [isAuthorModalOpen, setIsAuthorModalOpen] = useState(false);
+  const [newAuthorName, setNewAuthorName] = useState("");
+  const [newAuthorEmail, setNewAuthorEmail] = useState("");
+  const [newAuthorType, setNewAuthorType] = useState("INDIVIDUAL");
+  const [isCreatingAuthor, setIsCreatingAuthor] = useState(false);
+  const [authorCreateError, setAuthorCreateError] = useState<string | null>(null);
+
+  const handleCreateAuthor = async () => {
+    setAuthorCreateError(null);
+    if (!newAuthorName.trim() || !newAuthorEmail.trim()) {
+      setAuthorCreateError("Name and email are required.");
+      return;
+    }
+    setIsCreatingAuthor(true);
+    try {
+      const fd = new FormData();
+      fd.set("name", newAuthorName.trim());
+      fd.set("email", newAuthorEmail.trim());
+      fd.set("type", newAuthorType);
+      const result = await quickCreateFontAuthor(fd);
+      if ("error" in result) {
+        setAuthorCreateError(result.error);
+        return;
+      }
+      setAuthorsList((prev) => [...prev, result].sort((a, b) => a.name.localeCompare(b.name)));
+      setAuthorId(result.id);
+      setIsAuthorModalOpen(false);
+      setNewAuthorName("");
+      setNewAuthorEmail("");
+      setNewAuthorType("INDIVIDUAL");
+    } catch (err: any) {
+      setAuthorCreateError(err.message || "Failed to create font author.");
+    } finally {
+      setIsCreatingAuthor(false);
+    }
+  };
 
   const [isConverting, setIsConverting] = useState<boolean>(false);
   const [conversionMessage, setConversionMessage] = useState<string>("");
@@ -507,6 +578,28 @@ export default function FontForm({ font, tags = [] }: { font?: any; tags?: any[]
                   )}
                 </div>
 
+                <div>
+                  <Label>Imported From</Label>
+                  <Select
+                    options={IMPORTED_FROM_OPTIONS}
+                    value={importedFrom}
+                    onChange={setImportedFrom}
+                    placeholder="Select a source"
+                  />
+                  <input type="hidden" name="importedFrom" value={importedFrom} />
+                </div>
+
+                <div>
+                  <Label>License Type</Label>
+                  <Select
+                    options={LICENSE_TYPE_OPTIONS}
+                    value={licenseType}
+                    onChange={setLicenseType}
+                    placeholder="Select a license"
+                  />
+                  <input type="hidden" name="licenseType" value={licenseType} />
+                </div>
+
                 <Input
                   id="creator"
                   name="creator"
@@ -515,6 +608,26 @@ export default function FontForm({ font, tags = [] }: { font?: any; tags?: any[]
                   placeholder="e.g. Haas Type Foundry (leave empty for 'Typamine Import')"
                   autoComplete="off"
                 />
+
+                <div>
+                  <div className="flex items-center justify-between mb-2">
+                    <Label className="mb-0">Font Author</Label>
+                    <button
+                      type="button"
+                      onClick={() => setIsAuthorModalOpen(true)}
+                      className="flex items-center gap-1 text-[10px] font-black uppercase tracking-widest text-blue dark:text-red hover:opacity-80 transition-opacity"
+                    >
+                      <UserPlus className="h-3 w-3" /> New Author
+                    </button>
+                  </div>
+                  <Select
+                    options={[{ label: "— No author linked —", value: "" }, ...authorsList.map((a) => ({ label: a.name, value: a.id }))]}
+                    value={authorId}
+                    onChange={setAuthorId}
+                    placeholder="Select a font author"
+                  />
+                  <input type="hidden" name="authorId" value={authorId} />
+                </div>
 
                 <Input
                   id="rating"
@@ -574,6 +687,78 @@ export default function FontForm({ font, tags = [] }: { font?: any; tags?: any[]
           </button>
         </BaseModal.Footer>
       </BaseModal>
+      <BaseModal isOpen={isAuthorModalOpen} onClose={() => !isCreatingAuthor && setIsAuthorModalOpen(false)} size="md">
+        <BaseModal.Header onClose={() => !isCreatingAuthor && setIsAuthorModalOpen(false)}>
+          <div className="flex items-end gap-4">
+            <div className="p-2 bg-blue/10 dark:bg-red/10 rounded-lg">
+              <UserPlus className="w-6 h-6 text-blue dark:text-red" />
+            </div>
+            <h2 className="text-2xl font-star text-black dark:text-white">New Font Author</h2>
+          </div>
+        </BaseModal.Header>
+        <BaseModal.Body>
+          <div className="space-y-4">
+            {authorCreateError && (
+              <div className="p-3 bg-red-500/10 border border-red-500/20 rounded-lg text-red-500 text-xs font-bold">
+                {authorCreateError}
+              </div>
+            )}
+            <Input
+              label="Name"
+              value={newAuthorName}
+              onChange={setNewAuthorName}
+              placeholder="e.g. Dalton Maag"
+              autoComplete="off"
+            />
+            <Input
+              label="Email"
+              type="email"
+              value={newAuthorEmail}
+              onChange={setNewAuthorEmail}
+              placeholder="hello@foundry.com"
+              autoComplete="off"
+            />
+            <div>
+              <Label>Type</Label>
+              <Select options={AUTHOR_TYPE_OPTIONS} value={newAuthorType} onChange={setNewAuthorType} />
+            </div>
+            <p className="text-[10px] text-zinc-400 leading-relaxed">
+              Additional details (avatar, bio, socials, donations...) can be edited later from{" "}
+              <span className="font-bold">/admin/font-authors</span>.
+            </p>
+          </div>
+        </BaseModal.Body>
+        <BaseModal.Footer>
+          <div className="flex flex-col sm:flex-row items-center gap-4 justify-end">
+            <Button
+              type="button"
+              onClick={() => setIsAuthorModalOpen(false)}
+              variant="outline"
+              size="md"
+              roundness="md"
+              fullWidth
+              className="sm:w-auto"
+              disabled={isCreatingAuthor}
+            >
+              Cancel
+            </Button>
+            <Button
+              type="button"
+              onClick={handleCreateAuthor}
+              variant="primary"
+              size="md"
+              roundness="md"
+              fullWidth
+              className="sm:w-auto flex items-center gap-2"
+              disabled={isCreatingAuthor}
+              isLoading={isCreatingAuthor}
+            >
+              Create Author
+            </Button>
+          </div>
+        </BaseModal.Footer>
+      </BaseModal>
+
       {isConverting && (
         <div className="fixed inset-0 z-9999 flex items-center justify-center bg-black/75 backdrop-blur-md animate-in fade-in duration-300">
           <div className="p-10 flex flex-col items-center justify-center gap-6 w-full mx-4">

@@ -157,6 +157,9 @@ export async function saveFont(prevState: any, formData: FormData, id?: string) 
     const rating = formData.get("rating") as string;
     const symbol = formData.get("symbol") as string | null;
     const formula = formData.get("formula") as string | null;
+    const importedFrom = (formData.get("importedFrom") as string | null) || null;
+    const licenseType = (formData.get("licenseType") as string | null) || null;
+    const authorId = (formData.get("authorId") as string | null) || null;
     const isVariable = formData.get("isVariable") === "true";
     const tagIds = formData.getAll("tagIds") as string[];
 
@@ -192,6 +195,9 @@ export async function saveFont(prevState: any, formData: FormData, id?: string) 
       rating,
       symbol,
       formula,
+      importedFrom,
+      licenseType,
+      authorId,
       isVariable,
     };
 

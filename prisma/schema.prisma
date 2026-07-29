@@ -41,6 +41,35 @@ model Permission {
   roles     Role[]   @relation("RolePermissions")
 }
 
+// Autore/fonderia di font. Entità standalone (nessuna relazione FK verso
+// Ingredient per ora) — i campi composti (donation, socialLinks, metrics,
+// businessInfo) sono oggetti/array JSON-serializzati in colonne TEXT, stesso
+// pattern già usato per `Prescription.insight`/`Post.insight` su D1/SQLite.
+model FontAuthor {
+  id              String   @id @default(uuid())
+  slug            String   @unique
+  name            String
+  type            String   @default("INDIVIDUAL")
+  email           String
+  supportEmail    String?
+  avatarUrl       String?
+  bannerUrl       String?
+  bio             String?
+  website         String?
+  donation        String?
+  nationality     String?
+  languagesSpoken String?
+  isVerified      Boolean  @default(false)
+  socialLinks     String?
+  metrics         String?
+  businessInfo    String?
+  specialties     String?
+  status          String   @default("ACTIVE")
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @default(now()) @updatedAt
+  fonts           Ingredient[]
+}
+
 // Entità SEO condivisa: un unico set di meta-tag riusabile da qualunque
 // contenuto pubblico (archive, blog article, prescription, ...) invece di
 // duplicare gli stessi campi su ogni modello. Relazione 1-a-1 opzionale:
@@ -89,7 +118,13 @@ model Ingredient {
   rating                 String
   symbol                 String?
   formula                String?
+  importedFrom           String?
+  licenseType            String?
   isVariable             Boolean        @default(false)
+  userRating             Float?         @default(0)
+  userRatingsCount       Int?           @default(0)
+  authorId               String?
+  author                 FontAuthor?    @relation(fields: [authorId], references: [id])
   createdAt              DateTime       @default(now())
   updatedAt              DateTime       @default(now()) @updatedAt
   variants               FontVariant[]

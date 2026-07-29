@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import { cookies } from "next/headers";
 import { getIngredientBySlug } from "@/lib/services/font";
 import { getPairingsCountForFont } from "@/lib/services/pairing";
 import IngredientDetailClient from "./IngredientDetailClient";
@@ -17,5 +18,10 @@ export default async function IngredientDetailPage({ params }: IngredientDetailP
 
   const pairingsCount = await getPairingsCountForFont(ingredient.id);
 
-  return <IngredientDetailClient ingredient={ingredient} hasPairings={pairingsCount > 0} />;
+  // Il cookie di voto è httpOnly (anti-tampering via devtools/document.cookie),
+  // quindi lo stato "già votato" va letto qui lato server invece che nel client.
+  const cookieStore = await cookies();
+  const hasVoted = Boolean(cookieStore.get(`tm_rated_${ingredient.id}`));
+
+  return <IngredientDetailClient ingredient={ingredient} hasPairings={pairingsCount > 0} hasVoted={hasVoted} />;
 }

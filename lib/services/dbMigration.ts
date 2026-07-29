@@ -1,5 +1,6 @@
 import prisma from "@/lib/prisma";
 import { Prisma } from "../../prisma/generated-client";
+import crypto from "crypto";
 
 let isMigrated = false;
 
@@ -52,6 +53,17 @@ export async function ensureD1SchemaUpdated(force = false) {
 
     // 3. Add columns safely to Ingredient
     await addCol("Ingredient", "updatedAt", "DATETIME");
+    await addCol("Ingredient", "importedFrom", "TEXT");
+    await addCol("Ingredient", "licenseType", "TEXT");
+    await addCol("Ingredient", "authorId", "TEXT");
+    await addCol("Ingredient", "userRating", "REAL DEFAULT 0");
+    await addCol("Ingredient", "userRatingsCount", "INTEGER DEFAULT 0");
+    try {
+      await prisma.$executeRawUnsafe(`UPDATE Ingredient SET userRating = 0 WHERE userRating IS NULL`);
+    } catch {}
+    try {
+      await prisma.$executeRawUnsafe(`UPDATE Ingredient SET userRatingsCount = 0 WHERE userRatingsCount IS NULL`);
+    } catch {}
     try {
       await prisma.$executeRawUnsafe(`UPDATE Ingredient SET createdAt = CURRENT_TIMESTAMP WHERE createdAt IS NULL`);
     } catch {}
@@ -209,6 +221,48 @@ export async function ensureD1SchemaUpdated(force = false) {
     } catch {}
     await addCol("Post", "seoId", "TEXT");
     await addCol("Prescription", "seoId", "TEXT");
+
+    // 10. FontAuthor — entità standalone per autori/fonderie di font.
+    try {
+      await prisma.$executeRawUnsafe(`
+        CREATE TABLE IF NOT EXISTS FontAuthor (
+          id TEXT PRIMARY KEY NOT NULL,
+          slug TEXT NOT NULL UNIQUE,
+          name TEXT NOT NULL,
+          type TEXT DEFAULT 'INDIVIDUAL',
+          email TEXT NOT NULL,
+          supportEmail TEXT,
+          avatarUrl TEXT,
+          bannerUrl TEXT,
+          bio TEXT,
+          website TEXT,
+          donation TEXT,
+          nationality TEXT,
+          languagesSpoken TEXT,
+          isVerified BOOLEAN DEFAULT 0,
+          socialLinks TEXT,
+          metrics TEXT,
+          businessInfo TEXT,
+          specialties TEXT,
+          status TEXT DEFAULT 'ACTIVE',
+          createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+          updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP
+        )
+      `);
+    } catch {}
+
+    // Righe di permesso fontAuthor:* — nessun seed script le crea (i permessi
+    // in questo progetto vengono inseriti out-of-band), quindi le registriamo
+    // qui in modo idempotente (name è UNIQUE). SUPERADMIN/ADMIN bypassano
+    // comunque il check via ruolo, quindi funzionano da subito anche prima
+    // che qualcuno le assegni a un ruolo custom da /admin/roles.
+    for (const action of ["read", "create", "update", "delete"]) {
+      try {
+        await prisma.$executeRawUnsafe(
+          `INSERT OR IGNORE INTO Permission (id, name, createdAt, updatedAt) VALUES ('${crypto.randomUUID()}', 'fontAuthor:${action}', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)`
+        );
+      } catch {}
+    }
 
     isMigrated = true;
   } catch (err) {

@@ -14,7 +14,15 @@ function mapIngredient(rec: any): Ingredient {
     rating: rec.rating,
     symbol: rec.symbol ?? undefined,
     formula: rec.formula ?? undefined,
+    importedFrom: rec.importedFrom ?? undefined,
+    licenseType: rec.licenseType ?? undefined,
     isVariable: rec.isVariable,
+    userRating: rec.userRating ?? 0,
+    userRatingsCount: rec.userRatingsCount ?? 0,
+    authorId: rec.authorId ?? undefined,
+    author: rec.author
+      ? { id: rec.author.id, name: rec.author.name, slug: rec.author.slug, avatarUrl: rec.author.avatarUrl ?? undefined, isVerified: rec.author.isVerified }
+      : undefined,
     createdAt: rec.createdAt?.toISOString(),
     updatedAt: rec.updatedAt?.toISOString(),
     variants: (rec.variants || []).map((v: any): FontVariant => ({
@@ -60,7 +68,7 @@ export const getRecentFormulas = unstable_cache(
   async (limit = 4): Promise<Formula[]> => {
     const records = await withSafeDbQuery(() =>
       prisma.formula.findMany({
-        include: { fonts: { include: { variants: true } }, tags: true },
+        include: { fonts: { include: { variants: true, author: true } }, tags: true },
         orderBy: { createdAt: "desc" },
         take: limit,
       })
@@ -78,7 +86,7 @@ export const getAllFormulas = unstable_cache(
   async (): Promise<Formula[]> => {
     const records = await withSafeDbQuery(() =>
       prisma.formula.findMany({
-        include: { fonts: { include: { variants: true } }, tags: true },
+        include: { fonts: { include: { variants: true, author: true } }, tags: true },
         orderBy: { createdAt: "desc" },
       })
     );
@@ -129,7 +137,7 @@ export const getFormulasPage = unstable_cache(
     Promise.all([
       prisma.formula.findMany({
         where,
-        include: { fonts: { include: { variants: true } }, tags: true },
+        include: { fonts: { include: { variants: true, author: true } }, tags: true },
         orderBy,
         skip: (page - 1) * perPage,
         take: perPage,
@@ -155,7 +163,7 @@ export const getFormulaBySlug = unstable_cache(
     const record = await withSafeDbQuery(() =>
       prisma.formula.findUnique({
         where: { slug },
-        include: { fonts: { include: { variants: true } }, tags: true },
+        include: { fonts: { include: { variants: true, author: true } }, tags: true },
       })
     );
     return record ? toFormula(record) : null;

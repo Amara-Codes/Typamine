@@ -191,6 +191,7 @@ export async function POST(request: NextRequest) {
                 category: "Sans-Serif",
                 creator: "Typamine Import",
                 rating: "9.0",
+                importedFrom: "Local Bulk Upload",
                 isVariable,
                 createdAt: new Date(),
                 variants: {

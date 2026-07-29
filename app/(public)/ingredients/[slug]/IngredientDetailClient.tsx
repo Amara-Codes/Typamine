@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { MoveLeft, Sparkles, ArrowRight, Download, Loader2 } from "lucide-react";
+import { MoveLeft, Sparkles, ArrowRight, Download, Loader2, ShieldCheck, ShieldEllipsis, FileSignature } from "lucide-react";
 import MinimalLink from "@/components/common/MinimalLink";
 import { PageHeading } from "@/components/common/PageHeading";
 import { useThemeStore } from "@/store/themeStore";
@@ -12,16 +12,28 @@ import { getDeterministicFormula } from "@/lib/utils";
 import { Cta } from "@/components/common/Cta";
 import { Button } from "@/components/common/Button";
 import { Badge } from "@/components/common/Badge";
+import BaseModal from "@/components/common/BaseModal";
+import IngredientRatingWidget from "@/components/font/IngredientRatingWidget";
 import { Ingredient } from "@/types";
+
+// Licenze considerate abbastanza libere da consentire il download diretto —
+// tutte le altre (incluso "non ancora classificata") mostrano il modale di
+// attesa consenso invece di scaricare, finché non c'è un accordo firmato
+// con l'autore.
+const FREE_LICENSES = new Set(["Free", "Open Source (SIL OFL)", "Public Domain"]);
 
 interface IngredientDetailClientProps {
   ingredient: Ingredient;
   hasPairings?: boolean;
+  hasVoted?: boolean;
 }
 
-export default function IngredientDetailClient({ ingredient, hasPairings = false }: IngredientDetailClientProps) {
+export default function IngredientDetailClient({ ingredient, hasPairings = false, hasVoted = false }: IngredientDetailClientProps) {
   const { theme } = useThemeStore();
   const [isDownloading, setIsDownloading] = useState(false);
+  const [isLicenseModalOpen, setIsLicenseModalOpen] = useState(false);
+
+  const isLicenseFree = ingredient.licenseType ? FREE_LICENSES.has(ingredient.licenseType) : false;
 
   const fontData = {
     name: ingredient.name,
@@ -56,6 +68,14 @@ export default function IngredientDetailClient({ ingredient, hasPairings = false
   // `download` di un <a> viene ignorato dai browser per URL cross-origin come
   // assets.typamine.com, quindi serve scaricare il blob e servirlo da un
   // object URL same-origin perché il rename abbia effetto.
+  const handleDownloadClick = () => {
+    if (!isLicenseFree) {
+      setIsLicenseModalOpen(true);
+      return;
+    }
+    handleDownload();
+  };
+
   const handleDownload = async () => {
     if (!sourceUrl || isDownloading) return;
 
@@ -100,15 +120,34 @@ export default function IngredientDetailClient({ ingredient, hasPairings = false
         useGrainient
         grainientOptions={grainientColorsHeader}
         rightElement={
-          <button
-            onClick={handleDownload}
-            disabled={!sourceUrl || isDownloading}
-            className="px-5 py-2.5 bg-red text-black font-haas font-bold text-xs rounded hover:bg-red-600 transition-colors glow-red disabled:opacity-50 disabled:pointer-events-none flex items-center gap-2"
-          >
-            {isDownloading ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Download className="h-3.5 w-3.5" />}
-            {isDownloading ? "PREPARING..." : "DOWNLOAD WOFF2"}
-          </button>
+          <div className="flex flex-col items-end gap-2">
+            <button
+              onClick={handleDownloadClick}
+              disabled={!sourceUrl || isDownloading}
+              className="px-5 py-2.5 bg-red text-black font-haas font-bold text-xs rounded hover:bg-red-600 transition-colors glow-red disabled:opacity-50 disabled:pointer-events-none flex items-center gap-2"
+            >
+              {isDownloading ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Download className="h-3.5 w-3.5" />}
+              {isDownloading ? "PREPARING..." : "DOWNLOAD WOFF2"}
+            </button>
+            <span className="flex items-center gap-1.5 font-haas text-[10px] uppercase tracking-widest text-zinc-500 dark:text-zinc-400">
+              {isLicenseFree ? (
+                <ShieldCheck className="h-3.5 w-3.5 text-emerald-500 shrink-0" />
+              ) : (
+                <ShieldEllipsis className="h-3.5 w-3.5 text-amber-500 shrink-0" />
+              )}
+              License: <span className="text-black dark:text-white font-bold">{ingredient.licenseType || "Unclassified"}</span>
+            </span>
+          </div>
         }
+      />
+
+      <IngredientRatingWidget
+        ingredientId={ingredient.id}
+        slug={ingredient.slug}
+        typamineRating={parseFloat(ingredient.rating) || 0}
+        initialUserRating={ingredient.userRating || 0}
+        initialUserRatingsCount={ingredient.userRatingsCount || 0}
+        initialHasVoted={hasVoted}
       />
 
       {showRightSidebar ? (
@@ -198,6 +237,41 @@ export default function IngredientDetailClient({ ingredient, hasPairings = false
         />
       )}
 
+      <BaseModal isOpen={isLicenseModalOpen} onClose={() => setIsLicenseModalOpen(false)} size="md">
+        <BaseModal.Header onClose={() => setIsLicenseModalOpen(false)}>
+          <div className="flex items-end gap-4">
+            <div className="p-2 rounded-xl bg-amber-500/10">
+              <FileSignature className="w-6 h-6 text-amber-500" />
+            </div>
+            <h2 className="text-2xl font-star text-black dark:text-white leading-tight">Licensing In Progress</h2>
+          </div>
+        </BaseModal.Header>
+        <BaseModal.Body>
+          <div className="space-y-4">
+            <p className="text-sm text-zinc-600 dark:text-zinc-300 font-haas leading-relaxed">
+              We're currently reaching out to <span className="font-bold text-black dark:text-white">{ingredient.name}</span>'s author{ingredient.author ? "" : "(s)"} to secure a signed distribution agreement.
+            </p>
+            <p className="text-sm text-zinc-600 dark:text-zinc-300 font-haas leading-relaxed">
+              Once the license is confirmed, this font will unlock for download right here — no extra steps needed on your end. We'd rather take the time to do this properly than offer a download we're not legally clear to give you.
+            </p>
+            <p className="text-xs text-zinc-500 dark:text-zinc-400 font-haas leading-relaxed">
+              In the meantime, feel free to explore the live preview, try it in the Labs Bench, or check out how it pairs with other typefaces in our Prescriptions.
+            </p>
+          </div>
+        </BaseModal.Body>
+        <BaseModal.Footer>
+          <Button
+            onClick={() => setIsLicenseModalOpen(false)}
+            variant="primary"
+            size="md"
+            roundness="md"
+            fullWidth
+          >
+            Got It
+          </Button>
+        </BaseModal.Footer>
+      </BaseModal>
+
       <Cta
         title={<>Need <span className="text-blue dark:text-red font-star px-2">integration</span> tools?</>}
         subtitle="Head over to the Labs Bench for @font-face snippet generators, WCAG contrast ratio checkers for accessibility, Tailwind CSS utilities, and much more."
@@ -206,7 +280,7 @@ export default function IngredientDetailClient({ ingredient, hasPairings = false
 
       >
         <Link href={`/labs?ingredient=${ingredient.slug}`} className="inline-block">
-          <Button variant="secondary" >ENTER_THE_LABS</Button>
+          <Button variant="secondary" >ENTER THE LABS</Button>
         </Link>
       </Cta>
     </div>

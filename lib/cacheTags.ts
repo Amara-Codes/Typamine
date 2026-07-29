@@ -10,4 +10,5 @@ export const CACHE_TAGS = {
   pairings: "pairings",
   posts: "posts",
   tags: "tags",
+  fontAuthors: "font-authors",
 } as const;

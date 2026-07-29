@@ -4,7 +4,7 @@ import { Prisma } from "../../prisma/generated-client";
 import { Ingredient, FontVariant, Tag } from "@/types";
 import { CACHE_TAGS } from "@/lib/cacheTags";
 
-type IngredientRecord = Prisma.IngredientGetPayload<{ include: { variants: true; tags: true } }>;
+type IngredientRecord = Prisma.IngredientGetPayload<{ include: { variants: true; tags: true; author: true } }>;
 
 // Righe create prima dell'introduzione della colonna `createdAt` possono avere
 // un NULL letterale nonostante lo schema la dichiari NOT NULL (il DEFAULT a
@@ -32,7 +32,15 @@ function toIngredient(record: IngredientRecord): Ingredient {
     rating: record.rating,
     symbol: record.symbol ?? undefined,
     formula: record.formula ?? undefined,
+    importedFrom: record.importedFrom ?? undefined,
+    licenseType: record.licenseType ?? undefined,
     isVariable: record.isVariable,
+    userRating: record.userRating ?? 0,
+    userRatingsCount: record.userRatingsCount ?? 0,
+    authorId: record.authorId ?? undefined,
+    author: record.author
+      ? { id: record.author.id, name: record.author.name, slug: record.author.slug, avatarUrl: record.author.avatarUrl ?? undefined, isVerified: record.author.isVerified }
+      : undefined,
     tags: (record.tags || []).map((t): Tag => ({
       id: t.id,
       name: t.name,
@@ -53,7 +61,7 @@ export const getRecentIngredients = unstable_cache(
   async (limit = 4): Promise<Ingredient[]> => {
     const records = await withCreatedAtBackfill(() =>
       prisma.ingredient.findMany({
-        include: { variants: true, tags: true },
+        include: { variants: true, tags: true, author: true },
         orderBy: { createdAt: "desc" },
         take: limit,
       })
@@ -118,7 +126,7 @@ export const getIngredientsPage = unstable_cache(
     Promise.all([
       prisma.ingredient.findMany({
         where,
-        include: { variants: true, tags: true },
+        include: { variants: true, tags: true, author: true },
         orderBy,
         skip: (page - 1) * perPage,
         take: perPage,
@@ -144,7 +152,7 @@ export const getIngredientBySlug = unstable_cache(
     const record = await withCreatedAtBackfill(() =>
       prisma.ingredient.findUnique({
         where: { slug },
-        include: { variants: true, tags: true },
+        include: { variants: true, tags: true, author: true },
       })
     );
     return record ? toIngredient(record) : null;

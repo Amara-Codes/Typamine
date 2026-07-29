@@ -52,7 +52,12 @@ export default function RoleForm({ role, allPermissions }: { role?: any, allPerm
     package: "Offers (Packages)",
     user: "Users",
     role: "Governance (Roles)",
-    faq: "FAQs & Knowledge"
+    faq: "FAQs & Knowledge",
+    font: "Fonts",
+    tag: "Tags",
+    pairing: "Pairings",
+    collection: "Collections",
+    fontAuthor: "Font Authors",
   };
 
   const rolePermissionIds = new Set(role?.permissions?.map((p: any) => p.id) || []);

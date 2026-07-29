@@ -165,6 +165,7 @@ export async function POST(request: NextRequest) {
             category: dbCategory,
             creator: font.designer || (font.provider === 'fontshare' ? 'Fontshare' : 'Google Fonts'),
             rating: "9.0",
+            importedFrom: font.provider === 'fontshare' ? 'Fontshare' : 'Google Fonts',
             isVariable,
             createdAt: new Date(),
             variants: {
