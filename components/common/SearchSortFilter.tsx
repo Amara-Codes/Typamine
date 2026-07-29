@@ -233,7 +233,7 @@ export function SearchSortFilter({
 
               {ratingOptions.length > 0 && (
                 <div>
-                  <Label>Minimum Rating</Label>
+                  <Label>Typamine® Minimum Rating</Label>
                   <Select options={ratingOptions} value={draftRating} onChange={setDraftRating} />
                 </div>
               )}

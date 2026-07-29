@@ -5,6 +5,7 @@ import Link from "next/link";
 import { SeventiesThemeToggle } from "@/components/common/SeventiesThemeToggle";
 import { DynamicLogo } from "@/components/layout/DynamicLogo";
 import { StaggeredMenu, StaggeredMenuItem } from "@/components/cherry/StaggeredMenu";
+import { useThemeStore } from "@/store/themeStore";
 
 const NAV_ITEMS: StaggeredMenuItem[] = [
   { label: "Ingredients", ariaLabel: "Go to Ingredients", link: "/ingredients" },
@@ -19,7 +20,8 @@ export const Header: React.FC = () => {
 
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
-
+ const { theme } = useThemeStore();
+ const isDark = theme === "dark";
 
 
   useEffect(() => {
@@ -49,9 +51,12 @@ export const Header: React.FC = () => {
 
   return (
     <>
-    {/* Desktop: header con hide-on-scroll, logo, nav e theme toggle inline. */}
+    {/* Desktop: header con hide-on-scroll, logo, nav e theme toggle inline.
+        Parte da lg (non md): a 768px la nav orizzontale con 6 link + logo +
+        toggle è troppo stretta, lo staggered menu mobile resta quindi attivo
+        anche su tablet (sm/md) e cede il posto solo da lg in su. */}
     <header
-      className={`hidden md:block fixed top-0 left-0 right-0 z-50 w-full bg-transparent backdrop-blur-sm transition-transform duration-300 ease-in-out ${
+      className={`hidden lg:block fixed top-0 left-0 right-0 z-50 w-full bg-transparent backdrop-blur-sm transition-transform duration-300 ease-in-out ${
         isVisible ? "translate-y-0" : "-translate-y-full"
       }`}
     >
@@ -173,7 +178,7 @@ export const Header: React.FC = () => {
         dall'header desktop: quest'ultimo ha `transform` (per l'hide-on-scroll)
         che creerebbe un containing block sbagliato per il `position: fixed`
         interno del menu se annidato dentro. */}
-    <div className="md:hidden">
+    <div className="lg:hidden">
       <StaggeredMenu
         isFixed
         headerHidden={!isVisible}
@@ -183,8 +188,8 @@ export const Header: React.FC = () => {
         displayItemNumbering
         colors={["#ff3131", "#00cece"]}
         accentColor="#ff3131"
-        menuButtonColor="#ffffff"
-        openMenuButtonColor="#000000"
+        menuButtonColor={isDark ? "#ffffff" : "#000000"}
+        openMenuButtonColor={isDark ? "#ff3131" : "#000000"}
         logoSlot={
           <Link href="/" className="flex items-center pointer-events-auto">
             <DynamicLogo height={80} squareGlow />

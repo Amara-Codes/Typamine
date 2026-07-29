@@ -35,7 +35,12 @@ export default function Quote({
   return (
     <div
       className={cn(
-        "flex flex-col items-center gap-0 py-24 max-w-full mx-auto relative group transition-colors duration-500",
+        // Niente padding verticale qui: la spaziatura va gestita a livello
+        // superiore (wrapper del renderer), uguale per tutti i moduli — non
+        // dentro il singolo componente, altrimenti Quote (prima py-24) apre/chiude
+        // il blocco insight con un padding diverso dagli altri moduli a seconda
+        // di quale capiti per primo/ultimo.
+        "flex flex-col items-center gap-0 max-w-full mx-auto relative group transition-colors duration-500",
         className,
         hasDynamicText && "dyn-text",
         hasDynamicBg && "dyn-bg"

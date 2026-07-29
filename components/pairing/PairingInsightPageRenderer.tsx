@@ -73,8 +73,11 @@ export default function PairingInsightPageRenderer({ content }: { content: strin
 
           case 'paragraphWithImage': {
             const isBg = props.imagePosition === 'background';
+            // Stesso px-6 md:px-12 lg:px-0 di paragraph/quote in TUTTI i casi,
+            // incluso imagePosition="background" — prima veniva escluso solo lì,
+            // rompendo l'omogeneità (l'immagine sbordava rispetto agli altri moduli).
             return (
-              <section key={id} className={cn(!isBg && "px-6 md:px-12 lg:px-0")}>
+              <section key={id} className="px-6 md:px-12 lg:px-0">
                 <ParagraphWithImage
                   imageSrc={resolveMediaUrl(props.imageUrl || props.image || props.imageSrc) || ""}
                   imageAlt={props.imageAlt}
@@ -107,6 +110,9 @@ export default function PairingInsightPageRenderer({ content }: { content: strin
             const fallbackBgClass = props.bgColorClassName ? undefined : (COLOR_PAIRS_MAP[props.colors] || "bg-zinc-100/20 dark:bg-black/20");
 
             return (
+              // Nessun padding verticale qui — vedi la nota equivalente in
+              // PostInsightPageRenderer: sommato allo spacing del wrapper
+              // esterno raddoppiava il bottom quando la pagina finiva con un quote.
               <section key={id} className="px-6 md:px-12 lg:px-0">
                 <Quote
                   author={props.author}

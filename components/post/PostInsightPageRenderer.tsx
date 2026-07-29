@@ -52,29 +52,23 @@ export interface PostInsightPageRendererProps {
 
 const ARCHIVE_BORDER = "border border-ocragray-500/80 dark:border-ocragray-200/50";
 
-const archiveParagraphClassNames = "mx-8 " + ARCHIVE_BORDER;
-const blogParagraphClassNames = "";
-
-const PARAGRAPH_SECTION_CLASSNAMES: Record<InsightSection, string> = {
-  archive: archiveParagraphClassNames,
-  blog: blogParagraphClassNames,
+// Stesso "case-file box" (margine + bordo) per paragraph/paragraphWithImage/quote
+// in archive, applicato SEMPRE sul <section> esterno (block, width auto) — mai
+// dentro il className/containerClassName interno dei componenti, dove elementi
+// con `w-full` combinato a un margine sborderebbero invece di restringersi
+// (width:100% + margin è extra rispetto al 100%, non lo sottrae). Applicato in
+// modo uniforme a TUTTI i casi (incluso imagePosition="background"), non solo
+// quando c'è testo+immagine affiancati — prima veniva escluso lì ed era la
+// causa dell'immagine "sbordata" rispetto al testo semplice sopra.
+const SECTION_WRAP_CLASSNAMES: Record<InsightSection, string> = {
+  archive: "mx-8 " + ARCHIVE_BORDER,
+  blog: "",
 };
 
-const archiveParagraphWithImageClassNames = "";
-const blogParagraphWithImageClassNames = "";
-
-const PARAGRAPH_WITH_IMAGE_SECTION_CLASSNAMES: Record<InsightSection, string> = {
-  archive: archiveParagraphWithImageClassNames,
-  blog: blogParagraphWithImageClassNames,
-};
-
-const archiveQuoteClassNames = ARCHIVE_BORDER;
-const blogQuoteClassNames = "rounded-tl-[6rem] rounded-br-[6rem]";
-
-const QUOTE_SECTION_CLASSNAMES: Record<InsightSection, string> = {
-  archive: archiveQuoteClassNames,
-  blog: blogQuoteClassNames,
-};
+// Stile decorativo del solo componente Quote in blog (angoli arrotondati sulla
+// card), indipendente dal wrap di sezione sopra — resta per-componente perché
+// non ha equivalente per paragraph/paragraphWithImage.
+const BLOG_QUOTE_SHAPE = "rounded-tl-[6rem] rounded-br-[6rem]";
 
 export default function PostInsightPageRenderer({ content, section }: PostInsightPageRendererProps) {
   let modules: InsightModule[] = [];
@@ -93,9 +87,9 @@ export default function PostInsightPageRenderer({ content, section }: PostInsigh
 
         switch (type) {
           case 'paragraph': {
-            const sectionClass = section ? PARAGRAPH_SECTION_CLASSNAMES[section] : "";
+            const sectionWrap = section ? SECTION_WRAP_CLASSNAMES[section] : "";
             return (
-              <section key={id} className="">
+              <section key={id} className={sectionWrap}>
                 <Paragraph
                   as={props.as}
                   size={props.size}
@@ -105,8 +99,7 @@ export default function PostInsightPageRenderer({ content, section }: PostInsigh
                   className={cn(
                     "p-4",
                     COLOR_PAIRS_MAP[props.colors],
-                    FONT_FAMILIES_MAP[props.fontFamily],
-                    sectionClass
+                    FONT_FAMILIES_MAP[props.fontFamily]
                   )}
                 >
                   {props.children}
@@ -117,9 +110,9 @@ export default function PostInsightPageRenderer({ content, section }: PostInsigh
 
           case 'paragraphWithImage': {
             const isBg = props.imagePosition === 'background';
-            const sectionClass = section ? PARAGRAPH_WITH_IMAGE_SECTION_CLASSNAMES[section] : "";
+            const sectionWrap = section ? SECTION_WRAP_CLASSNAMES[section] : "";
             return (
-              <section key={id} className={cn(!isBg && "px-6 md:px-12 lg:px-0")}>
+              <section key={id} className={cn(!isBg && "px-6 md:px-12 lg:px-0", sectionWrap)}>
                 <ParagraphWithImage
                   imageSrc={resolveMediaUrl(props.imageUrl || props.image || props.imageSrc) || ""}
                   imageAlt={props.imageAlt}
@@ -133,8 +126,7 @@ export default function PostInsightPageRenderer({ content, section }: PostInsigh
                   colorClassName={props.colorClassName}
                   containerClassName={cn(
                     "overflow-hidden",
-                    !isBg && cn("p-8", COLOR_PAIRS_MAP[props.colors]),
-                    sectionClass
+                    !isBg && cn("p-8", COLOR_PAIRS_MAP[props.colors])
                   )}
                   className={cn(FONT_FAMILIES_MAP[props.fontFamily])}
                   imageClassName='rounded-none'
@@ -152,10 +144,15 @@ export default function PostInsightPageRenderer({ content, section }: PostInsigh
             // internamente (vedi lib/dynamicStyle.ts) invece di iniettarle
             // come classi statiche che Tailwind non genererebbe mai.
             const fallbackBgClass = props.bgColorClassName ? undefined : (COLOR_PAIRS_MAP[props.colors] || "bg-zinc-100/20 dark:bg-black/20");
-            const sectionClass = section ? QUOTE_SECTION_CLASSNAMES[section] : "";
+            // Quote resta full-width, senza il mx-8+border del "case-file box"
+            // usato da paragraph/paragraphWithImage — a differenza loro. NESSUN
+            // padding verticale qui: sommandosi al py-12 del wrapper esterno
+            // (vedi ArchivePostDetailClient) raddoppiava il bottom quando la
+            // pagina finiva con un quote. Il ritmo verticale tra moduli è tutto
+            // gap-y-4 sul contenitore dei moduli + il py-12 del wrapper esterno.
 
             return (
-              <section key={id} className="lg:p-8">
+              <section key={id} className="px-4 lg:px-8">
                 <Quote
                   author={props.author}
                   authorDates={props.authorDates}
@@ -166,7 +163,7 @@ export default function PostInsightPageRenderer({ content, section }: PostInsigh
                     "p-8 backdrop-blur-md",
                     fallbackBgClass,
                     FONT_FAMILIES_MAP[props.fontFamily],
-                    sectionClass
+                    section === "blog" && BLOG_QUOTE_SHAPE
                   )}
                 >
                   {props.children}
