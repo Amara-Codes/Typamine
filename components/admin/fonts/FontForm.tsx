@@ -4,6 +4,7 @@ import React, { useActionState, useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { saveFont } from "@/lib/actions/font";
 import { quickCreateFontAuthor } from "@/lib/actions/fontAuthor";
+import { FONT_LICENSE_TYPES } from "@/lib/constants/fontLicenseTypes";
 import { Plus, Trash2, Sliders, Type, AlertCircle, Loader2, UserPlus } from "lucide-react";
 import { Select } from "@/components/common/Select";
 import { Input, Label } from "@/components/common/Input";
@@ -44,13 +45,7 @@ const IMPORTED_FROM_OPTIONS = [
 
 const LICENSE_TYPE_OPTIONS = [
   { label: "— Not set —", value: "" },
-  { label: "Free", value: "Free" },
-  { label: "Free for Personal Use", value: "Free for Personal Use" },
-  { label: "Demo", value: "Demo" },
-  { label: "Donationware", value: "Donationware" },
-  { label: "Public Domain", value: "Public Domain" },
-  { label: "Open Source (SIL OFL)", value: "Open Source (SIL OFL)" },
-  { label: "Commercial", value: "Commercial" },
+  ...FONT_LICENSE_TYPES.map((v) => ({ label: v, value: v })),
 ];
 
 const AUTHOR_TYPE_OPTIONS = [

@@ -4,6 +4,7 @@ import fontverter from "fontverter";
 import prisma from "@/lib/prisma";
 import { uploadToR2 } from "@/lib/r2";
 import { getVariantLabel } from "@/lib/fontMeta";
+import { getOrCreatePlaceholderFontAuthorId, findOrCreateFontAuthorByName } from "@/lib/services/fontAuthor";
 import { revalidateTag } from "next/cache";
 import { CACHE_TAGS } from "@/lib/cacheTags";
 import crypto from "crypto";
@@ -27,6 +28,11 @@ export async function POST(request: NextRequest) {
 
     const imported: string[] = [];
     const failed: Array<{ family: string; error: string }> = [];
+
+    const [googleFontsAuthorId, fontshareAuthorId] = await Promise.all([
+      getOrCreatePlaceholderFontAuthorId("googleFonts"),
+      getOrCreatePlaceholderFontAuthorId("fontshare"),
+    ]);
 
     const categoryMapping: Record<string, string> = {
       "sans-serif": "Sans-Serif",
@@ -156,6 +162,14 @@ export async function POST(request: NextRequest) {
           });
         }
 
+        // Se il provider fornisce gia' un designer reale (Fontshare lo passa
+        // sempre, vedi lib/fontshare.ts), risolviamo/creiamo subito il suo
+        // FontAuthor invece di lasciare authorId null — altrimenti il font
+        // ricomparirebbe per sempre tra i candidati "Resolve Identity" anche
+        // se il nome reale e' gia' noto e corretto in `creator`.
+        const resolvedDesignerAuthorId = font.designer ? await findOrCreateFontAuthorByName(font.designer) : null;
+        const placeholderAuthorId = font.provider === 'fontshare' ? fontshareAuthorId : googleFontsAuthorId;
+
         // Save to DB
         await prisma.ingredient.create({
           data: {
@@ -166,6 +180,7 @@ export async function POST(request: NextRequest) {
             creator: font.designer || (font.provider === 'fontshare' ? 'Fontshare' : 'Google Fonts'),
             rating: "9.0",
             importedFrom: font.provider === 'fontshare' ? 'Fontshare' : 'Google Fonts',
+            authorId: resolvedDesignerAuthorId ?? placeholderAuthorId,
             isVariable,
             createdAt: new Date(),
             variants: {

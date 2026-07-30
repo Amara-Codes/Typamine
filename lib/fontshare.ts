@@ -80,9 +80,9 @@ export async function fetchFontshareFonts(params: FontshareQueryParams = {}): Pr
       
       // Popoliamo il campo designer (che nel DB diventerà "creator") 
       // prendendo solo il primo risultato dall'array designers come richiesto.
-      const creatorName = font.designers && font.designers.length > 0 
-        ? font.designers[0].name 
-        : font.publisher?.name || 'Sconosciuto';
+      const creatorName = font.designers && font.designers.length > 0
+        ? font.designers[0].name
+        : font.publisher?.name || 'Unknown';
 
       // Verifichiamo se c'è almeno una variante variabile
       const isVariable = font.styles.some((style: any) => style.is_variable);

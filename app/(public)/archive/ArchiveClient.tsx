@@ -25,26 +25,31 @@ export default function ArchiveClient({ tags, children }: ArchiveClientProps) {
   const dynamicArchiveBgImageUrl = theme === "dark" ? "/images/archive/double-hero/hero-bg-dark.png" : "/images/archive/double-hero/hero-bg-light.png";
 
   return (
-    <DoubleHero
-      title={
-        <span className="text-blue-800 dark:text-red-400 font-positivesys">The Typography&apos;s Wayback Machine</span>
-      }
-      layout="contentCenter"
-      description="Browse a vast catalog of fonts, find expert pairings, generate custom assets on the fly, and read our latest typographic prescriptions. Built for modern creators and developers."
-      bgImage={dynamicArchiveBgImageUrl}
-      vLayout="contentBottom"
-      fullWidth
-    >
-      <div className="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
-        <SearchSortFilter
-          searchPlaceholder="Search the archive by title, caption or description..."
-          sortOptions={SORT_OPTIONS}
-          tags={tags}
-          filtersModalTitle="Filter by Tags"
-        />
+    <DoubleHero bgImage={dynamicArchiveBgImageUrl} fullWidth>
+      <DoubleHero.FirstViewport className="pt-24 pb-12 px-6 md:px-12 flex flex-col justify-end">
+        <div className="max-w-3xl flex flex-col space-y-4 text-center items-center mx-auto">
+          <h1 className="font-haas text-2xl md:text-5xl font-bold tracking-tight text-foreground text-glow-blue dark:text-glow-red">
+            <span className="text-blue-800 dark:text-red-400 font-positivesys">The Typography&apos;s Wayback Machine</span>
+          </h1>
 
-        {children}
-      </div>
+          <p className="text-zinc-700 dark:text-zinc-300 text-xs md:text-base max-w-xl leading-relaxed">
+            Browse a vast catalog of fonts, find expert pairings, generate custom assets on the fly, and read our latest typographic prescriptions. Built for modern creators and developers.
+          </p>
+        </div>
+      </DoubleHero.FirstViewport>
+
+      <DoubleHero.SecondViewport>
+        <div className="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+          <SearchSortFilter
+            searchPlaceholder="Search the archive by title, caption or description..."
+            sortOptions={SORT_OPTIONS}
+            tags={tags}
+            filtersModalTitle="Filter by Tags"
+          />
+
+          {children}
+        </div>
+      </DoubleHero.SecondViewport>
     </DoubleHero>
   );
 }

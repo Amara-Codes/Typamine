@@ -5,6 +5,7 @@ import fontverter from "fontverter";
 import prisma from "@/lib/prisma";
 import { uploadToR2 } from "@/lib/r2";
 import { isVariableFont, getFontWeightAndStyle, getVariantLabel } from "@/lib/fontMeta";
+import { getOrCreatePlaceholderFontAuthorId } from "@/lib/services/fontAuthor";
 import { revalidateTag } from "next/cache";
 import { CACHE_TAGS } from "@/lib/cacheTags";
 import crypto from "crypto";
@@ -28,11 +29,21 @@ function slugify(name: string): string {
 // diventano le FontVariant, stesso schema del bulk-import da provider
 // (app/api/admin/fonts/bulk-import/route.ts) ma con peso/stile letti dalla
 // tabella OS/2 del font invece che dalla chiave di un manifest esterno.
+//
+// Lo ZIP spec impone "/" come separatore, ma alcuni tool Windows (es. store
+// diretto via WinRAR/API Windows) scrivono "\" nei path interni — senza
+// normalizzare qui, ogni entry finiva trattata come "file alla radice"
+// (nessun "/" da splittare) e lo zip risultava con zero cartelle valide.
+function normalizePathSeparators(path: string): string {
+  return path.replace(/\\/g, "/");
+}
+
 function groupEntriesByFolder(entries: Record<string, Uint8Array>): Map<string, Array<{ path: string; data: Uint8Array }>> {
   const groups = new Map<string, Array<{ path: string; data: Uint8Array }>>();
 
-  for (const [path, data] of Object.entries(entries)) {
+  for (const [rawPath, data] of Object.entries(entries)) {
     if (data.length === 0) continue; // directory entry
+    const path = normalizePathSeparators(rawPath);
     if (path.includes("__MACOSX/") || path.split("/").pop()?.startsWith(".")) continue;
 
     const segments = path.split("/").filter(Boolean);
@@ -71,6 +82,7 @@ export async function POST(request: NextRequest) {
 
     const encoder = new TextEncoder();
     const total = folders.size;
+    const localBulkImportAuthorId = await getOrCreatePlaceholderFontAuthorId("localBulkImport");
 
     // Risposta streammata (NDJSON, una riga = un evento JSON): la scansione di
     // uno zip con decine di cartelle puo' richiedere svariati secondi, e con
@@ -192,6 +204,7 @@ export async function POST(request: NextRequest) {
                 creator: "Typamine Import",
                 rating: "9.0",
                 importedFrom: "Local Bulk Upload",
+                authorId: localBulkImportAuthorId,
                 isVariable,
                 createdAt: new Date(),
                 variants: {

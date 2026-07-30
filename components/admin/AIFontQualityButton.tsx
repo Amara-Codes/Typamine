@@ -5,7 +5,7 @@ import { Sparkles, Loader2, CheckCircle2, AlertCircle, X } from "lucide-react";
 import { Button } from "@/components/common/Button";
 import { Card } from "@/components/common/Card";
 import BaseModal from "@/components/common/BaseModal";
-import { getFontsNeedingAIRating, rateFontWithAI } from "@/lib/actions/font";
+import { getFontsNeedingQualityReview, rateFontQualityWithAI } from "@/lib/actions/font";
 
 interface CandidateFont {
   id: string;
@@ -16,24 +16,22 @@ interface CandidateFont {
 
 type Phase = "idle" | "loading-candidates" | "ready" | "running" | "done";
 
-// Gemini 3.1 Flash-Lite free tier: 15 richieste/minuto (contro le 5/minuto
-// di Gemini 3.5 Flash usato prima, causa dei 429 costanti). Spaziando le
-// chiamate a ~4.5s si resta comunque sotto quota anche in un batch lungo,
-// invece di sparare le richieste una dopo l'altra.
+// Gemini 3.1 Flash-Lite free tier: 15 richieste/minuto — spaziando le
+// chiamate a ~4.5s si resta sotto quota anche in un batch lungo.
 const MIN_REQUEST_INTERVAL_MS = 4500;
 
 function sleep(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-export default function AIFontRatingButton() {
+export default function AIFontQualityButton() {
   const [isOpen, setIsOpen] = useState(false);
   const [phase, setPhase] = useState<Phase>("idle");
   const [candidates, setCandidates] = useState<CandidateFont[]>([]);
   const [progress, setProgress] = useState(0);
   const [logs, setLogs] = useState<string[]>([]);
   const [results, setResults] = useState<{
-    rated: Array<{ family: string; author: string; rating: number; tagNames: string[] }>;
+    rated: Array<{ family: string; rating: number; tagNames: string[] }>;
     failed: Array<{ family: string; error: string }>;
   } | null>(null);
 
@@ -52,7 +50,7 @@ export default function AIFontRatingButton() {
     setProgress(0);
     setLogs([]);
     try {
-      const fonts = await getFontsNeedingAIRating();
+      const fonts = await getFontsNeedingQualityReview();
       setCandidates(fonts);
       setPhase("ready");
     } catch (err: any) {
@@ -62,12 +60,12 @@ export default function AIFontRatingButton() {
     }
   };
 
-  const runRating = async () => {
+  const runReview = async () => {
     setPhase("running");
     setProgress(0);
-    setLogs([`Found ${candidates.length} font(s) with unresolved author/rating.`, "Starting AI rating session..."]);
+    setLogs([`Found ${candidates.length} font(s) with no rating/tags yet.`, "Starting AI quality review session..."]);
 
-    const rated: Array<{ family: string; author: string; rating: number; tagNames: string[] }> = [];
+    const rated: Array<{ family: string; rating: number; tagNames: string[] }> = [];
     const failed: Array<{ family: string; error: string }> = [];
 
     let lastRequestAt = 0;
@@ -85,10 +83,10 @@ export default function AIFontRatingButton() {
       setLogs(prev => [...prev, `[${i + 1}/${candidates.length}] Asking Gemini about "${font.name}"...`].slice(-40));
       lastRequestAt = Date.now();
       try {
-        const result = await rateFontWithAI(font.id);
-        rated.push(result);
+        const result = await rateFontQualityWithAI(font.id);
+        rated.push({ family: result.family, rating: result.rating, tagNames: result.tagNames });
         const tagsSuffix = result.tagNames.length > 0 ? `, tags: ${result.tagNames.join(", ")}` : ", tags: none matched";
-        setLogs(prev => [...prev, `✓ ${font.name} → author: ${result.author}, rating: ${result.rating.toFixed(1)}${tagsSuffix}`].slice(-40));
+        setLogs(prev => [...prev, `✓ ${font.name} → rating: ${result.rating.toFixed(1)}${tagsSuffix}`].slice(-40));
       } catch (err: any) {
         failed.push({ family: font.name, error: err.message || "Unknown error" });
         setLogs(prev => [...prev, `✗ ${font.name} failed: ${err.message}`].slice(-40));
@@ -96,13 +94,13 @@ export default function AIFontRatingButton() {
       setProgress(i + 1);
     }
 
-    setLogs(prev => [...prev, "-------------------------", `Done. Rated ${rated.length}, failed ${failed.length}.`]);
+    setLogs(prev => [...prev, "-------------------------", `Done. Reviewed ${rated.length}, failed ${failed.length}.`]);
     setResults({ rated, failed });
     setPhase("done");
 
     if (typeof Notification !== "undefined" && Notification.permission === "granted") {
-      new Notification("AI Font Rating complete", {
-        body: `Rated ${rated.length} font(s)${failed.length ? `, ${failed.length} failed` : ""}.`,
+      new Notification("AI Font Quality review complete", {
+        body: `Reviewed ${rated.length} font(s)${failed.length ? `, ${failed.length} failed` : ""}.`,
       });
     }
   };
@@ -122,7 +120,7 @@ export default function AIFontRatingButton() {
         <div className="min-w-0">
           <p className="text-sm font-bold text-black dark:text-white truncate">Review Fonts with AI</p>
           <p className="text-[10px] uppercase tracking-widest font-bold text-zinc-500 dark:text-zinc-400 truncate">
-            Author &amp; rating lookup
+            Rating &amp; tags lookup
           </p>
         </div>
       </div>
@@ -137,9 +135,9 @@ export default function AIFontRatingButton() {
                   <Sparkles className="h-5 w-5 text-cyan-500" />
                 </div>
                 <div className="min-w-0">
-                  <h3 className="text-2xl font-star text-black dark:text-white leading-tight">AI Font Rating</h3>
+                  <h3 className="text-2xl font-star text-black dark:text-white leading-tight">AI Quality Review</h3>
                   <p className="text-[10px] uppercase tracking-widest font-bold text-zinc-500 dark:text-zinc-400 mt-0.5">
-                    Author lookup &middot; Community rating
+                    Community rating &middot; Tags
                   </p>
                 </div>
               </div>
@@ -168,10 +166,8 @@ export default function AIFontRatingButton() {
               <div className="space-y-4">
                 <p className="text-xs text-zinc-600 dark:text-zinc-400 font-semibold">
                   Found <span className="text-black dark:text-white font-black">{candidates.length}</span> font(s)
-                  whose author is still set to <span className="font-bold">Google Fonts</span> or{" "}
-                  <span className="font-bold">Typamine Import</span>. AI will look up the real designer, assign
-                  a rating (6.0&ndash;10.0), and pick any matching tags from your existing tag list for each,
-                  then save it directly on the font.
+                  with no tags yet (never reviewed). AI will assign a rating (6.0&ndash;10.0) and pick any matching
+                  tags from your existing tag list for each, then save it directly on the font.
                 </p>
                 {candidates.length > 0 && (
                   <div className="max-h-48 overflow-y-auto rounded-xl border border-zinc-200 dark:border-zinc-800 divide-y divide-zinc-200 dark:divide-zinc-800">
@@ -206,7 +202,7 @@ export default function AIFontRatingButton() {
                     <span className="h-2.5 w-2.5 rounded-full bg-red-500/70" />
                     <span className="h-2.5 w-2.5 rounded-full bg-amber-500/70" />
                     <span className="h-2.5 w-2.5 rounded-full bg-emerald-500/70" />
-                    <span className="text-[10px] font-bold text-zinc-500 ml-2 uppercase tracking-widest">AI Rating Log</span>
+                    <span className="text-[10px] font-bold text-zinc-500 ml-2 uppercase tracking-widest">AI Quality Log</span>
                   </div>
                   <div ref={terminalRef} className="p-4 h-40 overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] space-y-1.5 font-mono text-[10px]">
                     {logs.map((log, index) => (
@@ -222,7 +218,7 @@ export default function AIFontRatingButton() {
                   <div className="space-y-3">
                     <div className="grid grid-cols-2 gap-3">
                       <div className="rounded-xl bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-900/50 p-4 text-center">
-                        <span className="text-[10px] font-bold uppercase tracking-widest text-emerald-700 dark:text-emerald-400 block mb-1">Rated</span>
+                        <span className="text-[10px] font-bold uppercase tracking-widest text-emerald-700 dark:text-emerald-400 block mb-1">Reviewed</span>
                         <span className="text-3xl font-black text-emerald-600 dark:text-emerald-400 leading-none">{results.rated.length}</span>
                       </div>
                       <div className="rounded-xl bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-900/50 p-4 text-center">
@@ -254,12 +250,12 @@ export default function AIFontRatingButton() {
                 size="md"
                 roundness="md"
                 disabled={candidates.length === 0}
-                onClick={runRating}
+                onClick={runReview}
                 fullWidth
                 className="flex items-center justify-center gap-2 font-bold"
               >
                 <Sparkles className="h-4 w-4" />
-                {candidates.length === 0 ? "Nothing to rate" : `Rate ${candidates.length} font(s) with AI`}
+                {candidates.length === 0 ? "Nothing to review" : `Review ${candidates.length} font(s) with AI`}
               </Button>
             )}
             {(phase === "running" || phase === "done") && (
@@ -280,7 +276,7 @@ export default function AIFontRatingButton() {
                 ) : (
                   <>
                     <Loader2 className="h-4 w-4 animate-spin" />
-                    Rating in progress...
+                    Reviewing...
                   </>
                 )}
               </Button>

@@ -5,7 +5,9 @@ import { getServerAuthSession } from "@/lib/session";
 import { revalidatePath, revalidateTag } from "next/cache";
 import { uploadToR2, deleteFromR2 } from "@/lib/r2";
 import { withCreatedAtBackfill } from "@/lib/services/font";
-import { generateFontRatingWithGemini } from "@/lib/ai/fontRating";
+import { generateFontQualityWithGemini } from "@/lib/ai/fontQuality";
+import { generateFontIdentityWithGemini } from "@/lib/ai/fontIdentity";
+import { getAllPlaceholderFontAuthorIds, getOrCreatePlaceholderFontAuthorId, findOrCreateFontAuthorByName } from "@/lib/services/fontAuthor";
 import { CACHE_TAGS } from "@/lib/cacheTags";
 import crypto from "crypto";
 
@@ -75,33 +77,33 @@ export async function deleteFont(id: string) {
   revalidateTag(CACHE_TAGS.ingredients, "max");
 }
 
-// Fonts importati in bulk (Google Fonts / Fontshare) o creati senza dati
-// editoriali finiscono con "creator" impostato al provider stesso invece
-// dell'autore reale: questi sono i candidati per l'arricchimento via AI.
-const AI_RATING_CANDIDATE_WHERE = {
-  OR: [
-    { creator: "Google Fonts" },
-    { creator: "Typamine Import" },
-      { creator: "Local Import" },
-  ],
+// Rating + tag: giudizio soggettivo/qualitativo (com'e' fatto, che stile
+// ha), indipendente da chi ha creato il font. Nessun flusso di import
+// (single upload, bulk zip, bulk provider) assegna mai tag alla creazione,
+// quindi "nessun tag" e' il segnale pulito di "non ancora passato dall'AI
+// quality review" — a differenza di `rating`, che ha sempre un valore di
+// default reale scritto a import time (mai null), quindi non puo' fare da
+// segnale di per se'.
+const QUALITY_CANDIDATE_WHERE = {
+  tags: { none: {} },
 };
 
-export async function getFontsNeedingAIRating() {
+export async function getFontsNeedingQualityReview() {
   await checkPermission("font:read");
   return prisma.ingredient.findMany({
-    where: AI_RATING_CANDIDATE_WHERE,
+    where: QUALITY_CANDIDATE_WHERE,
     select: { id: true, name: true, creator: true, rating: true },
     orderBy: { name: "asc" },
   });
 }
 
-export async function hasFontsNeedingAIRating() {
+export async function hasFontsNeedingQualityReview() {
   await checkPermission("font:read");
-  const count = await prisma.ingredient.count({ where: AI_RATING_CANDIDATE_WHERE });
+  const count = await prisma.ingredient.count({ where: QUALITY_CANDIDATE_WHERE });
   return count > 0;
 }
 
-export async function rateFontWithAI(fontId: string) {
+export async function rateFontQualityWithAI(fontId: string) {
   await checkPermission("font:update");
 
   const [font, allTags] = await Promise.all([
@@ -110,17 +112,16 @@ export async function rateFontWithAI(fontId: string) {
   ]);
   if (!font) throw new Error("Font not found");
 
-  const result = await generateFontRatingWithGemini(font.name, allTags.map((t) => t.name));
+  const result = await generateFontQualityWithGemini(font.name, allTags.map((t) => t.name));
 
   // Gemini sceglie tra i tag già esistenti (enum nello schema, vedi
-  // lib/ai/fontRating.ts) — qui basta mappare nome -> id. connect() invece di
-  // set(): non tocca eventuali tag già assegnati manualmente al font.
+  // lib/ai/fontQuality.ts) — qui basta mappare nome -> id. connect() invece
+  // di set(): non tocca eventuali tag già assegnati manualmente al font.
   const matchedTagIds = allTags.filter((t) => result.tagNames.includes(t.name)).map((t) => ({ id: t.id }));
 
   await prisma.ingredient.update({
     where: { id: fontId },
     data: {
-      creator: result.author,
       rating: result.rating.toFixed(1),
       ...(matchedTagIds.length > 0 ? { tags: { connect: matchedTagIds } } : {}),
     },
@@ -132,9 +133,89 @@ export async function rateFontWithAI(fontId: string) {
   return {
     id: font.id,
     family: font.name,
-    author: result.author,
     rating: result.rating,
     tagNames: result.tagNames,
+  };
+}
+
+// Autore + licenza: lookup fattuale su origine e diritti del font (chi l'ha
+// fatto, con che diritti) — i due fatti sono collegati (vedi
+// lib/ai/fontIdentity.ts), quindi una sola chiamata Gemini per entrambi.
+// Candidato se manca ALMENO UNO dei due: authorId ancora su un FontAuthor
+// placeholder d'import, o licenseType mai settato.
+async function getIdentityCandidateWhere() {
+  const placeholderAuthorIds = await getAllPlaceholderFontAuthorIds();
+  return {
+    OR: [
+      { authorId: { in: placeholderAuthorIds } },
+      { licenseType: null },
+      { licenseType: "" },
+    ],
+  };
+}
+
+export async function getFontsNeedingIdentityDetection() {
+  await checkPermission("font:read");
+  const where = await getIdentityCandidateWhere();
+  return prisma.ingredient.findMany({
+    where,
+    select: { id: true, name: true, creator: true, licenseType: true },
+    orderBy: { name: "asc" },
+  });
+}
+
+export async function hasFontsNeedingIdentityDetection() {
+  await checkPermission("font:read");
+  const where = await getIdentityCandidateWhere();
+  const count = await prisma.ingredient.count({ where });
+  return count > 0;
+}
+
+export async function detectFontIdentityWithAI(fontId: string) {
+  await checkPermission("font:update");
+
+  const [font, placeholderAuthorIds] = await Promise.all([
+    prisma.ingredient.findUnique({
+      where: { id: fontId },
+      select: { id: true, name: true, authorId: true, licenseType: true },
+    }),
+    getAllPlaceholderFontAuthorIds(),
+  ]);
+  if (!font) throw new Error("Font not found");
+
+  // Un font puo' essere candidato per un solo campo su due (es. autore gia'
+  // risolto ma licenza ancora vuota): non sovrascriviamo mai un campo gia'
+  // risolto con una nuova ipotesi di Gemini, anche se la chiamata restituisce
+  // sempre entrambi i valori.
+  const needsAuthor = !font.authorId || placeholderAuthorIds.includes(font.authorId);
+  const needsLicense = !font.licenseType;
+
+  const result = await generateFontIdentityWithGemini(font.name);
+
+  const data: { creator?: string; authorId?: string; licenseType?: string } = {};
+
+  if (needsAuthor) {
+    data.creator = result.author;
+    // Se Gemini non trova un autore reale, il font resta agganciato al suo
+    // FontAuthor placeholder (ricomparira' tra i candidati al prossimo giro).
+    const resolvedAuthorId = await findOrCreateFontAuthorByName(result.author);
+    if (resolvedAuthorId) data.authorId = resolvedAuthorId;
+  }
+
+  if (needsLicense) {
+    data.licenseType = result.licenseType;
+  }
+
+  await prisma.ingredient.update({ where: { id: fontId }, data });
+
+  revalidatePath("/admin/fonts");
+  revalidateTag(CACHE_TAGS.ingredients, "max");
+
+  return {
+    id: font.id,
+    family: font.name,
+    author: needsAuthor ? result.author : null,
+    licenseType: needsLicense ? result.licenseType : null,
   };
 }
 
@@ -159,7 +240,12 @@ export async function saveFont(prevState: any, formData: FormData, id?: string) 
     const formula = formData.get("formula") as string | null;
     const importedFrom = (formData.get("importedFrom") as string | null) || null;
     const licenseType = (formData.get("licenseType") as string | null) || null;
-    const authorId = (formData.get("authorId") as string | null) || null;
+    let authorId = (formData.get("authorId") as string | null) || null;
+    // Nessun autore scelto in creazione (nuovo font via upload singolo in admin):
+    // agganciato al placeholder finche' l'AI o un admin non gli assegna l'autore reale.
+    if (!id && !authorId) {
+      authorId = await getOrCreatePlaceholderFontAuthorId("localSingleImport");
+    }
     const isVariable = formData.get("isVariable") === "true";
     const tagIds = formData.getAll("tagIds") as string[];
 

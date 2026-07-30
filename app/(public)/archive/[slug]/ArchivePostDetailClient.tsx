@@ -70,44 +70,50 @@ export default function ArchivePostDetailClient({ post }: ArchivePostDetailClien
         </div>
       </div>
 
-      <DoubleHero
-        title={<span className="font-haas">{post.title}</span>}
-        description={post.caption || ""}
-        layout="contentRight"
-        vLayout="contentBottom"
-        bgImage={post.imageUrl}
-        bgObjectFit="cover"
-        fullWidth
-      >
-        {/* Con font associati: dossier + font card grid, tutto qui dentro (invariato).
-            Senza font e con insight: il dossier si sposta più in basso, affiancato
-            agli insight (vedi grid dopo DoubleHero) — qui non renderizziamo nulla.
-            Senza font e senza insight: il dossier resta qui, full width. */}
-        {(hasFonts || !hasInsight) && (
-          <div className="mx-auto w-full px-4 sm:px-6 lg:px-8 space-y-6">
-            <div className={`mx-auto flex flex-col ${hasFonts ? "w-full bg-ocragray-200/50 dark:bg-ocragray-900/50 p-6" : ""}`}>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-4 lg:gap-8 items-stretch mb-8">
-                <DossierPanel
-                  post={post}
-                  tags={tags}
-                  hasFonts={hasFonts}
-                  hasInsight={hasInsight}
-                  authorName={authorName}
-                  grainientColors={grainientColors}
-                  className={hasFonts ? "lg:col-span-4 lg:row-span-2" : "lg:col-span-12"}
-                />
+      <DoubleHero bgImage={post.imageUrl} bgObjectFit="cover" fullWidth>
+        <DoubleHero.FirstViewport className="pt-24 pb-12 px-6 md:px-12 flex flex-col justify-end">
+          <div className="max-w-3xl flex flex-col space-y-4 text-right items-end ml-auto">
+            <h1 className="font-haas text-2xl md:text-5xl font-bold tracking-tight text-foreground text-glow-blue dark:text-glow-red">
+              <span className="font-haas">{post.title}</span>
+            </h1>
 
-                {/* Right Column: Featured fonts (each card 4/12 cols wide) */}
-                {hasFonts &&
-                  fonts.map((font: Ingredient, idx: number) => (
-                    <div key={font.id} className="lg:col-span-4">
-                      <IngredientCard font={font} idx={idx} linklabel="Explore Font" fontSize={28} className="!rounded-none h-full" />
-                    </div>
-                  ))}
+            <p className="text-zinc-700 dark:text-zinc-300 text-xs md:text-base max-w-xl leading-relaxed">
+              {post.caption || ""}
+            </p>
+          </div>
+        </DoubleHero.FirstViewport>
+
+        <DoubleHero.SecondViewport>
+          {/* Con font associati: dossier + font card grid, tutto qui dentro (invariato).
+              Senza font e con insight: il dossier si sposta più in basso, affiancato
+              agli insight (vedi grid dopo DoubleHero) — qui non renderizziamo nulla.
+              Senza font e senza insight: il dossier resta qui, full width. */}
+          {(hasFonts || !hasInsight) && (
+            <div className="mx-auto w-full px-4 sm:px-6 lg:px-8 space-y-6">
+              <div className={`mx-auto flex flex-col ${hasFonts ? "w-full bg-ocragray-200/50 dark:bg-ocragray-900/50 p-6" : ""}`}>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-4 lg:gap-8 items-stretch mb-8">
+                  <DossierPanel
+                    post={post}
+                    tags={tags}
+                    hasFonts={hasFonts}
+                    hasInsight={hasInsight}
+                    authorName={authorName}
+                    grainientColors={grainientColors}
+                    className={hasFonts ? "lg:col-span-4 lg:row-span-2" : "lg:col-span-12"}
+                  />
+
+                  {/* Right Column: Featured fonts (each card 4/12 cols wide) */}
+                  {hasFonts &&
+                    fonts.map((font: Ingredient, idx: number) => (
+                      <div key={font.id} className="lg:col-span-4">
+                        <IngredientCard font={font} idx={idx} linklabel="Explore Font" fontSize={28} className="!rounded-none h-full" />
+                      </div>
+                    ))}
+                </div>
               </div>
             </div>
-          </div>
-        )}
+          )}
+        </DoubleHero.SecondViewport>
       </DoubleHero>
 
       {hasFonts && hasInsight && (

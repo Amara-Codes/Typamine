@@ -3,8 +3,9 @@ import Link from "next/link";
 import { LibraryBig, Blend, Tag as TagIcon, Feather, FolderClosed } from "lucide-react";
 import { getServerAuthSession } from "@/lib/session";
 import { hasPermission } from "@/lib/rbac";
-import { hasFontsNeedingAIRating } from "@/lib/actions/font";
-import AIFontRatingButton from "@/components/admin/AIFontRatingButton";
+import { hasFontsNeedingQualityReview, hasFontsNeedingIdentityDetection } from "@/lib/actions/font";
+import AIFontQualityButton from "@/components/admin/AIFontQualityButton";
+import AIFontIdentityButton from "@/components/admin/AIFontIdentityButton";
 import { Card } from "@/components/common/Card";
 
 interface QuickAction {
@@ -47,10 +48,13 @@ export default async function AdminDashboard() {
     // Il redirect sarà gestito dal layout
   }
 
-  // Bottone visibile solo se esistono font ancora da arricchire (creator
-  // "Google Fonts" / "Typamine Import"), altrimenti non ha nulla da fare.
+  // Due bottoni AI indipendenti: qualita' (rating+tag, candidato = nessun
+  // tag ancora assegnato) e identita' (autore+licenza, candidato = authorId
+  // su placeholder d'import o licenseType non settato). Visibili solo se
+  // esistono font che ne hanno bisogno.
   const canReadFonts = hasPermission(session, "font", "read");
-  const showAIRating = canReadFonts && (await hasFontsNeedingAIRating());
+  const showAIQualityReview = canReadFonts && (await hasFontsNeedingQualityReview());
+  const showAIIdentityDetection = canReadFonts && (await hasFontsNeedingIdentityDetection());
 
   // Archive/blog/pairings/collections condividono il permesso "font" per la
   // create, stessa convenzione già usata nelle rispettive list page.
@@ -95,7 +99,7 @@ export default async function AdminDashboard() {
     }] : []),
   ];
 
-  const hasQuickActions = showAIRating || quickActions.length > 0;
+  const hasQuickActions = showAIQualityReview || showAIIdentityDetection || quickActions.length > 0;
 
   return (
     <div className="flex justify-end space-y-10">
@@ -106,7 +110,8 @@ export default async function AdminDashboard() {
             Quick Actions
           </h2>
           <div className="grid grid-cols-1 gap-4">
-            {showAIRating && <AIFontRatingButton />}
+            {showAIQualityReview && <AIFontQualityButton />}
+            {showAIIdentityDetection && <AIFontIdentityButton />}
             {quickActions.map(action => (
               <QuickActionCard key={action.href + action.label} action={action} />
             ))}

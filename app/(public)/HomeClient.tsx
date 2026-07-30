@@ -29,47 +29,65 @@ export default function HomeClient({ recentIngredients = [], recentPairings = []
   return (
     <div className="flex flex-col">
       {/* 1. DOUBLE HERO SECTION */}
-      <DoubleHero
-        title={
-          <>
-            Your new <br />
-            <span className="text-red">&quot;Looking for a Font&quot;</span>
-            <br /> Therapy
-          </>
-        }
-        layout="contentRight"
-        description="Browse a vast catalog of fonts, find expert pairings, generate custom assets on the fly, and read our latest typographic prescriptions. Built for modern creators and developers."
-        ctaText="Fonts Catalog"
-        ctaHref="/ingredients"
-        secondaryCtaText="Our Suggestions"
-        secondaryCtaHref="/prescriptions"
-        bgImage={dynamicHeroBgImageUrl}
-        fullWidth
-      >
-        <div className="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-12">
-          {/* 3. FEATURED INGREDIENTS (FONT TILES) — unica sezione rimasta dentro
-              DoubleHero: Prescriptions e tutto il resto sono stati spostati fuori. */}
-          <section className="space-y-4 pb-32">
-            <div className="flex justify-between items-end border-b border-zinc-200 dark:border-zinc-800 pb-2">
-              <div className="flex items-center space-x-2">
-                <span className="text-red font-haas text-sm">[+]</span>
-                <h2 className="font-haas text-sm font-bold tracking-wider">LAST IMPORTED INGREDIENTS // Fonts</h2>
-              </div>
-              <MinimalLink href="/ingredients" label="ALL FONTS" />
-            </div>
+      <DoubleHero bgImage={dynamicHeroBgImageUrl} fullWidth>
+        <DoubleHero.FirstViewport className="pt-24 pb-12 px-6 md:px-12 flex flex-col justify-center">
+          <div className="max-w-3xl flex flex-col space-y-4 text-right items-end ml-auto">
+            <h1 className="font-haas text-2xl md:text-5xl font-bold tracking-tight text-foreground text-glow-blue dark:text-glow-red">
+              Your new <br />
+              <span className="text-red">&quot;Looking for a Font&quot;</span>
+              <br /> Therapy
+            </h1>
 
-            {/* Font tiles catalog grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-              {safeIngredients.length === 0
-                ? Array.from({ length: 8 }).map((_, idx) => (
-                  <IngredientCardSkeleton key={idx} />
-                ))
-                : safeIngredients.map((font, idx) => (
-                  <IngredientCard key={font.id} font={font} idx={idx} />
-                ))}
+            <p className="text-zinc-700 dark:text-zinc-300 text-xs md:text-base max-w-xl leading-relaxed">
+              Browse a vast catalog of fonts, find expert pairings, generate custom assets on the fly, and read our latest typographic prescriptions. Built for modern creators and developers.
+            </p>
+
+            <div className="pt-4 flex flex-wrap gap-3">
+              <Link href="/ingredients">
+                <Button variant="primary">Fonts Catalog</Button>
+              </Link>
+              <Link href="/prescriptions">
+                <Button variant="outline">Our Suggestions</Button>
+              </Link>
             </div>
-          </section>
-        </div>
+          </div>
+        </DoubleHero.FirstViewport>
+
+        <DoubleHero.SecondViewport fixedHeight={140} className="pb-12 flex flex-col">
+          <div className="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-12 mt-auto">
+            {/* 3. FEATURED INGREDIENTS (FONT TILES) — unica sezione rimasta dentro
+                DoubleHero: Prescriptions e tutto il resto sono stati spostati fuori. */}
+            <section className="space-y-4 pb-32">
+              <div className="flex justify-between items-end border-b border-zinc-200 dark:border-zinc-800 pb-2">
+                <div className="flex items-center space-x-2">
+                  <span className="text-red font-haas text-sm">[+]</span>
+                  <h2 className="font-haas text-sm font-bold tracking-wider">LAST IMPORTED INGREDIENTS // Fonts</h2>
+                </div>
+                <MinimalLink href="/ingredients" label="ALL FONTS" />
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                {safeIngredients.length === 0
+                  ? Array.from({ length: 8 }).map((_, idx) => (
+                    <div
+                      key={idx}
+                      className={idx >= 4 ? (idx >= 6 ? "hidden lg:block" : "hidden sm:block") : "block"}
+                    >
+                      <IngredientCardSkeleton />
+                    </div>
+                  ))
+                  : safeIngredients.slice(0, 8).map((font, idx) => (
+                    <div
+                      key={font.id}
+                      className={idx >= 4 ? (idx >= 6 ? "hidden lg:block" : "hidden sm:block") : "block"}
+                    >
+                      <IngredientCard font={font} idx={idx} />
+                    </div>
+                  ))}
+              </div>
+            </section>
+          </div>
+        </DoubleHero.SecondViewport>
       </DoubleHero>
 
       <div className="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-12">
