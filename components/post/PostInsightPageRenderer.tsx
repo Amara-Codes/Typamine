@@ -50,7 +50,7 @@ export interface PostInsightPageRendererProps {
   section?: InsightSection;
 }
 
-const ARCHIVE_BORDER = "border border-ocragray-500/80 dark:border-ocragray-200/50";
+const ARCHIVE_BORDER = "lg:border border-ocragray-500/80 dark:border-ocragray-200/50 p-4";
 
 // Stesso "case-file box" (margine + bordo) per paragraph/paragraphWithImage/quote
 // in archive, applicato SEMPRE sul <section> esterno (block, width auto) — mai
@@ -61,7 +61,7 @@ const ARCHIVE_BORDER = "border border-ocragray-500/80 dark:border-ocragray-200/5
 // quando c'è testo+immagine affiancati — prima veniva escluso lì ed era la
 // causa dell'immagine "sbordata" rispetto al testo semplice sopra.
 const SECTION_WRAP_CLASSNAMES: Record<InsightSection, string> = {
-  archive: "mx-8 " + ARCHIVE_BORDER,
+  archive: "mx-0 lg:mx-8 " + ARCHIVE_BORDER,
   blog: "",
 };
 
@@ -97,7 +97,7 @@ export default function PostInsightPageRenderer({ content, section }: PostInsigh
                   weight={props.weight}
                   colorClassName={props.colorClassName}
                   className={cn(
-                    "p-4",
+                    "lg:p-4",
                     COLOR_PAIRS_MAP[props.colors],
                     FONT_FAMILIES_MAP[props.fontFamily]
                   )}
@@ -111,8 +111,11 @@ export default function PostInsightPageRenderer({ content, section }: PostInsigh
           case 'paragraphWithImage': {
             const isBg = props.imagePosition === 'background';
             const sectionWrap = section ? SECTION_WRAP_CLASSNAMES[section] : "";
+            // Niente px-6 md:px-12 qui: containerClassName sotto ha gia' p-8
+            // di suo quando non e' background — raddoppiava il padding
+            // orizzontale su ogni breakpoint sotto lg.
             return (
-              <section key={id} className={cn(!isBg && "px-6 md:px-12 lg:px-0", sectionWrap)}>
+              <section key={id} className={sectionWrap}>
                 <ParagraphWithImage
                   imageSrc={resolveMediaUrl(props.imageUrl || props.image || props.imageSrc) || ""}
                   imageAlt={props.imageAlt}
@@ -126,7 +129,7 @@ export default function PostInsightPageRenderer({ content, section }: PostInsigh
                   colorClassName={props.colorClassName}
                   containerClassName={cn(
                     "overflow-hidden",
-                    !isBg && cn("p-8", COLOR_PAIRS_MAP[props.colors])
+                    !isBg && cn("lg:p-8", COLOR_PAIRS_MAP[props.colors])
                   )}
                   className={cn(FONT_FAMILIES_MAP[props.fontFamily])}
                   imageClassName='rounded-none'
@@ -151,8 +154,11 @@ export default function PostInsightPageRenderer({ content, section }: PostInsigh
             // pagina finiva con un quote. Il ritmo verticale tra moduli è tutto
             // gap-y-4 sul contenitore dei moduli + il py-12 del wrapper esterno.
 
+            // Niente padding sul <section>: Quote sotto ha gia' p-8 di suo
+            // (vedi className passata) — un altro px-4/lg:px-8 qui raddoppiava
+            // il padding orizzontale su ogni breakpoint.
             return (
-              <section key={id} className="px-4 lg:px-8">
+              <section key={id}>
                 <Quote
                   author={props.author}
                   authorDates={props.authorDates}

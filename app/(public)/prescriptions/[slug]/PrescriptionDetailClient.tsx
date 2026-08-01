@@ -43,7 +43,7 @@ export default function PrescriptionDetailClient({ prescription }: PrescriptionD
   };
 
   return (
-    <div className="relative w-full mx-auto pb-8 space-y-10">
+    <div className="relative w-full mx-auto lg:pb-8 space-y-10">
       {/* Back button — stessa posizione (max-w-7xl, in flusso, pt-24) delle altre pagine di dettaglio */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-28 mb-4">
         <MinimalLink
@@ -66,7 +66,7 @@ export default function PrescriptionDetailClient({ prescription }: PrescriptionD
         clearView
       />
 
-<div className="max-w-7xl w-full mx-auto flex flex-col rounded-xl bg-ocragray-200 dark:bg-ocragray-900 p-6">
+<div className="max-w-7xl w-full mx-auto flex flex-col lg:mt-16 lg:rounded-xl bg-ocragray-200 dark:bg-ocragray-900 p-6">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch mb-8">
           {/* Left Column: Description & Tags (1/3 width) */}
           <div className="lg:col-span-4 flex flex-col">

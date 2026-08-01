@@ -53,7 +53,11 @@ export default function PairingInsightPageRenderer({ content }: { content: strin
         switch (type) {
           case 'paragraph':
             return (
-              <section key={id} className="px-6 md:px-12 lg:px-0">
+              // Niente padding qui: Paragraph sotto ha gia' py-8 px-6 di suo
+              // (vedi className passata) — un altro px-6 qui raddoppiava il
+              // padding orizzontale su ogni breakpoint sotto lg (48px invece
+              // di 24px per lato, ~25% di viewport sprecato su mobile).
+              <section key={id}>
                 <Paragraph
                   as={props.as}
                   size={props.size}
@@ -61,7 +65,7 @@ export default function PairingInsightPageRenderer({ content }: { content: strin
                   weight={props.weight}
                   colorClassName={props.colorClassName}
                   className={cn(
-                    "py-8 px-6 rounded-xl bg-white/50 dark:bg-ocragray-800",
+                    "p-4 lg:py-8 lg:px-6 rounded-sm lg:rounded-xl bg-white/50 dark:bg-ocragray-800",
                     COLOR_PAIRS_MAP[props.colors],
                     FONT_FAMILIES_MAP[props.fontFamily]
                   )}
@@ -73,11 +77,11 @@ export default function PairingInsightPageRenderer({ content }: { content: strin
 
           case 'paragraphWithImage': {
             const isBg = props.imagePosition === 'background';
-            // Stesso px-6 md:px-12 lg:px-0 di paragraph/quote in TUTTI i casi,
-            // incluso imagePosition="background" — prima veniva escluso solo lì,
-            // rompendo l'omogeneità (l'immagine sbordava rispetto agli altri moduli).
+            // Niente padding sul <section>: containerClassName sotto ha gia'
+            // p-8 sm:p-12 md:p-16 di suo quando non e' background — stesso
+            // problema di doppio padding del case 'paragraph' sopra.
             return (
-              <section key={id} className="px-6 md:px-12 lg:px-0">
+              <section key={id}>
                 <ParagraphWithImage
                   imageSrc={resolveMediaUrl(props.imageUrl || props.image || props.imageSrc) || ""}
                   imageAlt={props.imageAlt}
@@ -90,8 +94,8 @@ export default function PairingInsightPageRenderer({ content }: { content: strin
                   weight={props.weight}
                   colorClassName={props.colorClassName}
                   containerClassName={cn(
-                    "rounded-xl overflow-hidden",
-                    !isBg && cn("p-8 sm:p-12 md:p-16 bg-white/50 dark:bg-ocragray-800", COLOR_PAIRS_MAP[props.colors] )
+                    "rounded-sm lg:rounded-xl overflow-hidden",
+                    !isBg && cn("p-4 lg:p-8 bg-white/50 dark:bg-ocragray-800", COLOR_PAIRS_MAP[props.colors] )
                   )}
                   className={cn(FONT_FAMILIES_MAP[props.fontFamily])}
                 >
@@ -108,12 +112,12 @@ export default function PairingInsightPageRenderer({ content }: { content: strin
             // internamente (vedi lib/dynamicStyle.ts) invece di iniettarle
             // come classi statiche che Tailwind non genererebbe mai.
             const fallbackBgClass = props.bgColorClassName ? undefined : (COLOR_PAIRS_MAP[props.colors] || "bg-zinc-100/20 dark:bg-black/20");
-
+            const defaultQuoteClass = fallbackBgClass + " rounded-sm lg:rounded-xl border-2 border-blue-600 dark:border-red-200 transition-all duration-500" 
             return (
               // Nessun padding verticale qui — vedi la nota equivalente in
               // PostInsightPageRenderer: sommato allo spacing del wrapper
               // esterno raddoppiava il bottom quando la pagina finiva con un quote.
-              <section key={id} className="px-6 md:px-12 lg:px-0">
+              <section key={id} className="">
                 <Quote
                   author={props.author}
                   authorDates={props.authorDates}
@@ -121,7 +125,7 @@ export default function PairingInsightPageRenderer({ content }: { content: strin
                   colorClassName={props.colorClassName}
                   bgColorClassName={props.bgColorClassName}
                   className={cn(
-                    fallbackBgClass,
+                    defaultQuoteClass,
                     FONT_FAMILIES_MAP[props.fontFamily]
                   )}
                 >

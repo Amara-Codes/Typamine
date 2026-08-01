@@ -48,6 +48,10 @@ export default async function FontAuthorListPage(props: FontAuthorListPageProps)
     orderBy = { createdAt: "desc" };
   } else if (sort === "createdAt_asc") {
     orderBy = { createdAt: "asc" };
+  } else if (sort === "fontCount_desc") {
+    orderBy = { fonts: { _count: "desc" } };
+  } else if (sort === "fontCount_asc") {
+    orderBy = { fonts: { _count: "asc" } };
   } else {
     orderBy = { name: "asc" };
   }
@@ -59,6 +63,7 @@ export default async function FontAuthorListPage(props: FontAuthorListPageProps)
       orderBy,
       skip: (page - 1) * perPage,
       take: perPage,
+      include: { _count: { select: { fonts: true } } },
     })
   );
 

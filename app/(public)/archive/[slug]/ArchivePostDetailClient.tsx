@@ -117,8 +117,8 @@ export default function ArchivePostDetailClient({ post }: ArchivePostDetailClien
       </DoubleHero>
 
       {hasFonts && hasInsight && (
-        <div className="mx-auto w-full px-8 mt-8 ">
-          <div className="w-full mx-auto flex flex-col bg-ocragray-200/50 dark:bg-ocragray-900/50 px-4 py-12">
+        <div className="mx-auto w-full lg:px-8 mt-8">
+          <div className="w-full mx-auto flex flex-col bg-ocragray-200/50 dark:bg-ocragray-900/50 p-4 lg:py-12">
             <section className="space-y-4">
               <PostInsightPageRenderer content={post.insight as string} section="archive" />
             </section>
@@ -129,7 +129,7 @@ export default function ArchivePostDetailClient({ post }: ArchivePostDetailClien
       {/* Senza font associati e con insight presenti: dossier (Classification +
           Description) a sinistra degli insight, affiancati nella stessa riga. */}
       {!hasFonts && hasInsight && (
-        <div className="mx-auto w-full px-4 sm:px-6 lg:px-8 mt-8">
+        <div className="mx-auto w-full px-4 sm:px-6 lg:px-8 my-4 lg:my-8">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-8 items-stretch">
             <DossierPanel
               post={post}
@@ -140,7 +140,7 @@ export default function ArchivePostDetailClient({ post }: ArchivePostDetailClien
               grainientColors={grainientColors}
               className="lg:col-span-4"
             />
-            <div className="lg:col-span-8 bg-ocragray-200/50 dark:bg-ocragray-900/50 px-4 py-12">
+            <div className="lg:col-span-8 bg-ocragray-200/50 dark:bg-ocragray-900/50 p-4 lg:py-12">
               <section className="space-y-4">
                 <PostInsightPageRenderer content={post.insight as string} section="archive" />
               </section>

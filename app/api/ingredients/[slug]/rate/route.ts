@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 import { withSafeDbQuery } from "@/lib/services/dbMigration";
+import { recomputeFontAuthorUserRating } from "@/lib/services/fontAuthor";
 import { revalidateTag, revalidatePath } from "next/cache";
 import { CACHE_TAGS } from "@/lib/cacheTags";
 
@@ -30,7 +31,7 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
   const ingredient = await withSafeDbQuery(() =>
     prisma.ingredient.findUnique({
       where: { slug },
-      select: { id: true, userRating: true, userRatingsCount: true },
+      select: { id: true, userRating: true, userRatingsCount: true, authorId: true },
     })
   );
 
@@ -52,6 +53,14 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
     where: { id: ingredient.id },
     data: { userRating: newAverage, userRatingsCount: newCount },
   });
+
+  if (ingredient.authorId) {
+    try {
+      await recomputeFontAuthorUserRating(ingredient.authorId);
+    } catch (err) {
+      console.error("Failed to recompute FontAuthor user rating after vote:", err);
+    }
+  }
 
   revalidateTag(CACHE_TAGS.ingredients, "max");
   revalidatePath(`/ingredients/${slug}`);

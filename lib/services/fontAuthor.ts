@@ -3,7 +3,11 @@ import prisma from "@/lib/prisma";
 import { FontAuthor } from "@/types";
 import { withSafeDbQuery } from "./dbMigration";
 import { CACHE_TAGS } from "@/lib/cacheTags";
-import { PLACEHOLDER_FONT_AUTHORS, PlaceholderFontAuthorKey } from "@/lib/constants/placeholderFontAuthors";
+import {
+  PLACEHOLDER_FONT_AUTHORS,
+  PlaceholderFontAuthorKey,
+  UNKNOWN_AFTER_AI_CHECK_FONT_AUTHOR,
+} from "@/lib/constants/placeholderFontAuthors";
 import crypto from "crypto";
 
 function safeParse<T>(raw: string | null | undefined, fallback: T): T {
@@ -99,13 +103,18 @@ export async function getFontAuthorById(id: string): Promise<FontAuthor | null> 
   return record ? mapFontAuthor(record) : null;
 }
 
-// Get-or-create per gli autori placeholder (uno per fonte d'import). Lazy
-// invece che seedati a boot: questo progetto non ha un entrypoint di avvio
-// affidabile per un seed proattivo (D1/edge), quindi ogni chiamante che ne ha
-// bisogno (import routes, AI candidate check) le crea al primo utilizzo.
-export async function getOrCreatePlaceholderFontAuthorId(key: PlaceholderFontAuthorKey): Promise<string> {
-  const def = PLACEHOLDER_FONT_AUTHORS[key];
+interface FontAuthorPlaceholderDef {
+  slug: string;
+  name: string;
+  email: string;
+}
 
+// Get-or-create generico per un FontAuthor sintetico (placeholder d'import o
+// il terminale "unknown after AI check"). Lazy invece che seedati a boot:
+// questo progetto non ha un entrypoint di avvio affidabile per un seed
+// proattivo (D1/edge), quindi ogni chiamante che ne ha bisogno lo crea al
+// primo utilizzo.
+async function getOrCreateFontAuthorFromDef(def: FontAuthorPlaceholderDef): Promise<string> {
   const existing = await prisma.fontAuthor.findUnique({ where: { slug: def.slug }, select: { id: true } });
   if (existing) return existing.id;
 
@@ -129,8 +138,12 @@ export async function getOrCreatePlaceholderFontAuthorId(key: PlaceholderFontAut
     // Race: un'altra richiesta l'ha creato tra il findUnique e la create qui sopra.
     const retry = await prisma.fontAuthor.findUnique({ where: { slug: def.slug }, select: { id: true } });
     if (retry) return retry.id;
-    throw new Error(`Failed to get or create placeholder font author "${def.slug}".`);
+    throw new Error(`Failed to get or create font author "${def.slug}".`);
   }
+}
+
+export async function getOrCreatePlaceholderFontAuthorId(key: PlaceholderFontAuthorKey): Promise<string> {
+  return getOrCreateFontAuthorFromDef(PLACEHOLDER_FONT_AUTHORS[key]);
 }
 
 export async function getAllPlaceholderFontAuthorIds(): Promise<string[]> {
@@ -138,18 +151,33 @@ export async function getAllPlaceholderFontAuthorIds(): Promise<string[]> {
   return Promise.all(keys.map((key) => getOrCreatePlaceholderFontAuthorId(key)));
 }
 
+// Placeholder TERMINALE: assegnato quando l'AI e' stata interrogata su un
+// font e ha risposto "Unknown" — a differenza dei placeholder d'import sopra
+// (che significano "da controllare"), questo significa "gia' controllato,
+// resta ignoto" e va escluso dai futuri candidati AI (vedi
+// lib/constants/placeholderFontAuthors.ts).
+export async function getOrCreateUnknownAfterAiCheckAuthorId(): Promise<string> {
+  return getOrCreateFontAuthorFromDef(UNKNOWN_AFTER_AI_CHECK_FONT_AUTHOR);
+}
+
+export async function getAllNonRealFontAuthorIds(): Promise<string[]> {
+  const [placeholderIds, unknownAfterAiCheckId] = await Promise.all([
+    getAllPlaceholderFontAuthorIds(),
+    getOrCreateUnknownAfterAiCheckAuthorId(),
+  ]);
+  return [...placeholderIds, unknownAfterAiCheckId];
+}
+
 const DEFAULT_FONT_AUTHOR_METRICS_JSON = JSON.stringify(DEFAULT_METRICS);
 
-// Trova un FontAuthor reale gia' esistente per nome, o lo crea al volo.
-// Condiviso tra lib/actions/font.ts (quando Gemini identifica l'autore reale
-// dietro un font ancora sul placeholder d'import) e le route di bulk import
-// da provider (quando il designer e' gia' noto dal payload — es. Fontshare
-// lo fornisce sempre — cosi' il font non finisce con un authorId nullo
-// nonostante il nome reale sia gia' disponibile). Nessun email reale
-// disponibile: ne generiamo una sintetica, come per i placeholder stessi.
-export async function findOrCreateFontAuthorByName(name: string): Promise<string | null> {
+// Crea (o riusa se il nome esiste gia') un FontAuthor sintetico per un nome
+// reale scoperto fuori dal form completo — solo il nome e' noto, tutto il
+// resto (email, slug) e' generato seguendo la stessa naming convention degli
+// altri placeholder (`{slug}@{tag}.typamine.internal`), cosi' e' sempre
+// chiaro DA DOVE viene il dato guardando l'email. `emailDomainTag` distingue
+// il processo che ha popolato il nome (es. "ai-discovered" vs "manually-filled").
+async function findOrCreateSyntheticFontAuthorByName(name: string, emailDomainTag: string): Promise<string> {
   const trimmed = name.trim();
-  if (!trimmed || trimmed.toLowerCase() === "unknown") return null;
 
   const existing = await prisma.fontAuthor.findFirst({ where: { name: trimmed } });
   if (existing) return existing.id;
@@ -171,7 +199,7 @@ export async function findOrCreateFontAuthorByName(name: string): Promise<string
       slug,
       name: trimmed,
       type: "UNKNOWN",
-      email: `${slug}@ai-discovered.typamine.internal`,
+      email: `${slug}@${emailDomainTag}.typamine.internal`,
       donation: "{}",
       metrics: DEFAULT_FONT_AUTHOR_METRICS_JSON,
       status: "ACTIVE",
@@ -184,4 +212,88 @@ export async function findOrCreateFontAuthorByName(name: string): Promise<string
   revalidateTag(CACHE_TAGS.fontAuthors, "max");
 
   return author.id;
+}
+
+// Trova un FontAuthor reale gia' esistente per nome, o lo crea al volo.
+// Condiviso tra lib/actions/font.ts (quando Gemini identifica l'autore reale
+// dietro un font ancora sul placeholder d'import) e le route di bulk import
+// da provider (quando il designer e' gia' noto dal payload — es. Fontshare
+// lo fornisce sempre — cosi' il font non finisce con un authorId nullo
+// nonostante il nome reale sia gia' disponibile).
+export async function findOrCreateFontAuthorByName(name: string): Promise<string | null> {
+  const trimmed = name.trim();
+  if (!trimmed || trimmed.toLowerCase() === "unknown") return null;
+  return findOrCreateSyntheticFontAuthorByName(trimmed, "ai-discovered");
+}
+
+// Stesso meccanismo ma per il flow "Fill Missing Authors" in dashboard:
+// l'admin digita solo il nome, un font alla volta — nessun bypass "unknown"
+// qui, il nome e' sempre garantito non vuoto dal chiamante.
+export async function findOrCreateManuallyFilledFontAuthorByName(name: string): Promise<string> {
+  const trimmed = name.trim();
+  if (!trimmed) throw new Error("Author name is required.");
+  return findOrCreateSyntheticFontAuthorByName(trimmed, "manually-filled");
+}
+
+async function readFontAuthorMetrics(authorId: string): Promise<Record<string, any> | null> {
+  const author = await prisma.fontAuthor.findUnique({ where: { id: authorId }, select: { metrics: true } });
+  if (!author) return null;
+  return safeParse(author.metrics, { ...DEFAULT_METRICS });
+}
+
+// Un font ancora agganciato a un placeholder d'import, o al terminale
+// "unknown after AI check", non ha un autore reale: aggregare voti/download
+// sotto quell'id mischierebbe font scorrelati (tutti i font "Google Fonts"
+// non ancora risolti, o tutti quelli che l'AI non e' riuscita a identificare,
+// condividono lo stesso id sintetico).
+async function isPlaceholderAuthorId(authorId: string): Promise<boolean> {
+  const nonRealIds = await getAllNonRealFontAuthorIds();
+  return nonRealIds.includes(authorId);
+}
+
+// Richiamato dopo ogni voto pubblico su un font (vedi
+// app/api/ingredients/[slug]/rate/route.ts): ricalcola FontAuthor.userRating
+// come MEDIA SEMPLICE degli userRating dei suoi font (ognuno gia' una media
+// dei voti ricevuti) — non pesata per numero di voti, e basta un solo voto
+// per far entrare un font nel calcolo (nessuna soglia minima).
+export async function recomputeFontAuthorUserRating(authorId: string): Promise<void> {
+  if (await isPlaceholderAuthorId(authorId)) return;
+
+  const fonts = await prisma.ingredient.findMany({
+    where: { authorId, userRatingsCount: { gt: 0 } },
+    select: { userRating: true, userRatingsCount: true },
+  });
+
+  if (fonts.length === 0) return;
+
+  const average = fonts.reduce((sum, f) => sum + (f.userRating ?? 0), 0) / fonts.length;
+  const totalReviews = fonts.reduce((sum, f) => sum + (f.userRatingsCount ?? 0), 0);
+
+  const metrics = await readFontAuthorMetrics(authorId);
+  if (!metrics) return;
+
+  metrics.usersRating = { average, totalReviews };
+
+  await prisma.fontAuthor.update({ where: { id: authorId }, data: { metrics: JSON.stringify(metrics) } });
+
+  revalidatePath("/admin/font-authors");
+  revalidateTag(CACHE_TAGS.fontAuthors, "max");
+}
+
+// Richiamato dopo ogni download pubblico riuscito di un font (vedi
+// app/api/ingredients/[slug]/download/route.ts). Nessuna fonte "live" da cui
+// ricalcolarlo (a differenza del rating): e' un contatore cumulativo puro,
+// va incrementato qui.
+export async function incrementFontAuthorDownloads(authorId: string): Promise<void> {
+  if (await isPlaceholderAuthorId(authorId)) return;
+
+  const metrics = await readFontAuthorMetrics(authorId);
+  if (!metrics) return;
+
+  metrics.totalDownloads = (metrics.totalDownloads ?? 0) + 1;
+
+  await prisma.fontAuthor.update({ where: { id: authorId }, data: { metrics: JSON.stringify(metrics) } });
+
+  revalidatePath("/admin/font-authors");
+  revalidateTag(CACHE_TAGS.fontAuthors, "max");
 }

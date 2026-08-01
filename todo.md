@@ -36,3 +36,9 @@ uniformare ux/ui colri di admin, margini, padding... colori [60%]
 
 dafont - cartoon. sono arirvato alla pagina 45, 
 fai lo stesso per tutte le altre categoie e pian piano popoliamo il databse 
+
+
+credits 
+oreos by Vigneshwaran from <a href="https://thenounproject.com/browse/icons/term/oreos/" target="_blank" title="oreos Icons">Noun Project</a> (CC BY 3.0)
+
+oreo cookie by lastspark from <a href="https://thenounproject.com/browse/icons/term/oreo-cookie/" target="_blank" title="oreo cookie Icons">Noun Project</a> (CC BY 3.0)

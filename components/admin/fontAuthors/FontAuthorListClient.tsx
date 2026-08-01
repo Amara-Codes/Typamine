@@ -81,6 +81,8 @@ export default function FontAuthorListClient({ authors, totalCount, canUpdate, c
           { label: "Name (Z-A)", value: "name_desc" },
           { label: "Newest Created", value: "createdAt_desc" },
           { label: "Oldest Created", value: "createdAt_asc" },
+          { label: "Top Contributors", value: "fontCount_desc" },
+          { label: "Least Contributors", value: "fontCount_asc" },
         ]}
         searchPlaceholder="Search font authors..."
       />
@@ -134,6 +136,14 @@ export default function FontAuthorListClient({ authors, totalCount, canUpdate, c
               className: "w-1/6 hidden md:block",
               render: (a: any) => (
                 <span className="text-xs font-bold uppercase tracking-wider text-black dark:text-white">{a.type}</span>
+              ),
+            },
+            {
+              key: "fontCount",
+              header: "Fonts",
+              className: "w-1/12 shrink-0 hidden sm:block",
+              render: (a: any) => (
+                <span className="text-sm font-star text-black dark:text-white">{a._count?.fonts ?? 0}</span>
               ),
             },
             {

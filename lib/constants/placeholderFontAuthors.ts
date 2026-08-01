@@ -39,3 +39,24 @@ export const PLACEHOLDER_FONT_AUTHORS: Record<PlaceholderFontAuthorKey, Placehol
 };
 
 export const PLACEHOLDER_FONT_AUTHOR_SLUGS: string[] = Object.values(PLACEHOLDER_FONT_AUTHORS).map((a) => a.slug);
+
+// Stato TERMINALE, diverso dai placeholder d'import sopra: assegnato quando
+// l'AI (detectFontIdentityWithAI) e' stata interrogata su un font e ha
+// risposto "Unknown" — a differenza dei placeholder d'import (che segnalano
+// "non ancora controllato, l'AI deve ancora guardarlo"), questo segnala "gia'
+// controllato, l'AI non lo sa" e va escluso dai candidati futuri: altrimenti
+// il font ririchiederebbe una chiamata Gemini identica a ogni giro, sempre
+// con la stessa risposta.
+export const UNKNOWN_AFTER_AI_CHECK_FONT_AUTHOR = {
+  slug: "unknown-after-ai-check-author",
+  name: "Unknown Author (AI Checked)",
+  email: "unknown-after-ai-check@placeholder.typamine.internal",
+};
+
+// Usato lato pubblico (IngredientCard) per non mostrare mai un nome
+// sintetico: sia i placeholder d'import "in attesa" sia il placeholder
+// terminale "controllato ma ignoto" diventano "UNKNOWN" in UI.
+export const NON_REAL_FONT_AUTHOR_SLUGS: string[] = [
+  ...PLACEHOLDER_FONT_AUTHOR_SLUGS,
+  UNKNOWN_AFTER_AI_CHECK_FONT_AUTHOR.slug,
+];

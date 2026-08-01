@@ -9,13 +9,19 @@ import { FONT_LICENSE_TYPES } from "@/lib/constants/fontLicenseTypes";
 // e' di una fonderia commerciale nota implica quasi sempre Commercial. Una
 // sola chiamata Gemini per entrambi, invece di due, sfrutta questo legame
 // invece di ignorarlo.
+// "Unknown" ammesso anche per licenseType (oltre che per author, gia'
+// previsto): Gemini deve poter dichiarare di non saperlo invece di essere
+// forzato a indovinare una licenza reale — il chiamante (detectFontIdentityWithAI)
+// mappa "Unknown" sul placeholder terminale invece che su un FONT_LICENSE_TYPES vero.
+const LICENSE_RESPONSE_VALUES = [...FONT_LICENSE_TYPES, "Unknown"] as const;
+
 function buildFontIdentityResponseSchema(): any {
   return {
     type: SchemaType.OBJECT,
     properties: {
       fontFamily: { type: SchemaType.STRING },
       author: { type: SchemaType.STRING },
-      licenseType: { type: SchemaType.STRING, enum: [...FONT_LICENSE_TYPES] },
+      licenseType: { type: SchemaType.STRING, enum: [...LICENSE_RESPONSE_VALUES] },
     },
     required: ["fontFamily", "author", "licenseType"],
   };
@@ -24,7 +30,7 @@ function buildFontIdentityResponseSchema(): any {
 const fontIdentitySchema = z.object({
   fontFamily: z.string().min(1),
   author: z.string().min(1),
-  licenseType: z.enum(FONT_LICENSE_TYPES),
+  licenseType: z.enum(LICENSE_RESPONSE_VALUES),
 });
 
 export interface FontIdentityResult {
@@ -75,12 +81,12 @@ Font family: "${fontFamily}"
 
 Tasks:
 1. Identify the real author/designer or foundry who created this typeface. If genuinely unknown or unverifiable, answer "Unknown".
-2. Identify the most accurate license type for this typeface, choosing EXACTLY one value from this list: ${JSON.stringify(FONT_LICENSE_TYPES)}.
+2. Identify the most accurate license type for this typeface, choosing EXACTLY one value from this list: ${JSON.stringify(FONT_LICENSE_TYPES)}. If genuinely uncertain and unable to make an informed guess, answer "Unknown" instead of forcing a choice.
 
-These two facts are usually linked: fonts published on Google Fonts are virtually always "Open Source (SIL OFL)", many indie/display fonts distributed on sites like DaFont are "Free" or "Free for Personal Use", boutique/retail type foundry releases are usually "Commercial". If genuinely uncertain about the license, prefer "Commercial" as the safest default rather than guessing a permissive license.
+These two facts are usually linked: fonts published on Google Fonts are virtually always "Open Source (SIL OFL)", many indie/display fonts distributed on sites like DaFont are "Free" or "Free for Personal Use", boutique/retail type foundry releases are usually "Commercial".
 
 Respond ONLY with JSON matching exactly this shape, no extra commentary:
-{"fontFamily": "${fontFamily}", "author": "<author name>", "licenseType": "<one value from the list above>"}
+{"fontFamily": "${fontFamily}", "author": "<author name>", "licenseType": "<one value from the list above, or Unknown>"}
 `;
 
   const MAX_RETRIES = 4;

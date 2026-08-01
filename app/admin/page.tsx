@@ -3,9 +3,16 @@ import Link from "next/link";
 import { LibraryBig, Blend, Tag as TagIcon, Feather, FolderClosed } from "lucide-react";
 import { getServerAuthSession } from "@/lib/session";
 import { hasPermission } from "@/lib/rbac";
-import { hasFontsNeedingQualityReview, hasFontsNeedingIdentityDetection } from "@/lib/actions/font";
+import {
+  hasFontsNeedingQualityReview,
+  hasFontsNeedingIdentityDetection,
+  getFontsNeedingManualAuthorCount,
+  getFontsNeedingManualLicenseCount,
+} from "@/lib/actions/font";
 import AIFontQualityButton from "@/components/admin/AIFontQualityButton";
 import AIFontIdentityButton from "@/components/admin/AIFontIdentityButton";
+import FillMissingAuthorsCard from "@/components/admin/FillMissingAuthorsCard";
+import FillMissingLicensesCard from "@/components/admin/FillMissingLicensesCard";
 import { Card } from "@/components/common/Card";
 
 interface QuickAction {
@@ -55,6 +62,8 @@ export default async function AdminDashboard() {
   const canReadFonts = hasPermission(session, "font", "read");
   const showAIQualityReview = canReadFonts && (await hasFontsNeedingQualityReview());
   const showAIIdentityDetection = canReadFonts && (await hasFontsNeedingIdentityDetection());
+  const missingAuthorCount = canReadFonts ? await getFontsNeedingManualAuthorCount() : 0;
+  const missingLicenseCount = canReadFonts ? await getFontsNeedingManualLicenseCount() : 0;
 
   // Archive/blog/pairings/collections condividono il permesso "font" per la
   // create, stessa convenzione già usata nelle rispettive list page.
@@ -102,10 +111,17 @@ export default async function AdminDashboard() {
   const hasQuickActions = showAIQualityReview || showAIIdentityDetection || quickActions.length > 0;
 
   return (
-    <div className="flex justify-end space-y-10">
+    <div className="flex h-full gap-8 items-start">
+      {/* Spazio rimanente (fuori da Quick Actions): griglia 2 colonne x 3
+          righe, ogni widget del dashboard occupa una cella (1 col, 1 row) —
+          per ora solo "Fill Missing Authors", altri ne seguiranno. */}
+      <div className="flex-1 grid grid-cols-2 grid-rows-3 gap-4">
+        {missingAuthorCount > 0 && <FillMissingAuthorsCard count={missingAuthorCount} />}
+        {missingLicenseCount > 0 && <FillMissingLicensesCard count={missingLicenseCount} />}
+      </div>
 
       {hasQuickActions && (
-        <div className="space-y-3 w-1/4">
+        <div className="space-y-3 w-1/4 shrink-0">
           <h2 className="text-4xl font-star font-black uppercase tracking-widest text-center text-white dark:text-red-200">
             Quick Actions
           </h2>

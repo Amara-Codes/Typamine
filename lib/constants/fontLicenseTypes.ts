@@ -12,3 +12,11 @@ export const FONT_LICENSE_TYPES = [
 ] as const;
 
 export type FontLicenseType = (typeof FONT_LICENSE_TYPES)[number];
+
+// Stato TERMINALE per Ingredient.licenseType, parallelo a
+// UNKNOWN_AFTER_AI_CHECK_FONT_AUTHOR: l'AI (detectFontIdentityWithAI) puo'
+// rispondere "Unknown" invece di forzare una licenza indovinata — quando lo
+// fa, salviamo questo valore invece di lasciare licenseType null/vuoto,
+// cosi' il font non viene ririchiesto a ogni giro (non e' uno dei
+// FONT_LICENSE_TYPES "reali": non compare nel select del form admin).
+export const UNKNOWN_AFTER_AI_CHECK_LICENSE = "Unknown (AI Checked)";

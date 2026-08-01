@@ -7,7 +7,15 @@ import { uploadToR2, deleteFromR2 } from "@/lib/r2";
 import { withCreatedAtBackfill } from "@/lib/services/font";
 import { generateFontQualityWithGemini } from "@/lib/ai/fontQuality";
 import { generateFontIdentityWithGemini } from "@/lib/ai/fontIdentity";
-import { getAllPlaceholderFontAuthorIds, getOrCreatePlaceholderFontAuthorId, findOrCreateFontAuthorByName } from "@/lib/services/fontAuthor";
+import {
+  getAllPlaceholderFontAuthorIds,
+  getOrCreatePlaceholderFontAuthorId,
+  findOrCreateFontAuthorByName,
+  findOrCreateManuallyFilledFontAuthorByName,
+  getOrCreateUnknownAfterAiCheckAuthorId,
+  getAllNonRealFontAuthorIds,
+} from "@/lib/services/fontAuthor";
+import { FONT_LICENSE_TYPES, UNKNOWN_AFTER_AI_CHECK_LICENSE } from "@/lib/constants/fontLicenseTypes";
 import { CACHE_TAGS } from "@/lib/cacheTags";
 import crypto from "crypto";
 
@@ -196,14 +204,20 @@ export async function detectFontIdentityWithAI(fontId: string) {
 
   if (needsAuthor) {
     data.creator = result.author;
-    // Se Gemini non trova un autore reale, il font resta agganciato al suo
-    // FontAuthor placeholder (ricomparira' tra i candidati al prossimo giro).
+    // Se Gemini non trova un autore reale, il font passa dal placeholder
+    // d'import (stato "da controllare") al placeholder terminale "unknown
+    // after AI check" (stato "controllato, resta ignoto") — cosi' non
+    // ricompare tra i candidati a ogni giro con la stessa domanda gia' risposta.
     const resolvedAuthorId = await findOrCreateFontAuthorByName(result.author);
-    if (resolvedAuthorId) data.authorId = resolvedAuthorId;
+    data.authorId = resolvedAuthorId ?? (await getOrCreateUnknownAfterAiCheckAuthorId());
   }
 
   if (needsLicense) {
-    data.licenseType = result.licenseType;
+    // Stessa logica: se Gemini non sa rispondere ("Unknown"), salviamo il
+    // placeholder terminale invece del valore letterale "Unknown" (che non
+    // e' un FONT_LICENSE_TYPES valido) o di forzare una licenza indovinata.
+    data.licenseType =
+      result.licenseType.trim().toLowerCase() === "unknown" ? UNKNOWN_AFTER_AI_CHECK_LICENSE : result.licenseType;
   }
 
   await prisma.ingredient.update({ where: { id: fontId }, data });
@@ -217,6 +231,103 @@ export async function detectFontIdentityWithAI(fontId: string) {
     author: needsAuthor ? result.author : null,
     licenseType: needsLicense ? result.licenseType : null,
   };
+}
+
+// "Fill Missing Authors" in dashboard: riempimento manuale, un font alla
+// volta, per i font senza un autore reale — placeholder d'import (mai
+// controllato), terminale "unknown after AI check" (l'AI non l'ha trovato),
+// o authorId null. A differenza del bottone AI, qui l'admin puo' risolvere
+// anche i casi su cui Gemini ha gia' rinunciato.
+async function getManualAuthorCandidateWhere() {
+  const nonRealAuthorIds = await getAllNonRealFontAuthorIds();
+  return {
+    OR: [{ authorId: { in: nonRealAuthorIds } }, { authorId: null }],
+  };
+}
+
+export async function getFontsNeedingManualAuthor() {
+  await checkPermission("font:read");
+  const where = await getManualAuthorCandidateWhere();
+  return prisma.ingredient.findMany({
+    where,
+    select: { id: true, name: true, creator: true },
+    orderBy: { name: "asc" },
+  });
+}
+
+export async function getFontsNeedingManualAuthorCount() {
+  await checkPermission("font:read");
+  const where = await getManualAuthorCandidateWhere();
+  return prisma.ingredient.count({ where });
+}
+
+export async function assignManualFontAuthor(fontId: string, authorName: string) {
+  await checkPermission("font:update");
+
+  const trimmed = authorName.trim();
+  if (!trimmed) throw new Error("Author name is required.");
+
+  const font = await prisma.ingredient.findUnique({ where: { id: fontId }, select: { id: true, name: true } });
+  if (!font) throw new Error("Font not found");
+
+  const authorId = await findOrCreateManuallyFilledFontAuthorByName(trimmed);
+
+  await prisma.ingredient.update({
+    where: { id: fontId },
+    data: { authorId, creator: trimmed },
+  });
+
+  revalidatePath("/admin/fonts");
+  revalidateTag(CACHE_TAGS.ingredients, "max");
+
+  return { id: font.id, family: font.name, authorName: trimmed };
+}
+
+// Stesso pattern di "Fill Missing Authors" ma per licenseType: candidato se
+// mai settato o se ancora sul terminale "unknown after AI check" (l'admin
+// puo' risolvere anche i casi su cui Gemini ha gia' rinunciato).
+async function getManualLicenseCandidateWhere() {
+  return {
+    OR: [{ licenseType: null }, { licenseType: "" }, { licenseType: UNKNOWN_AFTER_AI_CHECK_LICENSE }],
+  };
+}
+
+export async function getFontsNeedingManualLicense() {
+  await checkPermission("font:read");
+  const where = await getManualLicenseCandidateWhere();
+  return prisma.ingredient.findMany({
+    where,
+    select: { id: true, name: true, licenseType: true },
+    orderBy: { name: "asc" },
+  });
+}
+
+export async function getFontsNeedingManualLicenseCount() {
+  await checkPermission("font:read");
+  const where = await getManualLicenseCandidateWhere();
+  return prisma.ingredient.count({ where });
+}
+
+export async function assignManualFontLicense(fontId: string, licenseType: string) {
+  await checkPermission("font:update");
+
+  const trimmed = licenseType.trim();
+  if (!(FONT_LICENSE_TYPES as readonly string[]).includes(trimmed)) {
+    throw new Error("Invalid license type.");
+  }
+
+  const font = await prisma.ingredient.findUnique({ where: { id: fontId }, select: { id: true, name: true } });
+  if (!font) throw new Error("Font not found");
+
+  await prisma.ingredient.update({
+    where: { id: fontId },
+    data: { licenseType: trimmed },
+  });
+
+  revalidatePath("/admin/fonts");
+  revalidateTag(CACHE_TAGS.ingredients, "max");
+
+  return { id: font.id, family: font.name, licenseType: trimmed };
 }
 
 export async function saveFont(prevState: any, formData: FormData, id?: string) {

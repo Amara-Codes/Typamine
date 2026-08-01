@@ -44,8 +44,17 @@ export const Hero: React.FC<HeroProps> = ({
  
   const bgStyles = clearView ? "bg-transparent" : "bg-white/70 dark:bg-black/70";
 
+  // aspect-[1200/630] (formato social-card, il piu' comune per queste
+  // immagini) invece di h-[100dvh]: un contenitore a piena altezza viewport
+  // forzava con object-cover un crop pesantissimo su mobile. Ma le immagini
+  // caricate qui non hanno TUTTE esattamente questo ratio (niente crop
+  // lato server), quindi anche con l'aspect-ratio "giusto" object-cover
+  // poteva continuare a tagliare quando il ratio reale differiva — vedi
+  // object-contain sotto, che elimina il crop del tutto qualunque sia il
+  // ratio dell'immagine (a costo di eventuali bande vuote, riempite dal
+  // background della sezione invece di lasciarle vuote).
   const containerStyles = fullWidth
-    ? `w-full h-[100dvh] border-0 ${bgStyles} rounded-none pt-16 pb-6 px-6 md:px-12 relative overflow-hidden transition-colors duration-300 flex flex-col justify-center`
+    ? `w-full aspect-[1200/630] border-0 ${bgStyles} rounded-none mb-0 pt-16 pb-6 px-6 md:px-12 relative overflow-hidden transition-colors duration-300 flex flex-col justify-center`
     : `w-full aspect-video border border-zinc-300 dark:border-zinc-800 ${bgStyles} rounded-lg p-6 md:p-8 relative overflow-hidden transition-colors duration-300 flex flex-col justify-center`;
  
   return (
@@ -57,7 +66,7 @@ export const Hero: React.FC<HeroProps> = ({
           alt="Hero Background"
           opacity={clearView ? 1 : bgOpacity}
           loopSettings={loopSettings}
-          className="absolute inset-0 object-cover w-full h-full -z-20 pointer-events-none select-none"
+          className="absolute inset-0 object-contain w-full h-full -z-20 pointer-events-none select-none"
         />
       )}
       

@@ -4,6 +4,25 @@ import { MoveRight } from "lucide-react";
 import { Ingredient } from "@/types";
 import { getDeterministicFormula } from "@/lib/utils";
 import LivePreview from "@/components/common/LivePreview";
+import { NON_REAL_FONT_AUTHOR_SLUGS } from "@/lib/constants/placeholderFontAuthors";
+
+// Mai mostrare al pubblico un nome-placeholder o una stringa "sorgente
+// d'import" al posto di un autore reale: nessuno dei casi seguenti diventa
+// mai altro che "UNKNOWN" — font.author su un placeholder d'import (da
+// controllare) o sul terminale "unknown after AI check" (controllato,
+// ignoto), oppure font.creator con un vecchio valore grezzo pre-rework tipo
+// "Typamine Import" o il letterale "Unknown" scritto dall'AI.
+const RAW_IMPORT_CREATOR_LABELS = new Set(["typamine import", "google fonts", "fontshare", "unknown"]);
+
+function getPublicCreatorLabel(font: Ingredient): string {
+  if (font.author && !NON_REAL_FONT_AUTHOR_SLUGS.includes(font.author.slug)) {
+    return font.author.name;
+  }
+  if (font.creator && !RAW_IMPORT_CREATOR_LABELS.has(font.creator.trim().toLowerCase())) {
+    return font.creator;
+  }
+  return "UNKNOWN";
+}
 interface FontCardProps {
     font: Ingredient;
     idx: number;
@@ -101,7 +120,7 @@ export const IngredientCard: React.FC<FontCardProps> = ({ font, idx, linklabel =
                 <div>
                     <h3 className="ps-2 font-haas font-bold text-sm text-foreground">{font.name}</h3>
                     {/* Sempre renderizzato (anche senza creator) per non far scattare l'altezza della card */}
-                    <p className="ps-2 font-haas text-[10px] text-zinc-500 dark:text-zinc-400 mt-0.5">CREATOR: {font.author?.name || font.creator || "UNKNOWN"}</p>
+                    <p className="ps-2 font-haas text-[10px] text-zinc-500 dark:text-zinc-400 mt-0.5">CREATOR: {getPublicCreatorLabel(font)}</p>
                 </div>
             </div>
 

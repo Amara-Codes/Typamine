@@ -61,10 +61,10 @@ export default function Quote({
 
         <Paragraph
           as="p"
-          size="4xl"
+          size="3xl"
           weight="bold"
           align="center"
-          className="text-current/90 leading-relaxed italic lg:px-8"
+          className="text-current/90 leading-relaxed italic py-8 px-8"
         >
           {children}
         </Paragraph>
@@ -78,7 +78,7 @@ export default function Quote({
         />
 
       {(author || authorDates || authorInfo) && (
-        <div className="mt-16 lg:mt-8 flex flex-col items-center text-center">
+        <div className="mt-16 lg:mt-8 pb-8 flex flex-col items-center text-center">
           {author && (
             <p className="text-xl font-star text-current">
               {author}

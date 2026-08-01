@@ -93,6 +93,9 @@ export default function IngredientDetailClient({ ingredient, hasPairings = false
       link.click();
       link.remove();
       URL.revokeObjectURL(objectUrl);
+
+      // Fire-and-forget: non blocca/rallenta il download dell'utente se fallisce.
+      fetch(`/api/ingredients/${ingredient.slug}/download`, { method: "POST" }).catch(() => {});
     } catch (err) {
       console.error("Font download failed, falling back to direct link:", err);
       window.open(sourceUrl, "_blank");
