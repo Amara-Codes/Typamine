@@ -243,6 +243,55 @@ exports.Prisma.PrescriptionScalarFieldEnum = {
   seoId: 'seoId'
 };
 
+exports.Prisma.AdminSettingsScalarFieldEnum = {
+  id: 'id',
+  siteLanguage: 'siteLanguage',
+  siteTimezone: 'siteTimezone',
+  maintenanceActive: 'maintenanceActive',
+  maintenanceMessage: 'maintenanceMessage',
+  letterTFontFamily: 'letterTFontFamily',
+  letterTFontSizePercent: 'letterTFontSizePercent',
+  logoLightModeColor: 'logoLightModeColor',
+  logoDarkModeColor: 'logoDarkModeColor',
+  heroWordmarkFonts: 'heroWordmarkFonts',
+  heroWordmarkLoop: 'heroWordmarkLoop',
+  heroWordmarkLoopSpeed: 'heroWordmarkLoopSpeed',
+  marqueeActive: 'marqueeActive',
+  marqueeText: 'marqueeText',
+  marqueeType: 'marqueeType',
+  marqueeTextColor: 'marqueeTextColor',
+  marqueeBgColor: 'marqueeBgColor',
+  popupActive: 'popupActive',
+  popupImageUrl: 'popupImageUrl',
+  popupHeadline: 'popupHeadline',
+  popupMessage: 'popupMessage',
+  popupCtaLabel: 'popupCtaLabel',
+  popupCtaLink: 'popupCtaLink',
+  popupFrequency: 'popupFrequency',
+  popupFrequencyDays: 'popupFrequencyDays',
+  emailProvider: 'emailProvider',
+  gmailClientId: 'gmailClientId',
+  gmailClientSecret: 'gmailClientSecret',
+  gmailSenderName: 'gmailSenderName',
+  gmailConnected: 'gmailConnected',
+  gmailConnectedEmail: 'gmailConnectedEmail',
+  credentialsVault: 'credentialsVault',
+  integrationsConfig: 'integrationsConfig',
+  notificationChannels: 'notificationChannels',
+  slackWebhookUrl: 'slackWebhookUrl',
+  require2fa: 'require2fa',
+  sessionTimeoutMinutes: 'sessionTimeoutMinutes',
+  ipAllowlist: 'ipAllowlist',
+  auditRetentionDays: 'auditRetentionDays',
+  cookieBannerActive: 'cookieBannerActive',
+  cookieBannerText: 'cookieBannerText',
+  privacyPolicyUrl: 'privacyPolicyUrl',
+  termsOfServiceUrl: 'termsOfServiceUrl',
+  gdprRequestEmail: 'gdprRequestEmail',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.TagScalarFieldEnum = {
   id: 'id',
   name: 'name',
@@ -290,6 +339,7 @@ exports.Prisma.ModelName = {
   Ingredient: 'Ingredient',
   Formula: 'Formula',
   Prescription: 'Prescription',
+  AdminSettings: 'AdminSettings',
   Tag: 'Tag',
   Post: 'Post'
 };

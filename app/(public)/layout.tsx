@@ -1,9 +1,12 @@
 import type { Metadata } from "next";
 import "../globals.css";
+import { headers } from "next/headers";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
+import MarqueeBar from "@/components/layout/MarqueeBar";
 import { Inter } from "next/font/google";
 import { cn } from "@/lib/utils";
+import { getAdminSettings } from "@/lib/services/adminSettings";
 
 const inter = Inter({subsets:['latin'],variable:'--font-sans'});
 
@@ -12,11 +15,22 @@ export const metadata: Metadata = {
   description: "A high-performance technical typographic playground and curated font laboratory. Test, pair, and formulate typography at the edge.",
 };
 
-export default function PublicRootLayout({
+export default async function PublicRootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const adminSettings = await getAdminSettings();
+  const pathname = (await headers()).get("x-pathname") ?? "/";
+  const isHome = pathname === "/";
+  // "every_page" copre tutto il sito, "homepage_top" solo "/" — stessa
+  // striscia fissa sopra l'header in entrambi i casi (vedi MarqueeBar).
+  // "homepage_banner" non passa da qui: è renderizzato in-flow dentro
+  // HomeClient, sotto l'hero, e non richiede l'offset dell'header.
+  const showMarqueeStrip =
+    adminSettings.marqueeActive &&
+    (adminSettings.marqueeType === "every_page" || (adminSettings.marqueeType === "homepage_top" && isHome));
+
   return (
     <html lang="en" className={cn("h-full antialiased overflow-x-hidden", "font-sans", inter.variable)} suppressHydrationWarning>
       <head>
@@ -42,16 +56,39 @@ export default function PublicRootLayout({
           }}
         />
       </head>
-      <body className="min-h-full flex flex-col bg-background text-foreground selection:bg-red selection:text-white relative scanline overflow-x-hidden">
-        
-        <Header />
+      <body
+        className="min-h-full flex flex-col bg-background text-foreground selection:bg-red selection:text-white relative scanline overflow-x-hidden"
+        style={{ "--marquee-offset": showMarqueeStrip ? "2.25rem" : "0px" } as React.CSSProperties}
+      >
+        {showMarqueeStrip && (
+          <MarqueeBar
+            text={adminSettings.marqueeText || ""}
+            textColorClassName={adminSettings.marqueeTextColor}
+            bgColorClassName={adminSettings.marqueeBgColor}
+          />
+        )}
+
+        <Header
+          letterTFont={adminSettings.letterTFont}
+          letterTFontSizePercent={adminSettings.letterTFontSizePercent}
+          logoLightModeColor={adminSettings.logoLightModeColor}
+          logoDarkModeColor={adminSettings.logoDarkModeColor}
+        />
 
         {/* MAIN LAB BENCH CONTENT */}
-        <main className="flex-grow flex flex-col transition-colors duration-300">
+        <main
+          className="flex-grow flex flex-col transition-colors duration-300"
+          style={{ paddingTop: "var(--marquee-offset, 0px)" }}
+        >
           {children}
         </main>
 
-        <Footer />
+        <Footer
+          letterTFont={adminSettings.letterTFont}
+          letterTFontSizePercent={adminSettings.letterTFontSizePercent}
+          logoLightModeColor={adminSettings.logoLightModeColor}
+          logoDarkModeColor={adminSettings.logoDarkModeColor}
+        />
 
       </body>
     </html>

@@ -118,7 +118,7 @@ export const IngredientCard: React.FC<FontCardProps> = ({ font, idx, linklabel =
                 </div>
 
                 <div>
-                    <h3 className="ps-2 font-haas font-bold text-sm text-foreground">{font.name}</h3>
+                    <h3 className="ps-2 font-haas font-bold text-sm text-foreground">{font.name.replaceAll('_', " ")}</h3>
                     {/* Sempre renderizzato (anche senza creator) per non far scattare l'altezza della card */}
                     <p className="ps-2 font-haas text-[10px] text-zinc-500 dark:text-zinc-400 mt-0.5">CREATOR: {getPublicCreatorLabel(font)}</p>
                 </div>

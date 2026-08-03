@@ -11,15 +11,20 @@ import { Cta } from "@/components/common/Cta";
 import { Button } from "@/components/common/Button";
 import Link from "next/link";
 import { useThemeStore } from "@/store/themeStore";
-import { Formula, Ingredient, Prescription } from "@/types";
+import { Formula, Ingredient, Prescription, AdminSettings } from "@/types";
+import HomepageBanner from "@/components/layout/HomepageBanner";
+import PopupModal from "@/components/layout/PopupModal";
+import HeroWordmark from "@/components/layout/HeroWordmark";
 
 interface HomeClientProps {
   recentIngredients?: Ingredient[];
   recentPairings?: Prescription[];
   featuredFormulas?: { formula: Formula; isCurated: boolean }[];
+  adminSettings?: AdminSettings;
 }
 
-export default function HomeClient({ recentIngredients = [], recentPairings = [], featuredFormulas = [] }: HomeClientProps) {
+export default function HomeClient({ recentIngredients = [], recentPairings = [], featuredFormulas = [], adminSettings }: HomeClientProps) {
+  const showHomepageBanner = adminSettings?.marqueeActive && adminSettings.marqueeType === "homepage_banner";
   const { theme } = useThemeStore();
   const dynamicHeroBgImageUrl = theme === "dark" ? "/images/home/double-hero/hero-bg-dark.png" : "/images/home/double-hero/hero-bg-light.png";
 
@@ -28,29 +33,21 @@ export default function HomeClient({ recentIngredients = [], recentPairings = []
 
   return (
     <div className="flex flex-col">
+      {adminSettings && <PopupModal settings={adminSettings} />}
+
       {/* 1. DOUBLE HERO SECTION */}
       <DoubleHero bgImage={dynamicHeroBgImageUrl} fullWidth>
-        <DoubleHero.FirstViewport className="pt-24 pb-12 px-6 md:px-12 flex flex-col justify-center">
-          <div className="max-w-3xl flex flex-col space-y-4 text-right items-end ml-auto">
-            <h1 className="font-haas text-2xl md:text-5xl font-bold tracking-tight text-foreground text-glow-blue dark:text-glow-red">
-              Your new <br />
-              <span className="text-red">&quot;Looking for a Font&quot;</span>
-              <br /> Therapy
-            </h1>
+        <DoubleHero.FirstViewport className="pt-24 pb-12 px-6 md:px-12 flex flex-col items-center justify-center gap-8">
+          <HeroWordmark
+            fonts={adminSettings?.heroWordmarkFontsResolved ?? []}
+            loop={adminSettings?.heroWordmarkLoop ?? true}
+            loopSpeed={adminSettings?.heroWordmarkLoopSpeed ?? 1}
+            logoLightModeColor={adminSettings?.logoLightModeColor}
+            logoDarkModeColor={adminSettings?.logoDarkModeColor}
+            className="font-star text-black dark:text-white text-[clamp(3rem,9vw,8rem)] mx-auto"
+          />
 
-            <p className="text-zinc-700 dark:text-zinc-300 text-xs md:text-base max-w-xl leading-relaxed">
-              Browse a vast catalog of fonts, find expert pairings, generate custom assets on the fly, and read our latest typographic prescriptions. Built for modern creators and developers.
-            </p>
-
-            <div className="pt-4 flex flex-wrap gap-3">
-              <Link href="/ingredients">
-                <Button variant="primary">Fonts Catalog</Button>
-              </Link>
-              <Link href="/prescriptions">
-                <Button variant="outline">Our Suggestions</Button>
-              </Link>
-            </div>
-          </div>
+    
         </DoubleHero.FirstViewport>
 
         <DoubleHero.SecondViewport fixedHeight={140} className="pb-12 flex flex-col">
@@ -89,6 +86,14 @@ export default function HomeClient({ recentIngredients = [], recentPairings = []
           </div>
         </DoubleHero.SecondViewport>
       </DoubleHero>
+
+      {showHomepageBanner && (
+        <HomepageBanner
+          text={adminSettings?.marqueeText || ""}
+          textColorClassName={adminSettings?.marqueeTextColor}
+          bgColorClassName={adminSettings?.marqueeBgColor}
+        />
+      )}
 
       <div className="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-12">
         {/* 4. OUR PRESCRIPTIONS (PAIRINGS) — ora fuori da DoubleHero, primo
@@ -152,7 +157,7 @@ export default function HomeClient({ recentIngredients = [], recentPairings = []
             }}
           >
             <Link href="/pills" className="inline-block">
-              <Button variant="secondary">READ_THE_BLOG</Button>
+              <Button variant="secondary">READ THE BLOG</Button>
             </Link>
           </Cta>
         </div>

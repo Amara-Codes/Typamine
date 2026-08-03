@@ -45,6 +45,7 @@ export default function PrescriptionsClient({ tags, children }: PrescriptionsCli
         sortOptions={SORT_OPTIONS}
         tags={tags}
         filtersModalTitle="Filter by Tags"
+        showSearch={false}
       />
 
       {children}

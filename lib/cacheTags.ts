@@ -11,4 +11,5 @@ export const CACHE_TAGS = {
   posts: "posts",
   tags: "tags",
   fontAuthors: "font-authors",
+  adminSettings: "admin-settings",
 } as const;

@@ -41,7 +41,7 @@ export default function ArchiveClient({ tags, children }: ArchiveClientProps) {
       <DoubleHero.SecondViewport>
         <div className="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
           <SearchSortFilter
-            searchPlaceholder="Search the archive by title, caption or description..."
+            searchPlaceholder="Search the Archive articles by title, caption or description..."
             sortOptions={SORT_OPTIONS}
             tags={tags}
             filtersModalTitle="Filter by Tags"

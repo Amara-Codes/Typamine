@@ -15,6 +15,9 @@ interface IngredientRatingWidgetProps {
   initialUserRatingsCount: number;
   /** Letto server-side dal cookie httpOnly `tm_rated_<id>` — non leggibile/falsificabile da document.cookie lato client. */
   initialHasVoted: boolean;
+  /** true = nessun proprio bg/border/rounded/backdrop — per quando il chiamante fonde il widget in un contenitore già stilizzato (es. IngredientHeader). */
+  bare?: boolean;
+  onRateSuccess?: () => void;
 }
 
 export default function IngredientRatingWidget({
@@ -24,6 +27,8 @@ export default function IngredientRatingWidget({
   initialUserRating,
   initialUserRatingsCount,
   initialHasVoted,
+  bare = false,
+  onRateSuccess,
 }: IngredientRatingWidgetProps) {
   const [userRating, setUserRating] = useState(initialUserRating);
   const [userRatingsCount, setUserRatingsCount] = useState(initialUserRatingsCount);
@@ -37,6 +42,7 @@ export default function IngredientRatingWidget({
 
   const handleRate = async (value: number) => {
     if (hasVoted || isSubmitting) return;
+    onRateSuccess?.();
     setIsSubmitting(true);
     setError(null);
     try {
@@ -60,6 +66,7 @@ export default function IngredientRatingWidget({
       setUserRatingsCount(data.userRatingsCount);
       setMyVote(value);
       setHasVoted(true);
+      onRateSuccess?.();
     } catch (err: any) {
       setError(err.message || "Failed to submit rating.");
     } finally {
@@ -73,7 +80,13 @@ export default function IngredientRatingWidget({
   const typamineScore5 = typamineRating / 2;
 
   return (
-    <div className="p-6 border border-black/5 dark:border-white/5 rounded-lg backdrop-blur-xl bg-white/40 dark:bg-zinc-900/40 flex flex-col sm:flex-row sm:items-center gap-4">
+    <div
+      className={
+        bare
+          ? "flex flex-col sm:flex-row sm:items-center gap-4 w-full"
+          : "p-6 border border-black/5 dark:border-white/5 rounded-lg backdrop-blur-xl bg-white/40 dark:bg-zinc-900/40 flex flex-col sm:flex-row sm:items-center gap-4"
+      }
+    >
 
       <div className="flex flex-col gap-2">
         <p className="font-haas text-[10px] uppercase tracking-widest text-blue-800 dark:text-red-200">Typamine® Score</p>

@@ -59,6 +59,11 @@ export type Formula = $Result.DefaultSelection<Prisma.$FormulaPayload>
  */
 export type Prescription = $Result.DefaultSelection<Prisma.$PrescriptionPayload>
 /**
+ * Model AdminSettings
+ * 
+ */
+export type AdminSettings = $Result.DefaultSelection<Prisma.$AdminSettingsPayload>
+/**
  * Model Tag
  * 
  */
@@ -276,6 +281,16 @@ export class PrismaClient<
     * ```
     */
   get prescription(): Prisma.PrescriptionDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.adminSettings`: Exposes CRUD operations for the **AdminSettings** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more AdminSettings
+    * const adminSettings = await prisma.adminSettings.findMany()
+    * ```
+    */
+  get adminSettings(): Prisma.AdminSettingsDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.tag`: Exposes CRUD operations for the **Tag** model.
@@ -746,6 +761,7 @@ export namespace Prisma {
     Ingredient: 'Ingredient',
     Formula: 'Formula',
     Prescription: 'Prescription',
+    AdminSettings: 'AdminSettings',
     Tag: 'Tag',
     Post: 'Post'
   };
@@ -766,7 +782,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "role" | "permission" | "fontAuthor" | "seoModule" | "fontVariant" | "ingredient" | "formula" | "prescription" | "tag" | "post"
+      modelProps: "user" | "role" | "permission" | "fontAuthor" | "seoModule" | "fontVariant" | "ingredient" | "formula" | "prescription" | "adminSettings" | "tag" | "post"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1436,6 +1452,80 @@ export namespace Prisma {
           }
         }
       }
+      AdminSettings: {
+        payload: Prisma.$AdminSettingsPayload<ExtArgs>
+        fields: Prisma.AdminSettingsFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.AdminSettingsFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AdminSettingsPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.AdminSettingsFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AdminSettingsPayload>
+          }
+          findFirst: {
+            args: Prisma.AdminSettingsFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AdminSettingsPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.AdminSettingsFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AdminSettingsPayload>
+          }
+          findMany: {
+            args: Prisma.AdminSettingsFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AdminSettingsPayload>[]
+          }
+          create: {
+            args: Prisma.AdminSettingsCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AdminSettingsPayload>
+          }
+          createMany: {
+            args: Prisma.AdminSettingsCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.AdminSettingsCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AdminSettingsPayload>[]
+          }
+          delete: {
+            args: Prisma.AdminSettingsDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AdminSettingsPayload>
+          }
+          update: {
+            args: Prisma.AdminSettingsUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AdminSettingsPayload>
+          }
+          deleteMany: {
+            args: Prisma.AdminSettingsDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.AdminSettingsUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.AdminSettingsUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AdminSettingsPayload>[]
+          }
+          upsert: {
+            args: Prisma.AdminSettingsUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AdminSettingsPayload>
+          }
+          aggregate: {
+            args: Prisma.AdminSettingsAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateAdminSettings>
+          }
+          groupBy: {
+            args: Prisma.AdminSettingsGroupByArgs<ExtArgs>
+            result: $Utils.Optional<AdminSettingsGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.AdminSettingsCountArgs<ExtArgs>
+            result: $Utils.Optional<AdminSettingsCountAggregateOutputType> | number
+          }
+        }
+      }
       Tag: {
         payload: Prisma.$TagPayload<ExtArgs>
         fields: Prisma.TagFieldRefs
@@ -1689,6 +1779,7 @@ export namespace Prisma {
     ingredient?: IngredientOmit
     formula?: FormulaOmit
     prescription?: PrescriptionOmit
+    adminSettings?: AdminSettingsOmit
     tag?: TagOmit
     post?: PostOmit
   }
@@ -12849,6 +12940,1582 @@ export namespace Prisma {
 
 
   /**
+   * Model AdminSettings
+   */
+
+  export type AggregateAdminSettings = {
+    _count: AdminSettingsCountAggregateOutputType | null
+    _avg: AdminSettingsAvgAggregateOutputType | null
+    _sum: AdminSettingsSumAggregateOutputType | null
+    _min: AdminSettingsMinAggregateOutputType | null
+    _max: AdminSettingsMaxAggregateOutputType | null
+  }
+
+  export type AdminSettingsAvgAggregateOutputType = {
+    letterTFontSizePercent: number | null
+    heroWordmarkLoopSpeed: number | null
+    popupFrequencyDays: number | null
+    sessionTimeoutMinutes: number | null
+    auditRetentionDays: number | null
+  }
+
+  export type AdminSettingsSumAggregateOutputType = {
+    letterTFontSizePercent: number | null
+    heroWordmarkLoopSpeed: number | null
+    popupFrequencyDays: number | null
+    sessionTimeoutMinutes: number | null
+    auditRetentionDays: number | null
+  }
+
+  export type AdminSettingsMinAggregateOutputType = {
+    id: string | null
+    siteLanguage: string | null
+    siteTimezone: string | null
+    maintenanceActive: boolean | null
+    maintenanceMessage: string | null
+    letterTFontFamily: string | null
+    letterTFontSizePercent: number | null
+    logoLightModeColor: string | null
+    logoDarkModeColor: string | null
+    heroWordmarkFonts: string | null
+    heroWordmarkLoop: boolean | null
+    heroWordmarkLoopSpeed: number | null
+    marqueeActive: boolean | null
+    marqueeText: string | null
+    marqueeType: string | null
+    marqueeTextColor: string | null
+    marqueeBgColor: string | null
+    popupActive: boolean | null
+    popupImageUrl: string | null
+    popupHeadline: string | null
+    popupMessage: string | null
+    popupCtaLabel: string | null
+    popupCtaLink: string | null
+    popupFrequency: string | null
+    popupFrequencyDays: number | null
+    emailProvider: string | null
+    gmailClientId: string | null
+    gmailClientSecret: string | null
+    gmailSenderName: string | null
+    gmailConnected: boolean | null
+    gmailConnectedEmail: string | null
+    credentialsVault: string | null
+    integrationsConfig: string | null
+    notificationChannels: string | null
+    slackWebhookUrl: string | null
+    require2fa: boolean | null
+    sessionTimeoutMinutes: number | null
+    ipAllowlist: string | null
+    auditRetentionDays: number | null
+    cookieBannerActive: boolean | null
+    cookieBannerText: string | null
+    privacyPolicyUrl: string | null
+    termsOfServiceUrl: string | null
+    gdprRequestEmail: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type AdminSettingsMaxAggregateOutputType = {
+    id: string | null
+    siteLanguage: string | null
+    siteTimezone: string | null
+    maintenanceActive: boolean | null
+    maintenanceMessage: string | null
+    letterTFontFamily: string | null
+    letterTFontSizePercent: number | null
+    logoLightModeColor: string | null
+    logoDarkModeColor: string | null
+    heroWordmarkFonts: string | null
+    heroWordmarkLoop: boolean | null
+    heroWordmarkLoopSpeed: number | null
+    marqueeActive: boolean | null
+    marqueeText: string | null
+    marqueeType: string | null
+    marqueeTextColor: string | null
+    marqueeBgColor: string | null
+    popupActive: boolean | null
+    popupImageUrl: string | null
+    popupHeadline: string | null
+    popupMessage: string | null
+    popupCtaLabel: string | null
+    popupCtaLink: string | null
+    popupFrequency: string | null
+    popupFrequencyDays: number | null
+    emailProvider: string | null
+    gmailClientId: string | null
+    gmailClientSecret: string | null
+    gmailSenderName: string | null
+    gmailConnected: boolean | null
+    gmailConnectedEmail: string | null
+    credentialsVault: string | null
+    integrationsConfig: string | null
+    notificationChannels: string | null
+    slackWebhookUrl: string | null
+    require2fa: boolean | null
+    sessionTimeoutMinutes: number | null
+    ipAllowlist: string | null
+    auditRetentionDays: number | null
+    cookieBannerActive: boolean | null
+    cookieBannerText: string | null
+    privacyPolicyUrl: string | null
+    termsOfServiceUrl: string | null
+    gdprRequestEmail: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type AdminSettingsCountAggregateOutputType = {
+    id: number
+    siteLanguage: number
+    siteTimezone: number
+    maintenanceActive: number
+    maintenanceMessage: number
+    letterTFontFamily: number
+    letterTFontSizePercent: number
+    logoLightModeColor: number
+    logoDarkModeColor: number
+    heroWordmarkFonts: number
+    heroWordmarkLoop: number
+    heroWordmarkLoopSpeed: number
+    marqueeActive: number
+    marqueeText: number
+    marqueeType: number
+    marqueeTextColor: number
+    marqueeBgColor: number
+    popupActive: number
+    popupImageUrl: number
+    popupHeadline: number
+    popupMessage: number
+    popupCtaLabel: number
+    popupCtaLink: number
+    popupFrequency: number
+    popupFrequencyDays: number
+    emailProvider: number
+    gmailClientId: number
+    gmailClientSecret: number
+    gmailSenderName: number
+    gmailConnected: number
+    gmailConnectedEmail: number
+    credentialsVault: number
+    integrationsConfig: number
+    notificationChannels: number
+    slackWebhookUrl: number
+    require2fa: number
+    sessionTimeoutMinutes: number
+    ipAllowlist: number
+    auditRetentionDays: number
+    cookieBannerActive: number
+    cookieBannerText: number
+    privacyPolicyUrl: number
+    termsOfServiceUrl: number
+    gdprRequestEmail: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type AdminSettingsAvgAggregateInputType = {
+    letterTFontSizePercent?: true
+    heroWordmarkLoopSpeed?: true
+    popupFrequencyDays?: true
+    sessionTimeoutMinutes?: true
+    auditRetentionDays?: true
+  }
+
+  export type AdminSettingsSumAggregateInputType = {
+    letterTFontSizePercent?: true
+    heroWordmarkLoopSpeed?: true
+    popupFrequencyDays?: true
+    sessionTimeoutMinutes?: true
+    auditRetentionDays?: true
+  }
+
+  export type AdminSettingsMinAggregateInputType = {
+    id?: true
+    siteLanguage?: true
+    siteTimezone?: true
+    maintenanceActive?: true
+    maintenanceMessage?: true
+    letterTFontFamily?: true
+    letterTFontSizePercent?: true
+    logoLightModeColor?: true
+    logoDarkModeColor?: true
+    heroWordmarkFonts?: true
+    heroWordmarkLoop?: true
+    heroWordmarkLoopSpeed?: true
+    marqueeActive?: true
+    marqueeText?: true
+    marqueeType?: true
+    marqueeTextColor?: true
+    marqueeBgColor?: true
+    popupActive?: true
+    popupImageUrl?: true
+    popupHeadline?: true
+    popupMessage?: true
+    popupCtaLabel?: true
+    popupCtaLink?: true
+    popupFrequency?: true
+    popupFrequencyDays?: true
+    emailProvider?: true
+    gmailClientId?: true
+    gmailClientSecret?: true
+    gmailSenderName?: true
+    gmailConnected?: true
+    gmailConnectedEmail?: true
+    credentialsVault?: true
+    integrationsConfig?: true
+    notificationChannels?: true
+    slackWebhookUrl?: true
+    require2fa?: true
+    sessionTimeoutMinutes?: true
+    ipAllowlist?: true
+    auditRetentionDays?: true
+    cookieBannerActive?: true
+    cookieBannerText?: true
+    privacyPolicyUrl?: true
+    termsOfServiceUrl?: true
+    gdprRequestEmail?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type AdminSettingsMaxAggregateInputType = {
+    id?: true
+    siteLanguage?: true
+    siteTimezone?: true
+    maintenanceActive?: true
+    maintenanceMessage?: true
+    letterTFontFamily?: true
+    letterTFontSizePercent?: true
+    logoLightModeColor?: true
+    logoDarkModeColor?: true
+    heroWordmarkFonts?: true
+    heroWordmarkLoop?: true
+    heroWordmarkLoopSpeed?: true
+    marqueeActive?: true
+    marqueeText?: true
+    marqueeType?: true
+    marqueeTextColor?: true
+    marqueeBgColor?: true
+    popupActive?: true
+    popupImageUrl?: true
+    popupHeadline?: true
+    popupMessage?: true
+    popupCtaLabel?: true
+    popupCtaLink?: true
+    popupFrequency?: true
+    popupFrequencyDays?: true
+    emailProvider?: true
+    gmailClientId?: true
+    gmailClientSecret?: true
+    gmailSenderName?: true
+    gmailConnected?: true
+    gmailConnectedEmail?: true
+    credentialsVault?: true
+    integrationsConfig?: true
+    notificationChannels?: true
+    slackWebhookUrl?: true
+    require2fa?: true
+    sessionTimeoutMinutes?: true
+    ipAllowlist?: true
+    auditRetentionDays?: true
+    cookieBannerActive?: true
+    cookieBannerText?: true
+    privacyPolicyUrl?: true
+    termsOfServiceUrl?: true
+    gdprRequestEmail?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type AdminSettingsCountAggregateInputType = {
+    id?: true
+    siteLanguage?: true
+    siteTimezone?: true
+    maintenanceActive?: true
+    maintenanceMessage?: true
+    letterTFontFamily?: true
+    letterTFontSizePercent?: true
+    logoLightModeColor?: true
+    logoDarkModeColor?: true
+    heroWordmarkFonts?: true
+    heroWordmarkLoop?: true
+    heroWordmarkLoopSpeed?: true
+    marqueeActive?: true
+    marqueeText?: true
+    marqueeType?: true
+    marqueeTextColor?: true
+    marqueeBgColor?: true
+    popupActive?: true
+    popupImageUrl?: true
+    popupHeadline?: true
+    popupMessage?: true
+    popupCtaLabel?: true
+    popupCtaLink?: true
+    popupFrequency?: true
+    popupFrequencyDays?: true
+    emailProvider?: true
+    gmailClientId?: true
+    gmailClientSecret?: true
+    gmailSenderName?: true
+    gmailConnected?: true
+    gmailConnectedEmail?: true
+    credentialsVault?: true
+    integrationsConfig?: true
+    notificationChannels?: true
+    slackWebhookUrl?: true
+    require2fa?: true
+    sessionTimeoutMinutes?: true
+    ipAllowlist?: true
+    auditRetentionDays?: true
+    cookieBannerActive?: true
+    cookieBannerText?: true
+    privacyPolicyUrl?: true
+    termsOfServiceUrl?: true
+    gdprRequestEmail?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type AdminSettingsAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AdminSettings to aggregate.
+     */
+    where?: AdminSettingsWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AdminSettings to fetch.
+     */
+    orderBy?: AdminSettingsOrderByWithRelationInput | AdminSettingsOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: AdminSettingsWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AdminSettings from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AdminSettings.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned AdminSettings
+    **/
+    _count?: true | AdminSettingsCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: AdminSettingsAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: AdminSettingsSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: AdminSettingsMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: AdminSettingsMaxAggregateInputType
+  }
+
+  export type GetAdminSettingsAggregateType<T extends AdminSettingsAggregateArgs> = {
+        [P in keyof T & keyof AggregateAdminSettings]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateAdminSettings[P]>
+      : GetScalarType<T[P], AggregateAdminSettings[P]>
+  }
+
+
+
+
+  export type AdminSettingsGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AdminSettingsWhereInput
+    orderBy?: AdminSettingsOrderByWithAggregationInput | AdminSettingsOrderByWithAggregationInput[]
+    by: AdminSettingsScalarFieldEnum[] | AdminSettingsScalarFieldEnum
+    having?: AdminSettingsScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: AdminSettingsCountAggregateInputType | true
+    _avg?: AdminSettingsAvgAggregateInputType
+    _sum?: AdminSettingsSumAggregateInputType
+    _min?: AdminSettingsMinAggregateInputType
+    _max?: AdminSettingsMaxAggregateInputType
+  }
+
+  export type AdminSettingsGroupByOutputType = {
+    id: string
+    siteLanguage: string
+    siteTimezone: string
+    maintenanceActive: boolean
+    maintenanceMessage: string | null
+    letterTFontFamily: string | null
+    letterTFontSizePercent: number
+    logoLightModeColor: string | null
+    logoDarkModeColor: string | null
+    heroWordmarkFonts: string | null
+    heroWordmarkLoop: boolean
+    heroWordmarkLoopSpeed: number
+    marqueeActive: boolean
+    marqueeText: string | null
+    marqueeType: string
+    marqueeTextColor: string | null
+    marqueeBgColor: string | null
+    popupActive: boolean
+    popupImageUrl: string | null
+    popupHeadline: string | null
+    popupMessage: string | null
+    popupCtaLabel: string | null
+    popupCtaLink: string | null
+    popupFrequency: string
+    popupFrequencyDays: number
+    emailProvider: string
+    gmailClientId: string | null
+    gmailClientSecret: string | null
+    gmailSenderName: string | null
+    gmailConnected: boolean
+    gmailConnectedEmail: string | null
+    credentialsVault: string | null
+    integrationsConfig: string | null
+    notificationChannels: string | null
+    slackWebhookUrl: string | null
+    require2fa: boolean
+    sessionTimeoutMinutes: number
+    ipAllowlist: string | null
+    auditRetentionDays: number
+    cookieBannerActive: boolean
+    cookieBannerText: string | null
+    privacyPolicyUrl: string | null
+    termsOfServiceUrl: string | null
+    gdprRequestEmail: string | null
+    createdAt: Date
+    updatedAt: Date
+    _count: AdminSettingsCountAggregateOutputType | null
+    _avg: AdminSettingsAvgAggregateOutputType | null
+    _sum: AdminSettingsSumAggregateOutputType | null
+    _min: AdminSettingsMinAggregateOutputType | null
+    _max: AdminSettingsMaxAggregateOutputType | null
+  }
+
+  type GetAdminSettingsGroupByPayload<T extends AdminSettingsGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<AdminSettingsGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof AdminSettingsGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], AdminSettingsGroupByOutputType[P]>
+            : GetScalarType<T[P], AdminSettingsGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type AdminSettingsSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    siteLanguage?: boolean
+    siteTimezone?: boolean
+    maintenanceActive?: boolean
+    maintenanceMessage?: boolean
+    letterTFontFamily?: boolean
+    letterTFontSizePercent?: boolean
+    logoLightModeColor?: boolean
+    logoDarkModeColor?: boolean
+    heroWordmarkFonts?: boolean
+    heroWordmarkLoop?: boolean
+    heroWordmarkLoopSpeed?: boolean
+    marqueeActive?: boolean
+    marqueeText?: boolean
+    marqueeType?: boolean
+    marqueeTextColor?: boolean
+    marqueeBgColor?: boolean
+    popupActive?: boolean
+    popupImageUrl?: boolean
+    popupHeadline?: boolean
+    popupMessage?: boolean
+    popupCtaLabel?: boolean
+    popupCtaLink?: boolean
+    popupFrequency?: boolean
+    popupFrequencyDays?: boolean
+    emailProvider?: boolean
+    gmailClientId?: boolean
+    gmailClientSecret?: boolean
+    gmailSenderName?: boolean
+    gmailConnected?: boolean
+    gmailConnectedEmail?: boolean
+    credentialsVault?: boolean
+    integrationsConfig?: boolean
+    notificationChannels?: boolean
+    slackWebhookUrl?: boolean
+    require2fa?: boolean
+    sessionTimeoutMinutes?: boolean
+    ipAllowlist?: boolean
+    auditRetentionDays?: boolean
+    cookieBannerActive?: boolean
+    cookieBannerText?: boolean
+    privacyPolicyUrl?: boolean
+    termsOfServiceUrl?: boolean
+    gdprRequestEmail?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["adminSettings"]>
+
+  export type AdminSettingsSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    siteLanguage?: boolean
+    siteTimezone?: boolean
+    maintenanceActive?: boolean
+    maintenanceMessage?: boolean
+    letterTFontFamily?: boolean
+    letterTFontSizePercent?: boolean
+    logoLightModeColor?: boolean
+    logoDarkModeColor?: boolean
+    heroWordmarkFonts?: boolean
+    heroWordmarkLoop?: boolean
+    heroWordmarkLoopSpeed?: boolean
+    marqueeActive?: boolean
+    marqueeText?: boolean
+    marqueeType?: boolean
+    marqueeTextColor?: boolean
+    marqueeBgColor?: boolean
+    popupActive?: boolean
+    popupImageUrl?: boolean
+    popupHeadline?: boolean
+    popupMessage?: boolean
+    popupCtaLabel?: boolean
+    popupCtaLink?: boolean
+    popupFrequency?: boolean
+    popupFrequencyDays?: boolean
+    emailProvider?: boolean
+    gmailClientId?: boolean
+    gmailClientSecret?: boolean
+    gmailSenderName?: boolean
+    gmailConnected?: boolean
+    gmailConnectedEmail?: boolean
+    credentialsVault?: boolean
+    integrationsConfig?: boolean
+    notificationChannels?: boolean
+    slackWebhookUrl?: boolean
+    require2fa?: boolean
+    sessionTimeoutMinutes?: boolean
+    ipAllowlist?: boolean
+    auditRetentionDays?: boolean
+    cookieBannerActive?: boolean
+    cookieBannerText?: boolean
+    privacyPolicyUrl?: boolean
+    termsOfServiceUrl?: boolean
+    gdprRequestEmail?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["adminSettings"]>
+
+  export type AdminSettingsSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    siteLanguage?: boolean
+    siteTimezone?: boolean
+    maintenanceActive?: boolean
+    maintenanceMessage?: boolean
+    letterTFontFamily?: boolean
+    letterTFontSizePercent?: boolean
+    logoLightModeColor?: boolean
+    logoDarkModeColor?: boolean
+    heroWordmarkFonts?: boolean
+    heroWordmarkLoop?: boolean
+    heroWordmarkLoopSpeed?: boolean
+    marqueeActive?: boolean
+    marqueeText?: boolean
+    marqueeType?: boolean
+    marqueeTextColor?: boolean
+    marqueeBgColor?: boolean
+    popupActive?: boolean
+    popupImageUrl?: boolean
+    popupHeadline?: boolean
+    popupMessage?: boolean
+    popupCtaLabel?: boolean
+    popupCtaLink?: boolean
+    popupFrequency?: boolean
+    popupFrequencyDays?: boolean
+    emailProvider?: boolean
+    gmailClientId?: boolean
+    gmailClientSecret?: boolean
+    gmailSenderName?: boolean
+    gmailConnected?: boolean
+    gmailConnectedEmail?: boolean
+    credentialsVault?: boolean
+    integrationsConfig?: boolean
+    notificationChannels?: boolean
+    slackWebhookUrl?: boolean
+    require2fa?: boolean
+    sessionTimeoutMinutes?: boolean
+    ipAllowlist?: boolean
+    auditRetentionDays?: boolean
+    cookieBannerActive?: boolean
+    cookieBannerText?: boolean
+    privacyPolicyUrl?: boolean
+    termsOfServiceUrl?: boolean
+    gdprRequestEmail?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["adminSettings"]>
+
+  export type AdminSettingsSelectScalar = {
+    id?: boolean
+    siteLanguage?: boolean
+    siteTimezone?: boolean
+    maintenanceActive?: boolean
+    maintenanceMessage?: boolean
+    letterTFontFamily?: boolean
+    letterTFontSizePercent?: boolean
+    logoLightModeColor?: boolean
+    logoDarkModeColor?: boolean
+    heroWordmarkFonts?: boolean
+    heroWordmarkLoop?: boolean
+    heroWordmarkLoopSpeed?: boolean
+    marqueeActive?: boolean
+    marqueeText?: boolean
+    marqueeType?: boolean
+    marqueeTextColor?: boolean
+    marqueeBgColor?: boolean
+    popupActive?: boolean
+    popupImageUrl?: boolean
+    popupHeadline?: boolean
+    popupMessage?: boolean
+    popupCtaLabel?: boolean
+    popupCtaLink?: boolean
+    popupFrequency?: boolean
+    popupFrequencyDays?: boolean
+    emailProvider?: boolean
+    gmailClientId?: boolean
+    gmailClientSecret?: boolean
+    gmailSenderName?: boolean
+    gmailConnected?: boolean
+    gmailConnectedEmail?: boolean
+    credentialsVault?: boolean
+    integrationsConfig?: boolean
+    notificationChannels?: boolean
+    slackWebhookUrl?: boolean
+    require2fa?: boolean
+    sessionTimeoutMinutes?: boolean
+    ipAllowlist?: boolean
+    auditRetentionDays?: boolean
+    cookieBannerActive?: boolean
+    cookieBannerText?: boolean
+    privacyPolicyUrl?: boolean
+    termsOfServiceUrl?: boolean
+    gdprRequestEmail?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type AdminSettingsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "siteLanguage" | "siteTimezone" | "maintenanceActive" | "maintenanceMessage" | "letterTFontFamily" | "letterTFontSizePercent" | "logoLightModeColor" | "logoDarkModeColor" | "heroWordmarkFonts" | "heroWordmarkLoop" | "heroWordmarkLoopSpeed" | "marqueeActive" | "marqueeText" | "marqueeType" | "marqueeTextColor" | "marqueeBgColor" | "popupActive" | "popupImageUrl" | "popupHeadline" | "popupMessage" | "popupCtaLabel" | "popupCtaLink" | "popupFrequency" | "popupFrequencyDays" | "emailProvider" | "gmailClientId" | "gmailClientSecret" | "gmailSenderName" | "gmailConnected" | "gmailConnectedEmail" | "credentialsVault" | "integrationsConfig" | "notificationChannels" | "slackWebhookUrl" | "require2fa" | "sessionTimeoutMinutes" | "ipAllowlist" | "auditRetentionDays" | "cookieBannerActive" | "cookieBannerText" | "privacyPolicyUrl" | "termsOfServiceUrl" | "gdprRequestEmail" | "createdAt" | "updatedAt", ExtArgs["result"]["adminSettings"]>
+
+  export type $AdminSettingsPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "AdminSettings"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      siteLanguage: string
+      siteTimezone: string
+      maintenanceActive: boolean
+      maintenanceMessage: string | null
+      letterTFontFamily: string | null
+      letterTFontSizePercent: number
+      logoLightModeColor: string | null
+      logoDarkModeColor: string | null
+      heroWordmarkFonts: string | null
+      heroWordmarkLoop: boolean
+      heroWordmarkLoopSpeed: number
+      marqueeActive: boolean
+      marqueeText: string | null
+      marqueeType: string
+      marqueeTextColor: string | null
+      marqueeBgColor: string | null
+      popupActive: boolean
+      popupImageUrl: string | null
+      popupHeadline: string | null
+      popupMessage: string | null
+      popupCtaLabel: string | null
+      popupCtaLink: string | null
+      popupFrequency: string
+      popupFrequencyDays: number
+      emailProvider: string
+      gmailClientId: string | null
+      gmailClientSecret: string | null
+      gmailSenderName: string | null
+      gmailConnected: boolean
+      gmailConnectedEmail: string | null
+      credentialsVault: string | null
+      integrationsConfig: string | null
+      notificationChannels: string | null
+      slackWebhookUrl: string | null
+      require2fa: boolean
+      sessionTimeoutMinutes: number
+      ipAllowlist: string | null
+      auditRetentionDays: number
+      cookieBannerActive: boolean
+      cookieBannerText: string | null
+      privacyPolicyUrl: string | null
+      termsOfServiceUrl: string | null
+      gdprRequestEmail: string | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["adminSettings"]>
+    composites: {}
+  }
+
+  type AdminSettingsGetPayload<S extends boolean | null | undefined | AdminSettingsDefaultArgs> = $Result.GetResult<Prisma.$AdminSettingsPayload, S>
+
+  type AdminSettingsCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<AdminSettingsFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: AdminSettingsCountAggregateInputType | true
+    }
+
+  export interface AdminSettingsDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['AdminSettings'], meta: { name: 'AdminSettings' } }
+    /**
+     * Find zero or one AdminSettings that matches the filter.
+     * @param {AdminSettingsFindUniqueArgs} args - Arguments to find a AdminSettings
+     * @example
+     * // Get one AdminSettings
+     * const adminSettings = await prisma.adminSettings.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends AdminSettingsFindUniqueArgs>(args: SelectSubset<T, AdminSettingsFindUniqueArgs<ExtArgs>>): Prisma__AdminSettingsClient<$Result.GetResult<Prisma.$AdminSettingsPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one AdminSettings that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {AdminSettingsFindUniqueOrThrowArgs} args - Arguments to find a AdminSettings
+     * @example
+     * // Get one AdminSettings
+     * const adminSettings = await prisma.adminSettings.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends AdminSettingsFindUniqueOrThrowArgs>(args: SelectSubset<T, AdminSettingsFindUniqueOrThrowArgs<ExtArgs>>): Prisma__AdminSettingsClient<$Result.GetResult<Prisma.$AdminSettingsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first AdminSettings that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AdminSettingsFindFirstArgs} args - Arguments to find a AdminSettings
+     * @example
+     * // Get one AdminSettings
+     * const adminSettings = await prisma.adminSettings.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends AdminSettingsFindFirstArgs>(args?: SelectSubset<T, AdminSettingsFindFirstArgs<ExtArgs>>): Prisma__AdminSettingsClient<$Result.GetResult<Prisma.$AdminSettingsPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first AdminSettings that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AdminSettingsFindFirstOrThrowArgs} args - Arguments to find a AdminSettings
+     * @example
+     * // Get one AdminSettings
+     * const adminSettings = await prisma.adminSettings.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends AdminSettingsFindFirstOrThrowArgs>(args?: SelectSubset<T, AdminSettingsFindFirstOrThrowArgs<ExtArgs>>): Prisma__AdminSettingsClient<$Result.GetResult<Prisma.$AdminSettingsPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more AdminSettings that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AdminSettingsFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all AdminSettings
+     * const adminSettings = await prisma.adminSettings.findMany()
+     * 
+     * // Get first 10 AdminSettings
+     * const adminSettings = await prisma.adminSettings.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const adminSettingsWithIdOnly = await prisma.adminSettings.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends AdminSettingsFindManyArgs>(args?: SelectSubset<T, AdminSettingsFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AdminSettingsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a AdminSettings.
+     * @param {AdminSettingsCreateArgs} args - Arguments to create a AdminSettings.
+     * @example
+     * // Create one AdminSettings
+     * const AdminSettings = await prisma.adminSettings.create({
+     *   data: {
+     *     // ... data to create a AdminSettings
+     *   }
+     * })
+     * 
+     */
+    create<T extends AdminSettingsCreateArgs>(args: SelectSubset<T, AdminSettingsCreateArgs<ExtArgs>>): Prisma__AdminSettingsClient<$Result.GetResult<Prisma.$AdminSettingsPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many AdminSettings.
+     * @param {AdminSettingsCreateManyArgs} args - Arguments to create many AdminSettings.
+     * @example
+     * // Create many AdminSettings
+     * const adminSettings = await prisma.adminSettings.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends AdminSettingsCreateManyArgs>(args?: SelectSubset<T, AdminSettingsCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many AdminSettings and returns the data saved in the database.
+     * @param {AdminSettingsCreateManyAndReturnArgs} args - Arguments to create many AdminSettings.
+     * @example
+     * // Create many AdminSettings
+     * const adminSettings = await prisma.adminSettings.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many AdminSettings and only return the `id`
+     * const adminSettingsWithIdOnly = await prisma.adminSettings.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends AdminSettingsCreateManyAndReturnArgs>(args?: SelectSubset<T, AdminSettingsCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AdminSettingsPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a AdminSettings.
+     * @param {AdminSettingsDeleteArgs} args - Arguments to delete one AdminSettings.
+     * @example
+     * // Delete one AdminSettings
+     * const AdminSettings = await prisma.adminSettings.delete({
+     *   where: {
+     *     // ... filter to delete one AdminSettings
+     *   }
+     * })
+     * 
+     */
+    delete<T extends AdminSettingsDeleteArgs>(args: SelectSubset<T, AdminSettingsDeleteArgs<ExtArgs>>): Prisma__AdminSettingsClient<$Result.GetResult<Prisma.$AdminSettingsPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one AdminSettings.
+     * @param {AdminSettingsUpdateArgs} args - Arguments to update one AdminSettings.
+     * @example
+     * // Update one AdminSettings
+     * const adminSettings = await prisma.adminSettings.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends AdminSettingsUpdateArgs>(args: SelectSubset<T, AdminSettingsUpdateArgs<ExtArgs>>): Prisma__AdminSettingsClient<$Result.GetResult<Prisma.$AdminSettingsPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more AdminSettings.
+     * @param {AdminSettingsDeleteManyArgs} args - Arguments to filter AdminSettings to delete.
+     * @example
+     * // Delete a few AdminSettings
+     * const { count } = await prisma.adminSettings.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends AdminSettingsDeleteManyArgs>(args?: SelectSubset<T, AdminSettingsDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more AdminSettings.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AdminSettingsUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many AdminSettings
+     * const adminSettings = await prisma.adminSettings.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends AdminSettingsUpdateManyArgs>(args: SelectSubset<T, AdminSettingsUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more AdminSettings and returns the data updated in the database.
+     * @param {AdminSettingsUpdateManyAndReturnArgs} args - Arguments to update many AdminSettings.
+     * @example
+     * // Update many AdminSettings
+     * const adminSettings = await prisma.adminSettings.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more AdminSettings and only return the `id`
+     * const adminSettingsWithIdOnly = await prisma.adminSettings.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends AdminSettingsUpdateManyAndReturnArgs>(args: SelectSubset<T, AdminSettingsUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AdminSettingsPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one AdminSettings.
+     * @param {AdminSettingsUpsertArgs} args - Arguments to update or create a AdminSettings.
+     * @example
+     * // Update or create a AdminSettings
+     * const adminSettings = await prisma.adminSettings.upsert({
+     *   create: {
+     *     // ... data to create a AdminSettings
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the AdminSettings we want to update
+     *   }
+     * })
+     */
+    upsert<T extends AdminSettingsUpsertArgs>(args: SelectSubset<T, AdminSettingsUpsertArgs<ExtArgs>>): Prisma__AdminSettingsClient<$Result.GetResult<Prisma.$AdminSettingsPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of AdminSettings.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AdminSettingsCountArgs} args - Arguments to filter AdminSettings to count.
+     * @example
+     * // Count the number of AdminSettings
+     * const count = await prisma.adminSettings.count({
+     *   where: {
+     *     // ... the filter for the AdminSettings we want to count
+     *   }
+     * })
+    **/
+    count<T extends AdminSettingsCountArgs>(
+      args?: Subset<T, AdminSettingsCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], AdminSettingsCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a AdminSettings.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AdminSettingsAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends AdminSettingsAggregateArgs>(args: Subset<T, AdminSettingsAggregateArgs>): Prisma.PrismaPromise<GetAdminSettingsAggregateType<T>>
+
+    /**
+     * Group by AdminSettings.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AdminSettingsGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends AdminSettingsGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: AdminSettingsGroupByArgs['orderBy'] }
+        : { orderBy?: AdminSettingsGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, AdminSettingsGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetAdminSettingsGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the AdminSettings model
+   */
+  readonly fields: AdminSettingsFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for AdminSettings.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__AdminSettingsClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the AdminSettings model
+   */
+  interface AdminSettingsFieldRefs {
+    readonly id: FieldRef<"AdminSettings", 'String'>
+    readonly siteLanguage: FieldRef<"AdminSettings", 'String'>
+    readonly siteTimezone: FieldRef<"AdminSettings", 'String'>
+    readonly maintenanceActive: FieldRef<"AdminSettings", 'Boolean'>
+    readonly maintenanceMessage: FieldRef<"AdminSettings", 'String'>
+    readonly letterTFontFamily: FieldRef<"AdminSettings", 'String'>
+    readonly letterTFontSizePercent: FieldRef<"AdminSettings", 'Int'>
+    readonly logoLightModeColor: FieldRef<"AdminSettings", 'String'>
+    readonly logoDarkModeColor: FieldRef<"AdminSettings", 'String'>
+    readonly heroWordmarkFonts: FieldRef<"AdminSettings", 'String'>
+    readonly heroWordmarkLoop: FieldRef<"AdminSettings", 'Boolean'>
+    readonly heroWordmarkLoopSpeed: FieldRef<"AdminSettings", 'Float'>
+    readonly marqueeActive: FieldRef<"AdminSettings", 'Boolean'>
+    readonly marqueeText: FieldRef<"AdminSettings", 'String'>
+    readonly marqueeType: FieldRef<"AdminSettings", 'String'>
+    readonly marqueeTextColor: FieldRef<"AdminSettings", 'String'>
+    readonly marqueeBgColor: FieldRef<"AdminSettings", 'String'>
+    readonly popupActive: FieldRef<"AdminSettings", 'Boolean'>
+    readonly popupImageUrl: FieldRef<"AdminSettings", 'String'>
+    readonly popupHeadline: FieldRef<"AdminSettings", 'String'>
+    readonly popupMessage: FieldRef<"AdminSettings", 'String'>
+    readonly popupCtaLabel: FieldRef<"AdminSettings", 'String'>
+    readonly popupCtaLink: FieldRef<"AdminSettings", 'String'>
+    readonly popupFrequency: FieldRef<"AdminSettings", 'String'>
+    readonly popupFrequencyDays: FieldRef<"AdminSettings", 'Int'>
+    readonly emailProvider: FieldRef<"AdminSettings", 'String'>
+    readonly gmailClientId: FieldRef<"AdminSettings", 'String'>
+    readonly gmailClientSecret: FieldRef<"AdminSettings", 'String'>
+    readonly gmailSenderName: FieldRef<"AdminSettings", 'String'>
+    readonly gmailConnected: FieldRef<"AdminSettings", 'Boolean'>
+    readonly gmailConnectedEmail: FieldRef<"AdminSettings", 'String'>
+    readonly credentialsVault: FieldRef<"AdminSettings", 'String'>
+    readonly integrationsConfig: FieldRef<"AdminSettings", 'String'>
+    readonly notificationChannels: FieldRef<"AdminSettings", 'String'>
+    readonly slackWebhookUrl: FieldRef<"AdminSettings", 'String'>
+    readonly require2fa: FieldRef<"AdminSettings", 'Boolean'>
+    readonly sessionTimeoutMinutes: FieldRef<"AdminSettings", 'Int'>
+    readonly ipAllowlist: FieldRef<"AdminSettings", 'String'>
+    readonly auditRetentionDays: FieldRef<"AdminSettings", 'Int'>
+    readonly cookieBannerActive: FieldRef<"AdminSettings", 'Boolean'>
+    readonly cookieBannerText: FieldRef<"AdminSettings", 'String'>
+    readonly privacyPolicyUrl: FieldRef<"AdminSettings", 'String'>
+    readonly termsOfServiceUrl: FieldRef<"AdminSettings", 'String'>
+    readonly gdprRequestEmail: FieldRef<"AdminSettings", 'String'>
+    readonly createdAt: FieldRef<"AdminSettings", 'DateTime'>
+    readonly updatedAt: FieldRef<"AdminSettings", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * AdminSettings findUnique
+   */
+  export type AdminSettingsFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AdminSettings
+     */
+    select?: AdminSettingsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AdminSettings
+     */
+    omit?: AdminSettingsOmit<ExtArgs> | null
+    /**
+     * Filter, which AdminSettings to fetch.
+     */
+    where: AdminSettingsWhereUniqueInput
+  }
+
+  /**
+   * AdminSettings findUniqueOrThrow
+   */
+  export type AdminSettingsFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AdminSettings
+     */
+    select?: AdminSettingsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AdminSettings
+     */
+    omit?: AdminSettingsOmit<ExtArgs> | null
+    /**
+     * Filter, which AdminSettings to fetch.
+     */
+    where: AdminSettingsWhereUniqueInput
+  }
+
+  /**
+   * AdminSettings findFirst
+   */
+  export type AdminSettingsFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AdminSettings
+     */
+    select?: AdminSettingsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AdminSettings
+     */
+    omit?: AdminSettingsOmit<ExtArgs> | null
+    /**
+     * Filter, which AdminSettings to fetch.
+     */
+    where?: AdminSettingsWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AdminSettings to fetch.
+     */
+    orderBy?: AdminSettingsOrderByWithRelationInput | AdminSettingsOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for AdminSettings.
+     */
+    cursor?: AdminSettingsWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AdminSettings from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AdminSettings.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AdminSettings.
+     */
+    distinct?: AdminSettingsScalarFieldEnum | AdminSettingsScalarFieldEnum[]
+  }
+
+  /**
+   * AdminSettings findFirstOrThrow
+   */
+  export type AdminSettingsFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AdminSettings
+     */
+    select?: AdminSettingsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AdminSettings
+     */
+    omit?: AdminSettingsOmit<ExtArgs> | null
+    /**
+     * Filter, which AdminSettings to fetch.
+     */
+    where?: AdminSettingsWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AdminSettings to fetch.
+     */
+    orderBy?: AdminSettingsOrderByWithRelationInput | AdminSettingsOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for AdminSettings.
+     */
+    cursor?: AdminSettingsWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AdminSettings from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AdminSettings.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AdminSettings.
+     */
+    distinct?: AdminSettingsScalarFieldEnum | AdminSettingsScalarFieldEnum[]
+  }
+
+  /**
+   * AdminSettings findMany
+   */
+  export type AdminSettingsFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AdminSettings
+     */
+    select?: AdminSettingsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AdminSettings
+     */
+    omit?: AdminSettingsOmit<ExtArgs> | null
+    /**
+     * Filter, which AdminSettings to fetch.
+     */
+    where?: AdminSettingsWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AdminSettings to fetch.
+     */
+    orderBy?: AdminSettingsOrderByWithRelationInput | AdminSettingsOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing AdminSettings.
+     */
+    cursor?: AdminSettingsWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AdminSettings from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AdminSettings.
+     */
+    skip?: number
+    distinct?: AdminSettingsScalarFieldEnum | AdminSettingsScalarFieldEnum[]
+  }
+
+  /**
+   * AdminSettings create
+   */
+  export type AdminSettingsCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AdminSettings
+     */
+    select?: AdminSettingsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AdminSettings
+     */
+    omit?: AdminSettingsOmit<ExtArgs> | null
+    /**
+     * The data needed to create a AdminSettings.
+     */
+    data?: XOR<AdminSettingsCreateInput, AdminSettingsUncheckedCreateInput>
+  }
+
+  /**
+   * AdminSettings createMany
+   */
+  export type AdminSettingsCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many AdminSettings.
+     */
+    data: AdminSettingsCreateManyInput | AdminSettingsCreateManyInput[]
+  }
+
+  /**
+   * AdminSettings createManyAndReturn
+   */
+  export type AdminSettingsCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AdminSettings
+     */
+    select?: AdminSettingsSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the AdminSettings
+     */
+    omit?: AdminSettingsOmit<ExtArgs> | null
+    /**
+     * The data used to create many AdminSettings.
+     */
+    data: AdminSettingsCreateManyInput | AdminSettingsCreateManyInput[]
+  }
+
+  /**
+   * AdminSettings update
+   */
+  export type AdminSettingsUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AdminSettings
+     */
+    select?: AdminSettingsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AdminSettings
+     */
+    omit?: AdminSettingsOmit<ExtArgs> | null
+    /**
+     * The data needed to update a AdminSettings.
+     */
+    data: XOR<AdminSettingsUpdateInput, AdminSettingsUncheckedUpdateInput>
+    /**
+     * Choose, which AdminSettings to update.
+     */
+    where: AdminSettingsWhereUniqueInput
+  }
+
+  /**
+   * AdminSettings updateMany
+   */
+  export type AdminSettingsUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update AdminSettings.
+     */
+    data: XOR<AdminSettingsUpdateManyMutationInput, AdminSettingsUncheckedUpdateManyInput>
+    /**
+     * Filter which AdminSettings to update
+     */
+    where?: AdminSettingsWhereInput
+    /**
+     * Limit how many AdminSettings to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * AdminSettings updateManyAndReturn
+   */
+  export type AdminSettingsUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AdminSettings
+     */
+    select?: AdminSettingsSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the AdminSettings
+     */
+    omit?: AdminSettingsOmit<ExtArgs> | null
+    /**
+     * The data used to update AdminSettings.
+     */
+    data: XOR<AdminSettingsUpdateManyMutationInput, AdminSettingsUncheckedUpdateManyInput>
+    /**
+     * Filter which AdminSettings to update
+     */
+    where?: AdminSettingsWhereInput
+    /**
+     * Limit how many AdminSettings to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * AdminSettings upsert
+   */
+  export type AdminSettingsUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AdminSettings
+     */
+    select?: AdminSettingsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AdminSettings
+     */
+    omit?: AdminSettingsOmit<ExtArgs> | null
+    /**
+     * The filter to search for the AdminSettings to update in case it exists.
+     */
+    where: AdminSettingsWhereUniqueInput
+    /**
+     * In case the AdminSettings found by the `where` argument doesn't exist, create a new AdminSettings with this data.
+     */
+    create: XOR<AdminSettingsCreateInput, AdminSettingsUncheckedCreateInput>
+    /**
+     * In case the AdminSettings was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<AdminSettingsUpdateInput, AdminSettingsUncheckedUpdateInput>
+  }
+
+  /**
+   * AdminSettings delete
+   */
+  export type AdminSettingsDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AdminSettings
+     */
+    select?: AdminSettingsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AdminSettings
+     */
+    omit?: AdminSettingsOmit<ExtArgs> | null
+    /**
+     * Filter which AdminSettings to delete.
+     */
+    where: AdminSettingsWhereUniqueInput
+  }
+
+  /**
+   * AdminSettings deleteMany
+   */
+  export type AdminSettingsDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AdminSettings to delete
+     */
+    where?: AdminSettingsWhereInput
+    /**
+     * Limit how many AdminSettings to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * AdminSettings without action
+   */
+  export type AdminSettingsDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AdminSettings
+     */
+    select?: AdminSettingsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AdminSettings
+     */
+    omit?: AdminSettingsOmit<ExtArgs> | null
+  }
+
+
+  /**
    * Model Tag
    */
 
@@ -15434,6 +17101,58 @@ export namespace Prisma {
   export type PrescriptionScalarFieldEnum = (typeof PrescriptionScalarFieldEnum)[keyof typeof PrescriptionScalarFieldEnum]
 
 
+  export const AdminSettingsScalarFieldEnum: {
+    id: 'id',
+    siteLanguage: 'siteLanguage',
+    siteTimezone: 'siteTimezone',
+    maintenanceActive: 'maintenanceActive',
+    maintenanceMessage: 'maintenanceMessage',
+    letterTFontFamily: 'letterTFontFamily',
+    letterTFontSizePercent: 'letterTFontSizePercent',
+    logoLightModeColor: 'logoLightModeColor',
+    logoDarkModeColor: 'logoDarkModeColor',
+    heroWordmarkFonts: 'heroWordmarkFonts',
+    heroWordmarkLoop: 'heroWordmarkLoop',
+    heroWordmarkLoopSpeed: 'heroWordmarkLoopSpeed',
+    marqueeActive: 'marqueeActive',
+    marqueeText: 'marqueeText',
+    marqueeType: 'marqueeType',
+    marqueeTextColor: 'marqueeTextColor',
+    marqueeBgColor: 'marqueeBgColor',
+    popupActive: 'popupActive',
+    popupImageUrl: 'popupImageUrl',
+    popupHeadline: 'popupHeadline',
+    popupMessage: 'popupMessage',
+    popupCtaLabel: 'popupCtaLabel',
+    popupCtaLink: 'popupCtaLink',
+    popupFrequency: 'popupFrequency',
+    popupFrequencyDays: 'popupFrequencyDays',
+    emailProvider: 'emailProvider',
+    gmailClientId: 'gmailClientId',
+    gmailClientSecret: 'gmailClientSecret',
+    gmailSenderName: 'gmailSenderName',
+    gmailConnected: 'gmailConnected',
+    gmailConnectedEmail: 'gmailConnectedEmail',
+    credentialsVault: 'credentialsVault',
+    integrationsConfig: 'integrationsConfig',
+    notificationChannels: 'notificationChannels',
+    slackWebhookUrl: 'slackWebhookUrl',
+    require2fa: 'require2fa',
+    sessionTimeoutMinutes: 'sessionTimeoutMinutes',
+    ipAllowlist: 'ipAllowlist',
+    auditRetentionDays: 'auditRetentionDays',
+    cookieBannerActive: 'cookieBannerActive',
+    cookieBannerText: 'cookieBannerText',
+    privacyPolicyUrl: 'privacyPolicyUrl',
+    termsOfServiceUrl: 'termsOfServiceUrl',
+    gdprRequestEmail: 'gdprRequestEmail',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type AdminSettingsScalarFieldEnum = (typeof AdminSettingsScalarFieldEnum)[keyof typeof AdminSettingsScalarFieldEnum]
+
+
   export const TagScalarFieldEnum: {
     id: 'id',
     name: 'name',
@@ -16333,6 +18052,265 @@ export namespace Prisma {
     primaryFontId?: StringWithAggregatesFilter<"Prescription"> | string
     secondaryFontId?: StringWithAggregatesFilter<"Prescription"> | string
     seoId?: StringNullableWithAggregatesFilter<"Prescription"> | string | null
+  }
+
+  export type AdminSettingsWhereInput = {
+    AND?: AdminSettingsWhereInput | AdminSettingsWhereInput[]
+    OR?: AdminSettingsWhereInput[]
+    NOT?: AdminSettingsWhereInput | AdminSettingsWhereInput[]
+    id?: StringFilter<"AdminSettings"> | string
+    siteLanguage?: StringFilter<"AdminSettings"> | string
+    siteTimezone?: StringFilter<"AdminSettings"> | string
+    maintenanceActive?: BoolFilter<"AdminSettings"> | boolean
+    maintenanceMessage?: StringNullableFilter<"AdminSettings"> | string | null
+    letterTFontFamily?: StringNullableFilter<"AdminSettings"> | string | null
+    letterTFontSizePercent?: IntFilter<"AdminSettings"> | number
+    logoLightModeColor?: StringNullableFilter<"AdminSettings"> | string | null
+    logoDarkModeColor?: StringNullableFilter<"AdminSettings"> | string | null
+    heroWordmarkFonts?: StringNullableFilter<"AdminSettings"> | string | null
+    heroWordmarkLoop?: BoolFilter<"AdminSettings"> | boolean
+    heroWordmarkLoopSpeed?: FloatFilter<"AdminSettings"> | number
+    marqueeActive?: BoolFilter<"AdminSettings"> | boolean
+    marqueeText?: StringNullableFilter<"AdminSettings"> | string | null
+    marqueeType?: StringFilter<"AdminSettings"> | string
+    marqueeTextColor?: StringNullableFilter<"AdminSettings"> | string | null
+    marqueeBgColor?: StringNullableFilter<"AdminSettings"> | string | null
+    popupActive?: BoolFilter<"AdminSettings"> | boolean
+    popupImageUrl?: StringNullableFilter<"AdminSettings"> | string | null
+    popupHeadline?: StringNullableFilter<"AdminSettings"> | string | null
+    popupMessage?: StringNullableFilter<"AdminSettings"> | string | null
+    popupCtaLabel?: StringNullableFilter<"AdminSettings"> | string | null
+    popupCtaLink?: StringNullableFilter<"AdminSettings"> | string | null
+    popupFrequency?: StringFilter<"AdminSettings"> | string
+    popupFrequencyDays?: IntFilter<"AdminSettings"> | number
+    emailProvider?: StringFilter<"AdminSettings"> | string
+    gmailClientId?: StringNullableFilter<"AdminSettings"> | string | null
+    gmailClientSecret?: StringNullableFilter<"AdminSettings"> | string | null
+    gmailSenderName?: StringNullableFilter<"AdminSettings"> | string | null
+    gmailConnected?: BoolFilter<"AdminSettings"> | boolean
+    gmailConnectedEmail?: StringNullableFilter<"AdminSettings"> | string | null
+    credentialsVault?: StringNullableFilter<"AdminSettings"> | string | null
+    integrationsConfig?: StringNullableFilter<"AdminSettings"> | string | null
+    notificationChannels?: StringNullableFilter<"AdminSettings"> | string | null
+    slackWebhookUrl?: StringNullableFilter<"AdminSettings"> | string | null
+    require2fa?: BoolFilter<"AdminSettings"> | boolean
+    sessionTimeoutMinutes?: IntFilter<"AdminSettings"> | number
+    ipAllowlist?: StringNullableFilter<"AdminSettings"> | string | null
+    auditRetentionDays?: IntFilter<"AdminSettings"> | number
+    cookieBannerActive?: BoolFilter<"AdminSettings"> | boolean
+    cookieBannerText?: StringNullableFilter<"AdminSettings"> | string | null
+    privacyPolicyUrl?: StringNullableFilter<"AdminSettings"> | string | null
+    termsOfServiceUrl?: StringNullableFilter<"AdminSettings"> | string | null
+    gdprRequestEmail?: StringNullableFilter<"AdminSettings"> | string | null
+    createdAt?: DateTimeFilter<"AdminSettings"> | Date | string
+    updatedAt?: DateTimeFilter<"AdminSettings"> | Date | string
+  }
+
+  export type AdminSettingsOrderByWithRelationInput = {
+    id?: SortOrder
+    siteLanguage?: SortOrder
+    siteTimezone?: SortOrder
+    maintenanceActive?: SortOrder
+    maintenanceMessage?: SortOrderInput | SortOrder
+    letterTFontFamily?: SortOrderInput | SortOrder
+    letterTFontSizePercent?: SortOrder
+    logoLightModeColor?: SortOrderInput | SortOrder
+    logoDarkModeColor?: SortOrderInput | SortOrder
+    heroWordmarkFonts?: SortOrderInput | SortOrder
+    heroWordmarkLoop?: SortOrder
+    heroWordmarkLoopSpeed?: SortOrder
+    marqueeActive?: SortOrder
+    marqueeText?: SortOrderInput | SortOrder
+    marqueeType?: SortOrder
+    marqueeTextColor?: SortOrderInput | SortOrder
+    marqueeBgColor?: SortOrderInput | SortOrder
+    popupActive?: SortOrder
+    popupImageUrl?: SortOrderInput | SortOrder
+    popupHeadline?: SortOrderInput | SortOrder
+    popupMessage?: SortOrderInput | SortOrder
+    popupCtaLabel?: SortOrderInput | SortOrder
+    popupCtaLink?: SortOrderInput | SortOrder
+    popupFrequency?: SortOrder
+    popupFrequencyDays?: SortOrder
+    emailProvider?: SortOrder
+    gmailClientId?: SortOrderInput | SortOrder
+    gmailClientSecret?: SortOrderInput | SortOrder
+    gmailSenderName?: SortOrderInput | SortOrder
+    gmailConnected?: SortOrder
+    gmailConnectedEmail?: SortOrderInput | SortOrder
+    credentialsVault?: SortOrderInput | SortOrder
+    integrationsConfig?: SortOrderInput | SortOrder
+    notificationChannels?: SortOrderInput | SortOrder
+    slackWebhookUrl?: SortOrderInput | SortOrder
+    require2fa?: SortOrder
+    sessionTimeoutMinutes?: SortOrder
+    ipAllowlist?: SortOrderInput | SortOrder
+    auditRetentionDays?: SortOrder
+    cookieBannerActive?: SortOrder
+    cookieBannerText?: SortOrderInput | SortOrder
+    privacyPolicyUrl?: SortOrderInput | SortOrder
+    termsOfServiceUrl?: SortOrderInput | SortOrder
+    gdprRequestEmail?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type AdminSettingsWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: AdminSettingsWhereInput | AdminSettingsWhereInput[]
+    OR?: AdminSettingsWhereInput[]
+    NOT?: AdminSettingsWhereInput | AdminSettingsWhereInput[]
+    siteLanguage?: StringFilter<"AdminSettings"> | string
+    siteTimezone?: StringFilter<"AdminSettings"> | string
+    maintenanceActive?: BoolFilter<"AdminSettings"> | boolean
+    maintenanceMessage?: StringNullableFilter<"AdminSettings"> | string | null
+    letterTFontFamily?: StringNullableFilter<"AdminSettings"> | string | null
+    letterTFontSizePercent?: IntFilter<"AdminSettings"> | number
+    logoLightModeColor?: StringNullableFilter<"AdminSettings"> | string | null
+    logoDarkModeColor?: StringNullableFilter<"AdminSettings"> | string | null
+    heroWordmarkFonts?: StringNullableFilter<"AdminSettings"> | string | null
+    heroWordmarkLoop?: BoolFilter<"AdminSettings"> | boolean
+    heroWordmarkLoopSpeed?: FloatFilter<"AdminSettings"> | number
+    marqueeActive?: BoolFilter<"AdminSettings"> | boolean
+    marqueeText?: StringNullableFilter<"AdminSettings"> | string | null
+    marqueeType?: StringFilter<"AdminSettings"> | string
+    marqueeTextColor?: StringNullableFilter<"AdminSettings"> | string | null
+    marqueeBgColor?: StringNullableFilter<"AdminSettings"> | string | null
+    popupActive?: BoolFilter<"AdminSettings"> | boolean
+    popupImageUrl?: StringNullableFilter<"AdminSettings"> | string | null
+    popupHeadline?: StringNullableFilter<"AdminSettings"> | string | null
+    popupMessage?: StringNullableFilter<"AdminSettings"> | string | null
+    popupCtaLabel?: StringNullableFilter<"AdminSettings"> | string | null
+    popupCtaLink?: StringNullableFilter<"AdminSettings"> | string | null
+    popupFrequency?: StringFilter<"AdminSettings"> | string
+    popupFrequencyDays?: IntFilter<"AdminSettings"> | number
+    emailProvider?: StringFilter<"AdminSettings"> | string
+    gmailClientId?: StringNullableFilter<"AdminSettings"> | string | null
+    gmailClientSecret?: StringNullableFilter<"AdminSettings"> | string | null
+    gmailSenderName?: StringNullableFilter<"AdminSettings"> | string | null
+    gmailConnected?: BoolFilter<"AdminSettings"> | boolean
+    gmailConnectedEmail?: StringNullableFilter<"AdminSettings"> | string | null
+    credentialsVault?: StringNullableFilter<"AdminSettings"> | string | null
+    integrationsConfig?: StringNullableFilter<"AdminSettings"> | string | null
+    notificationChannels?: StringNullableFilter<"AdminSettings"> | string | null
+    slackWebhookUrl?: StringNullableFilter<"AdminSettings"> | string | null
+    require2fa?: BoolFilter<"AdminSettings"> | boolean
+    sessionTimeoutMinutes?: IntFilter<"AdminSettings"> | number
+    ipAllowlist?: StringNullableFilter<"AdminSettings"> | string | null
+    auditRetentionDays?: IntFilter<"AdminSettings"> | number
+    cookieBannerActive?: BoolFilter<"AdminSettings"> | boolean
+    cookieBannerText?: StringNullableFilter<"AdminSettings"> | string | null
+    privacyPolicyUrl?: StringNullableFilter<"AdminSettings"> | string | null
+    termsOfServiceUrl?: StringNullableFilter<"AdminSettings"> | string | null
+    gdprRequestEmail?: StringNullableFilter<"AdminSettings"> | string | null
+    createdAt?: DateTimeFilter<"AdminSettings"> | Date | string
+    updatedAt?: DateTimeFilter<"AdminSettings"> | Date | string
+  }, "id">
+
+  export type AdminSettingsOrderByWithAggregationInput = {
+    id?: SortOrder
+    siteLanguage?: SortOrder
+    siteTimezone?: SortOrder
+    maintenanceActive?: SortOrder
+    maintenanceMessage?: SortOrderInput | SortOrder
+    letterTFontFamily?: SortOrderInput | SortOrder
+    letterTFontSizePercent?: SortOrder
+    logoLightModeColor?: SortOrderInput | SortOrder
+    logoDarkModeColor?: SortOrderInput | SortOrder
+    heroWordmarkFonts?: SortOrderInput | SortOrder
+    heroWordmarkLoop?: SortOrder
+    heroWordmarkLoopSpeed?: SortOrder
+    marqueeActive?: SortOrder
+    marqueeText?: SortOrderInput | SortOrder
+    marqueeType?: SortOrder
+    marqueeTextColor?: SortOrderInput | SortOrder
+    marqueeBgColor?: SortOrderInput | SortOrder
+    popupActive?: SortOrder
+    popupImageUrl?: SortOrderInput | SortOrder
+    popupHeadline?: SortOrderInput | SortOrder
+    popupMessage?: SortOrderInput | SortOrder
+    popupCtaLabel?: SortOrderInput | SortOrder
+    popupCtaLink?: SortOrderInput | SortOrder
+    popupFrequency?: SortOrder
+    popupFrequencyDays?: SortOrder
+    emailProvider?: SortOrder
+    gmailClientId?: SortOrderInput | SortOrder
+    gmailClientSecret?: SortOrderInput | SortOrder
+    gmailSenderName?: SortOrderInput | SortOrder
+    gmailConnected?: SortOrder
+    gmailConnectedEmail?: SortOrderInput | SortOrder
+    credentialsVault?: SortOrderInput | SortOrder
+    integrationsConfig?: SortOrderInput | SortOrder
+    notificationChannels?: SortOrderInput | SortOrder
+    slackWebhookUrl?: SortOrderInput | SortOrder
+    require2fa?: SortOrder
+    sessionTimeoutMinutes?: SortOrder
+    ipAllowlist?: SortOrderInput | SortOrder
+    auditRetentionDays?: SortOrder
+    cookieBannerActive?: SortOrder
+    cookieBannerText?: SortOrderInput | SortOrder
+    privacyPolicyUrl?: SortOrderInput | SortOrder
+    termsOfServiceUrl?: SortOrderInput | SortOrder
+    gdprRequestEmail?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: AdminSettingsCountOrderByAggregateInput
+    _avg?: AdminSettingsAvgOrderByAggregateInput
+    _max?: AdminSettingsMaxOrderByAggregateInput
+    _min?: AdminSettingsMinOrderByAggregateInput
+    _sum?: AdminSettingsSumOrderByAggregateInput
+  }
+
+  export type AdminSettingsScalarWhereWithAggregatesInput = {
+    AND?: AdminSettingsScalarWhereWithAggregatesInput | AdminSettingsScalarWhereWithAggregatesInput[]
+    OR?: AdminSettingsScalarWhereWithAggregatesInput[]
+    NOT?: AdminSettingsScalarWhereWithAggregatesInput | AdminSettingsScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"AdminSettings"> | string
+    siteLanguage?: StringWithAggregatesFilter<"AdminSettings"> | string
+    siteTimezone?: StringWithAggregatesFilter<"AdminSettings"> | string
+    maintenanceActive?: BoolWithAggregatesFilter<"AdminSettings"> | boolean
+    maintenanceMessage?: StringNullableWithAggregatesFilter<"AdminSettings"> | string | null
+    letterTFontFamily?: StringNullableWithAggregatesFilter<"AdminSettings"> | string | null
+    letterTFontSizePercent?: IntWithAggregatesFilter<"AdminSettings"> | number
+    logoLightModeColor?: StringNullableWithAggregatesFilter<"AdminSettings"> | string | null
+    logoDarkModeColor?: StringNullableWithAggregatesFilter<"AdminSettings"> | string | null
+    heroWordmarkFonts?: StringNullableWithAggregatesFilter<"AdminSettings"> | string | null
+    heroWordmarkLoop?: BoolWithAggregatesFilter<"AdminSettings"> | boolean
+    heroWordmarkLoopSpeed?: FloatWithAggregatesFilter<"AdminSettings"> | number
+    marqueeActive?: BoolWithAggregatesFilter<"AdminSettings"> | boolean
+    marqueeText?: StringNullableWithAggregatesFilter<"AdminSettings"> | string | null
+    marqueeType?: StringWithAggregatesFilter<"AdminSettings"> | string
+    marqueeTextColor?: StringNullableWithAggregatesFilter<"AdminSettings"> | string | null
+    marqueeBgColor?: StringNullableWithAggregatesFilter<"AdminSettings"> | string | null
+    popupActive?: BoolWithAggregatesFilter<"AdminSettings"> | boolean
+    popupImageUrl?: StringNullableWithAggregatesFilter<"AdminSettings"> | string | null
+    popupHeadline?: StringNullableWithAggregatesFilter<"AdminSettings"> | string | null
+    popupMessage?: StringNullableWithAggregatesFilter<"AdminSettings"> | string | null
+    popupCtaLabel?: StringNullableWithAggregatesFilter<"AdminSettings"> | string | null
+    popupCtaLink?: StringNullableWithAggregatesFilter<"AdminSettings"> | string | null
+    popupFrequency?: StringWithAggregatesFilter<"AdminSettings"> | string
+    popupFrequencyDays?: IntWithAggregatesFilter<"AdminSettings"> | number
+    emailProvider?: StringWithAggregatesFilter<"AdminSettings"> | string
+    gmailClientId?: StringNullableWithAggregatesFilter<"AdminSettings"> | string | null
+    gmailClientSecret?: StringNullableWithAggregatesFilter<"AdminSettings"> | string | null
+    gmailSenderName?: StringNullableWithAggregatesFilter<"AdminSettings"> | string | null
+    gmailConnected?: BoolWithAggregatesFilter<"AdminSettings"> | boolean
+    gmailConnectedEmail?: StringNullableWithAggregatesFilter<"AdminSettings"> | string | null
+    credentialsVault?: StringNullableWithAggregatesFilter<"AdminSettings"> | string | null
+    integrationsConfig?: StringNullableWithAggregatesFilter<"AdminSettings"> | string | null
+    notificationChannels?: StringNullableWithAggregatesFilter<"AdminSettings"> | string | null
+    slackWebhookUrl?: StringNullableWithAggregatesFilter<"AdminSettings"> | string | null
+    require2fa?: BoolWithAggregatesFilter<"AdminSettings"> | boolean
+    sessionTimeoutMinutes?: IntWithAggregatesFilter<"AdminSettings"> | number
+    ipAllowlist?: StringNullableWithAggregatesFilter<"AdminSettings"> | string | null
+    auditRetentionDays?: IntWithAggregatesFilter<"AdminSettings"> | number
+    cookieBannerActive?: BoolWithAggregatesFilter<"AdminSettings"> | boolean
+    cookieBannerText?: StringNullableWithAggregatesFilter<"AdminSettings"> | string | null
+    privacyPolicyUrl?: StringNullableWithAggregatesFilter<"AdminSettings"> | string | null
+    termsOfServiceUrl?: StringNullableWithAggregatesFilter<"AdminSettings"> | string | null
+    gdprRequestEmail?: StringNullableWithAggregatesFilter<"AdminSettings"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"AdminSettings"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"AdminSettings"> | Date | string
   }
 
   export type TagWhereInput = {
@@ -17451,6 +19429,349 @@ export namespace Prisma {
     seoId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
+  export type AdminSettingsCreateInput = {
+    id?: string
+    siteLanguage?: string
+    siteTimezone?: string
+    maintenanceActive?: boolean
+    maintenanceMessage?: string | null
+    letterTFontFamily?: string | null
+    letterTFontSizePercent?: number
+    logoLightModeColor?: string | null
+    logoDarkModeColor?: string | null
+    heroWordmarkFonts?: string | null
+    heroWordmarkLoop?: boolean
+    heroWordmarkLoopSpeed?: number
+    marqueeActive?: boolean
+    marqueeText?: string | null
+    marqueeType?: string
+    marqueeTextColor?: string | null
+    marqueeBgColor?: string | null
+    popupActive?: boolean
+    popupImageUrl?: string | null
+    popupHeadline?: string | null
+    popupMessage?: string | null
+    popupCtaLabel?: string | null
+    popupCtaLink?: string | null
+    popupFrequency?: string
+    popupFrequencyDays?: number
+    emailProvider?: string
+    gmailClientId?: string | null
+    gmailClientSecret?: string | null
+    gmailSenderName?: string | null
+    gmailConnected?: boolean
+    gmailConnectedEmail?: string | null
+    credentialsVault?: string | null
+    integrationsConfig?: string | null
+    notificationChannels?: string | null
+    slackWebhookUrl?: string | null
+    require2fa?: boolean
+    sessionTimeoutMinutes?: number
+    ipAllowlist?: string | null
+    auditRetentionDays?: number
+    cookieBannerActive?: boolean
+    cookieBannerText?: string | null
+    privacyPolicyUrl?: string | null
+    termsOfServiceUrl?: string | null
+    gdprRequestEmail?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type AdminSettingsUncheckedCreateInput = {
+    id?: string
+    siteLanguage?: string
+    siteTimezone?: string
+    maintenanceActive?: boolean
+    maintenanceMessage?: string | null
+    letterTFontFamily?: string | null
+    letterTFontSizePercent?: number
+    logoLightModeColor?: string | null
+    logoDarkModeColor?: string | null
+    heroWordmarkFonts?: string | null
+    heroWordmarkLoop?: boolean
+    heroWordmarkLoopSpeed?: number
+    marqueeActive?: boolean
+    marqueeText?: string | null
+    marqueeType?: string
+    marqueeTextColor?: string | null
+    marqueeBgColor?: string | null
+    popupActive?: boolean
+    popupImageUrl?: string | null
+    popupHeadline?: string | null
+    popupMessage?: string | null
+    popupCtaLabel?: string | null
+    popupCtaLink?: string | null
+    popupFrequency?: string
+    popupFrequencyDays?: number
+    emailProvider?: string
+    gmailClientId?: string | null
+    gmailClientSecret?: string | null
+    gmailSenderName?: string | null
+    gmailConnected?: boolean
+    gmailConnectedEmail?: string | null
+    credentialsVault?: string | null
+    integrationsConfig?: string | null
+    notificationChannels?: string | null
+    slackWebhookUrl?: string | null
+    require2fa?: boolean
+    sessionTimeoutMinutes?: number
+    ipAllowlist?: string | null
+    auditRetentionDays?: number
+    cookieBannerActive?: boolean
+    cookieBannerText?: string | null
+    privacyPolicyUrl?: string | null
+    termsOfServiceUrl?: string | null
+    gdprRequestEmail?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type AdminSettingsUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    siteLanguage?: StringFieldUpdateOperationsInput | string
+    siteTimezone?: StringFieldUpdateOperationsInput | string
+    maintenanceActive?: BoolFieldUpdateOperationsInput | boolean
+    maintenanceMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    letterTFontFamily?: NullableStringFieldUpdateOperationsInput | string | null
+    letterTFontSizePercent?: IntFieldUpdateOperationsInput | number
+    logoLightModeColor?: NullableStringFieldUpdateOperationsInput | string | null
+    logoDarkModeColor?: NullableStringFieldUpdateOperationsInput | string | null
+    heroWordmarkFonts?: NullableStringFieldUpdateOperationsInput | string | null
+    heroWordmarkLoop?: BoolFieldUpdateOperationsInput | boolean
+    heroWordmarkLoopSpeed?: FloatFieldUpdateOperationsInput | number
+    marqueeActive?: BoolFieldUpdateOperationsInput | boolean
+    marqueeText?: NullableStringFieldUpdateOperationsInput | string | null
+    marqueeType?: StringFieldUpdateOperationsInput | string
+    marqueeTextColor?: NullableStringFieldUpdateOperationsInput | string | null
+    marqueeBgColor?: NullableStringFieldUpdateOperationsInput | string | null
+    popupActive?: BoolFieldUpdateOperationsInput | boolean
+    popupImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    popupHeadline?: NullableStringFieldUpdateOperationsInput | string | null
+    popupMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    popupCtaLabel?: NullableStringFieldUpdateOperationsInput | string | null
+    popupCtaLink?: NullableStringFieldUpdateOperationsInput | string | null
+    popupFrequency?: StringFieldUpdateOperationsInput | string
+    popupFrequencyDays?: IntFieldUpdateOperationsInput | number
+    emailProvider?: StringFieldUpdateOperationsInput | string
+    gmailClientId?: NullableStringFieldUpdateOperationsInput | string | null
+    gmailClientSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    gmailSenderName?: NullableStringFieldUpdateOperationsInput | string | null
+    gmailConnected?: BoolFieldUpdateOperationsInput | boolean
+    gmailConnectedEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    credentialsVault?: NullableStringFieldUpdateOperationsInput | string | null
+    integrationsConfig?: NullableStringFieldUpdateOperationsInput | string | null
+    notificationChannels?: NullableStringFieldUpdateOperationsInput | string | null
+    slackWebhookUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    require2fa?: BoolFieldUpdateOperationsInput | boolean
+    sessionTimeoutMinutes?: IntFieldUpdateOperationsInput | number
+    ipAllowlist?: NullableStringFieldUpdateOperationsInput | string | null
+    auditRetentionDays?: IntFieldUpdateOperationsInput | number
+    cookieBannerActive?: BoolFieldUpdateOperationsInput | boolean
+    cookieBannerText?: NullableStringFieldUpdateOperationsInput | string | null
+    privacyPolicyUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    termsOfServiceUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    gdprRequestEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AdminSettingsUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    siteLanguage?: StringFieldUpdateOperationsInput | string
+    siteTimezone?: StringFieldUpdateOperationsInput | string
+    maintenanceActive?: BoolFieldUpdateOperationsInput | boolean
+    maintenanceMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    letterTFontFamily?: NullableStringFieldUpdateOperationsInput | string | null
+    letterTFontSizePercent?: IntFieldUpdateOperationsInput | number
+    logoLightModeColor?: NullableStringFieldUpdateOperationsInput | string | null
+    logoDarkModeColor?: NullableStringFieldUpdateOperationsInput | string | null
+    heroWordmarkFonts?: NullableStringFieldUpdateOperationsInput | string | null
+    heroWordmarkLoop?: BoolFieldUpdateOperationsInput | boolean
+    heroWordmarkLoopSpeed?: FloatFieldUpdateOperationsInput | number
+    marqueeActive?: BoolFieldUpdateOperationsInput | boolean
+    marqueeText?: NullableStringFieldUpdateOperationsInput | string | null
+    marqueeType?: StringFieldUpdateOperationsInput | string
+    marqueeTextColor?: NullableStringFieldUpdateOperationsInput | string | null
+    marqueeBgColor?: NullableStringFieldUpdateOperationsInput | string | null
+    popupActive?: BoolFieldUpdateOperationsInput | boolean
+    popupImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    popupHeadline?: NullableStringFieldUpdateOperationsInput | string | null
+    popupMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    popupCtaLabel?: NullableStringFieldUpdateOperationsInput | string | null
+    popupCtaLink?: NullableStringFieldUpdateOperationsInput | string | null
+    popupFrequency?: StringFieldUpdateOperationsInput | string
+    popupFrequencyDays?: IntFieldUpdateOperationsInput | number
+    emailProvider?: StringFieldUpdateOperationsInput | string
+    gmailClientId?: NullableStringFieldUpdateOperationsInput | string | null
+    gmailClientSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    gmailSenderName?: NullableStringFieldUpdateOperationsInput | string | null
+    gmailConnected?: BoolFieldUpdateOperationsInput | boolean
+    gmailConnectedEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    credentialsVault?: NullableStringFieldUpdateOperationsInput | string | null
+    integrationsConfig?: NullableStringFieldUpdateOperationsInput | string | null
+    notificationChannels?: NullableStringFieldUpdateOperationsInput | string | null
+    slackWebhookUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    require2fa?: BoolFieldUpdateOperationsInput | boolean
+    sessionTimeoutMinutes?: IntFieldUpdateOperationsInput | number
+    ipAllowlist?: NullableStringFieldUpdateOperationsInput | string | null
+    auditRetentionDays?: IntFieldUpdateOperationsInput | number
+    cookieBannerActive?: BoolFieldUpdateOperationsInput | boolean
+    cookieBannerText?: NullableStringFieldUpdateOperationsInput | string | null
+    privacyPolicyUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    termsOfServiceUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    gdprRequestEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AdminSettingsCreateManyInput = {
+    id?: string
+    siteLanguage?: string
+    siteTimezone?: string
+    maintenanceActive?: boolean
+    maintenanceMessage?: string | null
+    letterTFontFamily?: string | null
+    letterTFontSizePercent?: number
+    logoLightModeColor?: string | null
+    logoDarkModeColor?: string | null
+    heroWordmarkFonts?: string | null
+    heroWordmarkLoop?: boolean
+    heroWordmarkLoopSpeed?: number
+    marqueeActive?: boolean
+    marqueeText?: string | null
+    marqueeType?: string
+    marqueeTextColor?: string | null
+    marqueeBgColor?: string | null
+    popupActive?: boolean
+    popupImageUrl?: string | null
+    popupHeadline?: string | null
+    popupMessage?: string | null
+    popupCtaLabel?: string | null
+    popupCtaLink?: string | null
+    popupFrequency?: string
+    popupFrequencyDays?: number
+    emailProvider?: string
+    gmailClientId?: string | null
+    gmailClientSecret?: string | null
+    gmailSenderName?: string | null
+    gmailConnected?: boolean
+    gmailConnectedEmail?: string | null
+    credentialsVault?: string | null
+    integrationsConfig?: string | null
+    notificationChannels?: string | null
+    slackWebhookUrl?: string | null
+    require2fa?: boolean
+    sessionTimeoutMinutes?: number
+    ipAllowlist?: string | null
+    auditRetentionDays?: number
+    cookieBannerActive?: boolean
+    cookieBannerText?: string | null
+    privacyPolicyUrl?: string | null
+    termsOfServiceUrl?: string | null
+    gdprRequestEmail?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type AdminSettingsUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    siteLanguage?: StringFieldUpdateOperationsInput | string
+    siteTimezone?: StringFieldUpdateOperationsInput | string
+    maintenanceActive?: BoolFieldUpdateOperationsInput | boolean
+    maintenanceMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    letterTFontFamily?: NullableStringFieldUpdateOperationsInput | string | null
+    letterTFontSizePercent?: IntFieldUpdateOperationsInput | number
+    logoLightModeColor?: NullableStringFieldUpdateOperationsInput | string | null
+    logoDarkModeColor?: NullableStringFieldUpdateOperationsInput | string | null
+    heroWordmarkFonts?: NullableStringFieldUpdateOperationsInput | string | null
+    heroWordmarkLoop?: BoolFieldUpdateOperationsInput | boolean
+    heroWordmarkLoopSpeed?: FloatFieldUpdateOperationsInput | number
+    marqueeActive?: BoolFieldUpdateOperationsInput | boolean
+    marqueeText?: NullableStringFieldUpdateOperationsInput | string | null
+    marqueeType?: StringFieldUpdateOperationsInput | string
+    marqueeTextColor?: NullableStringFieldUpdateOperationsInput | string | null
+    marqueeBgColor?: NullableStringFieldUpdateOperationsInput | string | null
+    popupActive?: BoolFieldUpdateOperationsInput | boolean
+    popupImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    popupHeadline?: NullableStringFieldUpdateOperationsInput | string | null
+    popupMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    popupCtaLabel?: NullableStringFieldUpdateOperationsInput | string | null
+    popupCtaLink?: NullableStringFieldUpdateOperationsInput | string | null
+    popupFrequency?: StringFieldUpdateOperationsInput | string
+    popupFrequencyDays?: IntFieldUpdateOperationsInput | number
+    emailProvider?: StringFieldUpdateOperationsInput | string
+    gmailClientId?: NullableStringFieldUpdateOperationsInput | string | null
+    gmailClientSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    gmailSenderName?: NullableStringFieldUpdateOperationsInput | string | null
+    gmailConnected?: BoolFieldUpdateOperationsInput | boolean
+    gmailConnectedEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    credentialsVault?: NullableStringFieldUpdateOperationsInput | string | null
+    integrationsConfig?: NullableStringFieldUpdateOperationsInput | string | null
+    notificationChannels?: NullableStringFieldUpdateOperationsInput | string | null
+    slackWebhookUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    require2fa?: BoolFieldUpdateOperationsInput | boolean
+    sessionTimeoutMinutes?: IntFieldUpdateOperationsInput | number
+    ipAllowlist?: NullableStringFieldUpdateOperationsInput | string | null
+    auditRetentionDays?: IntFieldUpdateOperationsInput | number
+    cookieBannerActive?: BoolFieldUpdateOperationsInput | boolean
+    cookieBannerText?: NullableStringFieldUpdateOperationsInput | string | null
+    privacyPolicyUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    termsOfServiceUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    gdprRequestEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AdminSettingsUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    siteLanguage?: StringFieldUpdateOperationsInput | string
+    siteTimezone?: StringFieldUpdateOperationsInput | string
+    maintenanceActive?: BoolFieldUpdateOperationsInput | boolean
+    maintenanceMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    letterTFontFamily?: NullableStringFieldUpdateOperationsInput | string | null
+    letterTFontSizePercent?: IntFieldUpdateOperationsInput | number
+    logoLightModeColor?: NullableStringFieldUpdateOperationsInput | string | null
+    logoDarkModeColor?: NullableStringFieldUpdateOperationsInput | string | null
+    heroWordmarkFonts?: NullableStringFieldUpdateOperationsInput | string | null
+    heroWordmarkLoop?: BoolFieldUpdateOperationsInput | boolean
+    heroWordmarkLoopSpeed?: FloatFieldUpdateOperationsInput | number
+    marqueeActive?: BoolFieldUpdateOperationsInput | boolean
+    marqueeText?: NullableStringFieldUpdateOperationsInput | string | null
+    marqueeType?: StringFieldUpdateOperationsInput | string
+    marqueeTextColor?: NullableStringFieldUpdateOperationsInput | string | null
+    marqueeBgColor?: NullableStringFieldUpdateOperationsInput | string | null
+    popupActive?: BoolFieldUpdateOperationsInput | boolean
+    popupImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    popupHeadline?: NullableStringFieldUpdateOperationsInput | string | null
+    popupMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    popupCtaLabel?: NullableStringFieldUpdateOperationsInput | string | null
+    popupCtaLink?: NullableStringFieldUpdateOperationsInput | string | null
+    popupFrequency?: StringFieldUpdateOperationsInput | string
+    popupFrequencyDays?: IntFieldUpdateOperationsInput | number
+    emailProvider?: StringFieldUpdateOperationsInput | string
+    gmailClientId?: NullableStringFieldUpdateOperationsInput | string | null
+    gmailClientSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    gmailSenderName?: NullableStringFieldUpdateOperationsInput | string | null
+    gmailConnected?: BoolFieldUpdateOperationsInput | boolean
+    gmailConnectedEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    credentialsVault?: NullableStringFieldUpdateOperationsInput | string | null
+    integrationsConfig?: NullableStringFieldUpdateOperationsInput | string | null
+    notificationChannels?: NullableStringFieldUpdateOperationsInput | string | null
+    slackWebhookUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    require2fa?: BoolFieldUpdateOperationsInput | boolean
+    sessionTimeoutMinutes?: IntFieldUpdateOperationsInput | number
+    ipAllowlist?: NullableStringFieldUpdateOperationsInput | string | null
+    auditRetentionDays?: IntFieldUpdateOperationsInput | number
+    cookieBannerActive?: BoolFieldUpdateOperationsInput | boolean
+    cookieBannerText?: NullableStringFieldUpdateOperationsInput | string | null
+    privacyPolicyUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    termsOfServiceUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    gdprRequestEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type TagCreateInput = {
     id?: string
     name: string
@@ -18366,6 +20687,196 @@ export namespace Prisma {
     seoId?: SortOrder
   }
 
+  export type FloatFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel>
+    in?: number[]
+    notIn?: number[]
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatFilter<$PrismaModel> | number
+  }
+
+  export type AdminSettingsCountOrderByAggregateInput = {
+    id?: SortOrder
+    siteLanguage?: SortOrder
+    siteTimezone?: SortOrder
+    maintenanceActive?: SortOrder
+    maintenanceMessage?: SortOrder
+    letterTFontFamily?: SortOrder
+    letterTFontSizePercent?: SortOrder
+    logoLightModeColor?: SortOrder
+    logoDarkModeColor?: SortOrder
+    heroWordmarkFonts?: SortOrder
+    heroWordmarkLoop?: SortOrder
+    heroWordmarkLoopSpeed?: SortOrder
+    marqueeActive?: SortOrder
+    marqueeText?: SortOrder
+    marqueeType?: SortOrder
+    marqueeTextColor?: SortOrder
+    marqueeBgColor?: SortOrder
+    popupActive?: SortOrder
+    popupImageUrl?: SortOrder
+    popupHeadline?: SortOrder
+    popupMessage?: SortOrder
+    popupCtaLabel?: SortOrder
+    popupCtaLink?: SortOrder
+    popupFrequency?: SortOrder
+    popupFrequencyDays?: SortOrder
+    emailProvider?: SortOrder
+    gmailClientId?: SortOrder
+    gmailClientSecret?: SortOrder
+    gmailSenderName?: SortOrder
+    gmailConnected?: SortOrder
+    gmailConnectedEmail?: SortOrder
+    credentialsVault?: SortOrder
+    integrationsConfig?: SortOrder
+    notificationChannels?: SortOrder
+    slackWebhookUrl?: SortOrder
+    require2fa?: SortOrder
+    sessionTimeoutMinutes?: SortOrder
+    ipAllowlist?: SortOrder
+    auditRetentionDays?: SortOrder
+    cookieBannerActive?: SortOrder
+    cookieBannerText?: SortOrder
+    privacyPolicyUrl?: SortOrder
+    termsOfServiceUrl?: SortOrder
+    gdprRequestEmail?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type AdminSettingsAvgOrderByAggregateInput = {
+    letterTFontSizePercent?: SortOrder
+    heroWordmarkLoopSpeed?: SortOrder
+    popupFrequencyDays?: SortOrder
+    sessionTimeoutMinutes?: SortOrder
+    auditRetentionDays?: SortOrder
+  }
+
+  export type AdminSettingsMaxOrderByAggregateInput = {
+    id?: SortOrder
+    siteLanguage?: SortOrder
+    siteTimezone?: SortOrder
+    maintenanceActive?: SortOrder
+    maintenanceMessage?: SortOrder
+    letterTFontFamily?: SortOrder
+    letterTFontSizePercent?: SortOrder
+    logoLightModeColor?: SortOrder
+    logoDarkModeColor?: SortOrder
+    heroWordmarkFonts?: SortOrder
+    heroWordmarkLoop?: SortOrder
+    heroWordmarkLoopSpeed?: SortOrder
+    marqueeActive?: SortOrder
+    marqueeText?: SortOrder
+    marqueeType?: SortOrder
+    marqueeTextColor?: SortOrder
+    marqueeBgColor?: SortOrder
+    popupActive?: SortOrder
+    popupImageUrl?: SortOrder
+    popupHeadline?: SortOrder
+    popupMessage?: SortOrder
+    popupCtaLabel?: SortOrder
+    popupCtaLink?: SortOrder
+    popupFrequency?: SortOrder
+    popupFrequencyDays?: SortOrder
+    emailProvider?: SortOrder
+    gmailClientId?: SortOrder
+    gmailClientSecret?: SortOrder
+    gmailSenderName?: SortOrder
+    gmailConnected?: SortOrder
+    gmailConnectedEmail?: SortOrder
+    credentialsVault?: SortOrder
+    integrationsConfig?: SortOrder
+    notificationChannels?: SortOrder
+    slackWebhookUrl?: SortOrder
+    require2fa?: SortOrder
+    sessionTimeoutMinutes?: SortOrder
+    ipAllowlist?: SortOrder
+    auditRetentionDays?: SortOrder
+    cookieBannerActive?: SortOrder
+    cookieBannerText?: SortOrder
+    privacyPolicyUrl?: SortOrder
+    termsOfServiceUrl?: SortOrder
+    gdprRequestEmail?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type AdminSettingsMinOrderByAggregateInput = {
+    id?: SortOrder
+    siteLanguage?: SortOrder
+    siteTimezone?: SortOrder
+    maintenanceActive?: SortOrder
+    maintenanceMessage?: SortOrder
+    letterTFontFamily?: SortOrder
+    letterTFontSizePercent?: SortOrder
+    logoLightModeColor?: SortOrder
+    logoDarkModeColor?: SortOrder
+    heroWordmarkFonts?: SortOrder
+    heroWordmarkLoop?: SortOrder
+    heroWordmarkLoopSpeed?: SortOrder
+    marqueeActive?: SortOrder
+    marqueeText?: SortOrder
+    marqueeType?: SortOrder
+    marqueeTextColor?: SortOrder
+    marqueeBgColor?: SortOrder
+    popupActive?: SortOrder
+    popupImageUrl?: SortOrder
+    popupHeadline?: SortOrder
+    popupMessage?: SortOrder
+    popupCtaLabel?: SortOrder
+    popupCtaLink?: SortOrder
+    popupFrequency?: SortOrder
+    popupFrequencyDays?: SortOrder
+    emailProvider?: SortOrder
+    gmailClientId?: SortOrder
+    gmailClientSecret?: SortOrder
+    gmailSenderName?: SortOrder
+    gmailConnected?: SortOrder
+    gmailConnectedEmail?: SortOrder
+    credentialsVault?: SortOrder
+    integrationsConfig?: SortOrder
+    notificationChannels?: SortOrder
+    slackWebhookUrl?: SortOrder
+    require2fa?: SortOrder
+    sessionTimeoutMinutes?: SortOrder
+    ipAllowlist?: SortOrder
+    auditRetentionDays?: SortOrder
+    cookieBannerActive?: SortOrder
+    cookieBannerText?: SortOrder
+    privacyPolicyUrl?: SortOrder
+    termsOfServiceUrl?: SortOrder
+    gdprRequestEmail?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type AdminSettingsSumOrderByAggregateInput = {
+    letterTFontSizePercent?: SortOrder
+    heroWordmarkLoopSpeed?: SortOrder
+    popupFrequencyDays?: SortOrder
+    sessionTimeoutMinutes?: SortOrder
+    auditRetentionDays?: SortOrder
+  }
+
+  export type FloatWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel>
+    in?: number[]
+    notIn?: number[]
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedFloatFilter<$PrismaModel>
+    _min?: NestedFloatFilter<$PrismaModel>
+    _max?: NestedFloatFilter<$PrismaModel>
+  }
+
   export type TagCountOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
@@ -19221,6 +21732,14 @@ export namespace Prisma {
     deleteMany?: TagScalarWhereInput | TagScalarWhereInput[]
   }
 
+  export type FloatFieldUpdateOperationsInput = {
+    set?: number
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
+  }
+
   export type PrescriptionCreateNestedManyWithoutTagsInput = {
     create?: XOR<PrescriptionCreateWithoutTagsInput, PrescriptionUncheckedCreateWithoutTagsInput> | PrescriptionCreateWithoutTagsInput[] | PrescriptionUncheckedCreateWithoutTagsInput[]
     connectOrCreate?: PrescriptionCreateOrConnectWithoutTagsInput | PrescriptionCreateOrConnectWithoutTagsInput[]
@@ -19686,6 +22205,22 @@ export namespace Prisma {
     _sum?: NestedIntNullableFilter<$PrismaModel>
     _min?: NestedIntNullableFilter<$PrismaModel>
     _max?: NestedIntNullableFilter<$PrismaModel>
+  }
+
+  export type NestedFloatWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel>
+    in?: number[]
+    notIn?: number[]
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedFloatFilter<$PrismaModel>
+    _min?: NestedFloatFilter<$PrismaModel>
+    _max?: NestedFloatFilter<$PrismaModel>
   }
 
   export type PostCreateWithoutAuthorInput = {

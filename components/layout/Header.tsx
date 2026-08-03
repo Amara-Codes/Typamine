@@ -6,6 +6,7 @@ import { SeventiesThemeToggle } from "@/components/common/SeventiesThemeToggle";
 import { DynamicLogo } from "@/components/layout/DynamicLogo";
 import { StaggeredMenu, StaggeredMenuItem } from "@/components/cherry/StaggeredMenu";
 import { useThemeStore } from "@/store/themeStore";
+import { ResolvedBrandFont } from "@/types";
 
 const NAV_ITEMS: StaggeredMenuItem[] = [
   { label: "Ingredients", ariaLabel: "Go to Ingredients", link: "/ingredients" },
@@ -16,7 +17,15 @@ const NAV_ITEMS: StaggeredMenuItem[] = [
   { label: "Pills", ariaLabel: "Go to Pills", link: "/pills" }
 ];
 
-export const Header: React.FC = () => {
+interface HeaderProps {
+  /** Brand identity overrides for the logo (see /admin/settings, tab General). */
+  letterTFont?: ResolvedBrandFont;
+  letterTFontSizePercent?: number;
+  logoLightModeColor?: string;
+  logoDarkModeColor?: string;
+}
+
+export const Header: React.FC<HeaderProps> = ({ letterTFont, letterTFontSizePercent, logoLightModeColor, logoDarkModeColor }) => {
 
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
@@ -56,9 +65,10 @@ export const Header: React.FC = () => {
         toggle è troppo stretta, lo staggered menu mobile resta quindi attivo
         anche su tablet (sm/md) e cede il posto solo da lg in su. */}
     <header
-      className={`hidden lg:block fixed top-0 left-0 right-0 z-50 w-full bg-transparent backdrop-blur-sm transition-transform duration-300 ease-in-out ${
+      className={`hidden lg:block fixed left-0 right-0 z-50 w-full bg-transparent backdrop-blur-sm transition-transform duration-300 ease-in-out ${
         isVisible ? "translate-y-0" : "-translate-y-full"
       }`}
+      style={{ top: "var(--marquee-offset, 0px)" }}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-24">
@@ -66,7 +76,14 @@ export const Header: React.FC = () => {
           {/* Logo / Brand */}
           <div className="flex items-center space-x-3">
             <Link href="/" className="flex items-center space-x-2 text-foreground hover:opacity-90 transition-opacity">
-              <DynamicLogo height={64}  squareGlow />
+              <DynamicLogo
+                height={64}
+                squareGlow
+                letterTFont={letterTFont}
+                letterTFontSizePercent={letterTFontSizePercent}
+                logoLightModeColor={logoLightModeColor}
+                logoDarkModeColor={logoDarkModeColor}
+              />
             </Link>
           </div>
 
@@ -192,7 +209,14 @@ export const Header: React.FC = () => {
         openMenuButtonColor={isDark ? "#ff3131" : "#000000"}
         logoSlot={
           <Link href="/" className="flex items-center pointer-events-auto">
-            <DynamicLogo height={80} squareGlow />
+            <DynamicLogo
+              height={80}
+              squareGlow
+              letterTFont={letterTFont}
+              letterTFontSizePercent={letterTFontSizePercent}
+              logoLightModeColor={logoLightModeColor}
+              logoDarkModeColor={logoDarkModeColor}
+            />
           </Link>
         }
         headerExtra={<SeventiesThemeToggle variant="mini" size={36} />}

@@ -20,6 +20,12 @@ interface GlyphTypefaceProps {
   borderClassName?: string;
   /** Font-family CSS reale usata per misurare via canvas (deve combaciare con quella di `className`). */
   fontFamilyCss?: string;
+  /** Override completo di `className` per il solo text[0] (es. brand identity — vedi /admin/settings). Omesso = comportamento identico a prima. */
+  firstLetterClassName?: string;
+  /** Style aggiuntivo per il solo text[0] (font-family custom, --dyn-text-light/dark, ecc). */
+  firstLetterStyle?: React.CSSProperties;
+  /** Font-family CSS usata per misurare l'ink box del solo text[0], se diversa da `fontFamilyCss`. */
+  firstLetterFontFamilyCss?: string;
 }
 
 const REF_FONT_SIZE = 500; // px — arbitraria: i rapporti ink/cella sono invarianti alla dimensione.
@@ -88,21 +94,38 @@ export default function GlyphTypeface({
   className = "",
   borderClassName = "border-[1.5px] border-black dark:border-white",
   fontFamilyCss = "'Star Avenue'",
+  firstLetterClassName,
+  firstLetterStyle,
+  firstLetterFontFamilyCss,
 }: GlyphTypefaceProps) {
   const [boxes, setBoxes] = useState<Record<string, GlyphBox> | null>(null);
+  // Box del solo text[0], misurato separatamente SOLO quando ha un font
+  // diverso dal resto — se text[0] ricompare più avanti nella stringa con lo
+  // stesso font di default, la key-per-carattere in `boxes` resterebbe
+  // altrimenti ambigua tra le due occorrenze.
+  const [firstBox, setFirstBox] = useState<GlyphBox | null>(null);
 
   useEffect(() => {
     let cancelled = false;
     const uniqueChars = Array.from(new Set(text.split("")));
+    const firstChar = text[0];
+    const hasFirstLetterOverride = Boolean(firstLetterFontFamilyCss) && firstLetterFontFamilyCss !== fontFamilyCss;
 
-    measureGlyphBoxes(uniqueChars, fontFamilyCss).then((result) => {
-      if (!cancelled) setBoxes(result);
+    Promise.all([
+      measureGlyphBoxes(uniqueChars, fontFamilyCss),
+      hasFirstLetterOverride && firstChar && firstChar !== " "
+        ? measureGlyphBoxes([firstChar], firstLetterFontFamilyCss!)
+        : Promise.resolve<Record<string, GlyphBox>>({}),
+    ]).then(([restBoxes, firstBoxes]) => {
+      if (cancelled) return;
+      setBoxes(restBoxes);
+      setFirstBox(hasFirstLetterOverride ? firstBoxes[firstChar] ?? null : null);
     });
 
     return () => {
       cancelled = true;
     };
-  }, [text, fontFamilyCss]);
+  }, [text, fontFamilyCss, firstLetterFontFamilyCss]);
 
   return (
     <div className="text-center leading-none select-none" style={{ wordBreak: "keep-all" }}>
@@ -113,10 +136,13 @@ export default function GlyphTypeface({
           );
         }
 
-        const box = boxes?.[char];
+        const isFirst = idx === 0;
+        const charClassName = isFirst && firstLetterClassName !== undefined ? firstLetterClassName : className;
+        const charStyle = isFirst ? firstLetterStyle : undefined;
+        const box = isFirst && firstBox ? firstBox : boxes?.[char];
 
         return (
-          <span key={idx} className={`group relative inline-block align-top ${className}`}>
+          <span key={idx} className={`group relative inline-block align-top ${charClassName}`} style={charStyle}>
             {char}
             {box && (
               <span

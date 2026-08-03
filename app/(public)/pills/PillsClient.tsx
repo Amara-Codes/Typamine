@@ -42,7 +42,7 @@ export default function PillsClient({ tags, children }: PillsClientProps) {
       <DoubleHero.SecondViewport>
         <div className="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
           <SearchSortFilter
-            searchPlaceholder="Search pills by title, caption or description..."
+            searchPlaceholder="Search Blog articles by title, caption or description..."
             sortOptions={SORT_OPTIONS}
             tags={tags}
             filtersModalTitle="Filter by Tags"

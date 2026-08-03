@@ -60,6 +60,7 @@ export default function FormulasClient({ tags, children }: FormulasClientProps) 
           { paramKey: "curated", label: "Typamine Selection Only" },
         ]}
         filtersModalTitle="Filters"
+        showSearch={false}
       />
 
       {children}

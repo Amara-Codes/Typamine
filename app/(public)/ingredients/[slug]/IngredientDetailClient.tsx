@@ -2,9 +2,8 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { MoveLeft, Sparkles, ArrowRight, Download, Loader2, ShieldCheck, ShieldEllipsis, FileSignature } from "lucide-react";
+import { MoveLeft, Sparkles, ArrowRight, FileSignature } from "lucide-react";
 import MinimalLink from "@/components/common/MinimalLink";
-import { PageHeading } from "@/components/common/PageHeading";
 import { useThemeStore } from "@/store/themeStore";
 import Grainient from "@/components/cherry/Grainient";
 import { DynamicPlayground } from "@/components/font/DynamicPlayground";
@@ -13,7 +12,7 @@ import { Cta } from "@/components/common/Cta";
 import { Button } from "@/components/common/Button";
 import { Badge } from "@/components/common/Badge";
 import BaseModal from "@/components/common/BaseModal";
-import IngredientRatingWidget from "@/components/font/IngredientRatingWidget";
+import IngredientHeader from "@/components/font/IngredientHeader";
 import { Ingredient } from "@/types";
 
 // Licenze considerate abbastanza libere da consentire il download diretto —
@@ -57,7 +56,7 @@ export default function IngredientDetailClient({ ingredient, hasPairings = false
     color3: theme === "light" ? "#e5e7eb" : "#27272a",
   };
 
-    const grainientColors = {
+  const grainientColors = {
     color1: theme === "light" ? "#fdfdfd" : "#2e1e01",
     color2: theme === "light" ? "#7fa8e0" : "#570d22",
     color3: theme === "light" ? "#bbcff7" : "#614725",
@@ -95,7 +94,7 @@ export default function IngredientDetailClient({ ingredient, hasPairings = false
       URL.revokeObjectURL(objectUrl);
 
       // Fire-and-forget: non blocca/rallenta il download dell'utente se fallisce.
-      fetch(`/api/ingredients/${ingredient.slug}/download`, { method: "POST" }).catch(() => {});
+      fetch(`/api/ingredients/${ingredient.slug}/download`, { method: "POST" }).catch(() => { });
     } catch (err) {
       console.error("Font download failed, falling back to direct link:", err);
       window.open(sourceUrl, "_blank");
@@ -105,7 +104,7 @@ export default function IngredientDetailClient({ ingredient, hasPairings = false
   };
 
   return (
-    <div className="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 pt-28 pb-8 space-y-8">
+    <div className="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 pt-28 pb-8 space-y-4">
       {/* Back button */}
       <div className="mb-4">
         <MinimalLink
@@ -117,40 +116,15 @@ export default function IngredientDetailClient({ ingredient, hasPairings = false
         />
       </div>
 
-      <PageHeading
-        title={`${ingredient.name}`}
-        subtitle={`CATEGORY: ${ingredient.category}`}
-        useGrainient
-        grainientOptions={grainientColorsHeader}
-        rightElement={
-          <div className="flex flex-col items-end gap-2">
-            <button
-              onClick={handleDownloadClick}
-              disabled={!sourceUrl || isDownloading}
-              className="px-5 py-2.5 bg-red text-black font-haas font-bold text-xs rounded hover:bg-red-600 transition-colors glow-red disabled:opacity-50 disabled:pointer-events-none flex items-center gap-2"
-            >
-              {isDownloading ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Download className="h-3.5 w-3.5" />}
-              {isDownloading ? "PREPARING..." : "DOWNLOAD WOFF2"}
-            </button>
-            <span className="flex items-center gap-1.5 font-haas text-[10px] uppercase tracking-widest text-zinc-500 dark:text-zinc-400">
-              {isLicenseFree ? (
-                <ShieldCheck className="h-3.5 w-3.5 text-emerald-500 shrink-0" />
-              ) : (
-                <ShieldEllipsis className="h-3.5 w-3.5 text-amber-500 shrink-0" />
-              )}
-              License: <span className="text-black dark:text-white font-bold">{ingredient.licenseType || "Unclassified"}</span>
-            </span>
-          </div>
-        }
-      />
 
-      <IngredientRatingWidget
-        ingredientId={ingredient.id}
-        slug={ingredient.slug}
-        typamineRating={parseFloat(ingredient.rating) || 0}
-        initialUserRating={ingredient.userRating || 0}
-        initialUserRatingsCount={ingredient.userRatingsCount || 0}
-        initialHasVoted={hasVoted}
+      <IngredientHeader
+        ingredient={ingredient}
+        hasVoted={hasVoted}
+        sourceUrl={sourceUrl}
+        isDownloading={isDownloading}
+        isLicenseFree={isLicenseFree}
+        grainientOptions={grainientColorsHeader}
+        onDownloadClick={handleDownloadClick}
       />
 
       {showRightSidebar ? (
@@ -219,9 +193,9 @@ export default function IngredientDetailClient({ ingredient, hasPairings = false
               {/* Bottom Section: Pairings */}
               {hasPairings && (
                 <div className="space-y-4 flex flex-col justify-end">
-                    <p className="text-sm text-zinc-500 dark:text-zinc-400 mt-1 leading-relaxed">
-                      See examples of how we used this font in our Pairings.
-                    </p>
+                  <p className="text-sm text-zinc-500 dark:text-zinc-400 mt-1 leading-relaxed">
+                    See examples of how we used this font in our Pairings.
+                  </p>
                   <Link href={prescriptionsHref} className="inline-block self-end">
                     <Button variant="outline" size="md" roundness="md" className="flex items-center gap-2">
                       See Examples

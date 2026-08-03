@@ -41,6 +41,7 @@ export interface SearchSortFilterProps {
   toggleOptions?: SearchSortFilterToggle[];
   filtersModalTitle?: string;
   className?: string;
+  showSearch?: boolean;
 }
 
 // Componente riutilizzabile per ricerca + ordinamento + filtri, pensato per
@@ -61,6 +62,7 @@ export function SearchSortFilter({
   toggleOptions = [],
   filtersModalTitle = "Filters",
   className = "",
+  showSearch = true,
 }: SearchSortFilterProps) {
   const router = useRouter();
   const pathname = usePathname();
@@ -180,14 +182,18 @@ export function SearchSortFilter({
 
   return (
     <div className={`flex flex-col sm:flex-row items-stretch sm:items-center gap-3 ${className}`}>
+
       <div className="flex-1 min-w-0">
-        <Input
-          id="search-sort-filter-search"
-          placeholder={searchPlaceholder}
-          value={searchValue}
-          onChange={setSearchValue}
-        />
+        {showSearch && (
+          <Input
+            id="search-sort-filter-search"
+            placeholder={searchPlaceholder}
+            value={searchValue}
+            onChange={setSearchValue}
+          />
+        )}
       </div>
+
 
       {sortOptions.length > 0 && (
         <div className="w-full sm:w-auto sm:min-w-[170px] shrink-0">
@@ -249,11 +255,10 @@ export function SearchSortFilter({
                           key={t.id}
                           type="button"
                           onClick={() => toggleDraftTag(t.name)}
-                          className={`px-3 py-1 rounded-full text-xs font-bold transition-all flex items-center gap-1.5 border ${
-                            isSelected
+                          className={`px-3 py-1 rounded-full text-xs font-bold transition-all flex items-center gap-1.5 border ${isSelected
                               ? "bg-black text-white dark:bg-white dark:text-black border-transparent"
                               : "bg-transparent text-zinc-600 dark:text-zinc-400 border-black/10 dark:border-white/10 hover:border-black/30 dark:hover:border-white/30"
-                          }`}
+                            }`}
                         >
                           {isSelected && <Check className="w-3 h-3" />}
                           {t.name}
@@ -273,11 +278,10 @@ export function SearchSortFilter({
                     role="switch"
                     aria-checked={isOn}
                     onClick={() => toggleDraftSwitch(opt.paramKey)}
-                    className={`flex items-center gap-3 w-full h-[42px] rounded-xl border px-4 transition-all text-left ${
-                      isOn
+                    className={`flex items-center gap-3 w-full h-[42px] rounded-xl border px-4 transition-all text-left ${isOn
                         ? "border-blue/60 dark:border-red/60 bg-blue/10 dark:bg-red/10"
                         : "border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900/60"
-                    }`}
+                      }`}
                   >
                     <span className={`relative inline-flex h-5 w-9 shrink-0 rounded-full border-2 transition-colors ${isOn ? "border-blue dark:border-red bg-blue dark:bg-red" : "border-zinc-200 dark:border-zinc-800 bg-zinc-200 dark:bg-zinc-800"}`}>
                       <span className={`inline-block h-3.5 w-3.5 rounded-full bg-white shadow-sm transition-transform mt-px ${isOn ? "translate-x-3.5" : "translate-x-px"}`} />

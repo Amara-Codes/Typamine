@@ -11,6 +11,7 @@ import { Inter } from "next/font/google";
 import "../globals.css";
 import { cn } from "@/lib/utils";
 import { ThemeSync } from "@/components/common/ThemeSync";
+import QueryProvider from "@/components/admin/QueryProvider";
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-sans' });
 
@@ -67,6 +68,7 @@ export default async function AdminLayout({
       <html lang="en" className={cn("h-full antialiased", "font-sans", inter.variable)} suppressHydrationWarning>
         <body className="min-h-full bg-background text-foreground">
           <ThemeSync />
+          <QueryProvider>
           <div className="flex h-[100dvh] transition-colors duration-300 overflow-hidden relative bg-cover bg-no-repeat"
             style={{ backgroundImage: "url('/images/admin-bg/bg-admin-11.png')" }}
           >
@@ -85,6 +87,7 @@ export default async function AdminLayout({
               </main>
             </div>
           </div>
+          </QueryProvider>
         </body>
       </html>
     );

@@ -2,6 +2,7 @@ import { getRecentIngredients } from "@/lib/services/font";
 import { getRecentPairings } from "@/lib/services/pairing";
 import { getAllFormulas } from "@/lib/services/formula";
 import { getVirtualFormulas } from "@/lib/services/virtualFormula";
+import { getAdminSettings } from "@/lib/services/adminSettings";
 import RAW_PAIRINGS from "@/lib/sample-data/pairings.json";
 import ALL_INGREDIENTS from "@/lib/sample-data/fonts.json";
 import { Prescription, Ingredient } from "@/types";
@@ -28,11 +29,12 @@ function pickRandom<T>(items: T[], count: number): T[] {
 }
 
 export default async function Home() {
-  const [recentIngredients, dbPairings, realFormulas, virtualFormulas] = await Promise.all([
+  const [recentIngredients, dbPairings, realFormulas, virtualFormulas, adminSettings] = await Promise.all([
     getRecentIngredients(8),
     getRecentPairings(4),
     getAllFormulas(),
     getVirtualFormulas(),
+    getAdminSettings(),
   ]);
 
   const recentPairings = dbPairings.length > 0 ? dbPairings : FALLBACK_PAIRINGS;
@@ -48,6 +50,7 @@ export default async function Home() {
       recentIngredients={recentIngredients}
       recentPairings={recentPairings}
       featuredFormulas={featuredFormulas}
+      adminSettings={adminSettings}
     />
   );
 }

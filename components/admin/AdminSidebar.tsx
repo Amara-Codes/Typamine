@@ -39,7 +39,7 @@ const menuItems: { name: string; href: string; icon: any; resource?: Resource }[
   { name: "Blog", href: "/admin/blog", icon: Feather },
   { name: "Users", href: "/admin/users", icon: UserCog, resource: 'user' },
   { name: "User Roles", href: "/admin/roles", icon: Shield, resource: 'role' },
-  { name: "Settings", href: "/admin/settings", icon: Settings, resource: 'user' },
+  { name: "Settings", href: "/admin/settings", icon: Settings, resource: 'setting' },
 ];
 
 export default function AdminSidebar({ session }: { session: any }) {

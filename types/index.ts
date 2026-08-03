@@ -1,3 +1,166 @@
+// Dove viene mostrata la homepage marquee: "every_page" e "homepage_top"
+// sono la stessa striscia sottile sopra l'header (su ogni pagina o solo in
+// home), "homepage_banner" è un banner più largo sotto l'hero, solo in home.
+export type MarqueeType = "every_page" | "homepage_top" | "homepage_banner";
+
+// Frequenza di visualizzazione della homepage popup, applicata client-side
+// via cookie (vedi components/layout/PopupModal.tsx):
+// - first_visit: mostrata una sola volta per browser, mai più.
+// - every_visit: nessun cookie di soppressione, mostrata ad ogni caricamento della home.
+// - periodic: mostrata di nuovo quando sono passati popupFrequencyDays dall'ultima volta.
+export type PopupFrequency = "first_visit" | "every_visit" | "periodic";
+
+export type NotificationChannel = "off" | "email" | "slack" | "both";
+
+// Vedi AdminSettings.notificationChannels (JSON) — le chiavi corrispondono
+// agli eventi mostrati nel tab Notifications.
+export interface NotificationChannels {
+  font_submission?: NotificationChannel;
+  user_registration?: NotificationChannel;
+  contact_message?: NotificationChannel;
+  weekly_digest?: NotificationChannel;
+  [key: string]: NotificationChannel | undefined;
+}
+
+export interface CredentialEntry {
+  id: string;
+  label: string;
+  value: string;
+}
+
+export interface IntegrationConfig {
+  active: boolean;
+  [key: string]: string | boolean;
+}
+
+// Vedi AdminSettings.integrationsConfig (JSON) — un blob unico invece di una
+// colonna per provider/campo, così un nuovo provider non richiede migration.
+export interface IntegrationsConfig {
+  analytics?: IntegrationConfig & { measurementId?: string };
+  pixel?: IntegrationConfig & { pixelId?: string };
+  recaptcha?: IntegrationConfig & { siteKey?: string; secretKey?: string };
+  maps?: IntegrationConfig & { apiKey?: string };
+}
+
+// Font reale risolto a partire da AdminSettings.letterTFontFamily (un
+// Ingredient.id) — solo lib/services/adminSettings.ts lo popola (join live
+// sull'Ingredient), mai scritto/letto direttamente dal DB come denormalizzato,
+// così un font rinominato o cancellato non lascia mai un riferimento sporco.
+export interface ResolvedBrandFont {
+  id: string;
+  name: string;
+  woff2Url: string;
+}
+
+// Vedi AdminSettings.heroWordmarkFonts (JSON) — un frame della sequenza che
+// la "T" del componente HeroWordmark attraversa in loop (vedi
+// components/layout/HeroWordmark.tsx). fontId è un Ingredient.id (stessa
+// convenzione di letterTFontFamily), risolto live in
+// lib/services/adminSettings.ts, mai denormalizzato.
+export interface HeroWordmarkFontConfig {
+  fontId: string;
+  fontSizePercent: number;
+}
+
+// Versione risolta (nome + woff2Url reali) usata dal rendering pubblico —
+// stessa relazione che ResolvedBrandFont ha con letterTFontFamily.
+export interface ResolvedHeroWordmarkFontFrame {
+  font: ResolvedBrandFont;
+  fontSizePercent: number;
+}
+
+// Riga singleton di configurazione globale — vedi AdminSettings in schema.prisma.
+// I campi JSON (credentialsVault, integrationsConfig, notificationChannels)
+// arrivano già parsati dal service/action layer, mai come stringa grezza qui.
+export interface AdminSettings {
+  id: string;
+
+  // General — Site Identity
+  siteLanguage: string;
+  siteTimezone: string;
+  maintenanceActive: boolean;
+  maintenanceMessage?: string;
+
+  // General — Brand Identity. letterTFontFamily è l'Ingredient.id scelto in
+  // admin; letterTFont è la risoluzione live (nome + woff2Url) usata per il
+  // rendering pubblico — presente solo quando letterTFontFamily punta a un
+  // font che esiste ancora. letterTFontSizePercent scala la "T" rispetto al
+  // font-size del resto della wordmark (100 = stessa dimensione, 200 =
+  // doppia) — applicato come `font-size` in `%`, coerente sia nell'header
+  // (DynamicLogo) che nel footer (GlyphTypeface) nonostante le dimensioni
+  // base diverse. I due colori sono hex grezzi ("#ff3131") per il quadratino
+  // "chimico" accanto alla wordmark, non per la lettera stessa.
+  letterTFontFamily?: string;
+  letterTFont?: ResolvedBrandFont;
+  letterTFontSizePercent: number;
+  logoLightModeColor?: string;
+  logoDarkModeColor?: string;
+
+  // General — Brand Identity — Hero Wordmark Animation. heroWordmarkFonts è
+  // la config grezza scelta in admin (max 12 frame, in ordine di ciclo);
+  // heroWordmarkFontsResolved è la risoluzione live (nome + woff2Url), solo
+  // presente quando popolata da getAdminSettings (mai da
+  // getAdminSettingsForAdmin, che serve solo a ripopolare il form).
+  heroWordmarkFonts: HeroWordmarkFontConfig[];
+  heroWordmarkFontsResolved?: ResolvedHeroWordmarkFontFrame[];
+  // true (default) = cicla i font all'infinito; false = un solo giro
+  // completo attraverso tutti i font, poi ferma l'animazione sull'ultimo.
+  heroWordmarkLoop: boolean;
+  // Velocità dell'animazione su scala -5 (più lenta) a 5 (più veloce), step
+  // 0.1, 0 = velocità normale (default). Convertito in un moltiplicatore
+  // dell'intervalMs/flipDurationMs in HeroWordmark (vedi heroWordmarkLoopSpeedToMultiplier).
+  heroWordmarkLoopSpeed: number;
+
+  // Promo Website Communication — Homepage Marquee
+  marqueeActive: boolean;
+  marqueeText?: string;
+  marqueeType: MarqueeType;
+  marqueeTextColor?: string;
+  marqueeBgColor?: string;
+
+  // Promo Website Communication — Homepage Popup
+  popupActive: boolean;
+  popupImageUrl?: string;
+  popupHeadline?: string;
+  popupMessage?: string;
+  popupCtaLabel?: string;
+  popupCtaLink?: string;
+  popupFrequency: PopupFrequency;
+  popupFrequencyDays: number;
+
+  // Admin Communication
+  emailProvider: string;
+  gmailClientId?: string;
+  gmailClientSecret?: string;
+  gmailSenderName?: string;
+  gmailConnected: boolean;
+  gmailConnectedEmail?: string;
+  credentialsVault: CredentialEntry[];
+
+  // Integrations
+  integrationsConfig: IntegrationsConfig;
+
+  // Notifications
+  notificationChannels: NotificationChannels;
+  slackWebhookUrl?: string;
+
+  // Security & Access
+  require2fa: boolean;
+  sessionTimeoutMinutes: number;
+  ipAllowlist?: string;
+  auditRetentionDays: number;
+
+  // Legal & Compliance
+  cookieBannerActive: boolean;
+  cookieBannerText?: string;
+  privacyPolicyUrl?: string;
+  termsOfServiceUrl?: string;
+  gdprRequestEmail?: string;
+
+  createdAt?: string;
+  updatedAt?: string;
+}
+
 export interface FontVariant {
   id: string;             // UUID della variante
   fontFamilyName: string; // es: "Typamine_Inter" (Usa lo STESSO nome per tutte le varianti di Inter)

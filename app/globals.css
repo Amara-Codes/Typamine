@@ -424,6 +424,17 @@
   animation: bouncy-x-reverse 1.2s infinite;
 }
 
+/* Homepage marquee strip (see components/layout/MarqueeBar.tsx) — il testo è
+   duplicato due volte nel track, l'animazione scorre esattamente di metà
+   larghezza per un loop senza scatti. */
+@keyframes marquee-track {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+.animate-marquee-track {
+  animation: marquee-track 22s linear infinite;
+}
+
 /* Global Reset & Body Styling */
 body {
   background-color: var(--background);
@@ -491,6 +502,54 @@ h1, h2, h3 {
 
 @utility glow-cyan {
   box-shadow: var(--glow-cyan-shadow);
+}
+
+@utility glow-red-200 {
+  box-shadow: 0 0 15px rgba(255, 149, 149, 0.4);
+}
+
+@keyframes symbol-glow-pulse-light {
+  0% {
+    border-color: rgba(0, 206, 206, 0.3);
+    box-shadow: 0 0 0px transparent;
+    transform: scale(1);
+  }
+  35% {
+    border-color: #00cece;
+    box-shadow: 0 0 25px #00cece, inset 0 0 15px rgba(0, 206, 206, 0.5);
+    transform: scale(1.06);
+  }
+  100% {
+    border-color: rgba(0, 206, 206, 0.3);
+    box-shadow: 0 0 0px transparent;
+    transform: scale(1);
+  }
+}
+
+@keyframes symbol-glow-pulse-dark {
+  0% {
+    border-color: rgba(255, 149, 149, 0.3);
+    box-shadow: 0 0 0px transparent;
+    transform: scale(1);
+  }
+  35% {
+    border-color: #ff9595;
+    box-shadow: 0 0 25px #ff9595, inset 0 0 15px rgba(255, 149, 149, 0.5);
+    transform: scale(1.06);
+  }
+  100% {
+    border-color: rgba(255, 149, 149, 0.3);
+    box-shadow: 0 0 0px transparent;
+    transform: scale(1);
+  }
+}
+
+.animate-glow-pulse-1s {
+  animation: symbol-glow-pulse-light 1s ease-in-out forwards;
+}
+
+.dark .animate-glow-pulse-1s {
+  animation: symbol-glow-pulse-dark 1s ease-in-out forwards;
 }
 
 @utility text-glow-cyan {

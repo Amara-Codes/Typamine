@@ -1,16 +1,16 @@
-import React, { useCallback, useLayoutEffect, useRef, useState } from 'react';
-import { animate, stagger } from 'framer-motion';
-import type { AnimationPlaybackControlsWithThen, AnimationSequence } from 'framer-motion';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 
 export interface StaggeredMenuItem {
   label: string;
   ariaLabel: string;
   link: string;
 }
+
 export interface StaggeredMenuSocialItem {
   label: string;
   link: string;
 }
+
 export interface StaggeredMenuProps {
   position?: 'left' | 'right';
   colors?: string[];
@@ -20,11 +20,8 @@ export interface StaggeredMenuProps {
   displayItemNumbering?: boolean;
   className?: string;
   logoUrl?: string;
-  /** Rimpiazza l'<img logoUrl> di default — utile se il brand è un componente (SVG/testo animato) e non un file statico. */
   logoSlot?: React.ReactNode;
-  /** Contenuto extra nell'header, tra il logo e il bottone hamburger (es. un theme toggle). */
   headerExtra?: React.ReactNode;
-  /** Sposta l'header interno fuori dallo schermo (hide-on-scroll) — ignorato mentre il menu è aperto, altrimenti il bottone per chiuderlo sparirebbe con lui. */
   headerHidden?: boolean;
   menuButtonColor?: string;
   openMenuButtonColor?: string;
@@ -36,20 +33,46 @@ export interface StaggeredMenuProps {
   onMenuClose?: () => void;
 }
 
-// Framer Motion non ha equivalenti nominati delle ease GSAP ("power4.out" ecc)
-// usate nella versione originale — bezier equivalenti più vicine, stessa
-// sensazione di decelerazione/accelerazione.
-const EASE = {
-  power4Out: [0.16, 1, 0.3, 1] as const,
-  power3Out: [0.19, 1, 0.22, 1] as const,
-  power3In: [0.64, 0, 0.78, 0] as const,
-  power2Out: [0.25, 0.46, 0.45, 0.94] as const,
-  power3InOut: [0.65, 0, 0.35, 1] as const
-};
+/**
+  Icona dello stato APERTO: Piastra di Petri (Canva Pagina 2)
+  Cerchio vettoriale con colonie di coltura biologica.
+ */
+export function PetriDishIcon({ className = "w-7 h-7" }: { className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 36 36"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      className={className}
+    >
+      {/* Disco esterno */}
+      <circle cx="18" cy="18" r="16" fill="currentColor" />
+
+      {/* Cerchi concentrici interni del bordo in vetro */}
+      <circle cx="18" cy="18" r="14.5" stroke="var(--sm-bg-color, #ffffff)" strokeWidth="0.8" fill="none" opacity="0.6" />
+      <circle cx="18" cy="18" r="13" stroke="var(--sm-bg-color, #ffffff)" strokeWidth="0.8" fill="none" opacity="0.8" />
+
+      {/* Colturazione batterica / macchie di Petri */}
+      <circle cx="13" cy="12" r="2.4" fill="var(--sm-bg-color, #ffffff)" />
+      <circle cx="16" cy="11" r="1.5" fill="var(--sm-bg-color, #ffffff)" />
+      <circle cx="11" cy="15" r="1.6" fill="var(--sm-bg-color, #ffffff)" />
+
+      <circle cx="23" cy="22" r="2.6" fill="var(--sm-bg-color, #ffffff)" />
+      <circle cx="20" cy="24" r="1.5" fill="var(--sm-bg-color, #ffffff)" />
+      <circle cx="25" cy="19" r="1.4" fill="var(--sm-bg-color, #ffffff)" />
+
+      <circle cx="22" cy="11" r="1.2" fill="var(--sm-bg-color, #ffffff)" />
+      <circle cx="13" cy="22" r="1.3" fill="var(--sm-bg-color, #ffffff)" />
+      <circle cx="17" cy="25" r="1.1" fill="var(--sm-bg-color, #ffffff)" />
+      <circle cx="10" cy="11" r="0.9" fill="var(--sm-bg-color, #ffffff)" />
+      <circle cx="26" cy="25" r="1" fill="var(--sm-bg-color, #ffffff)" />
+    </svg>
+  );
+}
 
 export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
   position = 'right',
-  colors = ['#B497CF', '#5227FF'],
+  colors = ['#ff3131', '#00cece'],
   items = [],
   socialItems = [],
   displaySocials = true,
@@ -59,10 +82,10 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
   logoSlot,
   headerExtra,
   headerHidden = false,
-  menuButtonColor = '#fff',
-  openMenuButtonColor = '#fff',
+  menuButtonColor = '#ffffff',
+  openMenuButtonColor = '#ffffff',
   changeMenuColorOnOpen = true,
-  accentColor = '#5227FF',
+  accentColor = '#ff3131',
   isFixed = false,
   closeOnClickAway = true,
   onMenuOpen,
@@ -71,341 +94,100 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
   const [open, setOpen] = useState(false);
   const openRef = useRef(false);
 
-  const panelRef = useRef<HTMLDivElement | null>(null);
-  const preLayersRef = useRef<HTMLDivElement | null>(null);
-  const preLayerElsRef = useRef<HTMLElement[]>([]);
-
-  const plusHRef = useRef<HTMLSpanElement | null>(null);
-  const plusVRef = useRef<HTMLSpanElement | null>(null);
-  const iconRef = useRef<HTMLSpanElement | null>(null);
-
-  const textInnerRef = useRef<HTMLSpanElement | null>(null);
-  const textWrapRef = useRef<HTMLSpanElement | null>(null);
-  const [textLines, setTextLines] = useState<string[]>(['Menu', 'Close']);
-
-  const openAnimRef = useRef<AnimationPlaybackControlsWithThen | null>(null);
-  const closeAnimRef = useRef<AnimationPlaybackControlsWithThen | null>(null);
-  const spinAnimRef = useRef<AnimationPlaybackControlsWithThen | null>(null);
-  const textCycleAnimRef = useRef<AnimationPlaybackControlsWithThen | null>(null);
-  const colorAnimRef = useRef<AnimationPlaybackControlsWithThen | null>(null);
-
+  const panelRef = useRef<HTMLElement | null>(null);
   const toggleBtnRef = useRef<HTMLButtonElement | null>(null);
-  const busyRef = useRef(false);
-
-  // Stato a riposo (equivalente dei gsap.set fatti una volta al mount) —
-  // pannello/prelayer fuori schermo, "+" nella sua rotazione di partenza.
-  useLayoutEffect(() => {
-    const panel = panelRef.current;
-    const preContainer = preLayersRef.current;
-    const plusH = plusHRef.current;
-    const plusV = plusVRef.current;
-    const icon = iconRef.current;
-    const textInner = textInnerRef.current;
-    if (!panel || !plusH || !plusV || !icon || !textInner) return;
-
-    let preLayers: HTMLElement[] = [];
-    if (preContainer) {
-      preLayers = Array.from(preContainer.querySelectorAll('.sm-prelayer')) as HTMLElement[];
-    }
-    preLayerElsRef.current = preLayers;
-
-    const offscreen = position === 'left' ? '-100%' : '100%';
-    animate([panel, ...preLayers], { x: offscreen, opacity: 1 }, { duration: 0 });
-    if (preContainer) animate(preContainer, { x: '0%', opacity: 1 }, { duration: 0 });
-
-    animate(plusH, { rotate: 0 }, { duration: 0 });
-    animate(plusV, { rotate: 90 }, { duration: 0 });
-    animate(icon, { rotate: 0 }, { duration: 0 });
-    animate(textInner, { y: '0%' }, { duration: 0 });
-
-    if (toggleBtnRef.current) animate(toggleBtnRef.current, { color: menuButtonColor }, { duration: 0 });
-  }, [menuButtonColor, position]);
-
-  const playOpen = useCallback(() => {
-    if (busyRef.current) return;
-    busyRef.current = true;
-
-    const panel = panelRef.current;
-    const layers = preLayerElsRef.current;
-    if (!panel) {
-      busyRef.current = false;
-      return;
-    }
-
-    openAnimRef.current?.stop();
-    closeAnimRef.current?.stop();
-    closeAnimRef.current = null;
-
-    const itemEls = Array.from(panel.querySelectorAll('.sm-panel-itemLabel')) as HTMLElement[];
-    const numberEls = Array.from(
-      panel.querySelectorAll('.sm-panel-list[data-numbering] .sm-panel-item')
-    ) as HTMLElement[];
-    const socialTitle = panel.querySelector('.sm-socials-title') as HTMLElement | null;
-    const socialLinks = Array.from(panel.querySelectorAll('.sm-socials-link')) as HTMLElement[];
-
-    const offscreen = position === 'left' ? '-100%' : '100%';
-
-    // Stato di partenza istantaneo — stesso ruolo dei gsap.set prima del
-    // tl.fromTo: garantisce da dove parte ogni pezzo, anche se il menu è
-    // stato riaperto a metà di una chiusura precedente.
-    animate([panel, ...layers], { x: offscreen }, { duration: 0 });
-    if (itemEls.length) animate(itemEls, { y: '140%', rotate: 10 }, { duration: 0 });
-    if (numberEls.length) animate(numberEls, { ['--sm-num-opacity' as any]: 0 }, { duration: 0 });
-    if (socialTitle) animate(socialTitle, { opacity: 0 }, { duration: 0 });
-    if (socialLinks.length) animate(socialLinks, { y: 25, opacity: 0 }, { duration: 0 });
-
-    const sequence: AnimationSequence = [];
-
-    if (layers.length) {
-      sequence.push([layers, { x: '0%' }, { duration: 0.5, ease: EASE.power4Out, delay: stagger(0.07), at: 0 }]);
-    }
-
-    const lastLayerTime = layers.length ? (layers.length - 1) * 0.07 : 0;
-    const panelInsertTime = lastLayerTime + (layers.length ? 0.08 : 0);
-    const panelDuration = 0.65;
-
-    sequence.push([panel, { x: '0%' }, { duration: panelDuration, ease: EASE.power4Out, at: panelInsertTime }]);
-
-    if (itemEls.length) {
-      const itemsStart = panelInsertTime + panelDuration * 0.15;
-      sequence.push([
-        itemEls,
-        { y: '0%', rotate: 0 },
-        { duration: 1, ease: EASE.power4Out, delay: stagger(0.1), at: itemsStart }
-      ]);
-
-      if (numberEls.length) {
-        sequence.push([
-          numberEls,
-          { ['--sm-num-opacity' as any]: 1 },
-          { duration: 0.6, ease: EASE.power2Out, delay: stagger(0.08), at: itemsStart + 0.1 }
-        ]);
-      }
-    }
-
-    if (socialTitle || socialLinks.length) {
-      const socialsStart = panelInsertTime + panelDuration * 0.4;
-      if (socialTitle) {
-        sequence.push([socialTitle, { opacity: 1 }, { duration: 0.5, ease: EASE.power2Out, at: socialsStart }]);
-      }
-      if (socialLinks.length) {
-        sequence.push([
-          socialLinks,
-          { y: 0, opacity: 1 },
-          { duration: 0.55, ease: EASE.power3Out, delay: stagger(0.08), at: socialsStart + 0.04 }
-        ]);
-      }
-    }
-
-    const controls = animate(sequence);
-    openAnimRef.current = controls;
-    controls.then(() => {
-      busyRef.current = false;
-    });
-  }, [position]);
-
-  const playClose = useCallback(() => {
-    openAnimRef.current?.stop();
-    openAnimRef.current = null;
-
-    const panel = panelRef.current;
-    const layers = preLayerElsRef.current;
-    if (!panel) return;
-
-    const all: HTMLElement[] = [...layers, panel];
-    closeAnimRef.current?.stop();
-
-    const offscreen = position === 'left' ? '-100%' : '100%';
-
-    // Sequenza a un solo step invece della forma diretta animate(array, kf, opts):
-    // quest'ultima passa da un percorso interno diverso (animateSubject) che con
-    // più elementi + durata/ease non applicava l'animazione — animateSequence
-    // (usato ovunque in playOpen) è quello collaudato.
-    const controls = animate([[all, { x: offscreen }, { duration: 0.32, ease: EASE.power3In }]]);
-    closeAnimRef.current = controls;
-    controls.then(() => {
-      const itemEls = Array.from(panel.querySelectorAll('.sm-panel-itemLabel')) as HTMLElement[];
-      if (itemEls.length) animate(itemEls, { y: '140%', rotate: 10 }, { duration: 0 });
-
-      const numberEls = Array.from(
-        panel.querySelectorAll('.sm-panel-list[data-numbering] .sm-panel-item')
-      ) as HTMLElement[];
-      if (numberEls.length) animate(numberEls, { ['--sm-num-opacity' as any]: 0 }, { duration: 0 });
-
-      const socialTitle = panel.querySelector('.sm-socials-title') as HTMLElement | null;
-      const socialLinks = Array.from(panel.querySelectorAll('.sm-socials-link')) as HTMLElement[];
-      if (socialTitle) animate(socialTitle, { opacity: 0 }, { duration: 0 });
-      if (socialLinks.length) animate(socialLinks, { y: 25, opacity: 0 }, { duration: 0 });
-
-      busyRef.current = false;
-    });
-  }, [position]);
-
-  const animateIcon = useCallback((opening: boolean) => {
-    const icon = iconRef.current;
-    const h = plusHRef.current;
-    const v = plusVRef.current;
-    if (!icon || !h || !v) return;
-
-    spinAnimRef.current?.stop();
-
-    if (opening) {
-      // il contenitore non deve mai ruotare, solo le due barre
-      animate(icon, { rotate: 0 }, { duration: 0 });
-      spinAnimRef.current = animate([
-        [h, { rotate: 45 }, { duration: 0.5, ease: EASE.power4Out, at: 0 }],
-        [v, { rotate: -45 }, { duration: 0.5, ease: EASE.power4Out, at: 0 }]
-      ]);
-    } else {
-      spinAnimRef.current = animate([
-        [h, { rotate: 0 }, { duration: 0.35, ease: EASE.power3InOut, at: 0 }],
-        [v, { rotate: 90 }, { duration: 0.35, ease: EASE.power3InOut, at: 0 }],
-        [icon, { rotate: 0 }, { duration: 0.001, at: 0 }]
-      ]);
-    }
-  }, []);
-
-  const animateColor = useCallback(
-    (opening: boolean) => {
-      const btn = toggleBtnRef.current;
-      if (!btn) return;
-      colorAnimRef.current?.stop();
-      if (changeMenuColorOnOpen) {
-        const targetColor = opening ? openMenuButtonColor : menuButtonColor;
-        colorAnimRef.current = animate([[btn, { color: targetColor }, { delay: 0.18, duration: 0.3, ease: EASE.power2Out }]]);
-      } else {
-        animate(btn, { color: menuButtonColor }, { duration: 0 });
-      }
-    },
-    [openMenuButtonColor, menuButtonColor, changeMenuColorOnOpen]
-  );
-
-  React.useEffect(() => {
-    if (toggleBtnRef.current) {
-      if (changeMenuColorOnOpen) {
-        const targetColor = openRef.current ? openMenuButtonColor : menuButtonColor;
-        animate(toggleBtnRef.current, { color: targetColor }, { duration: 0 });
-      } else {
-        animate(toggleBtnRef.current, { color: menuButtonColor }, { duration: 0 });
-      }
-    }
-  }, [changeMenuColorOnOpen, menuButtonColor, openMenuButtonColor]);
-
-  const animateText = useCallback((opening: boolean) => {
-    const inner = textInnerRef.current;
-    if (!inner) return;
-
-    textCycleAnimRef.current?.stop();
-
-    const currentLabel = opening ? 'Menu' : 'Close';
-    const targetLabel = opening ? 'Close' : 'Menu';
-    const cycles = 3;
-
-    const seq: string[] = [currentLabel];
-    let last = currentLabel;
-    for (let i = 0; i < cycles; i++) {
-      last = last === 'Menu' ? 'Close' : 'Menu';
-      seq.push(last);
-    }
-    if (last !== targetLabel) seq.push(targetLabel);
-    seq.push(targetLabel);
-
-    setTextLines(seq);
-    animate(inner, { y: '0%' }, { duration: 0 });
-
-    const lineCount = seq.length;
-    const finalShift = ((lineCount - 1) / lineCount) * 100;
-
-    textCycleAnimRef.current = animate([
-      [inner, { y: `-${finalShift}%` }, { duration: 0.5 + lineCount * 0.07, ease: EASE.power4Out }]
-    ]);
-  }, []);
+  const headerRef = useRef<HTMLElement | null>(null);
 
   const toggleMenu = useCallback(() => {
-    const target = !openRef.current;
-    openRef.current = target;
-    setOpen(target);
+    const nextState = !openRef.current;
+    openRef.current = nextState;
+    setOpen(nextState);
 
-    if (target) {
+    if (nextState) {
       onMenuOpen?.();
-      playOpen();
     } else {
       onMenuClose?.();
-      playClose();
     }
-
-    animateIcon(target);
-    animateColor(target);
-    animateText(target);
-  }, [playOpen, playClose, animateIcon, animateColor, animateText, onMenuOpen, onMenuClose]);
+  }, [onMenuOpen, onMenuClose]);
 
   const closeMenu = useCallback(() => {
     if (openRef.current) {
       openRef.current = false;
       setOpen(false);
       onMenuClose?.();
-      playClose();
-      animateIcon(false);
-      animateColor(false);
-      animateText(false);
     }
-  }, [playClose, animateIcon, animateColor, animateText, onMenuClose]);
+  }, [onMenuClose]);
 
-  React.useEffect(() => {
-    if (!closeOnClickAway || !open) return;
+  // Gestione tasto ESC e click outside per chiudere il menu
+  useEffect(() => {
+    if (!open) return;
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        closeMenu();
+      }
+    };
 
     const handleClickOutside = (event: MouseEvent) => {
       if (
+        closeOnClickAway &&
         panelRef.current &&
         !panelRef.current.contains(event.target as Node) &&
-        toggleBtnRef.current &&
-        !toggleBtnRef.current.contains(event.target as Node)
+        headerRef.current &&
+        !headerRef.current.contains(event.target as Node)
       ) {
         closeMenu();
       }
     };
 
+    document.addEventListener('keydown', handleKeyDown);
     document.addEventListener('mousedown', handleClickOutside);
     return () => {
+      document.removeEventListener('keydown', handleKeyDown);
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, [closeOnClickAway, open, closeMenu]);
+  }, [open, closeOnClickAway, closeMenu]);
+
+  const buttonColor = open && changeMenuColorOnOpen
+    ? (openMenuButtonColor || menuButtonColor)
+    : menuButtonColor;
 
   return (
     <div
-      className={`sm-scope z-40 ${isFixed ? 'fixed top-0 left-0 w-screen h-screen overflow-hidden pointer-events-none' : 'w-full h-full'}`}
+      className={`sm-scope z-40 ${isFixed ? 'fixed left-0 w-screen overflow-hidden pointer-events-none' : 'w-full h-full'}`}
+      style={isFixed ? { top: "var(--marquee-offset, 0px)", height: "calc(100dvh - var(--marquee-offset, 0px))" } : undefined}
     >
       <div
         className={
           (className ? className + ' ' : '') + 'staggered-menu-wrapper pointer-events-none relative w-full h-full z-40'
         }
-        style={accentColor ? ({ ['--sm-accent' as any]: accentColor } as React.CSSProperties) : undefined}
+        style={{
+          '--sm-accent': accentColor,
+          '--sm-bg-color': 'var(--background, #13100F)',
+        } as React.CSSProperties}
         data-position={position}
         data-open={open || undefined}
       >
+        {/* Layer di sfondo a cascata (Pre-layers) */}
         <div
-          ref={preLayersRef}
           className="sm-prelayers absolute top-0 right-0 bottom-0 pointer-events-none z-[5]"
           aria-hidden="true"
         >
           {(() => {
-            const raw = colors && colors.length ? colors.slice(0, 4) : ['#1e1e22', '#35353c'];
-            let arr = [...raw];
-            if (arr.length >= 3) {
-              const mid = Math.floor(arr.length / 2);
-              arr.splice(mid, 1);
-            }
-            return arr.map((c, i) => (
+            const raw = colors && colors.length ? colors.slice(0, 4) : ['#ff3131', '#00cece'];
+            return raw.map((c, i) => (
               <div
                 key={i}
-                className="sm-prelayer absolute top-0 right-0 h-full w-full translate-x-0"
+                className="sm-prelayer absolute top-0 right-0 h-full w-full"
                 style={{ background: c }}
               />
             ));
           })()}
         </div>
 
+        {/* Header principale (Logo + ThemeToggle + Oreo Menu Button) */}
         <header
+          ref={headerRef}
           className={`staggered-menu-header absolute top-0 left-0 w-full flex items-center justify-between p-[2em] bg-transparent pointer-events-none z-20 transition-transform duration-300 ease-in-out ${
             headerHidden && !open ? '-translate-y-full' : 'translate-y-0'
           }`}
@@ -430,61 +212,72 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
           </div>
 
           <div className="flex items-center gap-3">
-          {headerExtra && <div className="flex items-center pointer-events-auto">{headerExtra}</div>}
+            {headerExtra && <div className="flex items-center pointer-events-auto">{headerExtra}</div>}
 
-          <button
-            ref={toggleBtnRef}
-            className={`sm-toggle relative inline-flex items-center gap-[0.3rem] bg-transparent border-0 cursor-pointer font-medium leading-none overflow-visible pointer-events-auto ${
-              open ? 'text-black' : 'text-[#e9e9ef]'
-            }`}
-            aria-label={open ? 'Close menu' : 'Open menu'}
-            aria-expanded={open}
-            aria-controls="staggered-menu-panel"
-            onClick={toggleMenu}
-            type="button"
-          >
-            <span
-              ref={textWrapRef}
-              className="sm-toggle-textWrap relative inline-block h-[1em] overflow-hidden whitespace-nowrap w-[var(--sm-toggle-width,auto)] min-w-[var(--sm-toggle-width,auto)]"
-              aria-hidden="true"
+            <button
+              ref={toggleBtnRef}
+              className="sm-toggle relative inline-flex items-center justify-center w-9 h-9 bg-transparent border-0 cursor-pointer pointer-events-auto select-none rounded-md transition-colors duration-300"
+              style={{ color: buttonColor }}
+              aria-label={open ? 'Close menu' : 'Open menu'}
+              aria-expanded={open}
+              aria-controls="staggered-menu-panel"
+              onClick={toggleMenu}
+              type="button"
             >
-              <span ref={textInnerRef} className="sm-toggle-textInner flex flex-col leading-none">
-                {textLines.map((l, i) => (
-                  <span className="sm-toggle-line block h-[1em] leading-none" key={i}>
-                    {l}
-                  </span>
-                ))}
-              </span>
-            </span>
+              {/* Contenitore Oreo Stack con 4 strati indipendenti + 3D Flip sul disco 1 */}
+              <div className="sm-oreo-container relative w-7 h-7 flex items-center justify-center shrink-0">
+                {/* STRATO 1 (Disco Superiore): Ruota in 3D (rotateX) e rivela la Piastra di Petri a menu aperto */}
+                <div className="sm-layer-1 absolute inset-0 z-10">
+                  <div className="sm-flip-inner relative w-full h-full">
+                    {/* Faccia Anteriore: Disco superiore Oreo Stack */}
+                    <div className="sm-flip-front absolute inset-0 flex items-center justify-center">
+                      <svg viewBox="0 0 36 36" fill="none" className="w-7 h-7 text-current">
+                        <path d="M 3 8.5 C 3 3, 33 3, 33 8.5 C 24 11, 12 11, 3 8.5 Z" fill="currentColor" />
+                      </svg>
+                    </div>
 
-            <span
-              ref={iconRef}
-              className="sm-icon relative w-[14px] h-[14px] shrink-0 inline-flex items-center justify-center [will-change:transform]"
-              aria-hidden="true"
-            >
-              <span
-                ref={plusHRef}
-                className="sm-icon-line absolute left-1/2 top-1/2 w-full h-[2px] bg-current rounded-[2px] -translate-x-1/2 -translate-y-1/2 [will-change:transform]"
-              />
-              <span
-                ref={plusVRef}
-                className="sm-icon-line sm-icon-line-v absolute left-1/2 top-1/2 w-full h-[2px] bg-current rounded-[2px] -translate-x-1/2 -translate-y-1/2 [will-change:transform]"
-              />
-            </span>
-          </button>
+                    {/* Faccia Posteriore: Piastra di Petri */}
+                    <div className="sm-flip-back absolute inset-0 flex items-center justify-center">
+                      <PetriDishIcon className="w-7 h-7 text-current" />
+                    </div>
+                  </div>
+                </div>
+
+                {/* STRATO 2 (Barra Intermedia Superiore): Trasla in basso su Y e sfuma */}
+                <div className="sm-layer-2 absolute inset-0 z-2 pointer-events-none">
+                  <svg viewBox="0 0 36 36" fill="none" className="w-7 h-7 text-current">
+                    <path d="M 3 13 C 12 15.5, 24 15.5, 33 13 C 24 18.5, 12 18.5, 3 13 Z" fill="currentColor" />
+                  </svg>
+                </div>
+
+                {/* STRATO 3 (Barra Intermedia Inferiore): Trasla in basso su Y e sfuma */}
+                <div className="sm-layer-3 absolute inset-0 z-3 pointer-events-none">
+                  <svg viewBox="0 0 36 36" fill="none" className="w-7 h-7 text-current">
+                    <path d="M 3 20 C 12 22.5, 24 22.5, 33 20 C 24 25.5, 12 25.5, 3 20 Z" fill="currentColor" />
+                  </svg>
+                </div>
+
+                {/* STRATO 4 (Disco Inferiore): Trasla in basso su Y e sfuma */}
+                <div className="sm-layer-4 absolute inset-0 z-4 pointer-events-none">
+                  <svg viewBox="0 0 36 36" fill="none" className="w-7 h-7 text-current">
+                    <path d="M 3 27 C 12 29.5, 24 29.5, 33 27 C 33 34, 3 34, 3 27 Z" fill="currentColor" />
+                  </svg>
+                </div>
+              </div>
+            </button>
           </div>
         </header>
 
+        {/* Pannello menu laterale */}
         <aside
           id="staggered-menu-panel"
           ref={panelRef}
-          className="staggered-menu-panel absolute top-0 right-0 h-full bg-white dark:bg-black flex flex-col p-[6em_2em_2em_2em] overflow-y-auto z-10 backdrop-blur-[12px] pointer-events-auto"
-          style={{ WebkitBackdropFilter: 'blur(12px)' }}
+          className="staggered-menu-panel absolute top-0 right-0 h-full bg-white dark:bg-black flex flex-col p-[6em_2em_2em_2em] overflow-y-auto z-10 backdrop-blur-[16px] pointer-events-auto"
           aria-hidden={!open}
         >
           <div className="sm-panel-inner flex-1 flex flex-col gap-5">
             <ul
-              className="sm-panel-list list-none m-0 p-0 flex flex-col gap-2"
+              className="sm-panel-list list-none mt-8 mx-0 p-0 flex flex-col gap-2"
               role="list"
               data-numbering={displayItemNumbering || undefined}
             >
@@ -492,12 +285,13 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
                 items.map((it, idx) => (
                   <li className="sm-panel-itemWrap relative overflow-hidden leading-none" key={it.label + idx}>
                     <a
-                      className="sm-panel-item relative text-black dark:text-white font-semibold text-[4rem] cursor-pointer leading-none tracking-[-2px] uppercase transition-[background,color] duration-150 ease-linear inline-block no-underline pr-[1.4em]"
+                      className="sm-panel-item relative text-black dark:text-white font-semibold text-[3.5rem] sm:text-[4rem] cursor-pointer leading-none tracking-[-2px] uppercase transition-[background,color] duration-150 ease-linear inline-block no-underline pr-[2.2em]"
                       href={it.link}
                       aria-label={it.ariaLabel}
                       data-index={idx + 1}
+                      onClick={closeMenu}
                     >
-                      <span className="sm-panel-itemLabel inline-block [transform-origin:50%_100%] will-change-transform">
+                      <span className="sm-panel-itemLabel inline-block">
                         {it.label}
                       </span>
                     </a>
@@ -505,8 +299,8 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
                 ))
               ) : (
                 <li className="sm-panel-itemWrap relative overflow-hidden leading-none" aria-hidden="true">
-                  <span className="sm-panel-item relative text-black dark:text-white font-semibold text-[4rem] cursor-pointer leading-none tracking-[-2px] uppercase transition-[background,color] duration-150 ease-linear inline-block no-underline pr-[1.4em]">
-                    <span className="sm-panel-itemLabel inline-block [transform-origin:50%_100%] will-change-transform">
+                  <span className="sm-panel-item relative text-black dark:text-white font-semibold text-[3.5rem] sm:text-[4rem] cursor-pointer leading-none tracking-[-2px] uppercase transition-[background,color] duration-150 ease-linear inline-block no-underline pr-[2.2em]">
+                    <span className="sm-panel-itemLabel inline-block">
                       No items
                     </span>
                   </span>
@@ -516,7 +310,7 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
 
             {displaySocials && socialItems && socialItems.length > 0 && (
               <div className="sm-socials mt-auto pt-8 flex flex-col gap-3" aria-label="Social links">
-                <h3 className="sm-socials-title m-0 text-base font-medium [color:var(--sm-accent,#ff0000)]">Socials</h3>
+                <h3 className="sm-socials-title m-0 text-base font-medium [color:var(--sm-accent,#ff3131)]">Socials</h3>
                 <ul
                   className="sm-socials-list list-none m-0 p-0 flex flex-row items-center gap-4 flex-wrap"
                   role="list"
@@ -527,7 +321,7 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
                         href={s.link}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="sm-socials-link text-[1.2rem] font-medium text-[#111] no-underline relative inline-block py-[2px] transition-[color,opacity] duration-300 ease-linear"
+                        className="sm-socials-link text-[1.2rem] font-medium text-black dark:text-white no-underline relative inline-block py-[2px] transition-[color,opacity] duration-300 ease-linear"
                       >
                         {s.label}
                       </a>
@@ -540,62 +334,211 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
         </aside>
       </div>
 
+      {/* Stili CSS per la coreografia dell'icona (3D Flip + Traslazione Y) e animazioni menu */}
       <style>{`
 .sm-scope .staggered-menu-wrapper { position: relative; width: 100%; height: 100%; z-index: 40; pointer-events: none; }
 .sm-scope .staggered-menu-header { position: absolute; top: 0; left: 0; width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 2em; background: transparent; pointer-events: none; z-index: 20; }
 .sm-scope .staggered-menu-header > * { pointer-events: auto; }
 .sm-scope .sm-logo { display: flex; align-items: center; user-select: none; }
 .sm-scope .sm-logo-img { display: block; height: 32px; width: auto; object-fit: contain; }
-.sm-scope .sm-toggle { position: relative; display: inline-flex; align-items: center; gap: 0.3rem; background: transparent; border: none; cursor: pointer; color: #e9e9ef; font-weight: 500; line-height: 1; overflow: visible; }
+
+.sm-scope .sm-toggle {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  line-height: 1;
+  overflow: visible;
+}
 .sm-scope .sm-toggle:focus-visible { outline: 2px solid #ffffffaa; outline-offset: 4px; border-radius: 4px; }
-.sm-scope .sm-line:last-of-type { margin-top: 6px; }
-.sm-scope .sm-toggle-textWrap { position: relative; margin-right: 0.5em; display: inline-block; height: 1em; overflow: hidden; white-space: nowrap; width: var(--sm-toggle-width, auto); min-width: var(--sm-toggle-width, auto); }
-.sm-scope .sm-toggle-textInner { display: flex; flex-direction: column; line-height: 1; }
-.sm-scope .sm-toggle-line { display: block; height: 1em; line-height: 1; }
-.sm-scope .sm-icon { position: relative; width: 14px; height: 14px; flex: 0 0 14px; display: inline-flex; align-items: center; justify-content: center; will-change: transform; }
-.sm-scope .sm-panel-itemWrap { position: relative; overflow: hidden; line-height: 1; }
-.sm-scope .sm-icon-line { position: absolute; left: 50%; top: 50%; width: 100%; height: 2px; background: currentColor; border-radius: 2px; transform: translate(-50%, -50%); will-change: transform; }
-.sm-scope .sm-line { display: none !important; }
-.sm-scope .staggered-menu-panel { position: absolute; top: 0; right: 0; width: clamp(260px, 38vw, 420px); height: 100%; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); display: flex; flex-direction: column; padding: 6em 2em 2em 2em; overflow-y: auto; z-index: 10; transform: translateX(100%); }
-.sm-scope [data-position='left'] .staggered-menu-panel { right: auto; left: 0; transform: translateX(-100%); }
-/* Fallback CSS puro guidato da [data-open] (gia' settato via React state):
-   l'apertura/chiusura funziona sempre anche se le animazioni imperative
-   Framer Motion sopra non applicano il transform (osservato in questo
-   ambiente — animate() su ref DOM diretti non scrive mai transform inline).
-   Niente transition qui apposta: il componente re-renderizza spesso (header
-   con stato scroll-linked) e ricrea questo <style> a ogni render, il che
-   interrompe/resetta qualunque CSS transition prima che completi — uno scatto
-   istantaneo e' meno elegante ma affidabile, l'alternativa era "non si apre mai". */
-.sm-scope .staggered-menu-wrapper[data-open] .staggered-menu-panel { transform: translateX(0); }
-.sm-scope .sm-prelayers { position: absolute; top: 0; right: 0; bottom: 0; width: clamp(260px, 38vw, 420px); pointer-events: none; z-index: 5; }
+
+/* --- COREOGRAFIA TOGGLE ICON --- */
+/* Strato 1: Rotazione 3D Flip (rotateX) */
+.sm-scope .sm-flip-inner {
+  perspective: 600px;
+  transform-style: preserve-3d;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.sm-scope .sm-flip-front,
+.sm-scope .sm-flip-back {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  transition: opacity 0.35s ease;
+}
+.sm-scope .sm-flip-front {
+  transform: rotateX(0deg);
+  opacity: 1;
+}
+.sm-scope .sm-flip-back {
+  transform: rotateX(180deg);
+  opacity: 0;
+}
+.sm-scope .staggered-menu-wrapper[data-open] .sm-flip-inner {
+  transform: rotateX(180deg);
+}
+.sm-scope .staggered-menu-wrapper[data-open] .sm-flip-front {
+  opacity: 0;
+}
+.sm-scope .staggered-menu-wrapper[data-open] .sm-flip-back {
+  opacity: 1;
+}
+
+/* Strati 2, 3 e 4: Traslazione verso il basso sull'asse Y e dissolve alla riapertura */
+.sm-scope .sm-layer-2,
+.sm-scope .sm-layer-3,
+.sm-scope .sm-layer-4 {
+  transform: translateY(0%);
+  opacity: 1;
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease;
+}
+.sm-scope .staggered-menu-wrapper[data-open] .sm-layer-2 {
+  transform: translateY(14px);
+  opacity: 0;
+  transition-delay: 0s;
+}
+.sm-scope .staggered-menu-wrapper[data-open] .sm-layer-3 {
+  transform: translateY(24px);
+  opacity: 0;
+  transition-delay: 0.04s;
+}
+.sm-scope .staggered-menu-wrapper[data-open] .sm-layer-4 {
+  transform: translateY(34px);
+  opacity: 0;
+  transition-delay: 0.08s;
+}
+
+/* Prelayers (sfondi a cascata colorati) */
+.sm-scope .sm-prelayers {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: clamp(260px, 38vw, 420px);
+  pointer-events: none;
+  z-index: 5;
+  overflow: hidden;
+}
 .sm-scope [data-position='left'] .sm-prelayers { right: auto; left: 0; }
-/* Layer decorativo pensato per un'animazione di rivelazione a cascata
-   (via JS) dietro al pannello — quella coreografia non funziona (vedi sopra),
-   quindi di default restano nascosti invece di comparire come barre colorate
-   opache sempre visibili sul bordo dello schermo (bug osservato su mobile). */
-.sm-scope .sm-prelayer { position: absolute; top: 0; right: 0; height: 100%; width: 100%; transform: translateX(100%); }
+.sm-scope .sm-prelayer {
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 100%;
+  width: 100%;
+  transform: translateX(100%);
+  transition: transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+}
 .sm-scope [data-position='left'] .sm-prelayer { transform: translateX(-100%); }
+.sm-scope .staggered-menu-wrapper[data-open] .sm-prelayer { transform: translateX(0%); }
+.sm-scope .staggered-menu-wrapper[data-open] .sm-prelayer:nth-child(1) { transition-delay: 0s; }
+.sm-scope .staggered-menu-wrapper[data-open] .sm-prelayer:nth-child(2) { transition-delay: 0.05s; }
+.sm-scope .staggered-menu-wrapper[data-open] .sm-prelayer:nth-child(3) { transition-delay: 0.10s; }
+
+/* Panel principale */
+.sm-scope .staggered-menu-panel {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: clamp(260px, 38vw, 420px);
+  height: 100%;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  display: flex;
+  flex-direction: column;
+  padding: 6em 2em 2em 2em;
+  overflow-y: auto;
+  z-index: 10;
+  transform: translateX(100%);
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.sm-scope [data-position='left'] .staggered-menu-panel { right: auto; left: 0; transform: translateX(-100%); }
+.sm-scope .staggered-menu-wrapper[data-open] .staggered-menu-panel {
+  transform: translateX(0%);
+  transition-delay: 0.08s;
+}
+
+/* Animazione a cascata degli elementi di testo */
+.sm-scope .sm-panel-itemWrap { position: relative; overflow: hidden; line-height: 1; }
 .sm-scope .sm-panel-inner { flex: 1; display: flex; flex-direction: column; gap: 1.25rem; }
+.sm-scope .sm-panel-list { list-style: none; margin: 2rem 0 0; padding: 0; display: flex; flex-direction: column; gap: 0.5rem; }
+.sm-scope .sm-panel-item {
+  position: relative;
+  font-weight: 600;
+  font-size: clamp(2.2rem, 8vw, 4rem);
+  cursor: pointer;
+  line-height: 1;
+  letter-spacing: -2px;
+  text-transform: uppercase;
+  transition: background 0.25s, color 0.25s;
+  display: inline-block;
+  text-decoration: none;
+  padding-right: 2.2em;
+}
+
+.sm-scope .sm-panel-itemLabel {
+  display: inline-block;
+  will-change: transform, opacity;
+  transform: translateY(120%) rotate(6deg);
+  opacity: 0;
+  transform-origin: 0% 100%;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.6s ease;
+}
+.sm-scope .staggered-menu-wrapper[data-open] .sm-panel-itemLabel {
+  transform: translateY(0%) rotate(0deg);
+  opacity: 1;
+}
+
+.sm-scope .staggered-menu-wrapper[data-open] .sm-panel-itemWrap:nth-child(1) .sm-panel-itemLabel { transition-delay: 0.20s; }
+.sm-scope .staggered-menu-wrapper[data-open] .sm-panel-itemWrap:nth-child(2) .sm-panel-itemLabel { transition-delay: 0.26s; }
+.sm-scope .staggered-menu-wrapper[data-open] .sm-panel-itemWrap:nth-child(3) .sm-panel-itemLabel { transition-delay: 0.32s; }
+.sm-scope .staggered-menu-wrapper[data-open] .sm-panel-itemWrap:nth-child(4) .sm-panel-itemLabel { transition-delay: 0.38s; }
+.sm-scope .staggered-menu-wrapper[data-open] .sm-panel-itemWrap:nth-child(5) .sm-panel-itemLabel { transition-delay: 0.44s; }
+.sm-scope .staggered-menu-wrapper[data-open] .sm-panel-itemWrap:nth-child(6) .sm-panel-itemLabel { transition-delay: 0.50s; }
+
+.sm-scope .sm-panel-item:hover { color: var(--sm-accent, #ff3131); }
+.sm-scope .sm-panel-list[data-numbering] { counter-reset: smItem; }
+.sm-scope .sm-panel-list[data-numbering] .sm-panel-item::after {
+  counter-increment: smItem;
+  content: counter(smItem, decimal-leading-zero);
+  position: absolute;
+  top: 0.15em;
+  right: 0.3em;
+  font-size: 18px;
+  font-weight: 400;
+  color: var(--sm-accent, #ff3131);
+  letter-spacing: 0;
+  pointer-events: none;
+  user-select: none;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+.sm-scope .staggered-menu-wrapper[data-open] .sm-panel-list[data-numbering] .sm-panel-item::after {
+  opacity: 1;
+  transition-delay: 0.35s;
+}
+
+/* Social links */
 .sm-scope .sm-socials { margin-top: auto; padding-top: 2rem; display: flex; flex-direction: column; gap: 0.75rem; }
-.sm-scope .sm-socials-title { margin: 0; font-size: 1rem; font-weight: 500; color: var(--sm-accent, #ff0000); }
+.sm-scope .sm-socials-title { margin: 0; font-size: 1rem; font-weight: 500; color: var(--sm-accent, #ff3131); }
 .sm-scope .sm-socials-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: row; align-items: center; gap: 1rem; flex-wrap: wrap; }
-.sm-scope .sm-socials-list .sm-socials-link { opacity: 1; transition: opacity 0.3s ease; }
+.sm-scope .sm-socials-list .sm-socials-link { opacity: 1; transition: opacity 0.3s ease, color 0.3s ease; }
 .sm-scope .sm-socials-list:hover .sm-socials-link:not(:hover) { opacity: 0.35; }
 .sm-scope .sm-socials-list:focus-within .sm-socials-link:not(:focus-visible) { opacity: 0.35; }
 .sm-scope .sm-socials-list .sm-socials-link:hover,
 .sm-scope .sm-socials-list .sm-socials-link:focus-visible { opacity: 1; }
-.sm-scope .sm-socials-link:focus-visible { outline: 2px solid var(--sm-accent, #ff0000); outline-offset: 3px; }
-.sm-scope .sm-socials-link { font-size: 1.2rem; font-weight: 500; color: #111; text-decoration: none; position: relative; padding: 2px 0; display: inline-block; transition: color 0.3s ease, opacity 0.3s ease; }
-.sm-scope .sm-socials-link:hover { color: var(--sm-accent, #ff0000); }
-.sm-scope .sm-panel-title { margin: 0; font-size: 1rem; font-weight: 600; color: #fff; text-transform: uppercase; }
-.sm-scope .sm-panel-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.5rem; }
-.sm-scope .sm-panel-item { position: relative; font-weight: 600; font-size: clamp(2rem, 9vw, 4rem); cursor: pointer; line-height: 1; letter-spacing: -2px; text-transform: uppercase; transition: background 0.25s, color 0.25s; display: inline-block; text-decoration: none; padding-right: 1.4em; }
-.sm-scope .sm-panel-itemLabel { display: inline-block; will-change: transform; transform-origin: 50% 100%; }
-.sm-scope .sm-panel-item:hover { color: var(--sm-accent, #ff0000); }
-.sm-scope .sm-panel-list[data-numbering] { counter-reset: smItem; }
-.sm-scope .sm-panel-list[data-numbering] .sm-panel-item::after { counter-increment: smItem; content: counter(smItem, decimal-leading-zero); position: absolute; top: 0.1em; right: 3.2em; font-size: 18px; font-weight: 400; color: var(--sm-accent, #ff0000); letter-spacing: 0; pointer-events: none; user-select: none; opacity: var(--sm-num-opacity, 0); }
-@media (max-width: 1024px) { .sm-scope .staggered-menu-panel { width: 100%; left: 0; right: 0; } .sm-scope .staggered-menu-wrapper[data-open] .sm-logo-img { filter: invert(100%); } }
-@media (max-width: 640px) { .sm-scope .staggered-menu-panel { width: 100%; left: 0; right: 0; } .sm-scope .staggered-menu-wrapper[data-open] .sm-logo-img { filter: invert(100%); } }
+.sm-scope .sm-socials-link:focus-visible { outline: 2px solid var(--sm-accent, #ff3131); outline-offset: 3px; }
+.sm-scope .sm-socials-link { font-size: 1.2rem; font-weight: 500; text-decoration: none; position: relative; padding: 2px 0; display: inline-block; }
+.sm-scope .sm-socials-link:hover { color: var(--sm-accent, #ff3131); }
+
+@media (max-width: 1024px) {
+  .sm-scope .staggered-menu-panel { width: 100%; left: 0; right: 0; }
+  .sm-scope .staggered-menu-wrapper[data-open] .sm-logo-img { filter: invert(100%); }
+}
       `}</style>
     </div>
   );

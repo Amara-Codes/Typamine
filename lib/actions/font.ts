@@ -31,19 +31,116 @@ async function checkPermission(permission: string) {
   return session;
 }
 
+// D1 ha un limite di variabili bind per query: un findMany() su TUTTO
+// Ingredient con relation-load di variants/tags genera per ciascuna
+// relazione un `WHERE id IN (...)` con un parametro per ogni riga caricata —
+// con centinaia di font supera il limite e la query fallisce del tutto (vedi
+// stesso fix già applicato a getVirtualFormulas in lib/services/virtualFormula.ts).
+// Paginare in blocchi piccoli tiene ogni query ben sotto il limite a
+// prescindere da quanto cresce il catalogo.
+const INGREDIENT_FETCH_CHUNK_SIZE = 30;
+
 export async function getFonts() {
   await checkPermission("font:read");
-  return withCreatedAtBackfill(() =>
+  return withCreatedAtBackfill(async () => {
+    const results = [];
+    let skip = 0;
+    while (true) {
+      const batch = await prisma.ingredient.findMany({
+        include: { variants: true, tags: true },
+        // Tiebreaker su id: name da solo non è garantito univoco, e senza un
+        // ordine totale skip/take tra chiamate successive rischia di saltare
+        // o duplicare righe con lo stesso name.
+        orderBy: [{ name: "asc" }, { id: "asc" }],
+        skip,
+        take: INGREDIENT_FETCH_CHUNK_SIZE,
+      });
+      results.push(...batch);
+      if (batch.length < INGREDIENT_FETCH_CHUNK_SIZE) break;
+      skip += INGREDIENT_FETCH_CHUNK_SIZE;
+    }
+    return results;
+  });
+}
+
+export interface FontPickerPageItem {
+  id: string;
+  name: string;
+  category: string;
+  creator?: string;
+  variants: { woff2Url: string | null }[];
+}
+
+export interface FontsPageResult {
+  items: FontPickerPageItem[];
+  nextCursor: string | null;
+}
+
+// Paginazione cursor-based per FontPicker/FontMultiPicker in modalità
+// self-fetching (fetch progressivo allo scroll, vedi useInfinitePicker) —
+// ogni pagina è piccola (default 30) quindi la relation-load di `variants`
+// resta sempre ben sotto il limite di variabili bind di D1, indipendentemente
+// da quanti font ci sono in totale.
+export async function getFontsPage({
+  search = "",
+  cursor = null,
+  limit = 30,
+}: {
+  search?: string;
+  cursor?: string | null;
+  limit?: number;
+}): Promise<FontsPageResult> {
+  await checkPermission("font:read");
+
+  const trimmed = search.trim();
+  const where = trimmed ? { name: { contains: trimmed } } : undefined;
+
+  const rows = await withCreatedAtBackfill(() =>
     prisma.ingredient.findMany({
-      include: {
-        variants: true,
-        tags: true,
-      },
-      orderBy: {
-        name: "asc",
-      },
+      where,
+      select: { id: true, name: true, category: true, creator: true, variants: { select: { woff2Url: true }, take: 1 } },
+      orderBy: [{ name: "asc" }, { id: "asc" }],
+      take: limit + 1,
+      ...(cursor ? { cursor: { id: cursor }, skip: 1 } : {}),
     })
   );
+
+  const hasMore = rows.length > limit;
+  const page = hasMore ? rows.slice(0, limit) : rows;
+
+  return {
+    items: page.map((f) => ({
+      id: f.id,
+      name: f.name,
+      category: f.category,
+      creator: f.creator ?? undefined,
+      variants: f.variants,
+    })),
+    nextCursor: hasMore ? page[page.length - 1].id : null,
+  };
+}
+
+// Risolve font specifici per id (es. il font già selezionato, per mostrarne
+// il nome nel trigger del picker anche se non è ancora nella pagina caricata)
+// — mai più di qualche id per volta, nessun rischio di superare il limite D1.
+export async function getFontsByIds(ids: string[]): Promise<FontPickerPageItem[]> {
+  await checkPermission("font:read");
+  if (ids.length === 0) return [];
+
+  const rows = await withCreatedAtBackfill(() =>
+    prisma.ingredient.findMany({
+      where: { id: { in: ids } },
+      select: { id: true, name: true, category: true, creator: true, variants: { select: { woff2Url: true }, take: 1 } },
+    })
+  );
+
+  return rows.map((f) => ({
+    id: f.id,
+    name: f.name,
+    category: f.category,
+    creator: f.creator ?? undefined,
+    variants: f.variants,
+  }));
 }
 
 export async function getFontById(id: string) {

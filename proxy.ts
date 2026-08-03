@@ -15,6 +15,15 @@ function secureCompare(a: string, b: string): boolean {
   }
 }
 
+// Espone il pathname corrente ai Server Component (letto via `headers()` da
+// next/headers) — serve a (public)/layout.tsx per decidere se mostrare la
+// marquee "Homepage Top" solo su "/" senza dover fare quel check lato client.
+function withPathname(req: NextRequest): NextResponse {
+  const res = NextResponse.next();
+  res.headers.set('x-pathname', req.nextUrl.pathname);
+  return res;
+}
+
 export async function proxy(req: NextRequest) {
   const { pathname, searchParams } = req.nextUrl;
 
@@ -25,7 +34,7 @@ export async function proxy(req: NextRequest) {
   // 1. ANTILOOP: Se siamo già sul 404, non toccare nulla
   if (pathname.includes('/404')) {
     console.log('[Proxy] 404 page - allowing access');
-    return NextResponse.next();
+    return withPathname(req);
   }
 
   // 2. Gestione contatore cookie per /distributors
@@ -48,13 +57,13 @@ export async function proxy(req: NextRequest) {
   const isApiAuthRoute = pathname.includes('/api/auth');
   if (isApiAuthRoute) {
     console.log('[Proxy] API auth route - allowing access');
-    return NextResponse.next();
+    return withPathname(req);
   }
 
   // 4. Check se è una richiesta per risorse statiche
   if (pathname.match(/\.(jpg|jpeg|png|gif|svg|webp|ico|css|js|json)$/)) {
     console.log('[Proxy] Static resource - allowing access');
-    return NextResponse.next();
+    return withPathname(req);
   }
 
   // 5. Ottieni il token per verificare l'autenticazione
@@ -104,18 +113,18 @@ export async function proxy(req: NextRequest) {
     // Se è loggato e su /admin → lascia passare
     if (isAdminRoute) {
       console.log('[Proxy] ✅ Logged in user on admin route - allowing access');
-      return NextResponse.next();
+      return withPathname(req);
     }
     
     // Se è loggato su route pubbliche → lascia passare
     if (isWebsiteRoute || pathname === '/') {
       console.log('[Proxy] Logged in user on public route - allowing access');
-      return NextResponse.next();
+      return withPathname(req);
     }
     
     // Per tutte le altre route, lascia passare
     console.log('[Proxy] Logged in user on other route - allowing access');
-    return NextResponse.next();
+    return withPathname(req);
   }
 
   // 8. SCENARIO: UTENTE NON LOGGATO
@@ -143,12 +152,12 @@ export async function proxy(req: NextRequest) {
 
     // Tutte le route pubbliche (/, /about, ecc.) → lascia passare
     console.log('[Proxy] ✅ Public route - allowing access');
-    return NextResponse.next();
+    return withPathname(req);
   }
 
   // 9. Fallback: lascia passare
   console.log('[Proxy] Fallback - allowing access');
-  return NextResponse.next();
+  return withPathname(req);
 }
 
 export const config = {

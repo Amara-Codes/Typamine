@@ -264,6 +264,91 @@ export async function ensureD1SchemaUpdated(force = false) {
       } catch {}
     }
 
+    // 11. AdminSettings — riga singleton di configurazione globale, un campo
+    // per ogni sezione di /admin/settings (vedi schema.prisma per i commenti
+    // su ciascun gruppo). CREATE TABLE copre l'installazione da zero, gli
+    // addCol successivi coprono i DB già esistenti da prima di ogni singolo
+    // campo aggiunto in questa sezione.
+    try {
+      await prisma.$executeRawUnsafe(`
+        CREATE TABLE IF NOT EXISTS AdminSettings (
+          id TEXT PRIMARY KEY NOT NULL DEFAULT 'singleton',
+          marqueeActive BOOLEAN DEFAULT 0,
+          marqueeText TEXT,
+          marqueeType TEXT DEFAULT 'every_page',
+          marqueeTextColor TEXT,
+          marqueeBgColor TEXT,
+          createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+          updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP
+        )
+      `);
+    } catch {}
+    await addCol("AdminSettings", "marqueeType", "TEXT DEFAULT 'every_page'");
+
+    // General — Site Identity
+    await addCol("AdminSettings", "siteLanguage", "TEXT DEFAULT 'en'");
+    await addCol("AdminSettings", "siteTimezone", "TEXT DEFAULT 'UTC'");
+    await addCol("AdminSettings", "maintenanceActive", "BOOLEAN DEFAULT 0");
+    await addCol("AdminSettings", "maintenanceMessage", "TEXT");
+
+    // General — Brand Identity
+    await addCol("AdminSettings", "letterTFontFamily", "TEXT");
+    await addCol("AdminSettings", "letterTFontSizePercent", "INTEGER DEFAULT 100");
+    await addCol("AdminSettings", "logoLightModeColor", "TEXT");
+    await addCol("AdminSettings", "logoDarkModeColor", "TEXT");
+    await addCol("AdminSettings", "heroWordmarkFonts", "TEXT");
+    await addCol("AdminSettings", "heroWordmarkLoop", "BOOLEAN DEFAULT 1");
+    await addCol("AdminSettings", "heroWordmarkLoopSpeed", "REAL DEFAULT 0");
+
+    // Homepage Popup
+    await addCol("AdminSettings", "popupActive", "BOOLEAN DEFAULT 0");
+    await addCol("AdminSettings", "popupImageUrl", "TEXT");
+    await addCol("AdminSettings", "popupHeadline", "TEXT");
+    await addCol("AdminSettings", "popupMessage", "TEXT");
+    await addCol("AdminSettings", "popupCtaLabel", "TEXT");
+    await addCol("AdminSettings", "popupCtaLink", "TEXT");
+    await addCol("AdminSettings", "popupFrequency", "TEXT DEFAULT 'first_visit'");
+    await addCol("AdminSettings", "popupFrequencyDays", "INTEGER DEFAULT 7");
+
+    // Admin Communication
+    await addCol("AdminSettings", "emailProvider", "TEXT DEFAULT 'gmail_oauth2'");
+    await addCol("AdminSettings", "gmailClientId", "TEXT");
+    await addCol("AdminSettings", "gmailClientSecret", "TEXT");
+    await addCol("AdminSettings", "gmailSenderName", "TEXT");
+    await addCol("AdminSettings", "gmailConnected", "BOOLEAN DEFAULT 0");
+    await addCol("AdminSettings", "gmailConnectedEmail", "TEXT");
+    await addCol("AdminSettings", "credentialsVault", "TEXT");
+
+    // Integrations
+    await addCol("AdminSettings", "integrationsConfig", "TEXT");
+
+    // Notifications
+    await addCol("AdminSettings", "notificationChannels", "TEXT");
+    await addCol("AdminSettings", "slackWebhookUrl", "TEXT");
+
+    // Security & Access
+    await addCol("AdminSettings", "require2fa", "BOOLEAN DEFAULT 0");
+    await addCol("AdminSettings", "sessionTimeoutMinutes", "INTEGER DEFAULT 60");
+    await addCol("AdminSettings", "ipAllowlist", "TEXT");
+    await addCol("AdminSettings", "auditRetentionDays", "INTEGER DEFAULT 90");
+
+    // Legal & Compliance
+    await addCol("AdminSettings", "cookieBannerActive", "BOOLEAN DEFAULT 1");
+    await addCol("AdminSettings", "cookieBannerText", "TEXT");
+    await addCol("AdminSettings", "privacyPolicyUrl", "TEXT");
+    await addCol("AdminSettings", "termsOfServiceUrl", "TEXT");
+    await addCol("AdminSettings", "gdprRequestEmail", "TEXT");
+
+    // Stesso schema di bootstrap idempotente del blocco fontAuthor sopra —
+    // resource 'setting' già dichiarata in lib/rbac.ts ma finora inutilizzata.
+    for (const action of ["read", "update"]) {
+      try {
+        await prisma.$executeRawUnsafe(
+          `INSERT OR IGNORE INTO Permission (id, name, createdAt, updatedAt) VALUES ('${crypto.randomUUID()}', 'setting:${action}', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)`
+        );
+      } catch {}
+    }
+
     isMigrated = true;
   } catch (err) {
     console.error("[DbMigration] Error migrating D1 schema:", err);

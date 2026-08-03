@@ -100,11 +100,38 @@ function seedToFormula(seed: VirtualFormulaSeed): Formula {
  * reali. Fa un'unica fetch di ingredients/tags/prescriptions e deriva tutto
  * in memoria, invece di N query per tag/categoria/creator.
  */
+// D1 ha un limite di variabili bind per query (l'errore osservato, "too many
+// SQL variables", compare quando il catalogo supera qualche centinaio di
+// righe): un findMany() su TUTTI gli Ingredient con relation-load di
+// tags/variants/author genera per ciascuna relazione un `WHERE id IN (...)`
+// con un parametro per ogni ingredient caricato. Paginando in blocchi
+// piccoli teniamo ogni query ben sotto il limite indipendentemente da quanto
+// cresce il catalogo, invece di un'unica findMany() che prima o poi rompe di
+// nuovo appena si superano altre poche decine di font.
+const INGREDIENT_FETCH_CHUNK_SIZE = 30;
+
+async function fetchAllIngredientsChunked() {
+  const results: Awaited<ReturnType<typeof prisma.ingredient.findMany<{ include: { tags: true; variants: true; author: true } }>>> = [];
+  let skip = 0;
+  while (true) {
+    const batch = await prisma.ingredient.findMany({
+      include: { tags: true, variants: true, author: true },
+      orderBy: { id: "asc" },
+      skip,
+      take: INGREDIENT_FETCH_CHUNK_SIZE,
+    });
+    results.push(...batch);
+    if (batch.length < INGREDIENT_FETCH_CHUNK_SIZE) break;
+    skip += INGREDIENT_FETCH_CHUNK_SIZE;
+  }
+  return results;
+}
+
 export const getVirtualFormulas = unstable_cache(
   async (): Promise<Formula[]> => {
   const [rawIngredients, tags, prescriptions] = await withSafeDbQuery(() =>
     Promise.all([
-      prisma.ingredient.findMany({ include: { tags: true, variants: true, author: true } }),
+      fetchAllIngredientsChunked(),
       prisma.tag.findMany(),
       prisma.prescription.findMany({
         where: { published: true },

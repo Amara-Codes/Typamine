@@ -15,6 +15,7 @@ interface CustomRangeProps {
     glow?: boolean;
     showCurrentValue?: boolean;
     showMinMax?: boolean;
+    unit?: string; // Es: "%", "x" — appeso al valore corrente mostrato
 }
 
 export const CustomRange: React.FC<CustomRangeProps> = ({
@@ -30,16 +31,24 @@ export const CustomRange: React.FC<CustomRangeProps> = ({
     glow = false,
     showCurrentValue = true,
     showMinMax = false,
+    unit = "",
 }) => {
     const trackRef = useRef<HTMLDivElement>(null);
+
+    const decimals = (() => {
+        const s = String(step);
+        const dot = s.indexOf(".");
+        return dot === -1 ? 0 : s.length - dot - 1;
+    })();
 
     const calculateValue = useCallback((clientX: number) => {
         if (!trackRef.current) return;
         const rect = trackRef.current.getBoundingClientRect();
         const percent = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
         const rawValue = min + percent * (max - min);
-        return Math.round(rawValue / step) * step;
-    }, [min, max, step]);
+        const snapped = Math.round(rawValue / step) * step;
+        return parseFloat(snapped.toFixed(decimals));
+    }, [min, max, step, decimals]);
 
     const handleInteraction = (clientX: number) => {
         const newValue = calculateValue(clientX);
@@ -54,7 +63,7 @@ export const CustomRange: React.FC<CustomRangeProps> = ({
             {(label || showCurrentValue) && (
                 <div className="flex justify-between items-center select-none mb-0">
                     {label && <Label className="mb-0 select-none">{label}</Label>}
-                    {showCurrentValue && <span className={`text-[10px] font-bold ${textColor}`}>{value}</span>}
+                    {showCurrentValue && <span className={`text-[10px] font-bold ${textColor}`}>{value}{unit}</span>}
                 </div>
             )}
 
