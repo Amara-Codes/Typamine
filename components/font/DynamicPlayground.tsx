@@ -23,7 +23,7 @@ export const DynamicPlayground: React.FC<DynamicPlaygroundProps> = ({
     >
 
       {/* Header of the Sandbox Panel */}
-      <div className="border-b border-zinc-200 dark:border-zinc-800 bg-white dark:bg-black px-8 py-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+      <div className="border-b border-zinc-200 dark:border-zinc-800 bg-white dark:bg-black px-4 py-3 md:px-8 md:py-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
 
         <h2 className="font-haas text-xs font-bold tracking-widest text-blue uppercase">
           Live Test
@@ -37,7 +37,7 @@ export const DynamicPlayground: React.FC<DynamicPlaygroundProps> = ({
 
 
         {/* Interactive Live Preview */}
-        <div className={cn(!hideFontSelector && "lg:col-span-3", "p-6")}>
+        <div className={cn(!hideFontSelector && "lg:col-span-3", "p-0 md:p-6")}>
           <LivePreview
             fontName={activeFont.name}
             fontFamilyCss={activeFont.fontFamily}
@@ -50,6 +50,8 @@ export const DynamicPlayground: React.FC<DynamicPlaygroundProps> = ({
             showBgColorControl
             showLineHeightControl
             showLetterSpacingControl
+            mobileControlsInModal
+            rounded={false}
           />
         </div>
       </div>

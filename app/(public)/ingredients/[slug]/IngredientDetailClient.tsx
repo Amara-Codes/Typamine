@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { MoveLeft, Sparkles, ArrowRight, FileSignature } from "lucide-react";
+import { MoveLeft, Sparkles, ArrowRight, FileSignature, Download, Loader2 } from "lucide-react";
 import MinimalLink from "@/components/common/MinimalLink";
 import { useThemeStore } from "@/store/themeStore";
 import Grainient from "@/components/cherry/Grainient";
@@ -213,6 +213,16 @@ export default function IngredientDetailClient({ ingredient, hasPairings = false
           hideFontSelector={true}
         />
       )}
+
+      {/* Download: su desktop è nell'header, su mobile è nascosto lì e ripetuto qui sotto il playground */}
+      <button
+        onClick={handleDownloadClick}
+        disabled={!sourceUrl || isDownloading}
+        className="md:hidden w-full px-5 py-3 bg-red text-black font-haas font-bold text-xs rounded hover:bg-red-600 transition-colors glow-red disabled:opacity-50 disabled:pointer-events-none flex items-center justify-center gap-2"
+      >
+        {isDownloading ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Download className="h-3.5 w-3.5" />}
+        {isDownloading ? "PREPARING..." : "DOWNLOAD WOFF2"}
+      </button>
 
       <BaseModal isOpen={isLicenseModalOpen} onClose={() => setIsLicenseModalOpen(false)} size="md">
         <BaseModal.Header onClose={() => setIsLicenseModalOpen(false)}>

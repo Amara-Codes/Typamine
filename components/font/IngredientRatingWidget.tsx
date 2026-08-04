@@ -83,7 +83,7 @@ export default function IngredientRatingWidget({
     <div
       className={
         bare
-          ? "flex flex-col sm:flex-row sm:items-center gap-4 w-full"
+          ? "flex flex-col md:flex-row md:items-center gap-4 w-full"
           : "p-6 border border-black/5 dark:border-white/5 rounded-lg backdrop-blur-xl bg-white/40 dark:bg-zinc-900/40 flex flex-col sm:flex-row sm:items-center gap-4"
       }
     >
@@ -103,10 +103,10 @@ export default function IngredientRatingWidget({
         </div>
       </div>
 
-      <div className="hidden sm:block w-px h-10 bg-black/10 dark:bg-white/10" />
+      <div className="hidden md:block w-px h-10 bg-black/10 dark:bg-white/10" />
 
       {/* Users Score */}
-      <div className="flex flex-col gap-2">
+      <div className="hidden md:flex flex-col gap-2">
         <p className="font-haas text-[10px] uppercase tracking-widest text-zinc-500 dark:text-zinc-400">Users Score</p>
         <div className="flex items-center gap-2">
           {isRevealed ?
@@ -122,7 +122,7 @@ export default function IngredientRatingWidget({
 
 
       {/* Vote CTA */}
-      <div className="flex items-center gap-3 sm:ml-auto">
+      <div className="flex items-center gap-3 justify-between w-full md:w-auto md:justify-start md:ml-auto">
         {hasVoted ? (
           <span className="flex items-center gap-1.5 font-haas text-xs font-bold text-emerald-500">
             <Check className="h-4 w-4 shrink-0" />
