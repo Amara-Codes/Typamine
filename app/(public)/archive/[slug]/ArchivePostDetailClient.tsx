@@ -90,8 +90,8 @@ export default function ArchivePostDetailClient({ post }: ArchivePostDetailClien
               Senza font e senza insight: il dossier resta qui, full width. */}
           {(hasFonts || !hasInsight) && (
             <div className="mx-auto w-full px-4 sm:px-6 lg:px-8 space-y-6">
-              <div className={`mx-auto flex flex-col ${hasFonts ? "w-full bg-ocragray-200/50 dark:bg-ocragray-900/50 p-6" : ""}`}>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-4 lg:gap-8 items-stretch mb-8">
+              <div className={`mx-auto flex flex-col ${hasFonts ? "w-full bg-ocragray-200/50 dark:bg-ocragray-900/50 p-6 mb-8" : ""}`}>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-4 lg:gap-8 items-stretch">
                   <DossierPanel
                     post={post}
                     tags={tags}
@@ -117,7 +117,7 @@ export default function ArchivePostDetailClient({ post }: ArchivePostDetailClien
       </DoubleHero>
 
       {hasFonts && hasInsight && (
-        <div className="mx-auto w-full lg:px-8 mt-8">
+        <div className="mx-auto w-full lg:px-8 mt-8 lg:mt-8">
           <div className="w-full mx-auto flex flex-col bg-ocragray-200/50 dark:bg-ocragray-900/50 p-4 lg:py-12">
             <section className="space-y-4">
               <PostInsightPageRenderer content={post.insight as string} section="archive" />

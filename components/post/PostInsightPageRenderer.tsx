@@ -166,7 +166,7 @@ export default function PostInsightPageRenderer({ content, section }: PostInsigh
                   colorClassName={props.colorClassName}
                   bgColorClassName={props.bgColorClassName}
                   className={cn(
-                    "p-8 backdrop-blur-md",
+                    "lg:mx-8 p-8 backdrop-blur-md",
                     fallbackBgClass,
                     FONT_FAMILIES_MAP[props.fontFamily],
                     section === "blog" && BLOG_QUOTE_SHAPE
