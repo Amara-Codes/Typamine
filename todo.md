@@ -32,6 +32,8 @@ ________________________________
 [[in fonts e pairings rimanda a labs con query oparma per generare i font face, le classi di tailwind, css standard etc ]] --> DONE
 
 [[aggiungere pagina fotn author. tipo pagina di una persona con una griglia che mostra tutti i suoi font. inserisci una breve bio etc... ]] -> DONE
+
+[[contorllare licenze per font ch uso nel sito tipo star avenue. ]] -> DONE
  __________________________________
 
 uniformare ux/ui colri di admin, margini, padding... colori [90%]
@@ -39,14 +41,11 @@ uniformare ux/ui colri di admin, margini, padding... colori [90%]
 
 integrare tutti i nuovi campi di admin/settings, pulire alcuni form. controllare il data model di font author 
 
-contorllare licenze per font ch uso nel sito tipo star avenue. 
 
-brandmark e logo, polish finale
+brandmark e logo, polish finale [99%]
 
 mobile ui polish finale (tipo pageheaders nn serve, alcuni effetti)
 
 migliorare mobile menu trigger etc 
 
 security checks 
-
-
