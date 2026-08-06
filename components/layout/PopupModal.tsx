@@ -72,7 +72,7 @@ export default function PopupModal({ settings }: PopupModalProps) {
           </div>
         )}
         {settings.popupHeadline && (
-          <h3 className="font-star text-2xl sm:text-3xl text-black dark:text-white">{settings.popupHeadline}</h3>
+          <h3 className="font-rezland text-2xl sm:text-3xl text-black dark:text-white">{settings.popupHeadline}</h3>
         )}
         {settings.popupMessage && (
           <p className="text-sm text-zinc-600 dark:text-zinc-300 leading-relaxed">{settings.popupMessage}</p>

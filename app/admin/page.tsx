@@ -122,7 +122,7 @@ export default async function AdminDashboard() {
 
       {hasQuickActions && (
         <div className="space-y-3 w-1/4 shrink-0">
-          <h2 className="text-4xl font-star font-black uppercase tracking-widest text-center text-white dark:text-red-200">
+          <h2 className="text-4xl font-rezland font-black uppercase tracking-widest text-center text-white dark:text-red-200">
             Quick Actions
           </h2>
           <div className="grid grid-cols-1 gap-4">

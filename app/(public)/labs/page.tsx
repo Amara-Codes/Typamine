@@ -99,7 +99,7 @@ export default async function LabsPage({ searchParams }: LabsPageProps) {
                 />
 
                 <div className="relative z-10 flex items-center justify-end gap-2">
-                  <h3 className="font-star text-2xl font-bold text-black dark:text-white">{tool.title}</h3>
+                  <h3 className="font-rezland text-2xl font-bold text-black dark:text-white">{tool.title}</h3>
                 </div>
 
                 <p className="relative z-10 text-black/80 dark:text-white/80 text-md leading-relaxed flex-1">

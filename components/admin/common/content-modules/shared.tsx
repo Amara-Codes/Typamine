@@ -53,13 +53,12 @@ export const PAGE_THEMES = [
 // "ingredienti"), utilizzabili anche per il testo dei content module.
 export const FONT_FAMILIES = [
   { id: 'standard', label: 'Standard (Haas Grotesk)', class: 'font-haas' },
-  { id: 'star', label: 'Star Avenue (Display)', class: 'font-star' },
   { id: 'jakarta', label: 'Plus Jakarta Sans', class: 'font-jakarta' },
-  { id: 'alien', label: 'Alien Encounters', class: 'font-alien' },
-  { id: 'dimitri', label: 'Dimitri', class: 'font-dimitri' },
-  { id: 'negativesys', label: 'Negative Sys', class: 'font-negativesys' },
-  { id: 'positivesys', label: 'Positive Sys', class: 'font-positivesys' },
-  { id: 'typoxel', label: 'Typo Pixel', class: 'font-typoxel' },
+  { id: 'rezland', label: 'Rezland', class: 'font-rezland' },
+  { id: 'candyhaus', label: 'Candy Haus', class: 'font-candyhaus' },
+  { id: 'galaxytail', label: 'Galaxy Tail', class: 'font-galaxytail' },
+  { id: 'ikosdubOutline', label: 'Ikos Dub Outline', class: 'font-ikosdub-outline' },
+  { id: 'ikosdubSolid', label: 'Ikos Dub Solid', class: 'font-ikosdub-solid' },
 ];
 
 export const SITE_COLORS = [
@@ -888,7 +887,7 @@ export function GranularBGColorPickerButton({ label, value = "", onChange, theme
       <BaseModal isOpen={isOpen} onClose={() => setIsOpen(false)} size="4xl">
         <BaseModal.Header onClose={() => setIsOpen(false)}>
           <div className="flex items-end justify-between w-full pr-4">
-            <span className="text-2xl font-star text-black dark:text-white">{label}</span>
+            <span className="text-2xl font-rezland text-black dark:text-white">{label}</span>
             <div className="flex p-1 bg-black/5 dark:bg-white/5 rounded-xl w-64">
               <button
                 type="button"

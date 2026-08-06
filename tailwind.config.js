@@ -43,13 +43,12 @@ module.exports = {
       fontFamily: {
         haas: ["var(--font-haas)", "sans-serif"],
         jakarta: ["var(--font-jakarta)", "sans-serif"],
-        star: ["var(--font-star)", "sans-serif"],
-        alien: ["var(--font-alien)", "sans-serif"],
-        dimitri: ["var(--font-dimitri)", "sans-serif"],
-        negativesys: ["var(--font-negativesys)", "sans-serif"],
-        positivesys: ["var(--font-positivesys)", "sans-serif"],
-        typoxel: ["var(--font-typoxel)", "sans-serif"],
-        
+        rezland: ["var(--font-rezland)", "sans-serif"],
+        candyhaus: ["var(--font-candyhaus)", "sans-serif"],
+        galaxytail: ["var(--font-galaxytail)", "sans-serif"],
+        "ikosdub-outline": ["var(--font-ikosdub-outline)", "sans-serif"],
+        "ikosdub-solid": ["var(--font-ikosdub-solid)", "sans-serif"],
+
       },
       keyframes: {
         "bounce-x": {

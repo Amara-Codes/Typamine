@@ -104,7 +104,7 @@ export async function POST(request: NextRequest) {
         for (const [folderName, files] of folders) {
           index += 1;
           const familyName = folderName.trim();
-          send({ type: "log", message: `[${index}/${total}] Processing "${familyName}"...` });
+          send({ type: "log", message: `[${index}/${total}] Processing "${familyName}" (${files.length} font file${files.length === 1 ? "" : "s"} found)...` });
 
           try {
             const slug = slugify(familyName);
@@ -214,7 +214,10 @@ export async function POST(request: NextRequest) {
             });
 
             imported.push(familyName);
-            send({ type: "log", message: `Imported "${familyName}" (${createdVariants.length} variant${createdVariants.length === 1 ? "" : "s"}).` });
+            send({
+              type: "log",
+              message: `✓ Imported "${familyName}" — ${createdVariants.length} variant${createdVariants.length === 1 ? "" : "s"} converted to WOFF2 and uploaded${isVariable ? " (variable font)" : ""}, author pending review (placeholder: Local Bulk Upload).`,
+            });
           } catch (folderErr: any) {
             console.error(`[Bulk Import Zip] Error importing folder ${folderName}:`, folderErr);
             failed.push({ family: folderName, error: folderErr.message || "Unknown error" });

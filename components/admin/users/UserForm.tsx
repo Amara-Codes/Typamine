@@ -38,18 +38,18 @@ export default function UserForm({ user, roles }: { user?: any, roles: any[] }) 
 
   return (
     <form action={dispatch} className="max-w-6xl ml-auto space-y-8 pb-20 transition-colors duration-300">
-      <FormActions 
-        backLink="/admin/users" 
-        backLabel="Back to users list" 
-        buttonLabel={user ? "Update Account" : "Create User"} 
+      <FormActions
+        backLink="/admin/users"
+        backLabel="Back to users list"
+        buttonLabel={user ? "Update Account" : "Create User"}
       />
 
       <div className="bg-zinc-100/40 dark:bg-zinc-900 border border-black/5 dark:border-white/5 rounded-2xl p-8 sm:p-10 shadow-2xl backdrop-blur-xl transition-all hover:shadow-zinc-900/5">
         <div className="flex flex-col justify-end mb-10 border-b border-black/5 dark:border-white/5 pb-6">
 
-            <h3 className="text-4xl font-star text-black dark:text-white">User Identity</h3>
-            <p className="text-[10px] ps-2 uppercase tracking-widest font-bold text-bluegray-800 dark:text-redgray-200 mt-1">Configure administrator access and profile details</p>
-       
+          <h3 className="text-4xl font-rezland text-black dark:text-white">User Identity</h3>
+          <p className="text-[10px] ps-2 uppercase tracking-widest font-bold text-bluegray-800 dark:text-redgray-200 mt-1">Configure administrator access and profile details</p>
+
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 lg:gap-16">
@@ -205,14 +205,14 @@ export default function UserForm({ user, roles }: { user?: any, roles: any[] }) 
           </div>
         </div>
       </div>
-      
+
       <BaseModal isOpen={showErrorModal} onClose={() => setShowErrorModal(false)} size="md">
         <BaseModal.Header onClose={() => setShowErrorModal(false)}>
-             <div className="flex items-end gap-4">
+          <div className="flex items-end gap-4">
             <div className="p-2 bg-red-500/10 rounded-lg">
               <AlertCircle className="w-6 h-6 text-red-500" />
             </div>
-            <h2 className="text-2xl font-star text-black dark:text-white">User Profile Update Failed</h2>
+            <h2 className="text-2xl font-rezland text-black dark:text-white">User Profile Update Failed</h2>
           </div>
         </BaseModal.Header>
         <BaseModal.Body>
@@ -226,7 +226,7 @@ export default function UserForm({ user, roles }: { user?: any, roles: any[] }) 
           </div>
         </BaseModal.Body>
         <BaseModal.Footer>
-          <button 
+          <button
             type="button"
             onClick={() => setShowErrorModal(false)}
             className="w-full py-4 bg-red-500 text-white rounded-xl font-black uppercase tracking-tighter hover:bg-red-600 transition-all shadow-lg"

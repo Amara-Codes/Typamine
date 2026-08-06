@@ -151,7 +151,7 @@ export default function PostListClient({ postType, posts, totalCount, canUpdate,
               className: "w-1/4 min-w-0",
               render: (p: any) => (
                 <div className="min-w-0 w-full py-1">
-                  <p className="font-star text-2xl font-bold text-black dark:text-white leading-tight truncate" title={p.title}>
+                  <p className="font-rezland text-2xl font-bold text-black dark:text-white leading-tight truncate" title={p.title}>
                     {p.title}
                   </p>
                   <p className="text-[10px] text-blue-400 dark:text-red-400 font-bold uppercase tracking-widest mt-1 truncate">
@@ -238,12 +238,12 @@ export default function PostListClient({ postType, posts, totalCount, canUpdate,
             <div className="p-2 rounded-xl bg-red/10">
               <AlertTriangle className="w-6 h-6 text-red" />
             </div>
-            <h2 className="text-2xl font-star text-black dark:text-white">Confirm Bulk Deletion</h2>
+            <h2 className="text-2xl font-rezland text-black dark:text-white">Confirm Bulk Deletion</h2>
           </div>
         </BaseModal.Header>
         <BaseModal.Body>
           <div className="space-y-4">
-            <p className="text-xl font-star text-center mb-8 font-bold text-black dark:text-white leading-tight">
+            <p className="text-xl font-rezland text-center mb-8 font-bold text-black dark:text-white leading-tight">
               Delete {selectedIds.length} selected post{selectedIds.length !== 1 && "s"}?
             </p>
             <p className="text-sm text-zinc-500 dark:text-zinc-400 leading-relaxed">

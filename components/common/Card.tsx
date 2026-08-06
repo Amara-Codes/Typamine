@@ -72,7 +72,7 @@ export function CardHeader({
       ) : (
         <div className="text-left space-y-1 min-w-0">
           {title && (
-            <h3 className="text-4xl font-star text-black dark:text-white truncate leading-tight">
+            <h3 className="text-4xl font-rezland text-black dark:text-white truncate leading-tight">
               {title}
             </h3>
           )}

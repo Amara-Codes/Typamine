@@ -35,6 +35,9 @@ export default function AIFontQualityButton() {
     failed: Array<{ family: string; error: string }>;
   } | null>(null);
 
+  const [isCancelling, setIsCancelling] = useState(false);
+  const cancelRequestedRef = useRef(false);
+
   const terminalRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -49,6 +52,8 @@ export default function AIFontQualityButton() {
     setResults(null);
     setProgress(0);
     setLogs([]);
+    cancelRequestedRef.current = false;
+    setIsCancelling(false);
     try {
       const fonts = await getFontsNeedingQualityReview();
       setCandidates(fonts);
@@ -71,6 +76,11 @@ export default function AIFontQualityButton() {
     let lastRequestAt = 0;
 
     for (let i = 0; i < candidates.length; i++) {
+      if (cancelRequestedRef.current) {
+        setLogs(prev => [...prev, `Cancelled by user after ${i}/${candidates.length} font(s).`].slice(-40));
+        break;
+      }
+
       const font = candidates[i];
 
       const elapsed = Date.now() - lastRequestAt;
@@ -105,6 +115,12 @@ export default function AIFontQualityButton() {
     }
   };
 
+  const handleCancel = () => {
+    cancelRequestedRef.current = true;
+    setIsCancelling(true);
+    setLogs(prev => [...prev, "Cancelling after the current font finishes..."].slice(-40));
+  };
+
   const close = () => {
     setIsOpen(false);
     setPhase("idle");
@@ -112,19 +128,19 @@ export default function AIFontQualityButton() {
 
   return (
     <>
-    <Card roundness="lg" visualHover className="!h-fit cursor-pointer" onClick={openModal}>
-      <div className="p-2 flex items-center gap-4">
-        <div className="h-8 w-8 shrink-0 rounded-sm border flex items-center justify-center bg-purple-500/10 border-purple-500/20">
-          <Sparkles className="h-4 w-4 text-purple-800" />
+      <Card roundness="lg" visualHover className="!h-fit cursor-pointer" onClick={openModal}>
+        <div className="p-2 flex items-center gap-4">
+          <div className="h-8 w-8 shrink-0 rounded-sm border flex items-center justify-center bg-purple-500/10 border-purple-500/20">
+            <Sparkles className="h-4 w-4 text-purple-800" />
+          </div>
+          <div className="min-w-0">
+            <p className="text-sm font-bold text-black dark:text-white truncate">Review Fonts with AI</p>
+            <p className="text-[10px] uppercase tracking-widest font-bold text-zinc-500 dark:text-zinc-400 truncate">
+              Rating &amp; tags lookup
+            </p>
+          </div>
         </div>
-        <div className="min-w-0">
-          <p className="text-sm font-bold text-black dark:text-white truncate">Review Fonts with AI</p>
-          <p className="text-[10px] uppercase tracking-widest font-bold text-zinc-500 dark:text-zinc-400 truncate">
-            Rating &amp; tags lookup
-          </p>
-        </div>
-      </div>
-    </Card>
+      </Card>
 
       {isOpen && (
         <BaseModal isOpen={isOpen} onClose={() => (phase !== "running" ? close() : undefined)} size="lg">
@@ -135,7 +151,7 @@ export default function AIFontQualityButton() {
                   <Sparkles className="h-5 w-5 text-cyan-500" />
                 </div>
                 <div className="min-w-0">
-                  <h3 className="text-2xl font-star text-black dark:text-white leading-tight">AI Quality Review</h3>
+                  <h3 className="text-2xl font-rezland text-black dark:text-white leading-tight">AI Quality Review</h3>
                   <p className="text-[10px] uppercase tracking-widest font-bold text-zinc-500 dark:text-zinc-400 mt-0.5">
                     Community rating &middot; Tags
                   </p>
@@ -245,40 +261,66 @@ export default function AIFontQualityButton() {
 
           <BaseModal.Footer>
             {phase === "ready" && (
+              <div className="flex gap-2 w-full">
+                <Button
+                  variant="secondary"
+                  size="md"
+                  roundness="md"
+                  onClick={close}
+                  className="font-bold"
+                >
+                  Cancel
+                </Button>
+                <Button
+                  variant="primary"
+                  size="md"
+                  roundness="md"
+                  disabled={candidates.length === 0}
+                  onClick={runReview}
+                  fullWidth
+                  className="flex items-center justify-center gap-2 font-bold"
+                >
+                  <Sparkles className="h-4 w-4" />
+                  {candidates.length === 0 ? "Nothing to review" : `Review ${candidates.length} font(s) with AI`}
+                </Button>
+              </div>
+            )}
+            {phase === "running" && (
+              <div className="flex gap-2 w-full">
+                <Button
+                  variant="secondary"
+                  size="md"
+                  roundness="md"
+                  disabled={isCancelling}
+                  onClick={handleCancel}
+                  className="font-bold"
+                >
+                  {isCancelling ? "Cancelling..." : "Cancel"}
+                </Button>
+                <Button
+                  variant="secondary"
+                  size="md"
+                  roundness="md"
+                  disabled
+                  fullWidth
+                  className="flex items-center justify-center gap-2 font-bold"
+                >
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                  Reviewing...
+                </Button>
+              </div>
+            )}
+            {phase === "done" && (
               <Button
                 variant="primary"
                 size="md"
                 roundness="md"
-                disabled={candidates.length === 0}
-                onClick={runReview}
-                fullWidth
-                className="flex items-center justify-center gap-2 font-bold"
-              >
-                <Sparkles className="h-4 w-4" />
-                {candidates.length === 0 ? "Nothing to review" : `Review ${candidates.length} font(s) with AI`}
-              </Button>
-            )}
-            {(phase === "running" || phase === "done") && (
-              <Button
-                variant={phase === "done" ? "primary" : "secondary"}
-                size="md"
-                roundness="md"
-                disabled={phase !== "done"}
                 onClick={close}
                 fullWidth
                 className="flex items-center justify-center gap-2 font-bold"
               >
-                {phase === "done" ? (
-                  <>
-                    <CheckCircle2 className="h-4 w-4" />
-                    Done
-                  </>
-                ) : (
-                  <>
-                    <Loader2 className="h-4 w-4 animate-spin" />
-                    Reviewing...
-                  </>
-                )}
+                <CheckCircle2 className="h-4 w-4" />
+                Done
               </Button>
             )}
           </BaseModal.Footer>

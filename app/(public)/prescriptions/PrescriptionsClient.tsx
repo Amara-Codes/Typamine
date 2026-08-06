@@ -7,6 +7,7 @@ import { PageHeading } from "@/components/common/PageHeading";
 import { Cta } from "@/components/common/Cta";
 import { useThemeStore } from "@/store/themeStore";
 import { SearchSortFilter } from "@/components/common/SearchSortFilter";
+import { useListScrollRestoration } from "@/lib/hooks/useListScrollRestoration";
 
 const SORT_OPTIONS = [
   { label: "NEWEST FIRST", value: "recent" },
@@ -25,6 +26,7 @@ interface PrescriptionsClientProps {
 // boundary.
 export default function PrescriptionsClient({ tags, children }: PrescriptionsClientProps) {
   const { theme } = useThemeStore();
+  useListScrollRestoration();
 
   return (
     <div className="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 pt-28 pb-8 space-y-8">
@@ -51,7 +53,7 @@ export default function PrescriptionsClient({ tags, children }: PrescriptionsCli
       {children}
 
       <Cta
-        title={<>The <span className="text-blue dark:text-red font-star px-2">Vintage</span> Archive</>}
+        title={<>The <span className="text-blue dark:text-red font-rezland px-2">Vintage</span> Archive</>}
         subtitle="Explore our curated collection of vintage posters, spanning from Soviet propaganda and 1950s sci-fi to Bauhaus, Futurism, and Art Deco."
         align="center"
         bgImage="/images/prescriptions/cta-bg.png"

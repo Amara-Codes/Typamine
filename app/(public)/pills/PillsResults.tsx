@@ -35,7 +35,7 @@ export default async function PillsResults({ page, perPage, tagIds, search, sort
 
       {posts.length === 0 && (
         <div className="text-center py-16 border border-dashed border-zinc-200 dark:border-zinc-800 rounded-lg text-zinc-500 dark:text-zinc-400 font-haas">
-          <p className="font-star text-2xl text-black dark:text-white mb-2">No pills yet</p>
+          <p className="font-rezland text-2xl text-black dark:text-white mb-2">No pills yet</p>
           <p className="text-sm">
             {hasActiveFilters ? "No posts match this search." : "No posts have been published yet."}
           </p>

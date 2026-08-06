@@ -7,6 +7,7 @@ import { useThemeStore } from "@/store/themeStore";
 import { Cta } from "@/components/common/Cta";
 import { Button } from "@/components/common/Button";
 import { SearchSortFilter } from "@/components/common/SearchSortFilter";
+import { useListScrollRestoration } from "@/lib/hooks/useListScrollRestoration";
 
 const CATEGORY_OPTIONS = [
   { label: "ALL FONT CATEGORIES", value: "ALL" },
@@ -44,6 +45,7 @@ interface IngredientsClientProps {
 // Suspense boundary.
 export default function IngredientsClient({ tags, children }: IngredientsClientProps) {
   const { theme } = useThemeStore();
+  useListScrollRestoration();
 
   return (
     <div className="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 pt-28 pb-8 space-y-8">
@@ -71,7 +73,7 @@ export default function IngredientsClient({ tags, children }: IngredientsClientP
       {children}
 
       <Cta
-        title={<>Need help finding <br /> <span className="text-blue dark:text-red font-star px-2">what you&apos;re looking for?</span></>}
+        title={<>Need help finding <br /> <span className="text-blue dark:text-red font-rezland px-2">what you&apos;re looking for?</span></>}
         subtitle="Explore our Curated Collections to find the perfect typographic bundles ready to be used in your next project."
         align="left"
         useGrainient

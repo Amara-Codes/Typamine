@@ -327,6 +327,12 @@ export async function detectFontIdentityWithAI(fontId: string) {
     family: font.name,
     author: needsAuthor ? result.author : null,
     licenseType: needsLicense ? result.licenseType : null,
+    // Passati cosi' come sono (non filtrati da needsAuthor/needsLicense) —
+    // servono alla UI solo per mostrare cosa Gemini ha risposto in ciascuno
+    // step, indipendentemente da cosa e' stato poi effettivamente salvato.
+    step1: result.step1,
+    step2: result.step2,
+    step2Error: result.step2Error,
   };
 }
 

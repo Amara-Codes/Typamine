@@ -66,7 +66,7 @@ export default function PrescriptionDetailClient({ prescription }: PrescriptionD
         clearView
       />
 
-<div className="max-w-7xl w-full mx-auto flex flex-col lg:mt-16 lg:rounded-xl bg-ocragray-200 dark:bg-ocragray-900 p-6">
+      <div className="max-w-7xl w-full mx-auto flex flex-col lg:mt-16 lg:rounded-xl bg-ocragray-200 dark:bg-ocragray-900 p-6">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch mb-8">
           {/* Left Column: Description & Tags (1/3 width) */}
           <div className="lg:col-span-4 flex flex-col">
@@ -112,7 +112,7 @@ export default function PrescriptionDetailClient({ prescription }: PrescriptionD
 
                 {tags.length > 0 && (
                   <div className="border-t border-black/10 dark:border-white/10 pt-4 space-y-2 mt-auto">
-                    <h3 className="font-star text-2xl text-black dark:text-white">Tags</h3>
+                    <h3 className="font-rezland text-2xl text-black dark:text-white">Tags</h3>
                     <div className="flex flex-wrap gap-2">
                       {tags.map((tag) => (
                         <Link key={tag.id} href={`/prescriptions?tags=${encodeURIComponent(tag.name)}`}>

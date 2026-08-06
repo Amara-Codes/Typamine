@@ -88,7 +88,7 @@ export default function CollectionForm({ formula, fonts = [], tags = [] }: Colle
 
       <div className="bg-zinc-100/40 dark:bg-zinc-900 border border-black/5 dark:border-white/5 rounded-2xl p-8 sm:p-10 shadow-2xl backdrop-blur-xl transition-all">
         <div className="flex flex-col justify-end mb-10 border-b border-black/5 dark:border-white/5 pb-6">
-          <h3 className="text-4xl font-star text-black dark:text-white">Collection Infos {formula?.id && ' / '}<span className="text-blue dark:text-red">{formula?.name}</span></h3>
+          <h3 className="text-4xl font-rezland text-black dark:text-white">Collection Infos {formula?.id && ' / '}<span className="text-blue dark:text-red">{formula?.name}</span></h3>
           <p className="text-[10px] ps-2 uppercase tracking-widest font-bold text-bluegray-800 dark:text-redgray-200 mt-1">Configure all the collection informations</p>
         </div>
 
@@ -146,11 +146,10 @@ export default function CollectionForm({ formula, fonts = [], tags = [] }: Colle
                       key={f.id}
                       type="button"
                       onClick={() => handleFontToggle(f.id)}
-                      className={`px-3 py-1 rounded-full text-xs font-bold transition-all flex items-center gap-1.5 border ${
-                        isSelected
+                      className={`px-3 py-1 rounded-full text-xs font-bold transition-all flex items-center gap-1.5 border ${isSelected
                           ? "bg-black text-white dark:bg-white dark:text-black border-transparent"
                           : "bg-transparent text-zinc-600 dark:text-zinc-400 border-black/10 dark:border-white/10 hover:border-black/30 dark:hover:border-white/30"
-                      }`}
+                        }`}
                     >
                       {isSelected && <Check className="w-3 h-3" />}
                       {f.name}
@@ -213,7 +212,7 @@ export default function CollectionForm({ formula, fonts = [], tags = [] }: Colle
             <div className="p-2 bg-red-500/10 rounded-lg">
               <AlertCircle className="w-6 h-6 text-red-500" />
             </div>
-            <h2 className="text-2xl font-star text-black dark:text-white">Collection Save Failed</h2>
+            <h2 className="text-2xl font-rezland text-black dark:text-white">Collection Save Failed</h2>
           </div>
         </BaseModal.Header>
         <BaseModal.Body>

@@ -370,7 +370,7 @@ export default function PairingForm({ initialData, fonts, tags }: PairingFormPro
     if (layoutPreset === "stacked" || layoutPreset === "centered") {
       const actualAlign = layoutPreset === "centered" ? "center" : textAlign;
       ctx.textAlign = actualAlign;
-      
+
       const xPos = actualAlign === "center" ? width / 2 : actualAlign === "right" ? width - paddingX : paddingX;
 
       // Primary Title
@@ -405,7 +405,7 @@ export default function PairingForm({ initialData, fonts, tags }: PairingFormPro
       // Left side Primary (aligned left/center/right relative to half canvas)
       ctx.textAlign = textAlign;
       const leftX = textAlign === "center" ? width / 4 : textAlign === "right" ? width / 2 - paddingX : paddingX;
-      
+
       ctx.fillStyle = primaryColor;
       ctx.font = `bold ${primaryFontSize * 1.3}px "${titleFamily}", sans-serif`;
       ctx.fillText(primaryText, leftX, primaryY);
@@ -413,10 +413,10 @@ export default function PairingForm({ initialData, fonts, tags }: PairingFormPro
       // Right side Secondary
       ctx.textAlign = textAlign;
       const rightX = textAlign === "center" ? (3 * width) / 4 : textAlign === "right" ? width - paddingX : width / 2 + paddingX;
-      
+
       ctx.fillStyle = secondaryColor;
       ctx.font = `${secondaryFontSize * 1.2}px "${bodyFamily}", sans-serif`;
-      
+
       // Word wrapping for secondary text in split screen
       const words = secondaryText.split(" ");
       let line = "";
@@ -615,7 +615,7 @@ export default function PairingForm({ initialData, fonts, tags }: PairingFormPro
         {/* Card 1: Identity & Details (Basic Infos - Left, 2/3 width) */}
         <div className="lg:col-span-8 relative z-10 border border-black/5 dark:border-white/5 rounded-2xl p-6 shadow-xl backdrop-blur-xl bg-white/50 dark:bg-zinc-950/50 space-y-5">
           <div>
-            <h3 className="text-xl font-star font-bold text-black dark:text-white pb-3 border-b border-black/5 dark:border-white/5">
+            <h3 className="text-xl font-rezland font-bold text-black dark:text-white pb-3 border-b border-black/5 dark:border-white/5">
               Pairing basic infos
             </h3>
           </div>
@@ -689,7 +689,7 @@ export default function PairingForm({ initialData, fonts, tags }: PairingFormPro
         {/* Card 3: Categorization & Visibility (Taxonomy - Right, 1/3 width) */}
         <div className="lg:col-span-4 relative z-20 border border-black/5 dark:border-white/5 rounded-2xl p-6 shadow-xl backdrop-blur-xl bg-white/50 dark:bg-zinc-950/50 space-y-5">
           <div>
-            <h3 className="text-xl font-star font-bold text-black dark:text-white pb-3 border-b border-black/5 dark:border-white/5">
+            <h3 className="text-xl font-rezland font-bold text-black dark:text-white pb-3 border-b border-black/5 dark:border-white/5">
               Taxonomy & Visibility
             </h3>
 
@@ -725,7 +725,7 @@ export default function PairingForm({ initialData, fonts, tags }: PairingFormPro
         {/* Card 2: Typography Pairing (Font Selection - Left, 1/3 width) */}
         <div className="lg:col-span-4 relative z-30 border border-black/5 dark:border-white/5 rounded-2xl p-6 shadow-xl backdrop-blur-xl bg-white/50 dark:bg-zinc-950/50 space-y-5">
           <div>
-            <h3 className="text-xl font-star font-bold text-black dark:text-white pb-3 border-b border-black/5 dark:border-white/5">
+            <h3 className="text-xl font-rezland font-bold text-black dark:text-white pb-3 border-b border-black/5 dark:border-white/5">
               Font Pairing Selection
             </h3>
           </div>
@@ -759,7 +759,7 @@ export default function PairingForm({ initialData, fonts, tags }: PairingFormPro
         <div className="lg:col-span-8 space-y-6">
           <div className="border border-black/5 dark:border-white/5 rounded-2xl p-6 shadow-xl backdrop-blur-xl bg-white/50 dark:bg-zinc-950/50 space-y-5">
             <div className="flex items-center justify-between border-b border-black/5 dark:border-white/5 pb-3">
-              <h2 className="text-xl font-star font-bold text-black dark:text-white flex items-center gap-2">
+              <h2 className="text-xl font-rezland font-bold text-black dark:text-white flex items-center gap-2">
                 Canvas Generator
               </h2>
 
@@ -767,22 +767,20 @@ export default function PairingForm({ initialData, fonts, tags }: PairingFormPro
                 <button
                   type="button"
                   onClick={() => setActiveTab("canvas")}
-                  className={`px-3 py-1 rounded-md text-xs font-bold transition-all ${
-                    activeTab === "canvas"
+                  className={`px-3 py-1 rounded-md text-xs font-bold transition-all ${activeTab === "canvas"
                       ? "bg-white dark:bg-zinc-800 text-black dark:text-white shadow-sm"
                       : "text-zinc-500 hover:text-black dark:hover:text-white"
-                  }`}
+                    }`}
                 >
                   Canvas Generator
                 </button>
                 <button
                   type="button"
                   onClick={() => setActiveTab("upload")}
-                  className={`px-3 py-1 rounded-md text-xs font-bold transition-all ${
-                    activeTab === "upload"
+                  className={`px-3 py-1 rounded-md text-xs font-bold transition-all ${activeTab === "upload"
                       ? "bg-white dark:bg-zinc-800 text-black dark:text-white shadow-sm"
                       : "text-zinc-500 hover:text-black dark:hover:text-white"
-                  }`}
+                    }`}
                 >
                   File Upload
                 </button>
@@ -850,7 +848,7 @@ export default function PairingForm({ initialData, fonts, tags }: PairingFormPro
         {isCanvasModalOpen && (
           <BaseModal isOpen={isCanvasModalOpen} onClose={() => setIsCanvasModalOpen(false)} size="7xl">
             <BaseModal.Header onClose={() => setIsCanvasModalOpen(false)}>
-              <h3 className="text-2xl font-star text-black dark:text-white leading-tight">Canvas Generator</h3>
+              <h3 className="text-2xl font-rezland text-black dark:text-white leading-tight">Canvas Generator</h3>
             </BaseModal.Header>
             <BaseModal.Body className="overflow-visible max-h-none">
               <div className="grid grid-cols-1 lg:grid-cols-[300px_1fr_300px] gap-6 items-start">
@@ -1043,7 +1041,7 @@ export default function PairingForm({ initialData, fonts, tags }: PairingFormPro
                   <FileText className="h-6 w-6" />
                 </div>
                 <div>
-                  <h3 className="text-xl font-star font-bold text-black dark:text-white">Pairing Insight Modules</h3>
+                  <h3 className="text-xl font-rezland font-bold text-black dark:text-white">Pairing Insight Modules</h3>
                   <p className="text-[10px] text-zinc-500 font-bold uppercase tracking-wider mt-0.5">
                     Build rich editorial insights using Paragraph, Text + Image, and Quote modules
                   </p>
@@ -1152,9 +1150,8 @@ export default function PairingForm({ initialData, fonts, tags }: PairingFormPro
                             </div>
                           </div>
                           <div
-                            className={`transition-transform duration-300 ${
-                              collapsedInsightModules.has(module.id) ? "" : "rotate-180"
-                            }`}
+                            className={`transition-transform duration-300 ${collapsedInsightModules.has(module.id) ? "" : "rotate-180"
+                              }`}
                           >
                             <ChevronDown className="h-5 w-5 text-black/30 dark:text-white/30" />
                           </div>

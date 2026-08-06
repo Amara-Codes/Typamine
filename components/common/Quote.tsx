@@ -77,22 +77,22 @@ export default function Quote({
           className="w-24 h-24 dark:invert object-contain opacity-40 dark:invert self-end transition-transform duration-700 group-hover:-translate-x-4"
         />
 
-      {(author || authorDates || authorInfo) && (
-        <div className="mt-16 lg:mt-8 pb-8 flex flex-col items-center text-center">
-          {author && (
-            <p className="text-xl font-star text-current">
-              {author}
-            </p>
-          )}
-          {(authorDates || authorInfo) && (
-            <p className="text-[10px] uppercase tracking-[0.2em] font-bold text-current/40 mt-1">
-              {authorDates && <span>{authorDates}</span>}
-              {authorDates && authorInfo && <span className="mx-2">&bull;</span>}
-              {authorInfo && <span>{authorInfo}</span>}
-            </p>
-          )}
-        </div>
-      )}
+        {(author || authorDates || authorInfo) && (
+          <div className="mt-16 lg:mt-8 pb-8 flex flex-col items-center text-center">
+            {author && (
+              <p className="text-xl font-rezland text-current">
+                {author}
+              </p>
+            )}
+            {(authorDates || authorInfo) && (
+              <p className="text-[10px] uppercase tracking-[0.2em] font-bold text-current/40 mt-1">
+                {authorDates && <span>{authorDates}</span>}
+                {authorDates && authorInfo && <span className="mx-2">&bull;</span>}
+                {authorInfo && <span>{authorInfo}</span>}
+              </p>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );

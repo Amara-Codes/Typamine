@@ -126,77 +126,64 @@
 }
 
 @font-face {
-  font-family: 'Star Avenue';
-  src: url('/fonts/star_avenue/staravenue.ttf') format('truetype');
+  font-family: 'Rezland';
+  src: url('/fonts/rezland/rezland.woff2') format('woff2'),
+    url('/fonts/rezland/rezland.woff') format('woff'),
+    url('/fonts/rezland/rezland.ttf') format('truetype');
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: 'Candy Haus';
+  src: url('/fonts/candy_haus/CandyHaus-Regular.otf') format('opentype');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Alien Encouters';
-  src: url('/fonts/alien_encounters/Alien-Encounters-Regular.ttf') format('truetype');
+  font-family: 'Galaxy Tail';
+  src: url('/fonts/galaxy_tail/GalaxyTail.ttf') format('truetype');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Dimitri';
-  src: url('/fonts/dimitri/DIMITRI_.TTF') format('truetype');
+  font-family: 'Ikos Dub Outline';
+  src: url('/fonts/ikos_dub/Ikos Dub Outline.ttf') format('truetype');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Negative Sys';
-  src: url('/fonts/negative_system/Negative System.otf') format('opentype');
+  font-family: 'Ikos Dub Solid';
+  src: url('/fonts/ikos_dub/Ikos Dub Solid.ttf') format('truetype');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
-
-@font-face {
-  font-family: 'Positive Sys';
-  src: url('/fonts/positive_system/Positive System.otf') format('opentype');
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Typo Pixel';
-  src: url('/fonts/typo_pixel/typo_pixel.ttf') format('truetype');
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
-
-
-
-
-
 
 
 
 @custom-variant dark (&:where(.dark, .dark *));
 
 :root {
-  --color-primary: #ff3131;    /* Chemical Red */
-  --color-secondary: #00cece;  /* Chemical Cyan */
+  --color-primary: #ff3131;
+  /* Chemical Red */
+  --color-secondary: #00cece;
+  /* Chemical Cyan */
   --color-dark-gray: #f4f4f5;
   --color-border-gray: #e4e4e7;
 
   --font-haas: 'Alte Haas Grotesk';
   --font-jakarta: 'Plus Jakarta Sans';
-  --font-star: 'Star Avenue';
-  --font-alien: 'Alien Encouters';
-  --font-dimitri: 'Dimitri';
-  --font-negativesys: 'Negative Sys';
-  --font-positivesys: 'Positive Sys';
-  --font-typoxel: 'Typo Pixel';
+  --font-rezland: 'Rezland';
+  --font-candyhaus: 'Candy Haus';
+  --font-galaxytail: 'Galaxy Tail';
+  --font-ikosdub-outline: 'Ikos Dub Outline';
+  --font-ikosdub-solid: 'Ikos Dub Solid';
 
   --color-red: #ff3131;
   --color-blue: #00cece;
@@ -236,28 +223,41 @@
   --destructive: #b32323;
   --destructive-foreground: var(--color-white);
 
-  --muted: #f5f4ef;         /* stone-100 */
-  --muted-foreground: #756f63; /* stone-700 */
-  --accent: #e9e7df;        /* stone-200 */
-  --accent-foreground: #47423a; /* stone-900 */
-  --border: #dcd9cf;        /* stone-300 */
+  --muted: #f5f4ef;
+  /* stone-100 */
+  --muted-foreground: #756f63;
+  /* stone-700 */
+  --accent: #e9e7df;
+  /* stone-200 */
+  --accent-foreground: #47423a;
+  /* stone-900 */
+  --border: #dcd9cf;
+  /* stone-300 */
   --input: #dcd9cf;
   --ring: #ff3131;
 
-  --chart-1: #ff3131; /* red-500 */
-  --chart-2: #00cece; /* blue-500 */
-  --chart-3: #00d27a; /* green */
-  --chart-4: #ada799; /* stone-500 */
-  --chart-5: #806e5e; /* ocragray-500 */
+  --chart-1: #ff3131;
+  /* red-500 */
+  --chart-2: #00cece;
+  /* blue-500 */
+  --chart-3: #00d27a;
+  /* green */
+  --chart-4: #ada799;
+  /* stone-500 */
+  --chart-5: #806e5e;
+  /* ocragray-500 */
   --radius: 0.625rem;
 
   --sidebar: var(--color-white);
   --sidebar-foreground: var(--color-black);
   --sidebar-primary: #ff3131;
   --sidebar-primary-foreground: var(--color-black);
-  --sidebar-accent: #e9e7df; /* stone-200 */
-  --sidebar-accent-foreground: #47423a; /* stone-900 */
-  --sidebar-border: #dcd9cf; /* stone-300 */
+  --sidebar-accent: #e9e7df;
+  /* stone-200 */
+  --sidebar-accent-foreground: #47423a;
+  /* stone-900 */
+  --sidebar-border: #dcd9cf;
+  /* stone-300 */
   --sidebar-ring: #ff3131;
 }
 
@@ -277,7 +277,8 @@
   --text-glow-red-shadow: 0 0 8px rgba(255, 49, 49, 0.6);
   --text-glow-cyan-shadow: 0 0 8px rgba(0, 206, 206, 0.6);
 
-  --card: #201c17;        /* ocragray-900, superficie calda scura */
+  --card: #201c17;
+  /* ocragray-900, superficie calda scura */
   --card-foreground: var(--color-white);
   --popover: #201c17;
   --popover-foreground: var(--color-white);
@@ -296,25 +297,37 @@
   --destructive: #d92a2a;
   --destructive-foreground: var(--color-white);
 
-  --muted: #47423a;          /* stone-900 */
-  --muted-foreground: #c7c2b6; /* stone-400 */
-  --accent: #2e2b26;         /* stone-950 */
-  --accent-foreground: #dcd9cf; /* stone-300 */
+  --muted: #47423a;
+  /* stone-900 */
+  --muted-foreground: #c7c2b6;
+  /* stone-400 */
+  --accent: #2e2b26;
+  /* stone-950 */
+  --accent-foreground: #dcd9cf;
+  /* stone-300 */
   --border: oklch(1 0 0 / 10%);
   --input: oklch(1 0 0 / 15%);
-  --ring: #ff4a4a; /* red-400, più visibile su fondo scuro */
+  --ring: #ff4a4a;
+  /* red-400, più visibile su fondo scuro */
 
-  --chart-1: #ff4a4a; /* red-400 */
-  --chart-2: #4de8e8; /* blue-300 */
-  --chart-3: #00d27a; /* green */
-  --chart-4: #c7c2b6; /* stone-400 */
-  --chart-5: #b3a99f; /* ocragray-300 */
+  --chart-1: #ff4a4a;
+  /* red-400 */
+  --chart-2: #4de8e8;
+  /* blue-300 */
+  --chart-3: #00d27a;
+  /* green */
+  --chart-4: #c7c2b6;
+  /* stone-400 */
+  --chart-5: #b3a99f;
+  /* ocragray-300 */
 
-  --sidebar: #131417;        /* bluegray-900 */
+  --sidebar: #131417;
+  /* bluegray-900 */
   --sidebar-foreground: var(--color-white);
   --sidebar-primary: #ff3131;
   --sidebar-primary-foreground: var(--color-black);
-  --sidebar-accent: #23242a; /* bluegray-700 */
+  --sidebar-accent: #23242a;
+  /* bluegray-700 */
   --sidebar-accent-foreground: var(--color-white);
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: #ff4a4a;
@@ -339,18 +352,17 @@
 
   --font-haas: var(--font-haas), sans-serif;
   --font-jakarta: var(--font-jakarta), sans-serif;
-  --font-star: var(--font-star), sans-serif;
-  --font-alien: var(--font-alien), sans-serif;
-  --font-dimitri: var(--font-dimitri), sans-serif;
-  --font-negativesys: var(--font-negativesys), sans-serif;
-  --font-positivesys: var(--font-positivesys), sans-serif;
-  --font-typoxel: var(--font-typoxel), sans-serif;
+  --font-rezland: var(--font-rezland), sans-serif;
+  --font-candyhaus: var(--font-candyhaus), sans-serif;
+  --font-galaxytail: var(--font-galaxytail), sans-serif;
+  --font-ikosdub-outline: var(--font-ikosdub-outline), sans-serif;
+  --font-ikosdub-solid: var(--font-ikosdub-solid), sans-serif;
 
   /* Standard system mappings */
   --font-sans: var(--font-sans);
   --font-mono: var(--font-haas), sans-serif;
   --font-title: var(--font-haas), sans-serif;
-  --font-special: var(--font-star), sans-serif;
+  --font-special: var(--font-rezland), sans-serif;
 
   --animate-bounce-x: bounce-x 1s infinite;
 
@@ -395,10 +407,13 @@
 }
 
 @keyframes bouncy-x {
-  0%, 100% {
+
+  0%,
+  100% {
     transform: translateX(0);
     animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
   }
+
   50% {
     transform: translateX(18px);
     animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
@@ -406,10 +421,13 @@
 }
 
 @keyframes bouncy-x-reverse {
-  0%, 100% {
+
+  0%,
+  100% {
     transform: translateX(0);
     animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
   }
+
   50% {
     transform: translateX(-18px);
     animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
@@ -428,9 +446,15 @@
    duplicato due volte nel track, l'animazione scorre esattamente di metà
    larghezza per un loop senza scatti. */
 @keyframes marquee-track {
-  from { transform: translateX(0); }
-  to { transform: translateX(-50%); }
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
 }
+
 .animate-marquee-track {
   animation: marquee-track 22s linear infinite;
 }
@@ -445,7 +469,7 @@ body {
 
 /* Chemical Lab Grid Pattern - adapts to dark/light */
 body {
-  background-image: 
+  background-image:
     radial-gradient(circle at 50% 50%, rgba(255, 49, 49, 0.015) 0%, transparent 65%),
     radial-gradient(circle at 10% 20%, rgba(0, 206, 206, 0.015) 0%, transparent 50%),
     linear-gradient(rgba(120, 120, 120, 0.03) 1px, transparent 1px),
@@ -454,7 +478,7 @@ body {
 }
 
 .dark body {
-  background-image: 
+  background-image:
     radial-gradient(circle at 50% 50%, rgba(255, 49, 49, 0.03) 0%, transparent 60%),
     radial-gradient(circle at 10% 20%, rgba(0, 206, 206, 0.03) 0%, transparent 50%),
     linear-gradient(rgba(255, 255, 255, 0.007) 1px, transparent 1px),
@@ -462,12 +486,18 @@ body {
 }
 
 /* CSS variables for typography elements */
-h1, h2, h3 {
+h1,
+h2,
+h3 {
   font-family: var(--font-haas);
 }
 
-.font-star {
-  font-family: var(--font-star);
+.font-rezland {
+  font-family: var(--font-rezland);
+}
+
+.font-rezland {
+  font-family: var(--font-rezland);
 }
 
 /* Colore/sfondo dinamico per i content module (blog, pairing insight, ecc.):
@@ -478,19 +508,22 @@ h1, h2, h3 {
 .dyn-text {
   color: var(--dyn-text-light, inherit);
 }
+
 .dark .dyn-text {
   color: var(--dyn-text-dark, inherit);
 }
+
 .dyn-bg {
   background: var(--dyn-bg-light, transparent);
 }
+
 .dark .dyn-bg {
   background: var(--dyn-bg-dark, transparent);
 }
 
 /* Technical / Laboratory Styling Helpers */
 .lab-grid {
-  background-image: 
+  background-image:
     linear-gradient(to right, var(--color-border-gray) 1px, transparent 1px),
     linear-gradient(to bottom, var(--color-border-gray) 1px, transparent 1px);
   background-size: 20px 20px;
@@ -514,11 +547,13 @@ h1, h2, h3 {
     box-shadow: 0 0 0px transparent;
     transform: scale(1);
   }
+
   35% {
     border-color: #00cece;
     box-shadow: 0 0 25px #00cece, inset 0 0 15px rgba(0, 206, 206, 0.5);
     transform: scale(1.06);
   }
+
   100% {
     border-color: rgba(0, 206, 206, 0.3);
     box-shadow: 0 0 0px transparent;
@@ -532,11 +567,13 @@ h1, h2, h3 {
     box-shadow: 0 0 0px transparent;
     transform: scale(1);
   }
+
   35% {
     border-color: #ff9595;
     box-shadow: 0 0 25px #ff9595, inset 0 0 15px rgba(255, 149, 149, 0.5);
     transform: scale(1.06);
   }
+
   100% {
     border-color: rgba(255, 149, 149, 0.3);
     box-shadow: 0 0 0px transparent;
@@ -581,15 +618,18 @@ h1, h2, h3 {
   width: 6px;
   height: 6px;
 }
+
 ::-webkit-scrollbar-track {
   background: var(--background);
   border-left: 1px solid var(--color-border-gray);
 }
+
 ::-webkit-scrollbar-thumb {
   background: var(--color-dark-gray);
   border: 1px solid var(--color-border-gray);
   border-radius: 3px;
 }
+
 ::-webkit-scrollbar-thumb:hover {
   background: var(--color-primary);
 }
@@ -604,6 +644,7 @@ input[type="range"] {
   border-radius: 3px;
   outline: none;
 }
+
 input[type="range"]::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
@@ -615,6 +656,7 @@ input[type="range"]::-webkit-slider-thumb {
   box-shadow: 0 0 8px var(--color-secondary);
   transition: transform 0.1s ease;
 }
+
 input[type="range"]::-webkit-slider-thumb:hover {
   transform: scale(1.2);
 }
@@ -628,10 +670,12 @@ input[type="range"]::-webkit-slider-thumb:hover {
   * {
     border-color: var(--border);
   }
+
   body {
     background-color: var(--background);
     color: var(--foreground);
   }
+
   html {
     font-family: var(--font-sans);
   }

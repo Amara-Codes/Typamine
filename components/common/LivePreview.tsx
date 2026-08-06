@@ -15,7 +15,7 @@ const FontFaceInjector = React.memo(({ fontFamily, url }: { fontFamily: string; 
   if (!url) return null;
   // Aggiungiamo un ID al tag style basato sull'URL per evitare duplicazioni
   const styleId = `font-${btoa(url).slice(0, 16)}`;
-  
+
   return (
     <style id={styleId}>
       {`
@@ -66,7 +66,7 @@ export interface LivePreviewProps {
   rounded?: boolean;
 }
 
-export default function LivePreview({  
+export default function LivePreview({
   fontName = "Live Preview",
   fontFamilyCss,
   fontUrl,
@@ -150,7 +150,7 @@ export default function LivePreview({
       style={hasBgColorGroup ? { backgroundColor: bgColor } : undefined}
     >
 
-      
+
       {/* Iniezione locale: attiva solo se abbiamo un URL */}
       {fontUrl && <FontFaceInjector fontFamily={dynamicFontFamily} url={fontUrl} />}
 
@@ -384,9 +384,9 @@ export default function LivePreview({
                 <div className={cn("hidden md:flex", desktopControlsPanelClassName)}>{desktopControlsGroups}</div>
                 <BaseModal isOpen={isControlsModalOpen} onClose={() => setIsControlsModalOpen(false)} size="md">
                   <BaseModal.Header onClose={() => setIsControlsModalOpen(false)}>
-                    <h2 className="text-lg font-star text-black dark:text-white">Customize Preview</h2>
+                    <h2 className="text-lg font-rezland text-black dark:text-white">Customize Preview</h2>
                   </BaseModal.Header>
-                  <BaseModal.Body  className="!p-4 !sm:p-6">
+                  <BaseModal.Body className="!p-4 !sm:p-6">
                     {mobileControlsGroups}
                   </BaseModal.Body>
                 </BaseModal>
@@ -396,63 +396,63 @@ export default function LivePreview({
         </div>
       )}
 
- <div
-   className={cn(
-     "relative z-10 flex items-center justify-center overflow-hidden",
-     !hasBgColorGroup && "bg-white dark:bg-black",
-     compact ? "p-3 h-[110px]" : "p-8 h-[260px]"
-   )}
-   style={hasBgColorGroup ? { backgroundColor: bgColor } : undefined}
- >
-  {/* Effetto Scanlines (Vecchie righette televisore) */}
-  {!compact && (
-  <div
-    className="absolute inset-0 z-0 pointer-events-none opacity-[0.04] dark:opacity-[0.04]"
-    style={{
-         backgroundImage: 'repeating-linear-gradient(0deg, transparent, transparent 6px, currentColor 6px, currentColor 7px)',
-          backgroundAttachment: 'fixed'
-    }}
-  />
-  )}
+      <div
+        className={cn(
+          "relative z-10 flex items-center justify-center overflow-hidden",
+          !hasBgColorGroup && "bg-white dark:bg-black",
+          compact ? "p-3 h-[110px]" : "p-8 h-[260px]"
+        )}
+        style={hasBgColorGroup ? { backgroundColor: bgColor } : undefined}
+      >
+        {/* Effetto Scanlines (Vecchie righette televisore) */}
+        {!compact && (
+          <div
+            className="absolute inset-0 z-0 pointer-events-none opacity-[0.04] dark:opacity-[0.04]"
+            style={{
+              backgroundImage: 'repeating-linear-gradient(0deg, transparent, transparent 6px, currentColor 6px, currentColor 7px)',
+              backgroundAttachment: 'fixed'
+            }}
+          />
+        )}
 
-  {(() => {
-    const previewStyle: React.CSSProperties = {
-      fontFamily: fontUrl
-        ? `'${dynamicFontFamily}', sans-serif`
-        : fontFamilyCss
-          ? `${fontFamilyCss}, sans-serif`
-          : `'${fontName}', sans-serif`,
-      fontSize: `${size}px`,
-      fontWeight: isVariable ? weight : initialWeight || 400,
-      fontVariationSettings: isVariable ? `'wght' ${weight}` : 'normal',
-      lineHeight: hasLeadingGroup ? lineHeight : compact ? 1.35 : undefined,
-      letterSpacing: hasTrackingGroup ? `${letterSpacing}px` : undefined,
-      color: hasTextColorGroup ? textColor : undefined,
-    };
-    const previewClassName = cn(
-      "relative z-10 w-full bg-transparent border-none text-center overflow-visible",
-      !hasLeadingGroup && (compact ? "leading-normal" : "leading-tight"),
-      !hasTextColorGroup && "text-black dark:text-white"
-    );
+        {(() => {
+          const previewStyle: React.CSSProperties = {
+            fontFamily: fontUrl
+              ? `'${dynamicFontFamily}', sans-serif`
+              : fontFamilyCss
+                ? `${fontFamilyCss}, sans-serif`
+                : `'${fontName}', sans-serif`,
+            fontSize: `${size}px`,
+            fontWeight: isVariable ? weight : initialWeight || 400,
+            fontVariationSettings: isVariable ? `'wght' ${weight}` : 'normal',
+            lineHeight: hasLeadingGroup ? lineHeight : compact ? 1.35 : undefined,
+            letterSpacing: hasTrackingGroup ? `${letterSpacing}px` : undefined,
+            color: hasTextColorGroup ? textColor : undefined,
+          };
+          const previewClassName = cn(
+            "relative z-10 w-full bg-transparent border-none text-center overflow-visible",
+            !hasLeadingGroup && (compact ? "leading-normal" : "leading-tight"),
+            !hasTextColorGroup && "text-black dark:text-white"
+          );
 
-    // Non-editable previews render as plain static text rather than a form
-    // control, since LivePreview can end up nested inside a <Link> (e.g. card
-    // grids) where an interactive <textarea> would be invalid HTML nesting.
-    return editable ? (
-      <textarea
-        value={text}
-        onChange={(e) => setText(e.target.value)}
-        className={cn(previewClassName, "h-full resize-none focus:outline-none focus:ring-0 overflow-auto")}
-        style={previewStyle}
-        spellCheck="false"
-      />
-    ) : (
-      <p className={cn(previewClassName, "h-full flex items-center justify-center cursor-default whitespace-pre-wrap")} style={previewStyle}>
-        {text}
-      </p>
-    );
-  })()}
-</div>
+          // Non-editable previews render as plain static text rather than a form
+          // control, since LivePreview can end up nested inside a <Link> (e.g. card
+          // grids) where an interactive <textarea> would be invalid HTML nesting.
+          return editable ? (
+            <textarea
+              value={text}
+              onChange={(e) => setText(e.target.value)}
+              className={cn(previewClassName, "h-full resize-none focus:outline-none focus:ring-0 overflow-auto")}
+              style={previewStyle}
+              spellCheck="false"
+            />
+          ) : (
+            <p className={cn(previewClassName, "h-full flex items-center justify-center cursor-default whitespace-pre-wrap")} style={previewStyle}>
+              {text}
+            </p>
+          );
+        })()}
+      </div>
     </div>
   );
 }

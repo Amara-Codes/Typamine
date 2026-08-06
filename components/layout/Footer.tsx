@@ -37,14 +37,14 @@ export const Footer: React.FC<FooterProps> = ({
   return (
     <footer className="relative min-h-[100dvh] w-full flex flex-col border-t border-zinc-200 dark:border-zinc-800 bg-white/40 dark:bg-[#09090b]/40 font-haas text-[10px] text-zinc-500 dark:text-zinc-400 transition-colors duration-300">
       <div className="flex-1 flex items-center justify-center px-4 overflow-hidden">
-        <div className="relative inline-block pr-[0.5em] pb-[0.55em] text-[clamp(3rem,14vw,14rem)] text-blue dark:text-red">
+        <div className="relative inline-block text-[clamp(3rem,14vw,14rem)] text-blue dark:text-red">
           {hasCustomTFont && (
             <style>{`@font-face { font-family: '${tFontFamily}'; src: url('${letterTFont!.woff2Url}') format('woff2'); font-display: swap; }`}</style>
           )}
           <GlyphTypeface
             text="TYPAMINE"
-            className="font-star text-black dark:text-white"
-            firstLetterClassName="font-star text-black dark:text-white"
+            className="font-rezland text-black dark:text-white"
+            firstLetterClassName="font-rezland text-black dark:text-white"
             firstLetterFontFamilyCss={hasCustomTFont ? `'${tFontFamily}'` : undefined}
             firstLetterStyle={{
               fontFamily: hasCustomTFont ? `'${tFontFamily}', 'Star Avenue', sans-serif` : undefined,
@@ -55,14 +55,14 @@ export const Footer: React.FC<FooterProps> = ({
           {/* Quadrato "chimico" caratteristico del logo (vedi DynamicLogo,
               dove sta un po' più in basso rispetto al testo — pb maggiore
               qui riproduce lo stesso distacco). Rotazione sempre "attaccata"
-              ma in pausa (animation-play-state): all'hover riparte da dove
+              ma in prima persona (animation-play-state): all'hover riparte da dove
               si era fermata invece di scattare da 0deg, e quando il mouse
               esce si blocca ferma nella posizione corrente invece di
               resettarsi — play-state pausa/riprende, niente JS. Colore da
               /admin/settings (default ciano/rosso di brand), stesso
               trattamento del quadrato in DynamicLogo. */}
           <div
-            className="absolute bottom-0 right-0 w-[0.57em] h-[0.57em] dyn-bg dyn-text shadow-[0_0_15px_currentColor] blur-[1px] brightness-110 rounded-xs [animation:spin_4s_linear_infinite] [animation-play-state:paused] hover:[animation-play-state:running]"
+            className="absolute bottom-[0.15em] right-[-0.72em] w-[0.57em] h-[0.57em] dyn-bg dyn-text shadow-[0_0_15px_currentColor] blur-[1px] brightness-110 rounded-xs [animation:spin_4s_linear_infinite] [animation-play-state:paused] hover:[animation-play-state:running]"
             style={squareDynStyle}
           />
         </div>

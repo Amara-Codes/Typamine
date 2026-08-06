@@ -4,6 +4,7 @@ import React from "react";
 import { DoubleHero } from "@/components/common/DoubleHero";
 import { SearchSortFilter } from "@/components/common/SearchSortFilter";
 import { useThemeStore } from "@/store/themeStore";
+import { useListScrollRestoration } from "@/lib/hooks/useListScrollRestoration";
 
 const SORT_OPTIONS = [
   { label: "NEWEST FIRST", value: "recent" },
@@ -22,6 +23,7 @@ interface ArchiveClientProps {
 // stesso pattern di PrescriptionsClient.
 export default function ArchiveClient({ tags, children }: ArchiveClientProps) {
   const { theme } = useThemeStore();
+  useListScrollRestoration();
   const dynamicArchiveBgImageUrl = theme === "dark" ? "/images/archive/double-hero/hero-bg-dark.png" : "/images/archive/double-hero/hero-bg-light.png";
 
   return (
@@ -29,7 +31,7 @@ export default function ArchiveClient({ tags, children }: ArchiveClientProps) {
       <DoubleHero.FirstViewport className="pt-24 pb-12 px-6 md:px-12 flex flex-col justify-end">
         <div className="max-w-3xl flex flex-col space-y-4 text-center items-center mx-auto">
           <h1 className="font-haas text-2xl md:text-5xl font-bold tracking-tight text-foreground text-glow-blue dark:text-glow-red">
-            <span className="text-blue-800 dark:text-red-400 font-positivesys">The Typography&apos;s Wayback Machine</span>
+            <span className="text-blue-800 dark:text-red-400 font-galaxytail">The Typography&apos;s Wayback Machine</span>
           </h1>
 
           <p className="text-zinc-700 dark:text-zinc-300 text-xs md:text-base max-w-xl leading-relaxed">

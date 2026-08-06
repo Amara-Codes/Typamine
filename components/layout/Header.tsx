@@ -77,7 +77,7 @@ export const Header: React.FC<HeaderProps> = ({ letterTFont, letterTFontSizePerc
           <div className="flex items-center space-x-3">
             <Link href="/" className="flex items-center space-x-2 text-foreground hover:opacity-90 transition-opacity">
               <DynamicLogo
-                height={64}
+                height={92}
                 squareGlow
                 letterTFont={letterTFont}
                 letterTFontSizePercent={letterTFontSizePercent}
@@ -88,7 +88,7 @@ export const Header: React.FC<HeaderProps> = ({ letterTFont, letterTFontSizePerc
           </div>
 
           {/* Navigation Menu */}
-          <nav className="flex relative space-x-5 font-positivesys text-lg rounded-sm transition-colors duration-300">
+          <nav className="flex relative space-x-5 font-galaxytail text-md rounded-sm transition-colors duration-300">
             {/* Sfondo del track "tagliato" 3px sopra e sotto: non un box-shadow
                 disegnato sopra lo sfondo, ma uno strato retrostante rientrato
                 che lascia una fascia trasparente reale — si vede cosa c'è
@@ -99,7 +99,7 @@ export const Header: React.FC<HeaderProps> = ({ letterTFont, letterTFontSizePerc
               href="/ingredients"
               className="px-3 py-2
               bg-blue-300 dark:bg-red-500 rounded border border-transparent transition-colors duration-300
-              text-black dark:text-white
+              text-blue-900 dark:text-white
               hover:text-blue-600 dark:hover:text-red-100
               hover:bg-white dark:hover:bg-red-800
               hover:border-blue-600 dark:hover:border-red-100 "
@@ -111,7 +111,7 @@ export const Header: React.FC<HeaderProps> = ({ letterTFont, letterTFontSizePerc
               href="/formulas"
               className="px-3 py-2
               bg-blue-300 dark:bg-red-500 rounded border border-transparent transition-colors duration-300
-              text-black dark:text-white
+              text-blue-900 dark:text-white
               hover:text-blue-600 dark:hover:text-red-100
               hover:bg-white dark:hover:bg-red-800
               hover:border-blue-600 dark:hover:border-red-100"
@@ -123,7 +123,7 @@ export const Header: React.FC<HeaderProps> = ({ letterTFont, letterTFontSizePerc
               href="/labs"
               className="px-3 py-2
               bg-blue-300 dark:bg-red-500 rounded border border-transparent transition-colors duration-300
-              text-black dark:text-white
+              text-blue-900 dark:text-white
               hover:text-blue-600 dark:hover:text-red-100
               hover:bg-white dark:hover:bg-red-800
               hover:border-blue-600 dark:hover:border-red-100"
@@ -137,7 +137,7 @@ export const Header: React.FC<HeaderProps> = ({ letterTFont, letterTFontSizePerc
                 href="/prescriptions"
                 className="block px-3 py-2
                 bg-blue-300 dark:bg-red-500 rounded-t border border-transparent transition-colors duration-300
-                text-black dark:text-white
+                text-blue-900 dark:text-white
                 hover:text-blue-600 dark:hover:text-red-100
                 hover:bg-white dark:hover:bg-red-800
                 hover:border-blue-600 dark:hover:border-red-100"
@@ -171,7 +171,7 @@ export const Header: React.FC<HeaderProps> = ({ letterTFont, letterTFontSizePerc
               href="/pills"
               className="px-3 py-2
               bg-blue-300 dark:bg-red-500 rounded border border-transparent transition-colors duration-300
-              text-black dark:text-white
+              text-blue-900 dark:text-white
               hover:text-blue-600 dark:hover:text-red-100
               hover:bg-white dark:hover:bg-red-800
               hover:border-blue-600 dark:hover:border-red-100"

@@ -30,14 +30,12 @@ ________________________________
 [[fai bulk import da locale. carico tanti font in un zip unico. con all'interno tante cartelle con all'interno i file che possono essere, ttf, otf o qualsiasi font file extension. lui procede come un bulk import tradizionale ]] --> DONE
 
 [[in fonts e pairings rimanda a labs con query oparma per generare i font face, le classi di tailwind, css standard etc ]] --> DONE
+
+[[aggiungere pagina fotn author. tipo pagina di una persona con una griglia che mostra tutti i suoi font. inserisci una breve bio etc... ]] -> DONE
  __________________________________
 
 uniformare ux/ui colri di admin, margini, padding... colori [90%]
 
-dafont - cartoon. sono arirvato alla pagina 45, 
-fai lo stesso per tutte le altre categoie e pian piano popoliamo il databse 
-
-aggiungere pagina fotn author. tipo pagina di una persona con una griglia che mostra tutti i suoi font. inserisci una breve bio etc... 
 
 integrare tutti i nuovi campi di admin/settings, pulire alcuni form. controllare il data model di font author 
 
@@ -52,7 +50,3 @@ migliorare mobile menu trigger etc
 security checks 
 
 
-credits 
-oreos by Vigneshwaran from <a href="https://thenounproject.com/browse/icons/term/oreos/" target="_blank" title="oreos Icons">Noun Project</a> (CC BY 3.0)
-
-oreo cookie by lastspark from <a href="https://thenounproject.com/browse/icons/term/oreo-cookie/" target="_blank" title="oreo cookie Icons">Noun Project</a> (CC BY 3.0)

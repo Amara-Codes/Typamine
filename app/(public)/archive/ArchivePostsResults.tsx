@@ -35,7 +35,7 @@ export default async function ArchivePostsResults({ page, perPage, tagIds, searc
 
       {posts.length === 0 && (
         <div className="text-center py-16 border border-dashed border-zinc-200 dark:border-zinc-800 rounded-lg text-zinc-500 dark:text-zinc-400 font-haas">
-          <p className="font-star text-2xl text-black dark:text-white mb-2">The archive is silent</p>
+          <p className="font-rezland text-2xl text-black dark:text-white mb-2">The archive is silent</p>
           <p className="text-sm">
             {hasActiveFilters ? "No case files match this search." : "No dispatches have been filed yet."}
           </p>

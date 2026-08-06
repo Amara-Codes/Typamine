@@ -25,7 +25,7 @@ import { Button } from "@/components/common/Button";
 import { Input } from "@/components/common/Input";
 import { Select } from "@/components/common/Select";
 
-import  BaseModal  from "@/components/common/BaseModal";
+import BaseModal from "@/components/common/BaseModal";
 import { ProviderFontItem } from "@/types";
 import { fetchFontshareFonts, FontshareCategory, FontsharePersonality } from "@/lib/fontshare";
 
@@ -313,8 +313,13 @@ export default function BulkUploadPage() {
       for (let i = 0; i < selectedFontsData.length; i++) {
         const fontToImport = selectedFontsData[i];
         try {
+          const variantCount = Object.keys(fontToImport.files || {}).length;
+          const providerLabel = fontToImport.provider === "fontshare" ? "Fontshare" : "Google Fonts";
           setImportLogs(prev => {
-            const next = [...prev, `[${i + 1}/${selectedFontsData.length}] Downloading and processing ${fontToImport.family}...`];
+            const next = [
+              ...prev,
+              `[${i + 1}/${selectedFontsData.length}] ${fontToImport.family}: fetching from ${providerLabel} (${variantCount} file${variantCount === 1 ? "" : "s"})...`,
+            ];
             return next.slice(-40);
           });
 
@@ -332,7 +337,15 @@ export default function BulkUploadPage() {
           if (data.imported && data.imported.length > 0) {
             totalImported += data.imported.length;
             importedNames.push(...data.imported);
-            setImportLogs(prev => [...prev, `✓ Success: ${fontToImport.family} added to database.`].slice(-40));
+            // `importDetails` arriva dal server con quello che e' *davvero*
+            // successo (varianti convertite/caricate su R2, autore risolto) —
+            // se manca (risposta di una versione vecchia dell'API) si ripiega
+            // sul messaggio generico invece di far sparire la riga.
+            const detail = data.importDetails?.[0];
+            const successLine = detail
+              ? `✓ Success: ${fontToImport.family} — ${detail.variantsCount} variant${detail.variantsCount === 1 ? "" : "s"} converted to WOFF2 and uploaded, category ${detail.category}${detail.isVariable ? " (variable font)" : ""}, author: ${detail.authorName}.`
+              : `✓ Success: ${fontToImport.family} added to database.`;
+            setImportLogs(prev => [...prev, successLine].slice(-40));
           }
           if (data.failed && data.failed.length > 0) {
             const errorMsg = data.failed[0].error;
@@ -442,7 +455,7 @@ export default function BulkUploadPage() {
 
       setImportLogs(prev => [...prev,
         `-------------------------`,
-        `Batch Completed: Imported ${finalImported.length}, Skipped ${skippedNames.length}, Failed ${failedData.length}.`
+      `Batch Completed: Imported ${finalImported.length}, Skipped ${skippedNames.length}, Failed ${failedData.length}.`
       ].slice(-40));
 
       setImportResults({ imported: finalImported, skipped: skippedNames, failed: failedData });
@@ -463,10 +476,10 @@ export default function BulkUploadPage() {
 
   return (
     <div className="flex flex-col justify-between h-full">
-      
+
       {/* Container superiore (Top Bar + Griglia Contenuti) */}
       <div className="w-full h-full grow flex flex-col">
-        
+
         {/* ─── Top Controls Bar ─── */}
         <div className="py-4">
           <FormActions
@@ -737,8 +750,8 @@ export default function BulkUploadPage() {
 
       {/* ─── Search & Filter Modal Panel ─── */}
       {isFilterModalOpen && (
-        <BaseModal 
-          isOpen={isFilterModalOpen} 
+        <BaseModal
+          isOpen={isFilterModalOpen}
           size="4xl"
           onClose={() => setIsFilterModalOpen(false)}
         >
@@ -765,7 +778,7 @@ export default function BulkUploadPage() {
                 </label>
                 <Select options={SOURCE_OPTIONS} value={source} onChange={(v) => setSource(v as any)} />
               </div>
-              
+
               {source !== "local" && (
                 <div>
                   <label className="text-[10px] text-bluegray-800 dark:text-redgray-200 uppercase tracking-widest block mb-1.5 font-black">
@@ -902,7 +915,7 @@ export default function BulkUploadPage() {
                   <FolderDown className="h-5 w-5 text-cyan-500" />
                 </div>
                 <div className="min-w-0">
-                  <h3 className="text-2xl font-star text-black dark:text-white leading-tight">Batch Import</h3>
+                  <h3 className="text-2xl font-rezland text-black dark:text-white leading-tight">Batch Import</h3>
                   <p className="text-[10px] uppercase tracking-widest font-bold text-zinc-500 dark:text-zinc-400 mt-0.5">
                     Downloading &middot; Converting &middot; Saving
                   </p>

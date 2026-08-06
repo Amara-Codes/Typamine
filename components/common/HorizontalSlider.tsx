@@ -35,7 +35,7 @@ export default function HorizontalSlider({
       {(title || subtitle) && (
         <div className="px-6 md:px-12 mb-6 space-y-1">
           {title && (
-            <h3 className="font-star text-2xl dyn-text" style={dynamicTextStyle(titleColorClassName)}>{title}</h3>
+            <h3 className="font-rezland text-2xl dyn-text" style={dynamicTextStyle(titleColorClassName)}>{title}</h3>
           )}
           {subtitle && (
             <p className="text-sm dyn-text" style={dynamicTextStyle(subtitleColorClassName)}>{subtitle}</p>

@@ -64,29 +64,29 @@ export default function RoleForm({ role, allPermissions }: { role?: any, allPerm
 
   return (
     <form action={dispatch} className="max-w-6xl ml-auto space-y-8 pb-20 transition-colors duration-300">
-      <FormActions 
-        backLink="/admin/roles" 
-        backLabel="Back to roles list" 
-        buttonLabel={role ? "Update Role" : "Create Role"} 
+      <FormActions
+        backLink="/admin/roles"
+        backLabel="Back to roles list"
+        buttonLabel={role ? "Update Role" : "Create Role"}
       />
 
       <div className="bg-zinc-100/60 dark:bg-zinc-900 border border-black/5 dark:border-white/5 rounded-2xl p-8 sm:p-10 shadow-2xl backdrop-blur-xl transition-all hover:shadow-zinc-900/5">
         <div className="flex flex-col justify-end mb-10 border-b border-black/5 dark:border-white/5 pb-6">
-            <h3 className="text-4xl font-star text-black dark:text-white">Role Configuration</h3>
-            <p className="text-[10px] ps-2 uppercase tracking-widest font-bold text-bluegray-800 dark:text-redgray-200 mt-1">Define functional access levels and granular permissions</p>
+          <h3 className="text-4xl font-rezland text-black dark:text-white">Role Configuration</h3>
+          <p className="text-[10px] ps-2 uppercase tracking-widest font-bold text-bluegray-800 dark:text-redgray-200 mt-1">Define functional access levels and granular permissions</p>
         </div>
 
         <div className="space-y-12">
-            <Input
-              id="name"
-              name="name"
-              label="Role Identity (Label)"
-              defaultValue={role?.name?.replace(/_/g, " ")}
-              required
-              placeholder="e.g. Content Editor, Store Manager..."
-              leftIcon={<Fingerprint className="h-5 w-5" />}
-              autoComplete="off"
-            />
+          <Input
+            id="name"
+            name="name"
+            label="Role Identity (Label)"
+            defaultValue={role?.name?.replace(/_/g, " ")}
+            required
+            placeholder="e.g. Content Editor, Store Manager..."
+            leftIcon={<Fingerprint className="h-5 w-5" />}
+            autoComplete="off"
+          />
 
           <div>
             <div className="flex items-center justify-between mb-6">
@@ -96,7 +96,7 @@ export default function RoleForm({ role, allPermissions }: { role?: any, allPerm
                 <span className="text-[8px] font-black uppercase tracking-tighter text-bluegray-800 dark:text-redgray-200">Secure RBAC</span>
               </div>
             </div>
-            
+
             <div className="grid grid-cols-1 gap-6">
               {Object.entries(groupedPermissions).map(([resource, perms]) => (
                 <div key={resource} className="bg-white/30 dark:bg-white/5 border border-black/5 dark:border-white/5 rounded-2xl p-6 transition-all hover:bg-white/60 dark:hover:bg-white/10">
@@ -134,14 +134,14 @@ export default function RoleForm({ role, allPermissions }: { role?: any, allPerm
           </div>
         </div>
       </div>
-      
+
       <BaseModal isOpen={showErrorModal} onClose={() => setShowErrorModal(false)} size="md">
         <BaseModal.Header onClose={() => setShowErrorModal(false)}>
-            <div className="flex items-end gap-4">
+          <div className="flex items-end gap-4">
             <div className="p-2 bg-red-500/10 rounded-lg">
               <AlertCircle className="w-6 h-6 text-red-500" />
             </div>
-            <h2 className="text-2xl font-star text-black dark:text-white">Role Update Failed</h2>
+            <h2 className="text-2xl font-rezland text-black dark:text-white">Role Update Failed</h2>
           </div>
         </BaseModal.Header>
         <BaseModal.Body>
@@ -155,7 +155,7 @@ export default function RoleForm({ role, allPermissions }: { role?: any, allPerm
           </div>
         </BaseModal.Body>
         <BaseModal.Footer>
-          <button 
+          <button
             type="button"
             onClick={() => setShowErrorModal(false)}
             className="w-full py-4 bg-red-500 text-white rounded-xl font-black uppercase tracking-tighter hover:bg-red-600 transition-all shadow-lg"

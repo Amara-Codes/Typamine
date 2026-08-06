@@ -230,7 +230,7 @@ export default function IngredientDetailClient({ ingredient, hasPairings = false
             <div className="p-2 rounded-xl bg-amber-500/10">
               <FileSignature className="w-6 h-6 text-amber-500" />
             </div>
-            <h2 className="text-2xl font-star text-black dark:text-white leading-tight">Licensing In Progress</h2>
+            <h2 className="text-2xl font-rezland text-black dark:text-white leading-tight">Licensing In Progress</h2>
           </div>
         </BaseModal.Header>
         <BaseModal.Body>
@@ -260,7 +260,7 @@ export default function IngredientDetailClient({ ingredient, hasPairings = false
       </BaseModal>
 
       <Cta
-        title={<>Need <span className="text-blue dark:text-red font-star px-2">integration</span> tools?</>}
+        title={<>Need <span className="text-blue dark:text-red font-rezland px-2">integration</span> tools?</>}
         subtitle="Head over to the Labs Bench for @font-face snippet generators, WCAG contrast ratio checkers for accessibility, Tailwind CSS utilities, and much more."
         align="right"
         bgImage="/images/ingredient/cta-bg.png"

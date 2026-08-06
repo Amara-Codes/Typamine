@@ -7,6 +7,7 @@ import { useThemeStore } from "@/store/themeStore";
 import { Cta } from "@/components/common/Cta";
 import { Button } from "@/components/common/Button";
 import { SearchSortFilter } from "@/components/common/SearchSortFilter";
+import { useListScrollRestoration } from "@/lib/hooks/useListScrollRestoration";
 
 const SORT_OPTIONS = [
   { label: "NEWEST FIRST", value: "recent" },
@@ -36,6 +37,7 @@ interface FormulasClientProps {
 // risultati) è dentro un Suspense boundary.
 export default function FormulasClient({ tags, children }: FormulasClientProps) {
   const { theme } = useThemeStore();
+  useListScrollRestoration();
 
   return (
     <div className="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 pt-28 pb-8 space-y-8">
@@ -66,7 +68,7 @@ export default function FormulasClient({ tags, children }: FormulasClientProps) 
       {children}
 
       <Cta
-        title={<>Looking for <span className="text-blue dark:text-red font-star px-2">Inspirations?</span></>}
+        title={<>Looking for <span className="text-blue dark:text-red font-rezland px-2">Inspirations?</span></>}
         subtitle="Check out our Prescriptions for expert typography pairings, or dive into our Vintage Archive to discover great examples from the past."
         align="right"
         bgImage="/images/formulas/cta-bg.png"

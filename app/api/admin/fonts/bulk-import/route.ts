@@ -28,6 +28,18 @@ export async function POST(request: NextRequest) {
 
     const imported: string[] = [];
     const failed: Array<{ family: string; error: string }> = [];
+    // Dettagli extra per famiglia importata, in aggiunta a `imported` (che
+    // resta solo i nomi per non rompere i chiamanti esistenti) — usati dal
+    // terminale del popup per mostrare cosa e' realmente successo oltre al
+    // semplice "aggiunto al DB" (quante varianti, categoria, autore risolto).
+    const importDetails: Array<{
+      family: string;
+      variantsCount: number;
+      isVariable: boolean;
+      category: string;
+      authorName: string;
+      importedFrom: string;
+    }> = [];
 
     const [googleFontsAuthorId, fontshareAuthorId] = await Promise.all([
       getOrCreatePlaceholderFontAuthorId("googleFonts"),
@@ -169,6 +181,8 @@ export async function POST(request: NextRequest) {
         // se il nome reale e' gia' noto e corretto in `creator`.
         const resolvedDesignerAuthorId = font.designer ? await findOrCreateFontAuthorByName(font.designer) : null;
         const placeholderAuthorId = font.provider === 'fontshare' ? fontshareAuthorId : googleFontsAuthorId;
+        const importedFromLabel = font.provider === 'fontshare' ? 'Fontshare' : 'Google Fonts';
+        const authorLabel = font.designer || importedFromLabel;
 
         // Save to DB
         await prisma.ingredient.create({
@@ -177,9 +191,9 @@ export async function POST(request: NextRequest) {
             name: font.family,
             slug,
             category: dbCategory,
-            creator: font.designer || (font.provider === 'fontshare' ? 'Fontshare' : 'Google Fonts'),
+            creator: authorLabel,
             rating: "9.0",
-            importedFrom: font.provider === 'fontshare' ? 'Fontshare' : 'Google Fonts',
+            importedFrom: importedFromLabel,
             authorId: resolvedDesignerAuthorId ?? placeholderAuthorId,
             isVariable,
             createdAt: new Date(),
@@ -190,6 +204,14 @@ export async function POST(request: NextRequest) {
         });
 
         imported.push(font.family);
+        importDetails.push({
+          family: font.family,
+          variantsCount: createdVariants.length,
+          isVariable: !!isVariable,
+          category: dbCategory,
+          authorName: authorLabel,
+          importedFrom: importedFromLabel,
+        });
       } catch (fontErr: any) {
         console.error(`[Bulk Import] Error importing font ${font.family}:`, fontErr);
         failed.push({ family: font.family, error: fontErr.message || "Unknown error" });
@@ -197,7 +219,7 @@ export async function POST(request: NextRequest) {
     }
 
     if (imported.length > 0) revalidateTag(CACHE_TAGS.ingredients, "max");
-    return NextResponse.json({ success: true, imported, failed });
+    return NextResponse.json({ success: true, imported, failed, importDetails });
   } catch (error: any) {
     console.error("[Bulk Import Route] Global Error:", error);
     return NextResponse.json({ error: error.message || "Failed to process bulk import request." }, { status: 500 });

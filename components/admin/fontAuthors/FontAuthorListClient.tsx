@@ -119,7 +119,7 @@ export default function FontAuthorListClient({ authors, totalCount, canUpdate, c
               render: (a: any) => (
                 <div className="min-w-0 py-1 flex items-center gap-2">
                   <div>
-                    <p className="font-star text-xl text-black dark:text-white leading-tight truncate flex items-center gap-1.5">
+                    <p className="font-rezland text-xl text-black dark:text-white leading-tight truncate flex items-center gap-1.5">
                       {a.name}
                       {a.isVerified && <ShieldCheck className="h-4 w-4 text-emerald-500 shrink-0" />}
                     </p>
@@ -143,7 +143,7 @@ export default function FontAuthorListClient({ authors, totalCount, canUpdate, c
               header: "Fonts",
               className: "w-1/12 shrink-0 hidden sm:block",
               render: (a: any) => (
-                <span className="text-sm font-star text-black dark:text-white">{a._count?.fonts ?? 0}</span>
+                <span className="text-sm font-rezland text-black dark:text-white">{a._count?.fonts ?? 0}</span>
               ),
             },
             {
@@ -158,9 +158,8 @@ export default function FontAuthorListClient({ authors, totalCount, canUpdate, c
               className: "w-1/6 shrink-0",
               render: (a: any) => (
                 <span
-                  className={`inline-flex items-center px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ${
-                    STATUS_STYLES[a.status] || STATUS_STYLES.ACTIVE
-                  }`}
+                  className={`inline-flex items-center px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ${STATUS_STYLES[a.status] || STATUS_STYLES.ACTIVE
+                    }`}
                 >
                   {a.status}
                 </span>
@@ -200,12 +199,12 @@ export default function FontAuthorListClient({ authors, totalCount, canUpdate, c
             <div className="p-2 rounded-xl bg-red/10">
               <AlertTriangle className="w-6 h-6 text-red" />
             </div>
-            <h2 className="text-2xl font-star text-black dark:text-white">Confirm Bulk Deletion</h2>
+            <h2 className="text-2xl font-rezland text-black dark:text-white">Confirm Bulk Deletion</h2>
           </div>
         </BaseModal.Header>
         <BaseModal.Body>
           <div className="space-y-4">
-            <p className="text-xl font-star text-center mb-8 font-bold text-black dark:text-white leading-tight">
+            <p className="text-xl font-rezland text-center mb-8 font-bold text-black dark:text-white leading-tight">
               Delete {selectedIds.length} selected font author{selectedIds.length !== 1 && "s"}?
             </p>
             <p className="text-sm text-zinc-500 dark:text-zinc-400 leading-relaxed">

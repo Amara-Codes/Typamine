@@ -64,12 +64,12 @@ export default function DeleteButton({
             <div className="p-2 bg-red/10 rounded-lg">
               <AlertTriangle className="w-6 h-6 text-red" />
             </div>
-            <h2 className="text-2xl font-star text-black dark:text-white">{confirmTitle}</h2>
+            <h2 className="text-2xl font-rezland text-black dark:text-white">{confirmTitle}</h2>
           </div>
         </BaseModal.Header>
         <BaseModal.Body>
           <div className="space-y-4">
-            <p className="text-xl font-star text-center mb-8 font-bold text-black dark:text-white leading-tight">
+            <p className="text-xl font-rezland text-center mb-8 font-bold text-black dark:text-white leading-tight">
               Delete {entityName} <span className="text-red">"{name}"</span> ?
             </p>
             <p className="text-sm text-zinc-500 dark:text-zinc-400 leading-relaxed">

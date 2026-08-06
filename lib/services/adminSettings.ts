@@ -126,7 +126,7 @@ export function mapAdminSettings(record: any): AdminSettings {
 // woff2Url reali da usare per il rendering pubblico — join live invece che
 // denormalizzato, così un font rinominato/cancellato dopo la scelta in admin
 // non lascia mai un riferimento sporco (torna semplicemente undefined e i
-// consumer ricadono sul font-star di default).
+// consumer ricadono sul font-rezland di default).
 async function resolveLetterTFont(fontId: string | undefined): Promise<AdminSettings["letterTFont"]> {
   if (!fontId) return undefined;
 

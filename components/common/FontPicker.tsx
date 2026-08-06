@@ -154,7 +154,7 @@ export default function FontPicker({
       {isOpen && (
         <BaseModal isOpen={isOpen} onClose={() => setIsOpen(false)} size="lg">
           <BaseModal.Header onClose={() => setIsOpen(false)}>
-            <h3 className="text-lg font-star font-bold text-black dark:text-white">
+            <h3 className="text-lg font-rezland font-bold text-black dark:text-white">
               {label || "Select a font"}
             </h3>
           </BaseModal.Header>
@@ -185,9 +185,8 @@ export default function FontPicker({
                         onChange(f.id);
                         setIsOpen(false);
                       }}
-                      className={`w-full flex items-center justify-between gap-4 px-4 py-3 text-left transition-colors ${
-                        isSelected ? "bg-blue/10 dark:bg-red/10" : "hover:bg-black/5 dark:hover:bg-white/5"
-                      }`}
+                      className={`w-full flex items-center justify-between gap-4 px-4 py-3 text-left transition-colors ${isSelected ? "bg-blue/10 dark:bg-red/10" : "hover:bg-black/5 dark:hover:bg-white/5"
+                        }`}
                     >
                       <span className="min-w-0">
                         <span

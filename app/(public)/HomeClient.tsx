@@ -44,10 +44,10 @@ export default function HomeClient({ recentIngredients = [], recentPairings = []
             loopSpeed={adminSettings?.heroWordmarkLoopSpeed ?? 1}
             logoLightModeColor={adminSettings?.logoLightModeColor}
             logoDarkModeColor={adminSettings?.logoDarkModeColor}
-            className="font-star text-black dark:text-white text-[clamp(3rem,9vw,8rem)] mx-auto"
+            className="font-rezland text-black dark:text-white text-[clamp(3rem,9vw,8rem)] mx-auto"
           />
 
-    
+
         </DoubleHero.FirstViewport>
 
         <DoubleHero.SecondViewport fixedHeight={140} className="pb-12 flex flex-col">
@@ -145,7 +145,7 @@ export default function HomeClient({ recentIngredients = [], recentPairings = []
             (stesso contenitore, nessun confine da attraversare): vedi nota lì. */}
         <div className="mt-[19rem] lg:mt-0">
           <Cta
-            title={<>Daily <span className="text-blue dark:text-red font-star px-2">Typographic</span> Pills</>}
+            title={<>Daily <span className="text-blue dark:text-red font-rezland px-2">Typographic</span> Pills</>}
             subtitle="Subscribe to our blog for weekly doses of typographic inspiration, technical tutorials, and experimental font pairings directly to your console."
             align="center"
             useGrainient

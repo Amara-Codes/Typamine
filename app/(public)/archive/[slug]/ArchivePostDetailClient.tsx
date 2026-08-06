@@ -223,7 +223,7 @@ function DossierPanel({ post, tags, hasFonts, hasInsight, authorName, grainientC
             che senza font associati. */}
         {tags.length > 0 && (
           <div className="space-y-2">
-            <h3 className="font-star text-2xl text-black dark:text-white">Classification</h3>
+            <h3 className="font-rezland text-2xl text-black dark:text-white">Classification</h3>
             <div className="flex flex-wrap gap-2">
               {tags.map((tag: any) => (
                 <Link key={tag.id} href={`/archive?tags=${encodeURIComponent(tag.name)}`}>

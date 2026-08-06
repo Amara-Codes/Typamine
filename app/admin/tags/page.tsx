@@ -1,11 +1,8 @@
 import { getServerAuthSession } from "@/lib/session";
 import prisma from "@/lib/prisma";
 import { hasPermission, protectPage } from "@/lib/rbac";
-import TabHeading from "@/components/admin/common/TabHeading";
 import TagListClient from "@/components/admin/tags/TagListClient";
-import { Button } from "@/components/common/Button";
 import { withSafeDbQuery } from "@/lib/services/dbMigration";
-import Link from "next/link";
 
 export const dynamic = "force-dynamic";
 
@@ -77,10 +74,6 @@ export default async function TagListPage(props: TagListPageProps) {
 
   return (
     <div className="space-y-10">
-       <TabHeading
-        title="Tags"
-        showButton={false}
-      />
       <TagListClient
         tags={tags}
         totalCount={totalCount}

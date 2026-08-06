@@ -1,5 +1,6 @@
-import { GoogleGenerativeAI, SchemaType } from "@google/generative-ai";
+import { SchemaType } from "@google/generative-ai";
 import { z } from "zod";
+import { generateWithKeyFallback } from "@/lib/ai/geminiKeyPool";
 
 // Giudizio soggettivo/qualitativo su un font: rating + tag. Separato da
 // fontIdentity.ts (autore + licenza, lookup fattuale) — due domini diversi,
@@ -44,44 +45,13 @@ function clampRating(value: number): number {
   return Math.round(clamped * 10) / 10;
 }
 
-function sleep(ms: number) {
-  return new Promise((resolve) => setTimeout(resolve, ms));
-}
-
-function parseRetryDelayMs(error: unknown): number | null {
-  const message = error instanceof Error ? error.message : String(error);
-  const match = message.match(/"retryDelay":"(\d+(?:\.\d+)?)s"/) || message.match(/retry in ([\d.]+)s/i);
-  if (!match) return null;
-  return Math.ceil(parseFloat(match[1]) * 1000);
-}
-
-function isRateLimitError(error: unknown): boolean {
-  const message = error instanceof Error ? error.message : String(error);
-  return message.includes("429") || /quota|too many requests/i.test(message);
-}
-
 export async function generateFontQualityWithGemini(
-  fontFamily: string,
+  rawFontFamily: string,
   availableTagNames: string[] = []
 ): Promise<FontQualityResult> {
-  const apiKey = process.env.GEMINI_API_KEY;
-  if (!apiKey) {
-    throw new Error("GEMINI_API_KEY non configurata nell'ambiente.");
-  }
-
-  const genAI = new GoogleGenerativeAI(apiKey);
-  const model = genAI.getGenerativeModel(
-    {
-      model: "gemini-3.1-flash-lite",
-      generationConfig: {
-        responseMimeType: "application/json",
-        responseSchema: buildFontQualityResponseSchema(availableTagNames),
-        temperature: 0.3,
-        maxOutputTokens: 512,
-      },
-    },
-    { apiVersion: "v1beta" }
-  );
+  // Stessa convenzione DB di fontIdentity.ts: il nome e' salvato con
+  // underscore al posto degli spazi, Gemini deve giudicare il nome vero.
+  const fontFamily = rawFontFamily.replace(/_/g, " ").trim();
 
   const tagInstruction = availableTagNames.length > 0
     ? `
@@ -102,29 +72,22 @@ Respond ONLY with JSON matching exactly this shape, no extra commentary:
 {"fontFamily": "${fontFamily}", "rating": <number>${availableTagNames.length > 0 ? ', "tagNames": ["<tag from the list>", ...]' : ""}}
 `;
 
-  const MAX_RETRIES = 4;
-  let responseText: string | null = null;
-  let lastError: unknown = null;
-
-  for (let attempt = 0; attempt <= MAX_RETRIES; attempt++) {
-    try {
-      const result = await model.generateContent(prompt);
-      responseText = result.response.text();
-      break;
-    } catch (err) {
-      lastError = err;
-      if (isRateLimitError(err) && attempt < MAX_RETRIES) {
-        const delay = parseRetryDelayMs(err) ?? (attempt + 1) * 15000;
-        await sleep(delay);
-        continue;
-      }
-      throw err;
-    }
-  }
-
-  if (responseText === null) {
-    throw lastError instanceof Error ? lastError : new Error(`Gemini request failed for "${fontFamily}".`);
-  }
+  const responseText = await generateWithKeyFallback(
+    (genAI) =>
+      genAI.getGenerativeModel(
+        {
+          model: "gemini-3.1-flash-lite",
+          generationConfig: {
+            responseMimeType: "application/json",
+            responseSchema: buildFontQualityResponseSchema(availableTagNames),
+            temperature: 0.3,
+            maxOutputTokens: 512,
+          },
+        },
+        { apiVersion: "v1beta" }
+      ),
+    prompt
+  );
 
   let parsed: unknown;
   try {

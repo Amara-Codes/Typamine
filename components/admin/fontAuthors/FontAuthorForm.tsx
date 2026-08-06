@@ -244,18 +244,18 @@ export default function FontAuthorForm({ initialData }: FontAuthorFormProps) {
       "businessInfo",
       hasBusinessInfo
         ? JSON.stringify({
-            companyName: companyName.trim() || undefined,
-            vatId: vatId.trim() || undefined,
-            address: country.trim()
-              ? {
-                  street: street.trim() || undefined,
-                  city: city.trim() || undefined,
-                  state: state.trim() || undefined,
-                  zipCode: zipCode.trim() || undefined,
-                  country: country.trim(),
-                }
-              : undefined,
-          })
+          companyName: companyName.trim() || undefined,
+          vatId: vatId.trim() || undefined,
+          address: country.trim()
+            ? {
+              street: street.trim() || undefined,
+              city: city.trim() || undefined,
+              state: state.trim() || undefined,
+              zipCode: zipCode.trim() || undefined,
+              country: country.trim(),
+            }
+            : undefined,
+        })
         : ""
     );
 
@@ -289,7 +289,7 @@ export default function FontAuthorForm({ initialData }: FontAuthorFormProps) {
 
         {/* Identity */}
         <div className="lg:col-span-8 border border-black/5 dark:border-white/5 rounded-2xl p-6 shadow-xl backdrop-blur-xl bg-white/50 dark:bg-zinc-950/50 space-y-5">
-          <h3 className="text-xl font-star font-bold text-black dark:text-white pb-3 border-b border-black/5 dark:border-white/5">
+          <h3 className="text-xl font-rezland font-bold text-black dark:text-white pb-3 border-b border-black/5 dark:border-white/5">
             Author Identity
           </h3>
 
@@ -350,7 +350,7 @@ export default function FontAuthorForm({ initialData }: FontAuthorFormProps) {
 
         {/* Taxonomy & visibility */}
         <div className="lg:col-span-4 border border-black/5 dark:border-white/5 rounded-2xl p-6 shadow-xl backdrop-blur-xl bg-white/50 dark:bg-zinc-950/50 space-y-5">
-          <h3 className="text-xl font-star font-bold text-black dark:text-white pb-3 border-b border-black/5 dark:border-white/5">
+          <h3 className="text-xl font-rezland font-bold text-black dark:text-white pb-3 border-b border-black/5 dark:border-white/5">
             Type &amp; Status
           </h3>
 
@@ -395,7 +395,7 @@ export default function FontAuthorForm({ initialData }: FontAuthorFormProps) {
 
         {/* Avatar & Banner */}
         <div className="lg:col-span-12 border border-black/5 dark:border-white/5 rounded-2xl p-6 shadow-xl backdrop-blur-xl bg-white/50 dark:bg-zinc-950/50 space-y-5">
-          <h3 className="text-xl font-star font-bold text-black dark:text-white pb-3 border-b border-black/5 dark:border-white/5">
+          <h3 className="text-xl font-rezland font-bold text-black dark:text-white pb-3 border-b border-black/5 dark:border-white/5">
             Avatar &amp; Banner
           </h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
@@ -447,7 +447,7 @@ export default function FontAuthorForm({ initialData }: FontAuthorFormProps) {
         {/* Social links */}
         <div className="lg:col-span-6 border border-black/5 dark:border-white/5 rounded-2xl p-6 shadow-xl backdrop-blur-xl bg-white/50 dark:bg-zinc-950/50 space-y-5">
           <div className="flex items-center justify-between pb-3 border-b border-black/5 dark:border-white/5">
-            <h3 className="text-xl font-star font-bold text-black dark:text-white">Social Links</h3>
+            <h3 className="text-xl font-rezland font-bold text-black dark:text-white">Social Links</h3>
             <Button type="button" variant="secondary" size="sm" roundness="md" onClick={addSocialLink} className="flex items-center gap-1.5">
               <Plus className="h-3.5 w-3.5" /> Add
             </Button>
@@ -493,7 +493,7 @@ export default function FontAuthorForm({ initialData }: FontAuthorFormProps) {
 
         {/* Donation */}
         <div className="lg:col-span-6 border border-black/5 dark:border-white/5 rounded-2xl p-6 shadow-xl backdrop-blur-xl bg-white/50 dark:bg-zinc-950/50 space-y-5">
-          <h3 className="text-xl font-star font-bold text-black dark:text-white pb-3 border-b border-black/5 dark:border-white/5">
+          <h3 className="text-xl font-rezland font-bold text-black dark:text-white pb-3 border-b border-black/5 dark:border-white/5">
             Donation Details
           </h3>
           <Input label="Donation Website" value={donationWebsite} onChange={setDonationWebsite} placeholder="https://ko-fi.com/..." />
@@ -510,7 +510,7 @@ export default function FontAuthorForm({ initialData }: FontAuthorFormProps) {
 
         {/* Business info */}
         <div className="lg:col-span-12 border border-black/5 dark:border-white/5 rounded-2xl p-6 shadow-xl backdrop-blur-xl bg-white/50 dark:bg-zinc-950/50 space-y-5">
-          <h3 className="text-xl font-star font-bold text-black dark:text-white pb-3 border-b border-black/5 dark:border-white/5">
+          <h3 className="text-xl font-rezland font-bold text-black dark:text-white pb-3 border-b border-black/5 dark:border-white/5">
             Business Info <span className="text-xs font-normal text-zinc-400 normal-case">(optional — for authors selling commercial fonts)</span>
           </h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">

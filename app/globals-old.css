@@ -45,14 +45,16 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 :root {
-  --color-primary: #ff3131;    /* Chemical Red */
-  --color-secondary: #00cece;  /* Chemical Cyan */
+  --color-primary: #ff3131;
+  /* Chemical Red */
+  --color-secondary: #00cece;
+  /* Chemical Cyan */
   --color-dark-gray: #f4f4f5;
   --color-border-gray: #e4e4e7;
 
   --font-haas: 'Alte Haas Grotesk';
   --font-jakarta: 'Plus Jakarta Sans';
-  --font-star: 'Star Avenue';
+  --font-rezland: 'Star Avenue';
 
   --color-red: #ff3131;
   --color-blue: #00cece;
@@ -166,13 +168,13 @@
 
   --font-haas: var(--font-haas), sans-serif;
   --font-jakarta: var(--font-jakarta), sans-serif;
-  --font-star: var(--font-star), sans-serif;
+  --font-rezland: var(--font-rezland), sans-serif;
 
   /* Standard system mappings */
   --font-sans: var(--font-sans);
   --font-mono: var(--font-haas), sans-serif;
   --font-title: var(--font-haas), sans-serif;
-  --font-special: var(--font-star), sans-serif;
+  --font-special: var(--font-rezland), sans-serif;
 
   --animate-bounce-x: bounce-x 1s infinite;
 
@@ -215,10 +217,13 @@
 }
 
 @keyframes bounce-x {
-  0%, 100% {
+
+  0%,
+  100% {
     transform: translateX(0);
     animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
   }
+
   50% {
     transform: translateX(5px);
     animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
@@ -226,10 +231,13 @@
 }
 
 @keyframes bounce-x-reverse {
-  0%, 100% {
+
+  0%,
+  100% {
     transform: translateX(0);
     animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
   }
+
   50% {
     transform: translateX(-5px);
     animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
@@ -254,7 +262,7 @@ body {
 
 /* Chemical Lab Grid Pattern - adapts to dark/light */
 body {
-  background-image: 
+  background-image:
     radial-gradient(circle at 50% 50%, rgba(255, 49, 49, 0.015) 0%, transparent 65%),
     radial-gradient(circle at 10% 20%, rgba(0, 206, 206, 0.015) 0%, transparent 50%),
     linear-gradient(rgba(120, 120, 120, 0.03) 1px, transparent 1px),
@@ -263,7 +271,7 @@ body {
 }
 
 .dark body {
-  background-image: 
+  background-image:
     radial-gradient(circle at 50% 50%, rgba(255, 49, 49, 0.03) 0%, transparent 60%),
     radial-gradient(circle at 10% 20%, rgba(0, 206, 206, 0.03) 0%, transparent 50%),
     linear-gradient(rgba(255, 255, 255, 0.007) 1px, transparent 1px),
@@ -271,17 +279,19 @@ body {
 }
 
 /* CSS variables for typography elements */
-h1, h2, h3 {
+h1,
+h2,
+h3 {
   font-family: var(--font-haas);
 }
 
-.font-star {
-  font-family: var(--font-star);
+.font-rezland {
+  font-family: var(--font-rezland);
 }
 
 /* Technical / Laboratory Styling Helpers */
 .lab-grid {
-  background-image: 
+  background-image:
     linear-gradient(to right, var(--color-border-gray) 1px, transparent 1px),
     linear-gradient(to bottom, var(--color-border-gray) 1px, transparent 1px);
   background-size: 20px 20px;
@@ -324,15 +334,18 @@ h1, h2, h3 {
   width: 6px;
   height: 6px;
 }
+
 ::-webkit-scrollbar-track {
   background: var(--background);
   border-left: 1px solid var(--color-border-gray);
 }
+
 ::-webkit-scrollbar-thumb {
   background: var(--color-dark-gray);
   border: 1px solid var(--color-border-gray);
   border-radius: 3px;
 }
+
 ::-webkit-scrollbar-thumb:hover {
   background: var(--color-primary);
 }
@@ -347,6 +360,7 @@ input[type="range"] {
   border-radius: 3px;
   outline: none;
 }
+
 input[type="range"]::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
@@ -358,6 +372,7 @@ input[type="range"]::-webkit-slider-thumb {
   box-shadow: 0 0 8px var(--color-secondary);
   transition: transform 0.1s ease;
 }
+
 input[type="range"]::-webkit-slider-thumb:hover {
   transform: scale(1.2);
 }
@@ -371,10 +386,12 @@ input[type="range"]::-webkit-slider-thumb:hover {
   * {
     border-color: var(--border);
   }
+
   body {
     background-color: var(--background);
     color: var(--foreground);
   }
+
   html {
     font-family: var(--font-sans);
   }

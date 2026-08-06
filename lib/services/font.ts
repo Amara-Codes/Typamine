@@ -147,6 +147,21 @@ export const getIngredientsPage = unstable_cache(
   { revalidate: 60, tags: [CACHE_TAGS.ingredients] }
 );
 
+export const getIngredientsByAuthorId = unstable_cache(
+  async (authorId: string): Promise<Ingredient[]> => {
+    const records = await withCreatedAtBackfill(() =>
+      prisma.ingredient.findMany({
+        where: { authorId },
+        include: { variants: true, tags: true, author: true },
+        orderBy: { name: "asc" },
+      })
+    );
+    return records.map(toIngredient);
+  },
+  ["ingredients-by-author"],
+  { revalidate: 300, tags: [CACHE_TAGS.ingredients] }
+);
+
 export const getIngredientBySlug = unstable_cache(
   async (slug: string): Promise<Ingredient | null> => {
     const record = await withCreatedAtBackfill(() =>

@@ -71,7 +71,7 @@ export default function FormulaDetailClient({ formula, isCurated }: FormulaDetai
                   <div />
                 )}
                 <h2 className="flex justify-end items-baseline gap-2 uppercase font-bold text-sm text-right text-black dark:text-white">
-                  <span className="font-star text-blue dark:text-red">{formula.fonts.length}</span> Fonts in this collection
+                  <span className="font-rezland text-blue dark:text-red">{formula.fonts.length}</span> Fonts in this collection
                 </h2>
               </div>
               {formula.fonts.length > 0 ? (
@@ -88,7 +88,7 @@ export default function FormulaDetailClient({ formula, isCurated }: FormulaDetai
             </section>
 
             <Cta
-              title={<>Explore <span className="text-blue dark:text-red font-star px-2">More</span> Fonts?</>}
+              title={<>Explore <span className="text-blue dark:text-red font-rezland px-2">More</span> Fonts?</>}
               subtitle="Browse the full archive to find your next favorite typeface, or check out our expert pairing prescriptions."
               align="center"
             >

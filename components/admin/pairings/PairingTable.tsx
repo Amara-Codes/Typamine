@@ -1,6 +1,6 @@
 "use client";
 
-import  { useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { Edit, Check, X, Image as ImageIcon } from "lucide-react";
 import ContentTable from "@/components/common/ContentTable";
@@ -86,7 +86,7 @@ export default function PairingTable({ pairings }: PairingTableProps) {
               className: "flex-[2] min-w-0",
               render: (p: any) => (
                 <div className="min-w-0 py-1">
-                  <p className="font-star text-xl font-bold text-black dark:text-white leading-tight truncate">
+                  <p className="font-rezland text-xl font-bold text-black dark:text-white leading-tight truncate">
                     {p.name}
                   </p>
                   <p className="text-[10px] text-zinc-500 dark:text-zinc-400 font-mono tracking-wider mt-0.5 truncate">
@@ -118,12 +118,12 @@ export default function PairingTable({ pairings }: PairingTableProps) {
               className: "flex-1 hidden lg:block",
               render: (p: any) => (
                 <div className="flex flex-wrap gap-1">
-            {p.tags && p.tags.length ? (
-  <span className="text-xs text-black dark:text-white italic">{p.tags.length} Tags</span>
-            ): (
-  <span className="text-xs text-zinc-400 italic">No tags</span>
-            )}
-    
+                  {p.tags && p.tags.length ? (
+                    <span className="text-xs text-black dark:text-white italic">{p.tags.length} Tags</span>
+                  ) : (
+                    <span className="text-xs text-zinc-400 italic">No tags</span>
+                  )}
+
                 </div>
               ),
             },

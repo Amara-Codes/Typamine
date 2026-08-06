@@ -35,6 +35,11 @@ export default function AIFontIdentityButton() {
     failed: Array<{ family: string; error: string }>;
   } | null>(null);
 
+  const fmtConfidence = (c: number) => c.toFixed(1);
+
+  const [isCancelling, setIsCancelling] = useState(false);
+  const cancelRequestedRef = useRef(false);
+
   const terminalRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -49,6 +54,8 @@ export default function AIFontIdentityButton() {
     setResults(null);
     setProgress(0);
     setLogs([]);
+    cancelRequestedRef.current = false;
+    setIsCancelling(false);
     try {
       const fonts = await getFontsNeedingIdentityDetection();
       setCandidates(fonts);
@@ -71,6 +78,11 @@ export default function AIFontIdentityButton() {
     let lastRequestAt = 0;
 
     for (let i = 0; i < candidates.length; i++) {
+      if (cancelRequestedRef.current) {
+        setLogs(prev => [...prev, `Cancelled by user after ${i}/${candidates.length} font(s).`].slice(-40));
+        break;
+      }
+
       const font = candidates[i];
 
       const elapsed = Date.now() - lastRequestAt;
@@ -85,6 +97,28 @@ export default function AIFontIdentityButton() {
       try {
         const result = await detectFontIdentityWithAI(font.id);
         resolved.push({ family: result.family, author: result.author, licenseType: result.licenseType });
+
+        // Step 1 (a memoria) è sempre presente — sempre mostrato, con la
+        // confidence che Gemini si è auto-assegnata.
+        setLogs(prev => [
+          ...prev,
+          `  step1 (memory): author "${result.step1.author}", license "${result.step1.licenseType}" — confidence ${fmtConfidence(result.step1.confidence)}/10`,
+        ].slice(-40));
+
+        if (result.step2) {
+          // Confidence sotto soglia → step 2 è girato con ricerca web e ha
+          // vinto lui come risultato finale.
+          setLogs(prev => [
+            ...prev,
+            `  step2 (web search): author "${result.step2!.author}", license "${result.step2!.licenseType}" — used as final result`,
+          ].slice(-40));
+        } else if (result.step2Error) {
+          setLogs(prev => [
+            ...prev,
+            `  step2 (web search) failed: ${result.step2Error} — kept step1 result`,
+          ].slice(-40));
+        }
+
         const parts = [
           result.author ? `author: ${result.author}` : null,
           result.licenseType ? `license: ${result.licenseType}` : null,
@@ -108,6 +142,12 @@ export default function AIFontIdentityButton() {
     }
   };
 
+  const handleCancel = () => {
+    cancelRequestedRef.current = true;
+    setIsCancelling(true);
+    setLogs(prev => [...prev, "Cancelling after the current font finishes..."].slice(-40));
+  };
+
   const close = () => {
     setIsOpen(false);
     setPhase("idle");
@@ -115,19 +155,19 @@ export default function AIFontIdentityButton() {
 
   return (
     <>
-    <Card roundness="lg" visualHover className="!h-fit cursor-pointer" onClick={openModal}>
-      <div className="p-2 flex items-center gap-4">
-        <div className="h-8 w-8 shrink-0 rounded-sm border flex items-center justify-center bg-amber-500/10 border-amber-500/20">
-          <Scale className="h-4 w-4 text-amber-700 dark:text-amber-400" />
+      <Card roundness="lg" visualHover className="!h-fit cursor-pointer" onClick={openModal}>
+        <div className="p-2 flex items-center gap-4">
+          <div className="h-8 w-8 shrink-0 rounded-sm border flex items-center justify-center bg-amber-500/10 border-amber-500/20">
+            <Scale className="h-4 w-4 text-amber-700 dark:text-amber-400" />
+          </div>
+          <div className="min-w-0">
+            <p className="text-sm font-bold text-black dark:text-white truncate">Resolve Font Identity with AI</p>
+            <p className="text-[10px] uppercase tracking-widest font-bold text-zinc-500 dark:text-zinc-400 truncate">
+              Author &amp; license lookup
+            </p>
+          </div>
         </div>
-        <div className="min-w-0">
-          <p className="text-sm font-bold text-black dark:text-white truncate">Resolve Font Identity with AI</p>
-          <p className="text-[10px] uppercase tracking-widest font-bold text-zinc-500 dark:text-zinc-400 truncate">
-            Author &amp; license lookup
-          </p>
-        </div>
-      </div>
-    </Card>
+      </Card>
 
       {isOpen && (
         <BaseModal isOpen={isOpen} onClose={() => (phase !== "running" ? close() : undefined)} size="lg">
@@ -138,7 +178,7 @@ export default function AIFontIdentityButton() {
                   <Scale className="h-5 w-5 text-amber-600 dark:text-amber-400" />
                 </div>
                 <div className="min-w-0">
-                  <h3 className="text-2xl font-star text-black dark:text-white leading-tight">AI Identity Detection</h3>
+                  <h3 className="text-2xl font-rezland text-black dark:text-white leading-tight">AI Identity Detection</h3>
                   <p className="text-[10px] uppercase tracking-widest font-bold text-zinc-500 dark:text-zinc-400 mt-0.5">
                     Author lookup &middot; License type
                   </p>
@@ -248,40 +288,66 @@ export default function AIFontIdentityButton() {
 
           <BaseModal.Footer>
             {phase === "ready" && (
+              <div className="flex gap-2 w-full">
+                <Button
+                  variant="secondary"
+                  size="md"
+                  roundness="md"
+                  onClick={close}
+                  className="font-bold"
+                >
+                  Cancel
+                </Button>
+                <Button
+                  variant="primary"
+                  size="md"
+                  roundness="md"
+                  disabled={candidates.length === 0}
+                  onClick={runDetection}
+                  fullWidth
+                  className="flex items-center justify-center gap-2 font-bold"
+                >
+                  <Scale className="h-4 w-4" />
+                  {candidates.length === 0 ? "Nothing to resolve" : `Resolve ${candidates.length} font(s) with AI`}
+                </Button>
+              </div>
+            )}
+            {phase === "running" && (
+              <div className="flex gap-2 w-full">
+                <Button
+                  variant="secondary"
+                  size="md"
+                  roundness="md"
+                  disabled={isCancelling}
+                  onClick={handleCancel}
+                  className="font-bold"
+                >
+                  {isCancelling ? "Cancelling..." : "Cancel"}
+                </Button>
+                <Button
+                  variant="secondary"
+                  size="md"
+                  roundness="md"
+                  disabled
+                  fullWidth
+                  className="flex items-center justify-center gap-2 font-bold"
+                >
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                  Resolving...
+                </Button>
+              </div>
+            )}
+            {phase === "done" && (
               <Button
                 variant="primary"
                 size="md"
                 roundness="md"
-                disabled={candidates.length === 0}
-                onClick={runDetection}
-                fullWidth
-                className="flex items-center justify-center gap-2 font-bold"
-              >
-                <Scale className="h-4 w-4" />
-                {candidates.length === 0 ? "Nothing to resolve" : `Resolve ${candidates.length} font(s) with AI`}
-              </Button>
-            )}
-            {(phase === "running" || phase === "done") && (
-              <Button
-                variant={phase === "done" ? "primary" : "secondary"}
-                size="md"
-                roundness="md"
-                disabled={phase !== "done"}
                 onClick={close}
                 fullWidth
                 className="flex items-center justify-center gap-2 font-bold"
               >
-                {phase === "done" ? (
-                  <>
-                    <CheckCircle2 className="h-4 w-4" />
-                    Done
-                  </>
-                ) : (
-                  <>
-                    <Loader2 className="h-4 w-4 animate-spin" />
-                    Resolving...
-                  </>
-                )}
+                <CheckCircle2 className="h-4 w-4" />
+                Done
               </Button>
             )}
           </BaseModal.Footer>

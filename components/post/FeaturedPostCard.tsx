@@ -55,7 +55,7 @@ export const FeaturedPostCard: React.FC<FeaturedPostCardProps> = ({ post }) => {
           </span>
         </div>
 
-        <h2 className="font-star text-4xl sm:text-5xl leading-[0.95] text-black dark:text-white">
+        <h2 className="font-rezland text-4xl sm:text-5xl leading-[0.95] text-black dark:text-white">
           {post.title}
         </h2>
 

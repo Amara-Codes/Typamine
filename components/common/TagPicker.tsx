@@ -148,7 +148,7 @@ export default function TagPicker({ label, tags, value, onChange, emptyLabel = "
       {isOpen && (
         <BaseModal isOpen={isOpen} onClose={() => setIsOpen(false)} size="lg">
           <BaseModal.Header onClose={() => setIsOpen(false)}>
-            <h3 className="text-lg font-star font-bold text-black dark:text-white">
+            <h3 className="text-lg font-rezland font-bold text-black dark:text-white">
               {label || "Select tags"}
             </h3>
           </BaseModal.Header>
@@ -174,9 +174,8 @@ export default function TagPicker({ label, tags, value, onChange, emptyLabel = "
                     <button
                       type="button"
                       onClick={() => toggleTag(t.id)}
-                      className={`w-full flex items-center justify-between gap-4 px-4 py-3 text-left transition-colors ${
-                        isSelected ? "bg-blue/10 dark:bg-red/10" : "hover:bg-black/5 dark:hover:bg-white/5"
-                      }`}
+                      className={`w-full flex items-center justify-between gap-4 px-4 py-3 text-left transition-colors ${isSelected ? "bg-blue/10 dark:bg-red/10" : "hover:bg-black/5 dark:hover:bg-white/5"
+                        }`}
                     >
                       <span className="text-sm text-black dark:text-white truncate">{t.name}</span>
                       {isSelected && <Check className="h-4 w-4 text-blue dark:text-red shrink-0" />}

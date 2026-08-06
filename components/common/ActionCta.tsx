@@ -60,7 +60,7 @@ export default function ActionCta({
     <div className={cn("grid grid-cols-1 md:grid-cols-2 gap-8 items-center p-6 md:p-12", FONT_FAMILIES_MAP[fontFamily || ""], className)}>
       <div className={cn("space-y-4", imageOnRight ? "md:order-1" : "md:order-2")}>
         {title && (
-          <h3 className="font-star text-3xl dyn-text" style={dynamicTextStyle(titleColorClassName)}>{title}</h3>
+          <h3 className="font-rezland text-3xl dyn-text" style={dynamicTextStyle(titleColorClassName)}>{title}</h3>
         )}
         {paragraph && (
           <p className="text-sm sm:text-base dyn-text" style={dynamicTextStyle(paragraphColorClassName)}>{paragraph}</p>

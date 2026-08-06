@@ -14,7 +14,7 @@ interface GlyphBox {
 
 interface GlyphTypefaceProps {
   text: string;
-  /** Classi Tailwind per font/size/colore testo (es. font-star text-[clamp(...)]). */
+  /** Classi Tailwind per font/size/colore testo (es. font-rezland text-[clamp(...)]). */
   className?: string;
   /** Classi Tailwind per il bordo che incornicia l'inchiostro del glifo. */
   borderClassName?: string;

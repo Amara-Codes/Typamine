@@ -42,8 +42,6 @@ export const DynamicLogo: React.FC<DynamicLogoProps> = ({
   logoLightModeColor,
   logoDarkModeColor,
 }) => {
-  const hasCustomTFont = !!letterTFont?.woff2Url;
-  const tFontFamily = hasCustomTFont ? `BrandLetterT_${letterTFont!.id}` : undefined;
   const hasCustomTSize = letterTFontSizePercent !== 100;
 
   // Il quadratino "chimico" prende sempre background+colore (per il glow
@@ -61,11 +59,15 @@ export const DynamicLogo: React.FC<DynamicLogoProps> = ({
   const desktopWidth = propWidth !== undefined ? propWidth : (propHeight !== undefined ? propHeight * 2 : 180);
   const mobileWidth = propHeight !== undefined ? Math.round(propHeight * 0.65) : 58;
 
-  const effectiveMobileWidth = iconOnly ? mobileWidth : (hideWordmarkMobile ? mobileWidth : desktopWidth);
-  const effectiveDesktopWidth = iconOnly ? mobileWidth : desktopWidth;
-
   const collapsedHeight = 56;
   const collapsedWidth = 56;
+
+  // Il box quadrato assunto per il centraggio del quadratino da collassato
+  // (sotto) e' collapsedWidth/collapsedHeight — la larghezza reale del
+  // container deve combaciare, altrimenti il quadratino si centra su una
+  // misura diversa da quella del box che lo contiene davvero.
+  const effectiveMobileWidth = collapsed ? collapsedWidth : (iconOnly ? mobileWidth : (hideWordmarkMobile ? mobileWidth : desktopWidth));
+  const effectiveDesktopWidth = collapsed ? collapsedWidth : (iconOnly ? mobileWidth : desktopWidth);
 
   const currentHeight = collapsed ? collapsedHeight : normalHeight;
 
@@ -81,7 +83,7 @@ export const DynamicLogo: React.FC<DynamicLogoProps> = ({
 
   // Aura Neon dinamica basata su currentColor
   const glowClasses = squareGlow
-    ? "shadow-[0_0_15px_currentColor] blur-[1px] brightness-110" 
+    ? "shadow-[0_0_15px_currentColor] blur-[1px] brightness-110"
     : "";
 
   return (
@@ -113,7 +115,7 @@ export const DynamicLogo: React.FC<DynamicLogoProps> = ({
 
       {/* Brand Name: mostra 'T' + 'ypamine' su desktop, solo 'T' su mobile */}
       <span
-        className="font-star text-black dark:text-white tracking-wide leading-none"
+        className="font-rezland text-black dark:text-white tracking-wide leading-none relative inline-block"
         style={{
           fontSize: `${normalFontSize}px`,
           opacity: collapsed ? 0 : 1,
@@ -124,12 +126,8 @@ export const DynamicLogo: React.FC<DynamicLogoProps> = ({
             : "opacity 0.4s ease-in-out 0.15s, transform 0.4s ease-in-out 0.15s",
         }}
       >
-        {hasCustomTFont && (
-          <style>{`@font-face { font-family: '${tFontFamily}'; src: url('${letterTFont!.woff2Url}') format('woff2'); font-display: swap; }`}</style>
-        )}
         <span
           style={{
-            fontFamily: hasCustomTFont ? `'${tFontFamily}', 'Star Avenue', sans-serif` : undefined,
             fontSize: hasCustomTSize ? `${letterTFontSizePercent}%` : undefined,
           }}
         >
@@ -140,24 +138,42 @@ export const DynamicLogo: React.FC<DynamicLogoProps> = ({
             ypamine
           </span>
         )}
+
+        {/* Quadratino "chimico" proporzionale con aura neon (unito alla parola) */}
+        {!collapsed && (
+          squareIsButton ? (
+            <button
+              type="button"
+              onClick={squareButtonAction}
+              className={`absolute bottom-[0.15em] right-[-0.5em] w-[0.4em] h-[0.4em] transition-all duration-500 ease-in-out cursor-pointer hover:scale-110 active:scale-95 dyn-bg dyn-text rounded-xs inline-block ${squareColorClasses} ${glowClasses}`}
+              style={squareDynStyle}
+              title="Collapse sidebar"
+            />
+          ) : (
+            <div
+              className={`absolute bottom-[0.15em] right-[-0.5em] w-[0.4em] h-[0.4em] transition-all duration-500 ease-in-out dyn-bg dyn-text rounded-xs inline-block ${squareColorClasses} ${glowClasses}`}
+              style={squareDynStyle}
+            />
+          )
+        )}
       </span>
 
-      {/* Quadratino "chimico" proporzionale con aura neon */}
-      {squareIsButton ? (
-        <button
-          type="button"
-          onClick={squareButtonAction}
-          className={`dyn-logo-square absolute transition-all duration-500 ease-in-out cursor-pointer hover:scale-110 active:scale-95 dyn-bg dyn-text ${squareColorClasses} ${glowClasses} ${
-            collapsed ? "rotate-[360deg] rounded-sm" : "rotate-0 rounded-xs"
-          }`}
-          style={squareDynStyle}
-          title={collapsed ? "Expand sidebar" : "Collapse sidebar"}
-        />
-      ) : (
-        <div
-          className={`dyn-logo-square absolute transition-all duration-500 ease-in-out dyn-bg dyn-text ${squareColorClasses} ${glowClasses}`}
-          style={squareDynStyle}
-        />
+      {/* Quadratino "chimico" proporzionale con aura neon (collassato al centro) */}
+      {collapsed && (
+        squareIsButton ? (
+          <button
+            type="button"
+            onClick={squareButtonAction}
+            className={`dyn-logo-square absolute transition-all duration-500 ease-in-out cursor-pointer hover:scale-110 active:scale-95 dyn-bg dyn-text ${squareColorClasses} ${glowClasses} rotate-[360deg] rounded-sm`}
+            style={squareDynStyle}
+            title="Expand sidebar"
+          />
+        ) : (
+          <div
+            className={`dyn-logo-square absolute transition-all duration-500 ease-in-out dyn-bg dyn-text ${squareColorClasses} ${glowClasses}`}
+            style={squareDynStyle}
+          />
+        )
       )}
     </div>
   );

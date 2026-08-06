@@ -4,6 +4,7 @@ import React from "react";
 import { DoubleHero } from "@/components/common/DoubleHero";
 import { SearchSortFilter } from "@/components/common/SearchSortFilter";
 import { useThemeStore } from "@/store/themeStore";
+import { useListScrollRestoration } from "@/lib/hooks/useListScrollRestoration";
 
 const SORT_OPTIONS = [
   { label: "NEWEST FIRST", value: "recent" },
@@ -24,13 +25,14 @@ interface PillsClientProps {
 // propria hero coi moduli simpleHero/gridHero).
 export default function PillsClient({ tags, children }: PillsClientProps) {
     const { theme } = useThemeStore();
+    useListScrollRestoration();
     const dynamicArchiveBgImageUrl = theme === "dark" ? "/images/pills/double-hero/hero-bg-dark.png" : "/images/pills/double-hero/hero-bg-light.png";
   return (
     <DoubleHero bgImage={dynamicArchiveBgImageUrl} fullWidth>
       <DoubleHero.FirstViewport className="pt-24 pb-12 px-6 md:px-12 flex flex-col justify-end">
         <div className="max-w-3xl flex flex-col space-y-4 text-center items-center mx-auto">
           <h1 className="font-haas text-2xl md:text-5xl font-bold tracking-tight text-foreground text-glow-blue dark:text-glow-red">
-            <span className="text-blue-800 dark:text-red-400 font-positivesys">Typamine Pills</span>
+            <span className="text-blue-800 dark:text-red-400 font-galaxytail">Typamine Pills</span>
           </h1>
 
           <p className="text-zinc-700 dark:text-zinc-300 text-xs md:text-base max-w-xl leading-relaxed">

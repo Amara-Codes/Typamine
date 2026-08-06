@@ -58,13 +58,13 @@ export default function BaseModal({
   return createPortal(
     <div className="fixed inset-0 z-9999 flex items-center justify-center p-4 sm:p-6">
       {/* Backdrop */}
-      <div 
+      <div
         className="absolute inset-0 bg-ocragray-900/50 dark:bg-ocragray-100/50 backdrop-blur-sm transition-opacity duration-300"
         onClick={onClose}
       />
-      
+
       {/* Modal Container */}
-      <div 
+      <div
         className={cn(
           "relative w-full bg-ocragray-100/50 dark:bg-ocragray-900/50 border border-black/20 dark:border-white/20 rounded-2xl shadow-2xl backdrop-blur-2xl flex flex-col overflow-hidden animate-in fade-in zoom-in-95 duration-300",
           sizeClasses[size],
@@ -84,7 +84,7 @@ BaseModal.Header = function BaseModalHeader({ children, onClose, className }: { 
     <div className={cn("flex items-center justify-between bg-ocragray-100/50 dark:bg-ocragray-800/50 p-6 sm:p-8 border-b border-black/50 dark:border-white/50", className)}>
       <div className="flex-1">
         {typeof children === "string" ? (
-          <h3 className="text-2xl font-star text-black dark:text-white">
+          <h3 className="text-2xl font-rezland text-black dark:text-white">
             {children}
           </h3>
         ) : (

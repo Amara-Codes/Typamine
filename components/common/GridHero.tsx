@@ -64,7 +64,7 @@ export default function GridHero({
       <div className="flex flex-col h-full md:[direction:ltr]">
         <div className="flex-1 flex flex-col justify-center gap-2 p-8 dyn-bg" style={dynamicBgStyle(topBgColorClassName)}>
           {topTitle && (
-            <h3 className={cn("font-star text-2xl sm:text-3xl dyn-text", FONT_FAMILIES_MAP[topTitleFontFamily || ""])} style={dynamicTextStyle(topTitleColorClassName)}>
+            <h3 className={cn("font-rezland text-2xl sm:text-3xl dyn-text", FONT_FAMILIES_MAP[topTitleFontFamily || ""])} style={dynamicTextStyle(topTitleColorClassName)}>
               {topTitle}
             </h3>
           )}

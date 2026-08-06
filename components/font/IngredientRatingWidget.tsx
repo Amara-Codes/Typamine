@@ -95,7 +95,7 @@ export default function IngredientRatingWidget({
           <StarRating value={typamineScore5} size={20} />
           <div className="leading-tight">
 
-            <p className="font-star text-lg text-blue dark:text-red leading-none">
+            <p className="font-haas text-lg text-blue dark:text-red leading-none">
               {typamineScore5.toFixed(1)}
               <span className="font-haas text-[10px] text-zinc-400 ml-1">/5</span>
             </p>
@@ -110,12 +110,12 @@ export default function IngredientRatingWidget({
         <p className="font-haas text-[10px] uppercase tracking-widest text-zinc-500 dark:text-zinc-400">Users Score</p>
         <div className="flex items-center gap-2">
           {isRevealed ?
-          
-          <StarRating value={userRating} size={20} />
-          :  <p className="font-haas text-xs text-zinc-500 dark:text-zinc-400">
-                Locked — {userRatingsCount}/{MIN_VOTES_TO_REVEAL} votes
-              </p>} 
-    
+
+            <StarRating value={userRating} size={20} />
+            : <p className="font-haas text-xs text-zinc-500 dark:text-zinc-400">
+              Locked — {userRatingsCount}/{MIN_VOTES_TO_REVEAL} votes
+            </p>}
+
         </div>
       </div>
 

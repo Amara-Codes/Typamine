@@ -105,7 +105,7 @@ export default function MultiFontPicker({
         <BaseModal isOpen={isOpen} onClose={() => setIsOpen(false)} size="lg">
           <BaseModal.Header onClose={() => setIsOpen(false)}>
             <div>
-              <h3 className="text-lg font-star font-bold text-black dark:text-white">{label || "Select fonts"}</h3>
+              <h3 className="text-lg font-rezland font-bold text-black dark:text-white">{label || "Select fonts"}</h3>
               <p className="text-[10px] uppercase tracking-wider text-zinc-500 mt-1">
                 {values.length} / {max} selected
               </p>
@@ -137,13 +137,12 @@ export default function MultiFontPicker({
                       type="button"
                       disabled={disabled}
                       onClick={() => toggle(f.id)}
-                      className={`w-full flex items-center justify-between gap-4 px-4 py-3 text-left transition-colors ${
-                        isSelected
+                      className={`w-full flex items-center justify-between gap-4 px-4 py-3 text-left transition-colors ${isSelected
                           ? "bg-blue/10 dark:bg-red/10"
                           : disabled
-                          ? "opacity-40 cursor-not-allowed"
-                          : "hover:bg-black/5 dark:hover:bg-white/5"
-                      }`}
+                            ? "opacity-40 cursor-not-allowed"
+                            : "hover:bg-black/5 dark:hover:bg-white/5"
+                        }`}
                     >
                       <span className="min-w-0">
                         <span

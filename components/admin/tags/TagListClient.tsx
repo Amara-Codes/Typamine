@@ -8,6 +8,7 @@ import { saveTag, deleteTag } from "@/lib/actions/tag";
 import { ListHeaderHandlers, ListPagination } from "@/components/common/ListHandlers";
 import BaseModal from "@/components/common/BaseModal";
 import { Button } from "@/components/common/Button";
+import TabHeading from "@/components/admin/common/TabHeading";
 import { useRouter } from "next/navigation";
 
 
@@ -111,20 +112,24 @@ export default function TagListClient({ tags, totalCount, canCreate, canUpdate, 
   return (
     <div className="space-y-6">
 
-      {canCreate && (
-        <div className="flex justify-end">
-          <Button
-            onClick={handleOpenCreate}
-            variant="primary"
-            size="md"
-            roundness="md"
-            className="flex items-center gap-2"
-          >
-            <Plus className="h-4 w-4" />
-            Add Tag
-          </Button>
-        </div>
-      )}
+      <TabHeading
+        title="Tags"
+        showButton={false}
+        extraButtons={
+          canCreate && (
+            <Button
+              onClick={handleOpenCreate}
+              variant="primary"
+              size="lg"
+              roundness="md"
+              className="flex items-center gap-2"
+            >
+              <Plus className="h-5 w-5" />
+              Add Tag
+            </Button>
+          )
+        }
+      />
 
       <ListHeaderHandlers
         isSelectionMode={isSelectionMode}
@@ -165,7 +170,7 @@ export default function TagListClient({ tags, totalCount, canCreate, canUpdate, 
               render: (tag: any) => (
                 <div className="flex items-center gap-3 py-1">
                   <div>
-                    <p className="font-star text-2xl font-bold text-black dark:text-white leading-tight">
+                    <p className="font-rezland text-2xl font-bold text-black dark:text-white leading-tight">
                       {tag.name}
                     </p>
                     {tag.description && (
@@ -216,7 +221,7 @@ export default function TagListClient({ tags, totalCount, canCreate, canUpdate, 
               <div className="p-2 rounded-xl bg-blue/10 dark:bg-red/10">
                 <TagIcon className="w-5 h-5 text-black dark:text-white" />
               </div>
-              <h2 className="text-2xl font-star text-black dark:text-white">
+              <h2 className="text-2xl font-rezland text-black dark:text-white">
                 {editingTag ? "Edit Tag" : "Create New Tag"}
               </h2>
             </div>
@@ -289,12 +294,12 @@ export default function TagListClient({ tags, totalCount, canCreate, canUpdate, 
             <div className="p-2 rounded-xl bg-red/10">
               <AlertTriangle className="w-6 h-6 text-red" />
             </div>
-            <h2 className="text-2xl font-star text-black dark:text-white">Confirm Bulk Deletion</h2>
+            <h2 className="text-2xl font-rezland text-black dark:text-white">Confirm Bulk Deletion</h2>
           </div>
         </BaseModal.Header>
         <BaseModal.Body>
           <div className="space-y-4">
-            <p className="text-xl font-star text-center mb-8 font-bold text-black dark:text-white leading-tight">
+            <p className="text-xl font-rezland text-center mb-8 font-bold text-black dark:text-white leading-tight">
               Delete {selectedIds.length} selected tag{selectedIds.length !== 1 && "s"}?
             </p>
             <p className="text-sm text-zinc-500 dark:text-zinc-400 leading-relaxed">

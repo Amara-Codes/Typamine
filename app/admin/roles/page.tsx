@@ -11,9 +11,9 @@ import TabHeading from "@/components/admin/common/TabHeading";
 export default async function RoleListPage() {
   const session = await getServerAuthSession();
   await protectPage(session, 'role');
-  
+
   const roles = await prisma.role.findMany({
-    include: { 
+    include: {
       _count: { select: { permissions: true, users: true } }
     },
     orderBy: { name: "asc" },
@@ -39,7 +39,7 @@ export default async function RoleListPage() {
               <div className="flex items-start justify-end w-full relative">
                 <div className="flex items-center gap-2 opacity-100 lg:opacity-0 lg:group-hover:opacity-100 transition-opacity duration-300 absolute top-0 right-0">
                   {canUpdate && (
-                    <Link 
+                    <Link
                       href={`/admin/roles/${role.id}/edit`}
                       className="p-2.5 text-zinc-500 dark:text-zinc-400 hover:text-black dark:hover:text-white hover:bg-white dark:hover:bg-white/10 rounded-md transition-all shadow-sm"
                     >
@@ -61,7 +61,7 @@ export default async function RoleListPage() {
 
             <CardBody className="pt-2 pb-6 flex-1 flex flex-col justify-between">
               <div className="pb-6">
-                <h3 className="text-4xl font-star text-black dark:text-white leading-tight line-clamp-2 h-24 overflow-hidden flex items-start">
+                <h3 className="text-4xl font-rezland text-black dark:text-white leading-tight line-clamp-2 h-24 overflow-hidden flex items-start">
                   {role.name.replace(/_/g, " ")}
                 </h3>
               </div>
