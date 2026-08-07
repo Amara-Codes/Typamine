@@ -456,7 +456,7 @@
 }
 
 .animate-marquee-track {
-  animation: marquee-track 22s linear infinite;
+  animation: marquee-track 30s linear infinite;
 }
 
 /* Global Reset & Body Styling */
